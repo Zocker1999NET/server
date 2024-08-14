@@ -108,17 +108,6 @@ in
     };
 
 
-    nixpkgs.config = {
-
-      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (
-        map lib.getName (with lib.lists; flatten [
-          (optional config.programs.steam.enable config.programs.steam.package)
-        ])
-      );
-
-    };
-
-
     programs = {
 
       firefox = {
