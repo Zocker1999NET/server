@@ -21,7 +21,10 @@ in
         description = ''
           Configures the CPU type to expect this configuration to run on
         '';
-        type = lib.types.enum [ "amd" "intel" ];
+        type = with lib.types; nullOr enum [
+          "amd"
+          "intel"
+        ];
         # required
       };
 
