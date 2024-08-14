@@ -32,23 +32,28 @@
 
       nixosConfigurations =
         let
-          nixosSystem = { config, system }: inputs.nixpkgs.lib.nixosSystem {
+          nixosSystem = { modules, system }: inputs.nixpkgs.lib.nixosSystem {
             modules = [
               outputs.nixosModules.withDepends
-              config
-            ];
+            ] ++ modules;
             inherit system;
           };
         in
         {
 
           "x13yz" = nixosSystem {
-            config = {
-              hardware.cpu.type = "intel";
-              hardware.graphics.intel.enable = true;
-              system.stateVersion = "24.05";
-              x-banananetwork.frontend.enable = true;
-            };
+            modules = [
+              {
+                # hardware
+                hardware.cpu.type = "intel";
+                hardware.graphics.intel.enable = true;
+                x-banananetwork.frontend.enable = true;
+              }
+              {
+                # as currently installed
+                system.stateVersion = "24.05";
+              }
+            ];
             system = "x86_64-linux";
           };
 
