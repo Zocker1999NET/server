@@ -7,7 +7,7 @@
     # files
     ./allCommon.nix
     ./autoUnfree.nix
-    ./convertable.nix
+    ./debugMinimal.nix
     ./graphics.nix
     ./hwCommon.nix
     ./privacy.nix
