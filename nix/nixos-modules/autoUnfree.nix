@@ -88,9 +88,7 @@ in
         #(optional amd.updateMicrocode pkgs.microcodeAmd)
         #(optional intel.updateMicrocode pkgs.microcodeIntel)
         # programs
-        (optional
-          steam.enable
-          steam.package)
+        (optional steam.enable steam.package)
       ];
 
 
