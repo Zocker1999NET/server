@@ -28,6 +28,13 @@ in
         # required
       };
 
+      updateMicrocode = lib.mkEnableOption ''
+        microcode updates for CPU type selected in option{hardware.cpu.type}.
+
+        Because this module is not yet part of upstream,
+        it requires option{x-banananetwork.hwCommon.enable} to be enabled.
+      '';
+
     };
 
 
@@ -50,17 +57,23 @@ in
 
       cpu = lib.mkMerge [
 
+        # TODO maybe upstream?
         (
-          lib.mkIf
-            (cpu.type == "amd")
-            { amd.updateMicrocode = true; }
+          let
+            type = config.hardware.cpu.type;
+            opts = isType: {
+              updateMicrocode = lib.mkDefault (isType && config.hardware.cpu.updateMicrocode);
+            };
+          in
+          {
+            amd = opts (type == "amd");
+            intel = opts (type == "intel");
+          }
         )
 
-        (
-          lib.mkIf
-            (cpu.type == "intel")
-            { intel.updateMicrocode = true; }
-        )
+        {
+          updateMicrocode = lib.mkDefault true;
+        }
 
       ];
 
