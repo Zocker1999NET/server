@@ -72,6 +72,16 @@
               }
               {
                 # as currently installed
+                fileSystems."/" = {
+                  device = "/dev/disk/by-uuid/c93557db-e7c5-46ef-9cd8-87eb7c5753dc";
+                  fsType = "ext4";
+                };
+                fileSystems."/boot" = {
+                  device = "/dev/disk/by-uuid/5F9A-9A2D";
+                  fsType = "vfat";
+                  options = [ "fmask=0022" "dmask=0022" ];
+                };
+                swapDevices = [{ device = "/dev/disk/by-uuid/8482463b-ceb3-40b3-abef-b49df2de88e5"; }];
                 system.stateVersion = "24.05";
               }
               {
