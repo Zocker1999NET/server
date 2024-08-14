@@ -237,18 +237,17 @@ in
       tmux = {
         plugins = with pkgs.tmuxPlugins; [
           # custom plugins, TODO overlay
-          mkTmuxPlugin
-          {
+          (mkTmuxPlugin {
             pluginName = "zocker";
             version = "unstable-2019-11-07";
-            src = fetchFromGitea {
-              host = "git.banananet.work";
+            src = pkgs.fetchFromGitea {
+              domain = "git.banananet.work";
               owner = "zocker";
               repo = "tmux-custom";
               rev = "f9bafb8b29fad4b1ba77994540f069a49bb10e38";
-              sha256 = ""; # TODO
+              hash = "sha256-v0zkIqYnFYDcwgkjrRbOH2AXWUm1RXvFbcbQB/N1lzo=";
             };
-          }
+          })
         ];
       };
 
