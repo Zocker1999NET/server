@@ -371,7 +371,15 @@ in
     x-banananetwork = {
 
       allCommon.enable = true;
-      autoUnfree.enable = true;
+
+      autoUnfree = {
+        enable = true;
+        # TODO merge with nixos-modules/frontend/home.nix
+        packages = with pkgs.mpvScripts; [
+          evafast
+        ];
+      };
+
       hwCommon.enable = true;
       vmCommon.enable = false;
       useable.enable = true;

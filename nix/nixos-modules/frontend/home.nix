@@ -424,7 +424,7 @@ in
   };
 
   # allow unfree limited
-  nixpkgs.config.allowUnfree = false;
+  # TODO merge with nixos-modules/frontend/default.nix
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     # mpv plugins missing licenses
     "evafast"
