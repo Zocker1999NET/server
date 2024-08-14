@@ -46,6 +46,24 @@
 
           "x13yz" = nixosSystem {
             modules = [
+              {
+                # TODO check if required & hide into modules
+                boot = {
+                  initrd = {
+                    availableKernelModules = [
+                      "nvme"
+                      "rtsx_pci_sdmmc"
+                      "xhci_pci"
+                    ];
+                    kernelModules = [
+                      "dm-snapshot"
+                    ];
+                  };
+                  kernelModules = [
+                    "kvm-intel"
+                  ];
+                };
+              }
               inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
               {
                 # hardware
