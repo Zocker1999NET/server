@@ -348,7 +348,7 @@ in
       users."${cfg.username}" = {
         description = "${cfg.username}";
         extraGroups = with lib.lists; flatten [
-          (optional cfg.services.networkmanager.enable "networkmanger")
+          (optional config.networking.networkmanager.enable "networkmanger")
           "wheel"
         ];
         isNormalUser = true;
