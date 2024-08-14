@@ -50,7 +50,7 @@ in
     in
     flatten [
 
-      (optional (config.hardware.bolt.enable && config.services.desktopManager.plasma6.enable) kdePackages.plasma-thunderbolt) # TODO upstream
+      (optional (config.services.hardware.bolt.enable && config.services.desktopManager.plasma6.enable) kdePackages.plasma-thunderbolt) # TODO upstream
 
       (optionals config.hardware.graphics.amd.enable [
         nvtopPackages.amd

@@ -63,8 +63,6 @@ in
         powerOnBoot = true;
       };
 
-      bolt.enable = true; # Thunderbolt
-
       graphics.required = true;
 
       opengl = {
@@ -302,6 +300,10 @@ in
           maxtime = "48h";
           overalljails = true;
         };
+      };
+
+      hardware = {
+        bolt.enable = true; # Thunderbolt
       };
 
       openssh = {
