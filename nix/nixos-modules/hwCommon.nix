@@ -24,10 +24,10 @@ in
           This setting is required when using generalizing options
           like option{hardware.cpu.updateMicrocode}.
         '';
-        type = with lib.types; nullOr enum [
+        type = with lib.types; nullOr (enum [
           "amd"
           "intel"
-        ];
+        ]);
         # required
       };
 
