@@ -30,6 +30,31 @@
     {
 
 
+      nixosConfigurations =
+        let
+          nixosSystem = { config, system }: inputs.nixpkgs.lib.nixosSystem {
+            modules = [
+              outputs.nixosModules.withDepends
+              config
+            ];
+            inherit system;
+          };
+        in
+        {
+
+          "x13yz" = nixosSystem {
+            config = {
+              hardware.cpu.type = "intel";
+              hardware.graphics.amd.enable = true;
+              system.stateVersion = "24.05";
+              x-banananetwork.frontend.enable = true;
+            };
+            system = "x86_64-linux";
+          };
+
+        };
+
+
       nixosModules = {
 
         # this one includes all of my modules
