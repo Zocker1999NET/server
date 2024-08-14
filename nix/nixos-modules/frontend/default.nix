@@ -269,6 +269,10 @@ in
 
     services = {
 
+      desktopManager.plasma6 = {
+        enable = true;
+      };
+
       fail2ban = {
         # SSH managed by default
         enable = true;
@@ -388,7 +392,6 @@ in
     };
 
 
-    # TODO move KDE Connect to same level as plasma6 (either nixos or hm)
     # TODO wishlist:
     # - enable & disable touch keyboard automatically based on convertable status
     # - programs.captive-browser
