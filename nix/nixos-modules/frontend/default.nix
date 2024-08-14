@@ -202,12 +202,14 @@ in
         settings = {
           banner =
             let
-              hostname = config.networking.hostname;
-              figlit = lib.runCommandLocal "echo '${hostname}' | ${pkgs.figlit}/bin/figlit -f slant > $out";
+              hostName = config.networking.hostName;
+              figlet = pkgs.runCommandLocal "static-figlet-${hostName}" { } ''
+                echo '${hostName}' | ${pkgs.figlet}/bin/figlet -f slant > $out
+              '';
             in
             {
               color = lib.mkDefault "red";
-              command = "cat ${figlit}";
+              command = "cat ${figlet}";
             };
           filesystems = {
             root = "/";
