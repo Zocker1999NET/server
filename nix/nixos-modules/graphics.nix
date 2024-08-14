@@ -30,7 +30,7 @@ in
       lib.mkIf
         cfg.required
         {
-          assertations = [ (cfg.amd.enable || cfg.intel.enable) ];
+          assertions = [ (cfg.amd.enable || cfg.intel.enable) ];
         }
     )
 
