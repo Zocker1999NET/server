@@ -1,14 +1,15 @@
 # applies to all of my machines
 # examples: PCs, laptops, VMs, hypervisors, ...
 
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, ...
+}:
+let
   cfg = config.x-banananetwork.allCommon;
-in {
+in
+{
 
 
   options = {
