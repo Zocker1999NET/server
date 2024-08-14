@@ -26,13 +26,12 @@ in
 
   config = lib.mkMerge [
 
-    (
-      lib.mkIf
-        cfg.required
-        {
-          assertions = [ (cfg.amd.enable || cfg.intel.enable) ];
-        }
-    )
+    {
+      assertions = [{
+        assertion = cfg.required -> cfg.amd.enable || cfg.intel.enable;
+        message = "'hardware.graphics.required' not fullfilled by any of 'hardware.graphics.*.enable'";
+      }];
+    }
 
     (
       # TODO replace with drivers
