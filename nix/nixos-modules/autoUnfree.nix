@@ -75,7 +75,7 @@ in
 
     x-banananetwork.autoUnfree.packages =
       let
-        inherit (lib.lists) flatten optional;
+        inherit (lib.lists) flatten optional optionals;
         # supported (ordered by long option name)
         amd = config.hardware.cpu.amd;
         intel = config.hardware.cpu.intel;
@@ -89,6 +89,12 @@ in
         #(optional intel.updateMicrocode pkgs.microcodeIntel)
         # programs
         (optional steam.enable steam.package)
+        # TODO improve pulling in dependencies more accurate
+        (optionals steam.enable ([
+          pkgs.steam-run
+          pkgs.steamPackages.steam
+          pkgs.steamPackages.steam-runtime
+        ]))
       ];
 
 
