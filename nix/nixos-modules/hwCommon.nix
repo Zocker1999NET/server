@@ -112,6 +112,11 @@ in
         enable = true;
       };
 
+      power-profiles-daemon = {
+        # 2024-08-14: tlp seems way better in my experience, hence disable it
+        enable = lib.mkIf config.services.tlp.enable false;
+      };
+
       smartd = {
         enable = true;
       };
