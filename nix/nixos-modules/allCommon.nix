@@ -154,6 +154,13 @@ in {
     };
 
 
+    x-banananetwork = {
+
+      improvedDefaults.enable = true;
+
+    };
+
+
   };
 
 

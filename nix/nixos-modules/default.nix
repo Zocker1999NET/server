@@ -4,6 +4,7 @@
   imports = [
     # directories
     ./frontend
+    ./improvedDefaults
     # files
     ./allCommon.nix
     ./autoUnfree.nix
