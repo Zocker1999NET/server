@@ -19,7 +19,10 @@ in
 
       type = lib.mkOption {
         description = ''
-          Configures the CPU type to expect this configuration to run on
+          Configures the CPU type to expect this configuration to run on.
+
+          This setting is required when using generalizing options
+          like option{hardware.cpu.updateMicrocode}.
         '';
         type = with lib.types; nullOr enum [
           "amd"
