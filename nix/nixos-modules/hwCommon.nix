@@ -56,6 +56,21 @@ in
   config = lib.mkIf cfg.enable {
 
 
+    boot = {
+
+      # TODO adapt better
+      loader = {
+        efi.canTouchEfiVariables = lib.mkDefault true;
+        systemd-boot = {
+          enable = true;
+          editor = lib.mkDefault true; # TODO lockdown (disable this OR enable TPM PCR checks)
+          memtest86.enable = lib.mkDefault true;
+        };
+      };
+
+    };
+
+
     hardware = {
 
       cpu = lib.mkMerge [
