@@ -45,7 +45,7 @@ in
       defaultLocale = lib.mkDefault "en_US.UTF-8";
       extraLocaleSettings = {
         LANGUAGE = lib.mkDefault "en_US:en:C:de_DE";
-        LC_COLLATE = lib.mkDefault "C"; # language independent sorting
+        LC_COLLATE = lib.mkDefault "C.UTF-8"; # language independent sorting
         LC_MEASUREMENT = "de_DE.UTF-8"; # metric
         LC_PAPER = "de_DE.UTF-8"; # metric
         LC_TELEPHONE = "de_DE.UTF-8";
