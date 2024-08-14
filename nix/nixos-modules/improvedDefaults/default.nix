@@ -11,6 +11,7 @@ in
 
   imports = [
     ./command-not-found.nix
+    ./powertop-tlp.nix
   ];
 
 
