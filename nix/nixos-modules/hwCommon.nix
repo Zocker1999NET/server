@@ -103,8 +103,6 @@ in
     powerManagement = {
       cpuFreqGovernor = "ondemand";
       enable = true;
-      powertop.enable = true;
-      scsiLinkPolicy = "med_power_with_dipm";
     };
 
 
@@ -115,6 +113,11 @@ in
       };
 
       smartd = {
+        enable = true;
+      };
+
+      tlp = {
+        # energy-saving daemon, similar to powertop --autotune, but adaptive to BAT / AC
         enable = true;
       };
 
