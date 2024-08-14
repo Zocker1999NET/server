@@ -19,7 +19,7 @@ in
 
       username = lib.mkOption {
         description = "username of ego-centric single main primary user";
-        type = lib.types.string;
+        type = lib.types.str;
         default = "zocker";
         example = "username";
       };
