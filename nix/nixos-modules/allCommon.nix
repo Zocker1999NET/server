@@ -55,7 +55,12 @@ in
 
 
     nix = {
+
       channel.enable = false;
+
+      daemonCPUSchedPolicy = "batch";
+      daemonIOSchedClass = "best-effort";
+      daemonIOSchedPriority = 7;
 
       settings = {
         allowed-users = [
@@ -74,11 +79,9 @@ in
           "root"
         ];
       };
+
     };
     systemd.services.nix-daemon.serviceConfig = {
-      CPUSchedulingPolicy = "batch";
-      IOSchedulingClass = "best-effort";
-      IOSchedulingPriority = 7;
       OOMScoreAdjust = lib.mkDefault 250;
     };
 
