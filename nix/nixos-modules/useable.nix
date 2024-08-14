@@ -28,20 +28,30 @@ in
 
 
     documentation = {
+
       enable = true;
       dev.enable = true;
       doc.enable = true;
       info.enable = true;
-      man.enable = true;
-      man.generateCaches = true;
-      man-db.enable = false; # see mandoc
-      mandoc = {
+
+      man = {
+
         enable = true;
+        generateCaches = true;
+
+        man-db.enable = false; # see mandoc
+
+        mandoc = {
+          enable = true;
+        };
+
       };
+
       nixos = {
         enable = true;
         includeAllModules = true;
       };
+
     };
 
 
