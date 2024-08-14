@@ -45,7 +45,7 @@
           "x13yz" = nixosSystem {
             config = {
               hardware.cpu.type = "intel";
-              hardware.graphics.amd.enable = true;
+              hardware.graphics.intel.enable = true;
               system.stateVersion = "24.05";
               x-banananetwork.frontend.enable = true;
             };
