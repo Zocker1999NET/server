@@ -80,7 +80,7 @@ in
 
       ];
 
-      enableRedistributableFirmware = true;
+      enableRedistributableFirmware = lib.mkDefault true;
 
     };
 
