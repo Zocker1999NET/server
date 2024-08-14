@@ -15,6 +15,9 @@
     };
     impermanence.url = "github:nix-community/impermanence";
 
+    # required for configs
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
   };
 
 
@@ -43,6 +46,7 @@
 
           "x13yz" = nixosSystem {
             modules = [
+              inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
               {
                 # hardware
                 hardware.cpu.type = "intel";
