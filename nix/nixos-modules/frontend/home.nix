@@ -127,6 +127,22 @@ in
 
     git = {
       enable = true;
+      extraConfig = {
+        diff = {
+          tool = "vscode";
+        };
+        difftool = {
+          prompt = false;
+        };
+        "difftool \"vscode\"" =
+          let
+            vscode = config.programs.vscode.package;
+            main = pkg: "${pkg}/bin/${pkg.meta.mainProgram}";
+          in
+          {
+            cmd = "${main vscode} --wait --diff $LOCAL $REMOTE";
+          };
+      };
       userName = "Felix Stupp";
       userEmail = "felix.stupp@banananet.work";
       signing = {
