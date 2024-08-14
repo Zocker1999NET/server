@@ -45,7 +45,7 @@ in
         '';
         type = lib.types.listOf lib.types.package;
         default = [ ];
-        example = lib.literalText ''
+        example = lib.literalExpression ''
           with pkgs; [
             vscode
           ] ++ with lib.lists; flatten [
