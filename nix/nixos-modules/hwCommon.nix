@@ -110,7 +110,7 @@ in
 
       allCommon.enable = true;
       vmCommon.enable = false;
-      usuable.enable = lib.mkDefault true; # add docs & tools for emergencies
+      useable.enable = lib.mkDefault true; # add docs & tools for emergencies
 
     };
 

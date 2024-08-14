@@ -385,7 +385,7 @@ in
       autoUnfree.enable = true;
       hwCommon.enable = true;
       vmCommon.enable = false;
-      usuable.enable = true;
+      useable.enable = true;
 
     };
 
