@@ -77,7 +77,8 @@ in
     };
     systemd.services.nix-daemon.serviceConfig = {
       CPUSchedulingPolicy = "batch";
-
+      IOSchedulingClass = "best-effort";
+      IOSchedulingPriority = 7;
       OOMScoreAdjust = lib.mkDefault 250;
     };
 
