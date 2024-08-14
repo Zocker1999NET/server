@@ -200,14 +200,6 @@ in
         enable = true;
       };
 
-      printing = {
-        enable = true;
-        cups-pdf = {
-          enable = true;
-        };
-        stateless = true; # test
-      };
-
       rust-motd = {
         enable = true;
         order = [
@@ -322,6 +314,14 @@ in
         alsa.enable = true;
         alsa.support32Bit = true;
         pulse.enable = true;
+      };
+
+      printing = {
+        enable = true;
+        cups-pdf = {
+          enable = true;
+        };
+        stateless = true; # test
       };
 
       tailscale = {
