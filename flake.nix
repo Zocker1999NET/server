@@ -47,11 +47,14 @@
                 # hardware
                 hardware.cpu.type = "intel";
                 hardware.graphics.intel.enable = true;
-                x-banananetwork.frontend.enable = true;
               }
               {
                 # as currently installed
                 system.stateVersion = "24.05";
+              }
+              {
+                # host configuration
+                x-banananetwork.frontend.enable = true;
               }
             ];
             system = "x86_64-linux";
