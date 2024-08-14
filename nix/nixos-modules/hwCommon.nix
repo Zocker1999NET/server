@@ -7,19 +7,17 @@
 }:
 let
   cfg = config.x-banananetwork.hwCommon;
+  cpu = config.hardware.cpu;
 in
 {
 
 
   options = {
 
-    x-banananetwork.hwCommon = {
 
-      enable = lib.mkEnableOption ''
-        settings common to all bare hardware-based hosts
-      '';
+    hardware.cpu = {
 
-      cpu = lib.mkOption {
+      type = lib.mkOption {
         description = ''
           Configures the CPU type to expect this configuration to run on
         '';
@@ -28,6 +26,16 @@ in
       };
 
     };
+
+
+    x-banananetwork.hwCommon = {
+
+      enable = lib.mkEnableOption ''
+        settings common to all bare hardware-based hosts
+      '';
+
+    };
+
 
   };
 
@@ -41,13 +49,13 @@ in
 
         (
           lib.mkIf
-            (cfg.cpu == "amd")
+            (cpu.type == "amd")
             { amd.updateMicrocode = true; }
         )
 
         (
           lib.mkIf
-            (cfg.cpu == "intel")
+            (cpu.type == "intel")
             { intel.updateMicrocode = true; }
         )
 
