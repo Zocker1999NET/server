@@ -272,6 +272,10 @@ in
         enable = true;
       };
 
+      displayManager.sddm = {
+        enable = true;
+      };
+
       fail2ban = {
         # SSH managed by default
         enable = true;
