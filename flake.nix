@@ -86,6 +86,7 @@
               }
               {
                 # host configuration
+                x-banananetwork.frontend.convertable = true;
                 x-banananetwork.frontend.enable = true;
               }
             ];
