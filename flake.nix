@@ -92,6 +92,8 @@
               }
               {
                 # host configuration
+                networking.domain = "pc.6nw.de";
+                networking.hostName = "x13yz";
                 services.fprintd.enable = true;
                 x-banananetwork.frontend.convertable = true;
                 x-banananetwork.frontend.enable = true;
