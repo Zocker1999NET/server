@@ -174,7 +174,6 @@ in
 
       kdeconnect = {
         enable = true;
-        package = pkgs.kdePackages.kdeconnect-kde; # for Plasma 6 & higher
       };
 
       light.enable = true;
