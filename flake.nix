@@ -86,6 +86,7 @@
               }
               {
                 # host configuration
+                services.fprintd.enable = true;
                 x-banananetwork.frontend.convertable = true;
                 x-banananetwork.frontend.enable = true;
               }
