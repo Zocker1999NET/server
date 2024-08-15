@@ -321,6 +321,8 @@ in
         stateless = true; # test
       };
 
+      pcscd.enable = true;
+
       tailscale = {
         enable = true;
         useRoutingFeatures = "client";
