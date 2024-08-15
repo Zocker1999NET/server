@@ -160,8 +160,7 @@ in
         { source = "${archiveGpgKey}"; trust = 5; }
       ];
       scdaemonSettings = {
-        # required because of pcscd used in parallel
-        disable-ccid = true;
+        disable-ccid = lib.mkIf nixosConfig.services.pcscd.enable true;
       };
     };
 
