@@ -72,6 +72,11 @@
               }
               {
                 # as currently installed
+                boot.initrd.luks.devices."luks-herske.lvm.6nw.de" = {
+                  device = "/dev/disk/by-uuid/16b8f83d-0450-4c4d-9964-788575a31eec";
+                  preLVM = true;
+                  allowDiscards = true;
+                };
                 fileSystems."/" = {
                   device = "/dev/disk/by-uuid/c93557db-e7c5-46ef-9cd8-87eb7c5753dc";
                   fsType = "ext4";
