@@ -153,6 +153,12 @@ in
       '';
     };
 
+    # ensure activation scripts are fine
+    # TODO upstream, probably replacing https://github.com/NixOS/nixpkgs/pull/149932
+    system.activatableSystemBuilderCommands = lib.mkAfter ''
+      ${pkgs.shellcheck}/bin/shellcheck --check-sourced --external-sources --norc --severity=warning $out/activate $out/dry-activate
+    '';
+
 
     time = {
       hardwareClockInLocalTime = lib.mkDefault false;
