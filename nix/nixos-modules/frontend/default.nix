@@ -185,7 +185,8 @@ in
       };
 
       nix-index = {
-        enable = true;
+        # seems to much hazzle to setup & use for now
+        enable = false;
       };
 
       rust-motd = {
