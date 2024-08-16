@@ -391,8 +391,8 @@ in
         ];
       };
 
-      hwCommon.enable = true;
-      privacy.enable = true;
+      hwCommon.enable = lib.mkDefault true;
+      privacy.enable = lib.mkDefault true;
       useable.enable = true;
       vmCommon.enable = false;
 
