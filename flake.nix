@@ -14,6 +14,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    secrix = {
+      url = "github:Platonic-Systems/secrix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # required for configs
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -31,6 +35,10 @@
       pkgs_unstable = import inputs.nixpkgs_unstable { inherit system; };
     in
     {
+
+
+      # shortcut to fully configured secrix
+      apps.x86_64-linux.secrix = inputs.secrix.secrix self;
 
 
       nixosConfigurations =
@@ -123,6 +131,7 @@
           imports = [
             inputs.home-manager.nixosModules.home-manager
             inputs.impermanence.nixosModules.impermanence
+            inputs.secrix.nixosModules.secrix
             outputs.nixosModules.banananetwork
           ];
         };
