@@ -392,8 +392,8 @@ in
       };
 
       hwCommon.enable = true;
-      vmCommon.enable = false;
       useable.enable = true;
+      vmCommon.enable = false;
 
     };
 
