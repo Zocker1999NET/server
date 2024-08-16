@@ -394,7 +394,6 @@ in
       hwCommon.enable = lib.mkDefault true;
       privacy.enable = lib.mkDefault true;
       useable.enable = true;
-      vmCommon.enable = false;
 
     };
 
