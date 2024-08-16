@@ -170,6 +170,11 @@ in
 
       improvedDefaults.enable = true;
 
+      secrix = {
+        enable = true;
+        hostKeyType = "ed25519";
+      };
+
     };
 
 
