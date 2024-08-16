@@ -11,6 +11,7 @@
     ./debugMinimal.nix
     ./graphics.nix
     ./hwCommon.nix
+    ./options.nix
     ./privacy.nix
     ./sshSecurity.nix
     ./useable.nix

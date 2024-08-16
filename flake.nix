@@ -37,6 +37,7 @@
         let
           nixosSystem = { modules, system }: inputs.nixpkgs.lib.nixosSystem {
             modules = [
+              outputs.nixosModules.myOptions
               outputs.nixosModules.withDepends
             ] ++ modules;
             inherit system;
@@ -112,6 +113,10 @@
         # - others only introduce small, reasonable changes if other module’s options are set, as reasonable defaults (if I intend to upstream them)
         # however, use on your own discretion
         banananetwork = import ./nix/nixos-modules;
+
+        # this one defines common options for my systems to my modules
+        # you definitely do not want to use this
+        myOptions = import ./nix/myOptions.nix;
 
         # this one also includes required dependencies from flake inputs
         withDepends = {
