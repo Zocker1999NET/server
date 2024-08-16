@@ -228,7 +228,6 @@ in
       enableUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
         # general
-        dracula-theme.theme-dracula
         vscodevim.vim
         # IDE-specific
         jnoortheen.nix-ide
@@ -346,7 +345,7 @@ in
         "window.menuBarVisibility" = "toggle";
         "window.titleBarStyle" = "native";
 
-        "workbench.colorTheme" = "Dracula";
+        "workbench.colorTheme" = "Default Dark Modern";
         "workbench.editorAssociations" = {
           "*.ipynb" = "jupyter-notebook";
         };
