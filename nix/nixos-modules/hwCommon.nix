@@ -56,6 +56,14 @@ in
   config = lib.mkIf cfg.enable {
 
 
+    assertions = [
+      {
+        assertion = cfg.enable -> !config.x-banananetwork.vmCommon.enable;
+        message = "hwCommon & vmCommon profiles cannot both be enabled at the same time";
+      }
+    ];
+
+
     boot = {
 
       # TODO adapt better
@@ -132,7 +140,6 @@ in
     x-banananetwork = {
 
       allCommon.enable = true;
-      vmCommon.enable = false;
       useable.enable = lib.mkDefault true; # add docs & tools for emergencies
 
     };
