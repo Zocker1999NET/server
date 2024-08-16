@@ -392,6 +392,7 @@ in
       };
 
       hwCommon.enable = true;
+      privacy.enable = true;
       useable.enable = true;
       vmCommon.enable = false;
 
