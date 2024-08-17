@@ -55,7 +55,7 @@ in
 
         services.openssh.settings.PermitRootLogin = if isRootAuthed then true else lib.mkDefault false;
 
-        users.users.root.openssh.authorizedKeys = lib.mkIf doRootAuth (lib.mkDefault myOpts.sshPublicKeys);
+        users.users.root.openssh.authorizedKeys.keys = lib.mkIf doRootAuth (lib.mkDefault myOpts.sshPublicKeys);
         warnings = lib.mkIf doRootAuth [
           ''
             root’s authorized keys were automatically configured
