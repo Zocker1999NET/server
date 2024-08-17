@@ -5,7 +5,7 @@
 }:
 let
   myOpts = config.x-banananetwork;
-  cfg = config.x-banananetwork.secrix.enable;
+  cfg = config.x-banananetwork.secrix;
 in
 {
 
