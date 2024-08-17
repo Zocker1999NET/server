@@ -33,8 +33,7 @@ in
       cfg.enable
       cfg.autoSshAuthorizeRoot
       config.services.openssh.enable
-    ]
-    )
+    ])
     (
       let
         inherit (lib.attrsets) attrValues filterAttrs;
