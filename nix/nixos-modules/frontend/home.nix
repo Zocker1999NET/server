@@ -406,6 +406,10 @@ in
 
   };
 
+  # syncthingtray typically starts to early to find the tray
+  # TODO improve fix permanently
+  systemd.user.services.syncthingtray.Service.ExecStartPre = "sleep 10";
+
 
   # TODO accounts.email.accounts (current: manual config)
 
