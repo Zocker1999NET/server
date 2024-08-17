@@ -19,6 +19,7 @@
 
           This is used by other option{x-banananetwork} modules.
         '';
+        type = with lib.types; listOf str;
         example = lib.literalExpression ''
           [ "ssh-ed25519 ..." ]
         '';
@@ -28,6 +29,7 @@
         description = ''
           my username for most/all uses
         '';
+        type = lib.types.str;
         example = lib.literalExpression "zocker";
       };
 
