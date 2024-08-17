@@ -90,7 +90,28 @@
         "impermanence": "impermanence",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "nixpkgs_unstable": "nixpkgs_unstable"
+        "nixpkgs_unstable": "nixpkgs_unstable",
+        "secrix": "secrix"
+      }
+    },
+    "secrix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1718983551,
+        "narHash": "sha256-JOX1quPQEHyzWfeZvI2ZtNPJ5zPP9vMuSO4W+/AawT0=",
+        "owner": "Platonic-Systems",
+        "repo": "secrix",
+        "rev": "59bdb737fac787278b80069dad48ba90ace42bfc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Platonic-Systems",
+        "repo": "secrix",
+        "type": "github"
       }
     }
   },
