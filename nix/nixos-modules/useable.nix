@@ -112,6 +112,9 @@ in
           pull = {
             ff = "only";
           };
+          push = {
+            autoSetupRemote = true;
+          };
         };
       };
 
