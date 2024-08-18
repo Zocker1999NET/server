@@ -118,6 +118,7 @@ in
             Locked = true;
           };
           DisablePocket = true;
+          DisableSetDesktopBackground = true;
           EnableTrackingProjection = {
             Value = true;
             Locked = true;
@@ -127,16 +128,61 @@ in
           EncryptedMediaExtensions = {
             Enabled = true;
           };
-          ExtensionSettings = {
-            "uBlock0@raymondhill.net" = {
-              installation_mode = "force_installed";
-              install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+          ExtensionSettings =
+            let
+              # TODO upstream
+              addon = id: opts: {
+                name = id;
+                value = {
+                  default_area = "menupanel";
+                  installation_mode = "force_installed";
+                  install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
+                } // opts;
+              };
+              enrichAddons = id: opts: if id == "*" then opts else (addon id opts).value;
+            in
+            builtins.mapAttrs enrichAddons {
+              "*" = {
+                blocked_install_message = ''
+                  Please add add-ons by changing your NixOS configuration.
+                '';
+                installation_mode = "blocked";
+              };
+              # Cast Kodi
+              "castkodi@regseb.github.io" = { };
+              # DeArrow
+              "deArrow@ajay.app" = { };
+              # KeePassXC-Browser
+              "keepassxc-browser@keepassxc.org" = {
+                default_area = "navbar";
+              };
+              # LibRedirect
+              "7esoorv3@alefvanoon.anonaddy.me" = { };
+              # Link Gopher
+              "linkgopher@oooninja.com" = { };
+              # ProtonDB for Steam
+              "{30280527-c46c-4e03-bb16-2e3ed94fa57c}" = { };
+              # Refined GitHub
+              "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = { };
+              # Request Control
+              "{1b1e6108-2d88-4f0f-a338-01f9dbcccd6f}" = {
+                default_area = "navbar";
+              };
+              # SponsorBlock
+              "sponsorBlocker@ajay.app" = { };
+              # SteamDB
+              "firefox-extension@steamdb.info" = { };
+              # Tab Stash
+              "tab-stash@condordes.net" = {
+                default_area = "navbar";
+              };
+              # Tabliss
+              "extension@tabliss.io" = { };
+              # uBlock Origin
+              "uBlock0@raymondhill.net" = {
+                default_area = "navbar";
+              };
             };
-            "7esoorv3@alefvanoon.anonaddy.me" = {
-              # TODO probably just for a test
-              installation_mode = "allowed";
-            };
-          };
           FirefoxHome = {
             Search = true;
             TopSites = true;
@@ -147,18 +193,59 @@ in
             Snippets = true;
             Locked = true;
           };
-          HttpsOnlyMode = "enabled";
+          HttpAllowList = [
+            "http://hatoria:8088"
+            "http://penny:8123"
+          ];
+          HttpsOnlyMode = "force_enabled";
+          NetworkPrediction = false;
+          NoDefaultBookmarks = true;
           OfferToSaveLogins = false;
+          OverrideFirstRunPage = "";
+          OverridePostUpdatePage = "";
+          Permissions = {
+            Autoplay = {
+              Default = "block-audio-video";
+            };
+            Location = {
+              BlockNewRequests = true;
+              Locked = true;
+            };
+          };
+          PopupBlocking = {
+            Allow = [
+              "https://app.roll20.net"
+            ];
+            Default = true;
+            Locked = true;
+          };
           PostQuantumKeyAgreementEnabled = true;
+          # Preferences set by ..preferences below
+          PrimaryPassword = true;
+          SearchBar = "unified";
           SearchEngines = {
             # TODO setting search engines here only works on ESR
             Default = "DuckDuckGo";
           };
+          ShowHomeButton = false;
+          UserMessaging = {
+            ExtensionRecommendations = false;
+            FeatureRecommendations = false;
+            UrlbarInterventions = false;
+            SkipOnboarding = true;
+            MoreFromMozilla = false;
+            Locked = true;
+          };
         };
         preferences = {
-          "browser.startup.page" = 3; # restore previous session
+          "accessibility.typeaheadfind.flashBar" = 0;
+          "browser.aboutConfig.showWarning" = false;
+          "browser.language.detectLanguage" = false;
           "browser.search.suggest.enabled" = false;
+          "browser.startup.page" = 3; # restore previous session
           "browser.urlbar.showSearchSuggestionsFirst" = false;
+          "print.more-settings.open" = true;
+          "security.insecure_connection_text.enabled" = true;
         };
       };
 
