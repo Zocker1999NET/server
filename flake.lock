@@ -101,15 +101,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1718983551,
-        "narHash": "sha256-JOX1quPQEHyzWfeZvI2ZtNPJ5zPP9vMuSO4W+/AawT0=",
-        "owner": "Platonic-Systems",
+        "lastModified": 1724006539,
+        "narHash": "sha256-T6CZMw5lJXKjvq2nz7sRr8t2b+wJkkFz3/kR5OeZuIU=",
+        "owner": "Zocker1999NET",
         "repo": "secrix",
-        "rev": "59bdb737fac787278b80069dad48ba90ace42bfc",
+        "rev": "d97a71f371c2b42bcda2cbedf2a544d35fb1db76",
         "type": "github"
       },
       "original": {
-        "owner": "Platonic-Systems",
+        "owner": "Zocker1999NET",
+        "ref": "fix-doc",
         "repo": "secrix",
         "type": "github"
       }

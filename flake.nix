@@ -15,7 +15,9 @@
     };
     impermanence.url = "github:nix-community/impermanence";
     secrix = {
-      url = "github:Platonic-Systems/secrix";
+      # TODO revert after https://github.com/Platonic-Systems/secrix/issues/25
+      #url = "github:Platonic-Systems/secrix";
+      url = "github:Zocker1999NET/secrix/fix-doc";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
