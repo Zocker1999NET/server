@@ -109,6 +109,11 @@ in
 
     programs = {
 
+      captive-browser = {
+        enable = true;
+        bindInterface = true;
+      };
+
       firefox = {
         enable = true;
         policies = {
@@ -481,7 +486,6 @@ in
 
     # TODO wishlist:
     # - enable & disable touch keyboard automatically based on convertable status
-    # - programs.captive-browser
     # - https://github.com/cynicsketch/nix-mineral (NixOS hardening)
     # - programs.mepo
     # - programs.autojump

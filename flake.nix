@@ -78,6 +78,7 @@
                 # hardware
                 hardware.cpu.type = "intel";
                 hardware.graphics.intel.enable = true;
+                programs.captive-browser.interface = "wlp0s20f3";
               }
               {
                 # as currently installed
