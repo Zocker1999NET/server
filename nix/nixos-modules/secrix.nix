@@ -67,6 +67,8 @@ in
 
         hostIdentityFile = lib.mkIf (cfg.hostKeyType != null) (lib.mkDefault hostKeyPrivate);
 
+        hostPubKey = myOpts.sshHostPublicKey;
+
       };
 
 
