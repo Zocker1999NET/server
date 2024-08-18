@@ -13,6 +13,18 @@
 
     x-banananetwork = {
 
+      sshHostPublicKey = lib.mkOption {
+        description = ''
+          SSH host public key of that system.
+
+          This is used by other option{x-banananetwork} modules.
+        '';
+        type = with lib.types; nullOr str;
+        example = lib.literalExpression ''
+          ssh-ed25519 …
+        '';
+      };
+
       sshPublicKeys = lib.mkOption {
         description = ''
           SSH public keys used to manage this system.
