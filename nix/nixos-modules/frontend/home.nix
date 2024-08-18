@@ -18,6 +18,24 @@ in
 {
 
 
+  # TODO exclude in own home-manager module
+  assertions =
+    let
+      hwSmartcards = nixosConfig.hardware.gpgSmartcards.enable;
+      scDaemon = with config.services.gpg-agent; enable && enableScDaemon;
+    in
+    [
+      {
+        assertion = hwSmartcards -> scDaemon;
+        message = "hardware.gpgSmartcards is enabled on system side but gpg-agent’s scDaemon is disabled";
+      }
+      {
+        assertion = scDaemon -> hwSmartcards;
+        message = "gpg-agent’s scDaemon is enabled but hardware.gpgSmartcards is disabled on system side";
+      }
+    ];
+
+
   home = {
 
     stateVersion = nixosConfig.system.stateVersion;

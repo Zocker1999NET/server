@@ -62,6 +62,8 @@ in
         powerOnBoot = true;
       };
 
+      gpgSmartcards.enable = true; # scdaemon
+
       graphics.required = true;
 
       opengl = {
