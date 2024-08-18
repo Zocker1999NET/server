@@ -31,6 +31,19 @@ in
   config = lib.mkIf cfg.enable {
 
 
+    assertions = [
+      (
+        let
+          defName = options.networking.hostName.default;
+        in
+        {
+          assertion = config.networking.hostName != defName;
+          message = "you must define a hostname (different from default: ${defName})";
+        }
+      )
+    ];
+
+
     documentation = {
 
       man.mandoc.settings.output = {
