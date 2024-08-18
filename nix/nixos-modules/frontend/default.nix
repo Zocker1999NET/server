@@ -149,6 +149,7 @@ in
           };
           HttpsOnlyMode = "enabled";
           OfferToSaveLogins = false;
+          PostQuantumKeyAgreementEnabled = true;
           SearchEngines = {
             # TODO setting search engines here only works on ESR
             Default = "DuckDuckGo";
