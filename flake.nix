@@ -30,6 +30,7 @@
   outputs = { self, ... }@inputs:
     let
       inherit (self) outputs;
+      flakeArg = { inherit self inputs outputs; };
       # constants
       system = "x86_64-linux";
       # package repositories
@@ -50,6 +51,9 @@
               outputs.nixosModules.myOptions
               outputs.nixosModules.withDepends
             ] ++ modules;
+            specialArgs = {
+              flake = flakeArg;
+            };
             inherit system;
           };
         in
