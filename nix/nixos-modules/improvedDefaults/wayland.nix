@@ -5,16 +5,29 @@
   ...
 }:
 let
+  prgs = config.programs;
+  servDM = config.services.desktopManager;
+  xDM = config.services.xserver.desktopManager;
   cfg = config.x-banananetwork.improvedDefaults;
 in
 {
 
-  config = lib.mkIf cfg.enable (
-    let
-      prgs = config.programs;
-      servDM = config.services.desktopManager;
-      xDM = config.services.xserver.desktopManager;
-      waylandEnabled = builtins.any (x: x) ([
+  options = {
+
+    services.wayland.enable = lib.mkEnableOption ''
+      sensible defaults for Wayland sessions.
+
+      Be aware that a Wayland compositor or desktop environment is not enabled automatically
+      as there is no main implementation of Wayland.
+    '';
+
+  };
+
+  config = lib.mkMerge [
+
+    (lib.mkIf (cfg.enable) {
+      # auto detect if a wayland compatible compositor is already enabled
+      services.wayland.enable = builtins.any (x: x) ([
         prgs.hyprland.enable
         prgs.miriway.enable
         prgs.river.enable
@@ -24,13 +37,19 @@ in
         servDM.lomiri.enable # unsure wheather this is using Wayland
         servDM.plasma6.enable
       ]);
-    in
-    {
+    })
 
-      # make Steam Input events on Wayland possible
-      programs.steam.extest.enable = lib.mkIf (config.programs.steam.enable && waylandEnabled) true;
+    (lib.mkIf (config.services.wayland.enable) {
 
-    }
-  );
+      # make Steam Input events possible
+      programs.steam.extest.enable = lib.mkIf config.programs.steam.enable true;
+
+      warnings = lib.mkIf (xDM.mate.enable && !xDM.mate.enableWaylandSession) [
+        "Wayland & Mate are enabled, but Mate‘s Wayland support is disabled, you should enable services.xserver.displayManager.enableWaylandSession"
+      ];
+
+    })
+
+  ];
 
 }
