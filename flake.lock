@@ -101,16 +101,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1724006539,
-        "narHash": "sha256-T6CZMw5lJXKjvq2nz7sRr8t2b+wJkkFz3/kR5OeZuIU=",
+        "lastModified": 1724154123,
+        "narHash": "sha256-K0vRXtBoBbaONVUo9aRp5MfNLw5NQCB+qtkzzOF0bjk=",
         "owner": "Zocker1999NET",
         "repo": "secrix",
-        "rev": "d97a71f371c2b42bcda2cbedf2a544d35fb1db76",
+        "rev": "754f316db237065109fb10137a7fc351425eaf32",
         "type": "github"
       },
       "original": {
         "owner": "Zocker1999NET",
-        "ref": "fix-doc",
+        "ref": "release-bnet",
         "repo": "secrix",
         "type": "github"
       }
