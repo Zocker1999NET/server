@@ -1,9 +1,10 @@
 # this stuff replaces all settings which would be configured by the corresponding frontend NixOS module
 
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.frontend;

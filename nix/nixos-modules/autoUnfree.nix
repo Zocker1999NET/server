@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.autoUnfree;
 in
 {
-
 
   options = {
 
@@ -59,9 +59,7 @@ in
 
   };
 
-
   config = lib.mkIf cfg.enable {
-
 
     nixpkgs.config = {
 
@@ -69,9 +67,7 @@ in
 
     };
 
-
     # TODO add alternative for allowUnfreePredicate for users
-
 
     x-banananetwork.autoUnfree.packages =
       let
@@ -97,8 +93,6 @@ in
         ]))
       ];
 
-
   };
-
 
 }

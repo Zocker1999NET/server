@@ -2,10 +2,11 @@
 
 # for me, most of them are defined in ../mySettings.nix
 
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 {
 

@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.improvedDefaults;
 in
 {
-
 
   config = lib.mkIf cfg.enable (
     let
@@ -32,6 +32,5 @@ in
 
     }
   );
-
 
 }

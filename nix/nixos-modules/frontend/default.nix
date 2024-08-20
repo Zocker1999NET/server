@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.frontend;
 in
 {
-
 
   options = {
 
@@ -27,20 +27,13 @@ in
 
   };
 
-
   config = lib.mkIf cfg.enable {
 
-
     # TODO copy modem-manager overlay (for now)
-
-
-    # NixOS configuration
-
 
     console = {
       useXkbConfig = true;
     };
-
 
     environment = {
 
@@ -53,7 +46,6 @@ in
       ];
 
     };
-
 
     hardware = {
 
@@ -75,7 +67,6 @@ in
 
     };
 
-
     home-manager = {
 
       useGlobalPkgs = true;
@@ -88,13 +79,12 @@ in
 
     };
 
-
     networking = {
 
       firewall = {
-        trustedInterfaces = with lib.lists; flatten [
-          (optional config.services.tailscale.enable "tailscale0")
-        ];
+        trustedInterfaces =
+          with lib.lists;
+          flatten [ (optional config.services.tailscale.enable "tailscale0") ];
       };
 
       networkmanager.enable = true;
@@ -103,11 +93,9 @@ in
 
     };
 
-
     nix.settings = {
       builders-use-substitutes = lib.mkDefault true;
     };
-
 
     programs = {
 
@@ -222,6 +210,7 @@ in
           PopupBlocking = {
             Allow = [
               "https://app.roll20.net"
+              # placeholder for more
             ];
             Default = true;
             Locked = true;
@@ -353,13 +342,11 @@ in
 
     };
 
-
     security = {
 
       rtkit.enable = lib.mkIf config.services.pipewire.enable true;
 
     };
-
 
     services = {
 
@@ -445,27 +432,29 @@ in
 
     };
 
-
     users = {
 
       users."${cfg.username}" = {
         description = "${cfg.username}";
-        extraGroups = with lib.lists; flatten [
-          (optional config.networking.networkmanager.enable "networkmanger")
-          "wheel"
-        ];
+        extraGroups =
+          with lib.lists;
+          flatten [
+            (optional config.networking.networkmanager.enable "networkmanger")
+            "wheel"
+          ];
         isNormalUser = true;
         openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
-        packages = with pkgs; lib.lists.flatten [
-          kdePackages.kate
-          (lib.lists.optional cfg.convertable [
-            maliit-keyboard # on-screen keyboard (should just work, see https://discuss.kde.org/t/how-to-enable-virtual-keyboard-included-in-kde/264/2)
-          ])
-        ];
+        packages =
+          with pkgs;
+          lib.lists.flatten [
+            kdePackages.kate
+            (lib.lists.optional cfg.convertable [
+              maliit-keyboard # on-screen keyboard (should just work, see https://discuss.kde.org/t/how-to-enable-virtual-keyboard-included-in-kde/264/2)
+            ])
+          ];
       };
 
     };
-
 
     x-banananetwork = {
 
@@ -473,8 +462,8 @@ in
 
       autoUnfree = {
         enable = true;
-        # TODO merge with nixos-modules/frontend/home.nix
         packages = with pkgs.mpvScripts; [
+          # TODO merge with nixos-modules/frontend/home.nix
           evafast
         ];
       };
@@ -485,7 +474,6 @@ in
 
     };
 
-
     # TODO wishlist:
     # - enable & disable touch keyboard automatically based on convertable status
     # - https://github.com/cynicsketch/nix-mineral (NixOS hardening)
@@ -493,8 +481,6 @@ in
     # - programs.autojump
     # - programs.yubikey-touch-detector
 
-
   };
-
 
 }

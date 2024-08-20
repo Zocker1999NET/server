@@ -3,10 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.x-banananetwork.privacy;
-in {
-
+in
+{
 
   options = {
 
@@ -26,22 +27,17 @@ in {
 
   };
 
-
   config = lib.mkIf cfg.enable {
 
-
     boot.kernel.sysctl = {
-      "net.ipv6.conf.all.temp_prefered_lft" = 1* 60*60; # = 1h
-      "net.ipv6.conf.all.temp_valid_lft" = 21 *60*60; # = 21h
+      "net.ipv6.conf.all.temp_prefered_lft" = 1 * 60 * 60; # = 1h
+      "net.ipv6.conf.all.temp_valid_lft" = 21 * 60 * 60; # = 21h
     };
-
 
     networking = {
       tempAddresses = "default";
     };
 
-
   };
-
 
 }

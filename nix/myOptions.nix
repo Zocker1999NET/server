@@ -1,22 +1,19 @@
 # configures options only really useable for me
 
-
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   myOpts = config.x-banananetwork;
 in
 {
 
-
   config = {
 
-
     x-banananetwork = {
-
 
       # options defined in nixos-modules/options.nix
 
@@ -30,18 +27,14 @@ in
 
       userName = "zocker";
 
-
       # defaults for other modules, derived from them above
 
       frontend = {
         username = myOpts.userName;
       };
 
-
     };
 
-
   };
-
 
 }

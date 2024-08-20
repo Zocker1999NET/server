@@ -1,8 +1,9 @@
-{ nixosConfig
-, config
-, lib
-, pkgs
-, ...
+{
+  nixosConfig,
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 
 let
@@ -16,7 +17,6 @@ let
   };
 in
 {
-
 
   # TODO exclude in own home-manager module
   assertions =
@@ -35,13 +35,7 @@ in
       }
     ];
 
-
-  home = {
-
-    stateVersion = nixosConfig.system.stateVersion;
-
-  };
-
+  home.stateVersion = nixosConfig.system.stateVersion;
 
   home.file = {
 
@@ -62,7 +56,6 @@ in
     '';
 
   };
-
 
   home.packages = with pkgs; [
 
@@ -108,7 +101,6 @@ in
     # '')
 
   ];
-
 
   programs = {
 
@@ -174,8 +166,14 @@ in
       mutableKeys = false;
       mutableTrust = false;
       publicKeys = [
-        { source = "${myGpgKey}"; trust = 5; }
-        { source = "${archiveGpgKey}"; trust = 5; }
+        {
+          source = "${myGpgKey}";
+          trust = 5;
+        }
+        {
+          source = "${archiveGpgKey}";
+          trust = 5;
+        }
       ];
       scdaemonSettings = {
         disable-ccid = lib.mkIf nixosConfig.services.pcscd.enable true;
@@ -400,7 +398,6 @@ in
 
   };
 
-
   services = {
 
     gpg-agent = {
@@ -428,12 +425,9 @@ in
   # TODO improve fix permanently
   systemd.user.services.syncthingtray.Service.ExecStartPre = "sleep 10";
 
-
   # TODO accounts.email.accounts (current: manual config)
 
-
   # ======================================
-
 
   # hotfix because GUI is managed on system level (fow now)
   systemd.user.targets.tray = {
@@ -445,19 +439,18 @@ in
 
   # allow unfree limited
   # TODO merge with nixos-modules/frontend/default.nix
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    # mpv plugins missing licenses
-    "evafast"
-  ];
-
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
+      # mpv plugins missing licenses
+      "evafast"
+    ];
 
   # ZSH config
 
   programs.zsh.enable = true;
   programs.zsh.antidote = {
     enable = true;
-    plugins = [
-      "djui/alias-tips"
-    ];
+    plugins = [ "djui/alias-tips" ];
   };
 }

@@ -1,7 +1,6 @@
 {
   description = "banananet.work Server & Deployment Controller environment";
 
-
   inputs = {
 
     # packages repositories
@@ -26,11 +25,13 @@
 
   };
 
-
-  outputs = { self, ... }@inputs:
+  outputs =
+    { self, ... }@inputs:
     let
       inherit (self) outputs;
-      flakeArg = { inherit self inputs outputs; };
+      flakeArg = {
+        inherit self inputs outputs;
+      };
       # constants
       system = "x86_64-linux";
       # package repositories
@@ -39,28 +40,29 @@
     in
     {
 
-
       # shortcut to fully configured secrix
       apps.x86_64-linux.secrix = inputs.secrix.secrix self;
 
-
       nixosConfigurations =
         let
-          nixosSystem = { modules, system }: inputs.nixpkgs.lib.nixosSystem {
-            modules = [
-              outputs.nixosModules.myOptions
-              outputs.nixosModules.withDepends
-            ] ++ modules;
-            specialArgs = {
-              flake = flakeArg;
+          nixosSystem =
+            { modules, system }:
+            inputs.nixpkgs.lib.nixosSystem {
+              modules = [
+                outputs.nixosModules.myOptions
+                outputs.nixosModules.withDepends
+              ] ++ modules;
+              specialArgs = {
+                flake = flakeArg;
+              };
+              inherit system;
             };
-            inherit system;
-          };
         in
         {
 
           "x13yz" = nixosSystem {
             modules = [
+              { nixpkgs.overlays = [ (final: prev: { nixfmt-rfc-style = pkgs_unstable.nixfmt-rfc-style; }) ]; }
               {
                 # TODO check if required & hide into modules
                 boot = {
@@ -70,13 +72,9 @@
                       "rtsx_pci_sdmmc"
                       "xhci_pci"
                     ];
-                    kernelModules = [
-                      "dm-snapshot"
-                    ];
+                    kernelModules = [ "dm-snapshot" ];
                   };
-                  kernelModules = [
-                    "kvm-intel"
-                  ];
+                  kernelModules = [ "kvm-intel" ];
                 };
               }
               inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
@@ -96,14 +94,22 @@
                 fileSystems."/" = {
                   device = "/dev/disk/by-uuid/c93557db-e7c5-46ef-9cd8-87eb7c5753dc";
                   fsType = "ext4";
-                  options = [ "relatime" "discard" ];
+                  options = [
+                    "relatime"
+                    "discard"
+                  ];
                 };
                 fileSystems."/boot" = {
                   device = "/dev/disk/by-uuid/5F9A-9A2D";
                   fsType = "vfat";
-                  options = [ "uid=0" "gid=0" "fmask=0077" "dmask=0077" ];
+                  options = [
+                    "uid=0"
+                    "gid=0"
+                    "fmask=0077"
+                    "dmask=0077"
+                  ];
                 };
-                swapDevices = [{ device = "/dev/disk/by-uuid/8482463b-ceb3-40b3-abef-b49df2de88e5"; }];
+                swapDevices = [ { device = "/dev/disk/by-uuid/8482463b-ceb3-40b3-abef-b49df2de88e5"; } ];
                 system.stateVersion = "24.05";
                 x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG71dtqG/c0AiFBN9OxoLD35TDQm3m8LXj/BQw60PE0h";
               }
@@ -120,7 +126,6 @@
           };
 
         };
-
 
       nixosModules = {
 
@@ -146,21 +151,18 @@
 
       };
 
-
       devShells."${system}".default =
         let
           pkgs = pkgs_unstable;
         in
-        pkgs.mkShell
-          {
-            packages = with pkgs; [
-              curl
-              rsync
-              opentofu
-              terranix
-            ];
-          };
-
+        pkgs.mkShell {
+          packages = with pkgs; [
+            curl
+            rsync
+            opentofu
+            terranix
+          ];
+        };
 
     };
 }

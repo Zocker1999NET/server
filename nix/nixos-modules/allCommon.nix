@@ -1,17 +1,17 @@
 # applies to all of my machines
 # examples: PCs, laptops, VMs, hypervisors, ...
 
-{ config
-, lib
-, options
-, pkgs
-, ...
+{
+  config,
+  lib,
+  options,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.allCommon;
 in
 {
-
 
   options = {
 
@@ -28,9 +28,7 @@ in
 
   };
 
-
   config = lib.mkIf cfg.enable {
-
 
     assertions = [
       (
@@ -44,7 +42,6 @@ in
       )
     ];
 
-
     documentation = {
 
       man.mandoc.settings.output = {
@@ -52,7 +49,6 @@ in
       };
 
     };
-
 
     i18n = {
       # inspired by https://wiki.archlinux.org/title/Locale
@@ -66,7 +62,6 @@ in
         LC_TIME = lib.mkDefault "en_DK.UTF-8"; # ISO 8601
       };
     };
-
 
     nix = {
 
@@ -86,19 +81,14 @@ in
           "flakes"
           "nix-command"
         ];
-        hashed-mirrors = [
-          "https://tarballs.nixos.org/"
-        ];
-        trusted-users = [
-          "root"
-        ];
+        hashed-mirrors = [ "https://tarballs.nixos.org/" ];
+        trusted-users = [ "root" ];
       };
 
     };
     systemd.services.nix-daemon.serviceConfig = {
       OOMScoreAdjust = lib.mkDefault 250;
     };
-
 
     # well-known public keys
     programs.ssh = {
@@ -113,7 +103,6 @@ in
         "gitlab.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAfuCHKVTjquxvt6CM6tdG4SLp1Btn/nOeHHE5UOzRdf";
       };
     };
-
 
     security = {
 
@@ -155,7 +144,6 @@ in
 
     };
 
-
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
@@ -173,26 +161,19 @@ in
       ${pkgs.shellcheck}/bin/shellcheck --check-sourced --external-sources --norc --severity=warning $out/activate $out/dry-activate
     '';
 
-
     time = {
       hardwareClockInLocalTime = lib.mkDefault false;
       timeZone = lib.mkDefault "Etc/UTC";
     };
 
-
     x-banananetwork = {
-
       improvedDefaults.enable = true;
-
       secrix = {
         enable = true;
         hostKeyType = "ed25519";
       };
-
     };
 
-
   };
-
 
 }

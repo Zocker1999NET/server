@@ -1,7 +1,4 @@
+{ inputs, outputs, ... }@args:
 {
-  inputs,
-  outputs,
-  ...
-}@args: {
 
 }

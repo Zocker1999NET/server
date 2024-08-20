@@ -1,14 +1,14 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   myOpts = config.x-banananetwork;
   cfg = config.x-banananetwork.secrix;
 in
 {
-
 
   options = {
 
@@ -40,9 +40,7 @@ in
 
   };
 
-
   config = lib.mkIf cfg.enable {
-
 
     assertions = [
       {
@@ -51,28 +49,22 @@ in
       }
     ];
 
-
     secrix =
       let
-        findHostKey = keyType: lib.lists.findSingle
-          (key: key.type == keyType)
-          (abort "cannot find generated OpenSSH host key with type ${keyType}")
-          (abort "found multiple generated OpenSSH host keys with type ${keyType}")
-          config.services.openssh.hostKeys;
+        findHostKey =
+          keyType:
+          lib.lists.findSingle (key: key.type == keyType)
+            (abort "cannot find generated OpenSSH host key with type ${keyType}")
+            (abort "found multiple generated OpenSSH host keys with type ${keyType}")
+            config.services.openssh.hostKeys;
         hostKeyPrivate = (findHostKey cfg.hostKeyType).path;
       in
       {
-
         defaultEncryptKeys."${myOpts.userName}" = myOpts.sshPublicKeys;
-
         hostIdentityFile = lib.mkIf (cfg.hostKeyType != null) (lib.mkDefault hostKeyPrivate);
-
         hostPubKey = myOpts.sshHostPublicKey;
-
       };
 
-
   };
-
 
 }

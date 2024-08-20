@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.improvedDefaults;
 in
 {
-
 
   imports = [
     ./command-not-found.nix
@@ -16,7 +16,6 @@ in
     ./sshAuthorize.nix
     ./wayland.nix
   ];
-
 
   options = {
 
@@ -34,6 +33,5 @@ in
     };
 
   };
-
 
 }

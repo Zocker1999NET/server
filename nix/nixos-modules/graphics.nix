@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.hardware.graphics;
 in
 {
-
 
   options = {
 
@@ -23,44 +23,38 @@ in
 
   };
 
-
   config = lib.mkMerge [
 
     {
-      assertions = [{
-        assertion = cfg.required -> cfg.amd.enable || cfg.intel.enable;
-        message = "'hardware.graphics.required' not fullfilled by any of 'hardware.graphics.*.enable'";
-      }];
+      assertions = [
+        {
+          assertion = cfg.required -> cfg.amd.enable || cfg.intel.enable;
+          message = "'hardware.graphics.required' not fullfilled by any of 'hardware.graphics.*.enable'";
+        }
+      ];
     }
 
     (
       # TODO replace with drivers
-      lib.mkIf
-        cfg.amd.enable
-        {
-          assertions = [{
-            assertion = !cfg.amd.enable;
-            message = "graphics module missing support for AMD drivers";
-          }];
-        }
+      lib.mkIf cfg.amd.enable {
+        assertions = lib.singleton {
+          assertion = !cfg.amd.enable;
+          message = "graphics module missing support for AMD drivers";
+        };
+      }
     )
 
-    (
-      lib.mkIf
-        cfg.intel.enable
-        {
-          hardware.opengl = {
-            enable = true;
-            extraPackages = with pkgs; [
-              intel-media-driver
-              intel-media-sdk
-              libvdpau-va-gl
-            ];
-          };
-        }
-    )
+    (lib.mkIf cfg.intel.enable {
+      hardware.opengl = {
+        enable = true;
+        extraPackages = with pkgs; [
+          intel-media-driver
+          intel-media-sdk
+          libvdpau-va-gl
+        ];
+      };
+    })
 
   ];
-
 
 }

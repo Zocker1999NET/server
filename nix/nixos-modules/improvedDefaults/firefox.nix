@@ -1,7 +1,8 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.improvedDefaults;
@@ -11,12 +12,10 @@ in
 
   config = lib.mkIf (cfg.enable && fx.enable) {
 
-
     # TODO only on touchscreen / wayland
     environment.sessionVariables = {
       MOZ_USE_XINPUT2 = "1";
     };
-
 
     programs.firefox = {
 
@@ -29,7 +28,6 @@ in
       };
 
     };
-
 
   };
 

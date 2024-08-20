@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.useable;
 in
 {
-
 
   options = {
 
@@ -23,9 +23,7 @@ in
 
   };
 
-
   config = lib.mkIf cfg.enable {
-
 
     documentation = {
 
@@ -54,39 +52,39 @@ in
 
     };
 
+    environment.systemPackages =
+      with pkgs;
+      let
+        inherit (lib.lists) flatten optional optionals;
+      in
+      flatten [
 
-    environment.systemPackages = with pkgs; let
-      inherit (lib.lists) flatten optional optionals;
-    in
-    flatten [
+        (optional (
+          config.services.hardware.bolt.enable && config.services.desktopManager.plasma6.enable
+        ) kdePackages.plasma-thunderbolt) # TODO upstream
 
-      (optional (config.services.hardware.bolt.enable && config.services.desktopManager.plasma6.enable) kdePackages.plasma-thunderbolt) # TODO upstream
+        (optionals config.hardware.graphics.amd.enable [ nvtopPackages.amd ])
+        (optionals config.hardware.graphics.intel.enable [
+          intel-gpu-tools
+          nvtopPackages.intel
+        ])
 
-      (optionals config.hardware.graphics.amd.enable [
-        nvtopPackages.amd
-      ])
-      (optionals config.hardware.graphics.intel.enable [
-        intel-gpu-tools
-        nvtopPackages.intel
-      ])
+        bat
+        batmon # TODO only on systems wich batteries
+        jq # JSON
+        manix
+        massren
+        nethogs
+        reptyr
+        pciutils
+        psitop
+        pv
+        unixtools.xxd
+        up # ultimate plumber
+        usbtop
+        usbutils
 
-      bat
-      batmon # TODO only on systems wich batteries
-      jq # JSON
-      manix
-      massren
-      nethogs
-      reptyr
-      pciutils
-      psitop
-      pv
-      unixtools.xxd
-      up # ultimate plumber
-      usbtop
-      usbutils
-
-    ];
-
+      ];
 
     programs = {
 
@@ -101,7 +99,7 @@ in
           alias = {
             lg1 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all";
             lg2 = "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all";
-            lg = ''!"git lg1"'';
+            lg = ''!git lg1'';
           };
           core = {
             autocrlf = "input";
@@ -172,7 +170,6 @@ in
 
     };
 
-
     x-banananetwork = {
 
       allCommon.enable = true;
@@ -180,12 +177,9 @@ in
 
     };
 
-
     # TODO withlist:
     # - update tmuxPlugins.sensible in nixpkgs (e.g. https://github.com/NixOS/nixpkgs/pull/272954)
 
-
   };
-
 
 }

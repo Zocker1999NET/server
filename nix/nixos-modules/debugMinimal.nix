@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.debugMinimal;
 in
 {
-
 
   options = {
 
@@ -21,9 +21,7 @@ in
 
   };
 
-
   config = lib.mkIf cfg.enable {
-
 
     programs = {
 
@@ -85,8 +83,6 @@ in
 
     };
 
-
   };
-
 
 }

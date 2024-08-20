@@ -1,9 +1,10 @@
 # applicable to all hosts running on bare hardware
 
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.x-banananetwork.hwCommon;
@@ -11,9 +12,7 @@ let
 in
 {
 
-
   options = {
-
 
     hardware.cpu = {
 
@@ -24,10 +23,12 @@ in
           This setting is required when using generalizing options
           like option{hardware.cpu.updateMicrocode}.
         '';
-        type = with lib.types; nullOr (enum [
-          "amd"
-          "intel"
-        ]);
+        type =
+          with lib.types;
+          nullOr (enum [
+            "amd"
+            "intel"
+          ]);
         # required
       };
 
@@ -40,7 +41,6 @@ in
 
     };
 
-
     x-banananetwork.hwCommon = {
 
       enable = lib.mkEnableOption ''
@@ -49,12 +49,9 @@ in
 
     };
 
-
   };
 
-
   config = lib.mkIf cfg.enable {
-
 
     assertions = [
       {
@@ -62,7 +59,6 @@ in
         message = "hwCommon & vmCommon profiles cannot both be enabled at the same time";
       }
     ];
-
 
     boot = {
 
@@ -78,7 +74,6 @@ in
 
     };
 
-
     hardware = {
 
       cpu = lib.mkMerge [
@@ -87,9 +82,7 @@ in
         (
           let
             type = config.hardware.cpu.type;
-            opts = isType: {
-              updateMicrocode = lib.mkDefault (isType && config.hardware.cpu.updateMicrocode);
-            };
+            opts = isType: { updateMicrocode = lib.mkDefault (isType && config.hardware.cpu.updateMicrocode); };
           in
           {
             amd = opts (type == "amd");
@@ -97,9 +90,7 @@ in
           }
         )
 
-        {
-          updateMicrocode = lib.mkDefault true;
-        }
+        { updateMicrocode = lib.mkDefault true; }
 
       ];
 
@@ -107,12 +98,10 @@ in
 
     };
 
-
     powerManagement = {
       cpuFreqGovernor = "ondemand";
       enable = true;
     };
-
 
     services = {
 
@@ -136,7 +125,6 @@ in
 
     };
 
-
     x-banananetwork = {
 
       allCommon.enable = true;
@@ -144,8 +132,6 @@ in
 
     };
 
-
   };
-
 
 }

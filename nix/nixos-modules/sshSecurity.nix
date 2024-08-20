@@ -1,13 +1,13 @@
-{ config
-, lib
-, pkgs
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  ...
 }:
 let
   cfg = config.services.openssh;
 in
 {
-
 
   options = {
 
@@ -16,7 +16,6 @@ in
     '';
 
   };
-
 
   config = lib.mkIf cfg.enable {
 
@@ -29,9 +28,6 @@ in
 
   };
 
-
   # TODO add tests
 
-
 }
-
