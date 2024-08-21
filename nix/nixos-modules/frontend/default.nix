@@ -272,7 +272,9 @@ in
         enable = false;
       };
 
-      rust-motd = {
+      # TODO fails as of now & creates CPU spikes every 15 minutes
+      # journalctl --since="2024-08-21 10:00" --until="2024-08-21 20:20" -u rust-motd
+      rust-motd = lib.mkIf false {
         enable = true;
         order = [
           "banner"
