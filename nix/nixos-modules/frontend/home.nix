@@ -144,14 +144,9 @@ in
         difftool = {
           prompt = false;
         };
-        "difftool \"vscode\"" =
-          let
-            vscode = config.programs.vscode.package;
-            main = pkg: "${pkg}/bin/${pkg.meta.mainProgram}";
-          in
-          {
-            cmd = "${main vscode} --wait --diff $LOCAL $REMOTE";
-          };
+        "difftool \"vscode\"" = {
+          cmd = "${lib.getExe config.programs.vscode.package} --wait --diff $LOCAL $REMOTE";
+        };
       };
       userName = "Felix Stupp";
       userEmail = "felix.stupp@banananet.work";
@@ -260,10 +255,10 @@ in
           "editor.defaultFormatter" = "ms-python.black-formatter";
         };
 
-        "ansible.ansibleLint.path" = "${pkgs.ansible-lint}/bin/ansible-lint";
+        "ansible.ansibleLint.path" = "${lib.getExe pkgs.ansible-lint}";
 
-        "dev.containers.dockerComposePath" = "${pkgs.podman-compose}/bin/podman-compose";
-        "dev.containers.dockerPath" = "${pkgs.podman}/bin/podman";
+        "dev.containers.dockerComposePath" = "${lib.getExe pkgs.podman-compose}";
+        "dev.containers.dockerPath" = "${lib.getExe pkgs.podman}";
 
         "diffEditor.ignoreTrimWhitespace" = false;
         "diffEditor.renderSideBySide" = false;
@@ -326,10 +321,10 @@ in
         };
 
         "nix.enableLanguageServer" = true;
-        "nix.serverPath" = "${pkgs.nil}/bin/nil";
+        "nix.serverPath" = "${lib.getExe pkgs.nil}";
         "nix.serverSettings" = {
           nil = {
-            formatting.command = [ "${pkgs.nixfmt-rfc-style}/bin/nixfmt" ];
+            formatting.command = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
           };
         };
 
@@ -337,7 +332,7 @@ in
 
         "python.analysis.autoImportCompletions" = true;
         "python.analysis.stubPath" = "./typings/";
-        "python.defaultInterpreterPath" = "${pkgs.python3}/bin/python";
+        "python.defaultInterpreterPath" = lib.getExe pkgs.python3;
         "python.linting.enabled" = false;
         "python.showStartPage" = false;
 
@@ -354,7 +349,7 @@ in
         "update.mode" = "none";
         "update.showReleaseNotes" = false;
 
-        "vscode-neovim.neovimPath" = "${pkgs.neovim}/bin/nvim";
+        "vscode-neovim.neovimPath" = lib.getExe pkgs.neovim;
 
         "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
 

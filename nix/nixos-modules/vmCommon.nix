@@ -10,7 +10,7 @@ let
   cfg = config.x-banananetwork.vmCommon;
   # Based on https://unix.stackexchange.com/questions/16578/resizable-serial-console-window
   resize = pkgs.writeShellScriptBin "resize" ''
-    export PATH="${pkgs.coreutils}/bin"
+    export PATH="${lib.getBin pkgs.coreutils}/bin"
     if [ ! -t 0 ]; then
       # not a interactive...
       exit 0
@@ -200,7 +200,7 @@ in
         # - NixOS test: ssh-audit
         # - networking.useNetworkd
         # - networking.tcpcrypt
-        # environment.loginShellInit = "${resize}/bin/resize"; (see https://github.com/nix-community/srvos/blob/main/nixos/common/serial.nix)
+        # environment.loginShellInit = "${lib.getExe resize}"; (see https://github.com/nix-community/srvos/blob/main/nixos/common/serial.nix)
 
       }
 

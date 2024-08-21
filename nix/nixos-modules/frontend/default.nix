@@ -287,7 +287,7 @@ in
             let
               hostName = config.networking.hostName;
               figlet = pkgs.runCommandLocal "static-figlet-${hostName}" { } ''
-                echo '${hostName}' | ${pkgs.figlet}/bin/figlet -f slant > $out
+                echo '${hostName}' | ${lib.getExe pkgs.figlet} -f slant > $out
               '';
             in
             {

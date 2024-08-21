@@ -149,7 +149,7 @@ in
       text = ''
         if [[ -e /run/current-system ]]; then
           echo "--- diff to current-system"
-          ${pkgs.nvd}/bin/nvd --nix-bin-dir=${config.nix.package}/bin diff /run/current-system "$systemConfig"
+          ${lib.getExe pkgs.nvd} --nix-bin-dir=${config.nix.package}/bin diff /run/current-system "$systemConfig"
           echo "---"
         fi
       '';
@@ -158,7 +158,7 @@ in
     # ensure activation scripts are fine
     # TODO upstream, probably replacing https://github.com/NixOS/nixpkgs/pull/149932
     system.activatableSystemBuilderCommands = lib.mkAfter ''
-      ${pkgs.shellcheck}/bin/shellcheck --check-sourced --external-sources --norc --severity=warning $out/activate $out/dry-activate
+      ${lib.getExe pkgs.shellcheck} --check-sourced --external-sources --norc --severity=warning $out/activate $out/dry-activate
     '';
 
     time = {
