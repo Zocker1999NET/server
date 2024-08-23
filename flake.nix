@@ -152,6 +152,14 @@
               inputs.secrix.nixosModules.secrix
               outputs.nixosModules.banananetwork
             ];
+            config = {
+              nixpkgs.overlays = [
+                # TODO until 24.11
+                (lib.mkIf (!lib.versionAtLeast lib.version "24.11") (
+                  final: prev: { inherit (pkgs_unstable) wcurl; }
+                ))
+              ];
+            };
           };
 
       };
