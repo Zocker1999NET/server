@@ -11,6 +11,7 @@
     ./debugMinimal.nix
     ./graphics.nix
     ./hwCommon.nix
+    ./kernel.nix
     ./options.nix
     ./privacy.nix
     ./secrix.nix
