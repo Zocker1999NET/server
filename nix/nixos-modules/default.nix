@@ -3,6 +3,7 @@
 
   imports = [
     # directories
+    ./extends
     ./frontend
     ./improvedDefaults
     # files
