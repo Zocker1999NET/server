@@ -24,8 +24,11 @@ in
   config = lib.mkIf cfg.enable {
 
     environment.systemPackages = with pkgs; [
+      dnsutils
       jq # JSON
+      parallel
       pv
+      wcurl
     ];
 
     programs = {
