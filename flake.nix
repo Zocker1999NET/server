@@ -146,6 +146,12 @@
         # this one also includes required dependencies from flake inputs
         withDepends =
           {
+            config,
+            lib,
+            pkgs,
+            ...
+          }:
+          {
             imports = [
               inputs.home-manager.nixosModules.home-manager
               inputs.impermanence.nixosModules.impermanence
