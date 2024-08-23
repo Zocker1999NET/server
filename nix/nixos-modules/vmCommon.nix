@@ -159,8 +159,6 @@ in
 
         };
 
-        sound.enable = false;
-
         system.autoUpgrade = {
           enable = true;
           allowReboot = true;
