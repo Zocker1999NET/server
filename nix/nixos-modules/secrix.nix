@@ -33,7 +33,7 @@ in
         '';
         type = with lib.types; nullOr str;
         default = null;
-        example = lib.literalExpression "rsa";
+        example = "rsa";
       };
 
     };
