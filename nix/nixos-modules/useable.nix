@@ -71,19 +71,14 @@ in
 
         bat
         batmon # TODO only on systems wich batteries
-        jq # JSON
         manix
         massren
         nethogs
         reptyr
-        pciutils
         psitop
-        pv
         unixtools.xxd
         up # ultimate plumber
         usbtop
-        usbutils
-
       ];
 
     programs = {

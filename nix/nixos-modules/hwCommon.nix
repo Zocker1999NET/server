@@ -74,6 +74,11 @@ in
 
     };
 
+    environment.systemPackages = with pkgs; [
+      pciutils
+      usbutils
+    ];
+
     hardware = {
 
       cpu = lib.mkMerge [
