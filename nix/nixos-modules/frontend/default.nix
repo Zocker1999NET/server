@@ -458,6 +458,17 @@ in
 
     };
 
+    virtualisation = {
+
+      podman = {
+        enable = true;
+        compose.enable = true;
+        dockerCompat = true;
+        dockerSocket.enable = true;
+      };
+
+    };
+
     x-banananetwork = {
 
       allCommon.enable = true;

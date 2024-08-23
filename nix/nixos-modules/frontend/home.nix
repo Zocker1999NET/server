@@ -61,7 +61,6 @@ in
 
     # dev
     neovim
-    podman
 
     # media
     ncspot
