@@ -106,9 +106,9 @@ in
             # TODO
           };
 
-          useDHCP = true;
+          useDHCP = lib.mkDefault true;
           useNetworkd = lib.mkDefault false;
-          usePredictableInterfaceNames = true;
+          usePredictableInterfaceNames = lib.mkDefault true;
 
         };
 
