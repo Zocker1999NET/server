@@ -69,7 +69,7 @@ in
 
         nix.optimise = {
           # should not take long because of auto-optimise-store
-          dates = "05:30";
+          dates = lib.singleton "05:30";
         };
 
       }
@@ -80,7 +80,7 @@ in
 
         boot = {
 
-          kernelParams = "console=ttyS0,115200";
+          kernelParams = lib.singleton "console=ttyS0,115200";
 
           loader = {
             efi.canTouchEfiVariables = true;
