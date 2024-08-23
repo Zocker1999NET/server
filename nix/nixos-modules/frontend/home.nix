@@ -233,6 +233,12 @@ in
       };
     };
 
+    texlive = {
+      enable = true;
+      # TODO filter hard to save storage
+      extraPackages = tpkgs: { inherit (tpkgs) scheme-full; };
+    };
+
     vscode = {
       enable = true;
       enableExtensionUpdateCheck = true;
