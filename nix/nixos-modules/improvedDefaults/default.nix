@@ -12,6 +12,7 @@ in
   imports = [
     ./command-not-found.nix
     ./firefox.nix
+    ./networking.nix
     ./powertop-tlp.nix
     ./sshAuthorize.nix
     ./wayland.nix
