@@ -57,7 +57,8 @@ in
         in
         {
 
-          services.openssh.settings.PermitRootLogin = if isRootAuthed then true else lib.mkDefault false;
+          services.openssh.settings.PermitRootLogin =
+            if isRootAuthed then "prohibit-password" else lib.mkDefault "no";
 
           users.users.root.openssh.authorizedKeys.keys = lib.mkIf doRootAuth (
             lib.mkDefault myOpts.sshPublicKeys
