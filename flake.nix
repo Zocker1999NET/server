@@ -144,14 +144,15 @@
         myOptions = import ./nix/myOptions.nix;
 
         # this one also includes required dependencies from flake inputs
-        withDepends = {
-          imports = [
-            inputs.home-manager.nixosModules.home-manager
-            inputs.impermanence.nixosModules.impermanence
-            inputs.secrix.nixosModules.secrix
-            outputs.nixosModules.banananetwork
-          ];
-        };
+        withDepends =
+          {
+            imports = [
+              inputs.home-manager.nixosModules.home-manager
+              inputs.impermanence.nixosModules.impermanence
+              inputs.secrix.nixosModules.secrix
+              outputs.nixosModules.banananetwork
+            ];
+          };
 
       };
 
