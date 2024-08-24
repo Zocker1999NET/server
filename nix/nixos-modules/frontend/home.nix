@@ -1,7 +1,7 @@
 {
-  nixosConfig,
   config,
   lib,
+  osConfig,
   pkgs,
   ...
 }:
@@ -21,7 +21,7 @@ in
   # TODO exclude in own home-manager module
   assertions =
     let
-      hwSmartcards = nixosConfig.hardware.gpgSmartcards.enable;
+      hwSmartcards = osConfig.hardware.gpgSmartcards.enable;
       scDaemon = with config.services.gpg-agent; enable && enableScDaemon;
     in
     [
@@ -35,7 +35,7 @@ in
       }
     ];
 
-  home.stateVersion = nixosConfig.system.stateVersion;
+  home.stateVersion = osConfig.system.stateVersion;
 
   home.file = {
 
@@ -170,7 +170,7 @@ in
         }
       ];
       scdaemonSettings = {
-        disable-ccid = lib.mkIf nixosConfig.services.pcscd.enable true;
+        disable-ccid = lib.mkIf osConfig.services.pcscd.enable true;
       };
     };
 

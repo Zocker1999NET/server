@@ -72,9 +72,6 @@ in
       useGlobalPkgs = true;
       useUserPackages = true;
 
-      extraSpecialArgs = {
-        nixosConfig = config;
-      };
       users."${cfg.username}" = import ./home.nix;
 
     };
