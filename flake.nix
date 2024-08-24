@@ -66,7 +66,6 @@
 
           "x13yz" = nixosSystem {
             modules = [
-              { nixpkgs.overlays = [ (final: prev: { nixfmt-rfc-style = pkgs_unstable.nixfmt-rfc-style; }) ]; }
               {
                 # TODO check if required & hide into modules
                 boot = {
@@ -163,7 +162,7 @@
               nixpkgs.overlays = [
                 # TODO until 24.11
                 (lib.mkIf (!lib.versionAtLeast lib.version "24.11") (
-                  final: prev: { inherit (pkgs_unstable) wcurl; }
+                  final: prev: { inherit (pkgs_unstable) nixfmt-rfc-style wcurl; }
                 ))
               ];
             };
