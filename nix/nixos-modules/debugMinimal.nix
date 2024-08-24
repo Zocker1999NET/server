@@ -27,6 +27,7 @@ in
       dnsutils
       jq # JSON
       parallel
+      psmisc
       pv
       wcurl
     ];
