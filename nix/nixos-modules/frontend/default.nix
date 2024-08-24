@@ -431,6 +431,26 @@ in
 
     };
 
+    specialisation =
+      let
+        kernelSpecial = pkg: { configuration.boot.kernelPackages = pkg; };
+        mapAttrs = builtins.mapAttrs (name: kernelSpecial);
+      in
+      mapAttrs {
+        # TODO enable all kernels with faster build machine
+        # TODO experiment with gaming kernels
+        # gaming/performance kernels
+        #linux_lqx = pkgs.linuxPackages_lqx;
+        #linux_xanmod_latest = pkgs.linuxPackages_xanmod_latest;
+        #linux_xanmod_stable = pkgs.linuxPackages_xanmod_stable;
+        #linux_zen = pkgs.linuxPackages_zen;
+        # older kernels (for cases like again: https://github.com/NixOS/nixpkgs/issues/330685)
+        # list of supported kernels taken from https://www.kernel.org/releases.html
+        #linux_6_6 = pkgs.linuxPackages_6_6;
+        linux_6_1 = pkgs.linuxPackages_6_1;
+        #linux_5_15 = pkgs.linuxPackages_5_15;
+      };
+
     users = {
 
       users."${cfg.username}" = {
