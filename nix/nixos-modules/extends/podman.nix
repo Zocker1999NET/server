@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.services.podman;
+  cfg = config.virtualisation.podman;
 in
 {
   options.virtualisation.podman = {
