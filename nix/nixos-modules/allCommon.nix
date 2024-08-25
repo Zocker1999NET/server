@@ -82,7 +82,9 @@ in
           "nix-command"
         ];
         hashed-mirrors = [ "https://tarballs.nixos.org/" ];
-        trusted-users = [ "root" ];
+        trusted-users = [
+          "root"
+        ];
       };
 
     };
