@@ -49,14 +49,7 @@
         outputs.nixosModules.banananetwork
       ];
       config = {
-        nixpkgs.overlays = [
-          # TODO until 24.11
-          (lib.mkIf (!lib.versionAtLeast lib.version "24.11") (
-            final: prev: {
-              inherit ((lib.systemSpecificVars pkgs.system).pkgs_unstable) nixfmt-rfc-style wcurl;
-            }
-          ))
-        ];
+        nixpkgs.overlays = lib.singleton outputs.overlays.backports;
       };
     };
 
