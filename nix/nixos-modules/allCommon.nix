@@ -93,6 +93,9 @@ in
     # well-known public keys
     programs = {
 
+      # for nixos-rebuild with flakes
+      git.enable = true;
+
       ssh = {
         hostKeyAlgorithms = [
           "ssh-ed25519"
