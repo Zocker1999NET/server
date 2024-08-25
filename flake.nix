@@ -52,12 +52,12 @@
           # tools / shortcuts
           lib # nixpkgs & my lib combined
           # flake refs
-          self # reflection
           inputs # evaluated inputs
           outputs # evaluated outputs
           ;
+        # self: the module’s result, via self-reflection
       };
-      importFlakeMod = path: import path flakeArg;
+      importFlakeMod = path: outputs.libAnchors.reflect (import path) flakeArg;
       importFlakeModWithSystem = path: lib.forAllSystems (importFlakeMod path);
     in
     {
@@ -72,7 +72,33 @@
         default.imports = [ ./nix/hmModules ];
       };
 
-      lib = importFlakeMod ./nix/lib;
+      lib = outputs.libAnchors // importFlakeMod ./nix/lib;
+
+      # anchors required for importing modules
+      libAnchors =
+        let
+          lib = inputs.nixpkgs.lib;
+          inherit (lib.asserts) assertMsg;
+        in
+        {
+          # ({?} -> ?) -> {?} -> ?
+          # gives a function access to its own return value
+          # by adding it to its first argument (assuming that’s an attrset)
+          reflect =
+            fun: attrs:
+            # TODO is there a more official way?
+            assert assertMsg (builtins.isAttrs attrs) ''
+              expected a set, got an ${builtins.typeOf attrs}
+            '';
+            assert assertMsg (!attrs ? "self") ''
+              reflect argument already contains a self attribute
+            '';
+            let
+              outputs = fun (attrs // { self = result; });
+              result = outputs;
+            in
+            result;
+        };
 
       nixosConfigurations =
         let
