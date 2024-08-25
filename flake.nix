@@ -42,8 +42,17 @@
     { self, ... }@inputs:
     let
       inherit (self) outputs;
+      # every flake "submodule" gets this passed:
       flakeArg = {
-        inherit self inputs outputs;
+        # Usage in submodule:
+        # { ... }@flakeArg: { }
+        # add "..." this so new ones can easily be added
+        inherit
+          # flake refs
+          self # reflection
+          inputs # evaluated inputs
+          outputs # evaluated outputs
+          ;
       };
       # constants
       system = "x86_64-linux";
