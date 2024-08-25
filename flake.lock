@@ -112,7 +112,8 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs_unstable": "nixpkgs_unstable",
-        "secrix": "secrix"
+        "secrix": "secrix",
+        "unattended-installer": "unattended-installer"
       }
     },
     "secrix": {
@@ -133,6 +134,29 @@
         "owner": "Zocker1999NET",
         "ref": "release-bnet",
         "repo": "secrix",
+        "type": "github"
+      }
+    },
+    "unattended-installer": {
+      "inputs": {
+        "disko": [
+          "disko"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1724352083,
+        "narHash": "sha256-GP8YzfLFOFcSSRqGkzG7HGu/hT749saBgRUMSClkqwU=",
+        "owner": "chrillefkr",
+        "repo": "nixos-unattended-installer",
+        "rev": "25936f740d57d43a05adbb0e667deabd641d9ebc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "chrillefkr",
+        "repo": "nixos-unattended-installer",
         "type": "github"
       }
     }

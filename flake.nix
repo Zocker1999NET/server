@@ -27,6 +27,12 @@
     # required for configs
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    unattended-installer = {
+      url = "github:chrillefkr/nixos-unattended-installer";
+      inputs.disko.follows = "disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
