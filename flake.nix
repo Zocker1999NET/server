@@ -57,16 +57,14 @@
           outputs # evaluated outputs
           ;
       };
-      # constants
-      system = "x86_64-linux";
-      # package repositories
-      pkgs = import inputs.nixpkgs { inherit system; };
-      pkgs_unstable = import inputs.nixpkgs_unstable { inherit system; };
+      importFlakeMod = path: import path flakeArg;
+      importFlakeModWithSystem = path: lib.forAllSystems (importFlakeMod path);
     in
     {
 
-      # shortcut to fully configured secrix
-      apps.x86_64-linux.secrix = inputs.secrix.secrix self;
+      apps = importFlakeModWithSystem ./nix/apps;
+
+      devShells = importFlakeModWithSystem ./nix/devShells;
 
       homeManagerModules = {
         # combination of all my custom modules
@@ -74,7 +72,7 @@
         default.imports = [ ./nix/hmModules ];
       };
 
-      lib = import ./nix/lib flakeArg;
+      lib = importFlakeMod ./nix/lib;
 
       nixosConfigurations =
         let
@@ -178,12 +176,7 @@
 
         # this one also includes required dependencies from flake inputs
         withDepends =
-          {
-            config,
-            lib,
-            pkgs,
-            ...
-          }:
+          { config, pkgs, ... }:
           {
             imports = [
               inputs.disko.nixosModules.disko
@@ -196,7 +189,9 @@
               nixpkgs.overlays = [
                 # TODO until 24.11
                 (lib.mkIf (!lib.versionAtLeast lib.version "24.11") (
-                  final: prev: { inherit (pkgs_unstable) nixfmt-rfc-style wcurl; }
+                  final: prev: {
+                    inherit ((lib.systemSpecificVars pkgs.system).pkgs_unstable) nixfmt-rfc-style wcurl;
+                  }
                 ))
               ];
             };
@@ -204,68 +199,9 @@
 
       };
 
-      packages."${system}".secrix-wrapper = pkgs.writeShellApplication {
-        name = "secr";
-        text = ''
-          secrix() {
-            set -x
-            exec ${outputs.apps.${system}.secrix.program} "$@"
-          }
 
-          help() {
-            echo "Usages:"
-            echo "  $0 [create|rekey|edit|encrypt] <system> [<args> …] <file>"
-            echo "  $0 decrypt [<args> …] <file>"
-          }
 
-          main() {
-            if [[ $# -lt 1 ]]; then
-              help
-              exit 0
-            fi
-            cmd="$1"
-            shift 1
-            case "$cmd" in
-              help|-h|--help)
-                help
-                ;;
-              create)
-                secrix "$cmd" --all-users --system "$@"
-                ;;
-              rekey|edit)
-                secrix "$cmd" --identity "$SECRIX_ID" --all-users --system "$@"
-                ;;
-              encrypt)
-                secrix "$cmd" --all-users --system "$@"
-                ;;
-              decrypt)
-                secrix "$cmd" --identity "$SECRIX_ID" "$@"
-                ;;
-            esac
-          }
-
-          main "$@"
-        '';
-      };
-
-      devShells."${system}".default =
-        let
-          pkgs = pkgs_unstable;
-        in
-        pkgs.mkShell {
-          packages = with pkgs; [
-            curl
-            rsync
-            opentofu
-            terranix
-            # tooling for services
-            outputs.packages.${system}.secrix-wrapper
-            wireguard-tools
-          ];
-          shellHook = ''
-            export SECRIX_ID=~/".ssh/id_ed25519"
-          '';
-        };
+      packages = importFlakeModWithSystem ./nix/packages;
 
     };
 }

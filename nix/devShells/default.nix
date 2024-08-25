@@ -1,0 +1,27 @@
+{ outputs, ... }@flakeArg:
+{ pkgs_unstable, system, ... }@sysArg:
+let
+  pkgs = pkgs_unstable;
+in
+{
+  default = pkgs.mkShell {
+    packages =
+      (with pkgs; [
+        curl
+        mkpasswd
+        rsync
+        opentofu
+        terranix
+        # tooling for services
+        wireguard-tools
+      ])
+      ++ [
+        # flake stuff
+        outputs.packages.${system}.secrix-wrapper
+      ];
+    # TODO magic
+    shellHook = ''
+      export SECRIX_ID=~/".ssh/id_ed25519"
+    '';
+  };
+}
