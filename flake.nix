@@ -56,6 +56,12 @@
       # shortcut to fully configured secrix
       apps.x86_64-linux.secrix = inputs.secrix.secrix self;
 
+      homeManagerModules = {
+        # combination of all my custom modules
+        # these should not change anything until you enable their custom options
+        default.imports = [ ./nix/hmModules ];
+      };
+
       nixosConfigurations =
         let
           nixpkgs = inputs.nixpkgs;
@@ -65,6 +71,7 @@
               modsExtended = [
                 outputs.nixosModules.myOptions
                 outputs.nixosModules.withDepends
+                { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
               ] ++ modules;
             in
             nixpkgs.lib.nixosSystem {

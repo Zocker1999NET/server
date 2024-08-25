@@ -1,0 +1,6 @@
+{
+  imports = [
+    # directories
+    ./extends
+  ];
+}
