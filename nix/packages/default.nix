@@ -1,12 +1,8 @@
 { lib, outputs, ... }@flakeArg:
 { pkgs, system, ... }@sysArg:
-let
-  inherit (lib) assertMsg;
-in
 {
 
   secrix-wrapper =
-    assert assertMsg (system == "x86_64-linux") "secrix is currently only compatible with x86_64-linux";
     let
       secrixExe = outputs.apps.${system}.secrix.program;
     in
