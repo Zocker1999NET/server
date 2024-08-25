@@ -42,12 +42,26 @@ in
 
   config = lib.mkIf cfg.enable {
 
-    assertions = [
-      {
-        assertion = config.secrix.hostPubKey != null;
-        message = "secrix.hostPubKey must be defined";
-      }
-    ];
+    # cannot be part of upstream because secrets may also have individual keys
+    # but I will not use any individual keys
+    assertions =
+      let
+        inherit (builtins) attrValues concatLists;
+        secr = config.secrix;
+        systemSecrets = attrValues secr.system.secrets;
+        serviceSecrets = concatLists (map attrValues (attrValues secr.services));
+        allSecrets = concatLists [
+          systemSecrets
+          serviceSecrets
+        ];
+        anySecretDefined = allSecrets != [ ];
+      in
+      [
+        {
+          assertion = anySecretDefined -> config.secrix.hostPubKey != null;
+          message = "secrix.hostPubKey must be defined";
+        }
+      ];
 
     secrix =
       let
