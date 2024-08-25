@@ -42,12 +42,15 @@
     { self, ... }@inputs:
     let
       inherit (self) outputs;
+      inherit (outputs) lib;
       # every flake "submodule" gets this passed:
       flakeArg = {
         # Usage in submodule:
         # { ... }@flakeArg: { }
         # add "..." this so new ones can easily be added
         inherit
+          # tools / shortcuts
+          lib # nixpkgs & my lib combined
           # flake refs
           self # reflection
           inputs # evaluated inputs
@@ -70,6 +73,8 @@
         # these should not change anything until you enable their custom options
         default.imports = [ ./nix/hmModules ];
       };
+
+      lib = import ./nix/lib flakeArg;
 
       nixosConfigurations =
         let
