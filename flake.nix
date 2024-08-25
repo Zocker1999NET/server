@@ -33,6 +33,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # TODO experiment with
+    # - https://git.sr.ht/~msalerno/wirenix
+
   };
 
   outputs =
