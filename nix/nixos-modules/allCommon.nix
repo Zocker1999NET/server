@@ -84,6 +84,7 @@ in
         hashed-mirrors = [ "https://tarballs.nixos.org/" ];
         trusted-users = [
           "root"
+          "@wheel"
         ];
       };
 
