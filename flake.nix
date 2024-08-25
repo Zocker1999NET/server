@@ -129,13 +129,17 @@
                 boot = {
                   initrd = {
                     availableKernelModules = [
-                      "nvme"
-                      "rtsx_pci_sdmmc"
-                      "xhci_pci"
+                      "nvme" # nvme (probably required for booting)
+                      "rtsx_pci_sdmmc" # probably for SD card (required for booting?)
+                      "xhci_pci" # for USB 3.0 (required for booting?)
                     ];
-                    kernelModules = [ "dm-snapshot" ];
+                    kernelModules = [
+                      "dm-snapshot" # pseudo-required for LVM
+                    ];
                   };
-                  kernelModules = [ "kvm-intel" ];
+                  kernelModules = [
+                    "kvm-intel" # do not know if that is required here?
+                  ];
                 };
               }
               inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
