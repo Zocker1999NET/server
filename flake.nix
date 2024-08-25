@@ -66,11 +66,7 @@
 
       devShells = importFlakeModWithSystem ./nix/devShells;
 
-      homeManagerModules = {
-        # combination of all my custom modules
-        # these should not change anything until you enable their custom options
-        default.imports = [ ./nix/hmModules ];
-      };
+      homeManagerModules = importFlakeMod ./nix/hmModules;
 
       lib = outputs.libAnchors // importFlakeMod ./nix/lib;
 
