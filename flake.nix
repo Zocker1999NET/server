@@ -58,13 +58,17 @@
 
       nixosConfigurations =
         let
+          nixpkgs = inputs.nixpkgs;
           nixosSystem =
             { modules, system }:
-            inputs.nixpkgs.lib.nixosSystem {
-              modules = [
+            let
+              modsExtended = [
                 outputs.nixosModules.myOptions
                 outputs.nixosModules.withDepends
               ] ++ modules;
+            in
+            nixpkgs.lib.nixosSystem {
+              modules = modsExtended;
               specialArgs = {
                 flake = flakeArg;
               };
