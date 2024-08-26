@@ -38,7 +38,7 @@ in
     environment = {
 
       pathsToLink = [
-        "/share/zsh" # required for Home-Manager ZSH autocompletion, see https://github.com/nix-community/home-manager/blob/e1391fb22e18a36f57e6999c7a9f966dc80ac073/modules/programs/zsh.nix#L353
+        "/share/zsh" # for ZSH completion
       ];
 
       plasma6.excludePackages = with pkgs.kdePackages; [
