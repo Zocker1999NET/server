@@ -26,6 +26,7 @@ in
     ./extends
     ./frontend
     ./improvedDefaults
+    ./vmDisko
     # files
     ./allCommon.nix
     ./autoUnfree.nix
