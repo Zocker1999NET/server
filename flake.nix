@@ -57,8 +57,8 @@
           ;
         # self: the module’s result, via self-reflection
       };
-      importFlakeMod = path: outputs.libAnchors.reflect (import path) flakeArg;
-      importFlakeModWithSystem = path: lib.forAllSystems (importFlakeMod path);
+      inherit (outputs.libAnchors) importFlakeMod;
+      inherit (lib) importFlakeModWithSystem;
     in
     {
 
@@ -94,6 +94,7 @@
               result = outputs;
             in
             result;
+          importFlakeMod = path: outputs.libAnchors.reflect (import path) flakeArg;
         };
 
       nixosConfigurations = importFlakeMod ./nix/nixos;

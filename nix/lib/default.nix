@@ -16,4 +16,6 @@ nixpkgs.lib
   forAllSystems =
     gen: inputs.nixpkgs.lib.genAttrs lib.supportedSystems (system: gen (lib.systemSpecificVars system));
 
+  importFlakeModWithSystem = path: lib.forAllSystems (lib.importFlakeMod path);
+
 }
