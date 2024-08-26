@@ -57,10 +57,7 @@ in
         fileSystems."/" = {
           device = "/dev/disk/by-uuid/c93557db-e7c5-46ef-9cd8-87eb7c5753dc";
           fsType = "ext4";
-          options = [
-            "relatime"
-            "discard"
-          ];
+          options = [ "relatime" ];
         };
         fileSystems."/boot" = {
           device = "/dev/disk/by-uuid/5F9A-9A2D";
