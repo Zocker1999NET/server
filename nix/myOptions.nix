@@ -10,7 +10,6 @@ let
   myOpts = config.x-banananetwork;
 in
 {
-
   config = {
 
     x-banananetwork = {
@@ -40,5 +39,4 @@ in
     };
 
   };
-
 }

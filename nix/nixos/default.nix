@@ -1,4 +1,8 @@
-{ inputs, outputs, ... }@flakeArg:
+{
+  inputs,
+  outputs,
+  ...
+}@flakeArg:
 let
   nixpkgs = inputs.nixpkgs;
   nixosSystem =
