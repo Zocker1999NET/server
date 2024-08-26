@@ -5,6 +5,9 @@
   self,
   ...
 }@flakeArg:
+let
+  importModule = path: { imports = lib.singleton path; };
+in
 {
 
   default = self.withDepends;
@@ -35,7 +38,7 @@
 
   # this one defines common options for my systems to my modules
   # you definitely do not want to use this
-  myOptions = import ../myOptions.nix;
+  myOptions = importModule ../myOptions.nix;
 
   # this one also includes required dependencies from flake inputs
   withDepends =
