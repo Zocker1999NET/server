@@ -395,6 +395,7 @@ in
       };
 
       printing = {
+        # cups
         enable = true;
         cups-pdf = {
           enable = true;
