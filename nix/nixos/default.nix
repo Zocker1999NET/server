@@ -51,6 +51,7 @@ in
         hardware.cpu.type = "intel";
         hardware.graphics.intel.enable = true;
         programs.captive-browser.interface = "wlp0s20f3";
+        x-banananetwork.frontend.convertable = true;
       }
       {
         # as currently installed
@@ -83,7 +84,6 @@ in
         networking.domain = "pc.6nw.de";
         networking.hostName = "x13yz";
         services.fprintd.enable = true;
-        x-banananetwork.frontend.convertable = true;
         x-banananetwork.frontend.enable = true;
       }
     ];
