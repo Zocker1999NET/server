@@ -1,6 +1,7 @@
 {
   imports = [
     # files
+    ./efi.nix
     ./fileSystems.nix
     ./mdns.nix
     ./nixos.nix
