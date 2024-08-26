@@ -42,6 +42,24 @@ in
         settings common to all hosts running in VMs
       '';
 
+      userName = lib.mkOption {
+        description = ''
+          username of administrative user.
+        '';
+        type = lib.types.str;
+        example = "username";
+      };
+
+      hashedPassword = lib.mkOption {
+        description = ''
+          hash of password of adminstrative user.
+
+          This can e.g. be generated using mkpasswd.
+        '';
+        type = with lib.types; nullOr str;
+        default = null;
+      };
+
     };
 
   };
@@ -175,6 +193,21 @@ in
         systemd.services."serial-getty@".environment.TERM = "xterm-256color";
 
         time.hardwareClockInLocalTime = false; # just to make sure
+
+        users = {
+          mutableUsers = false;
+          users.${cfg.userName} = {
+            description = cfg.userName;
+            extraGroups = [
+              (lib.mkIf config.networking.networkmanager.enable "networkmanager")
+              "wheel"
+            ];
+            inherit (cfg) hashedPassword;
+            isNormalUser = true;
+            openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
+          };
+          users.root.openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
+        };
 
         x-banananetwork = {
 

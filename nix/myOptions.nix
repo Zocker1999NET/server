@@ -32,6 +32,10 @@ in
       frontend = {
         username = myOpts.userName;
       };
+      vmCommon = {
+        userName = myOpts.userName;
+        hashedPassword = "$y$j9T$MdvgnTFGyCnZ.sLhXK7.w.$VkI6NqE7ZaN7xULmOrYCvgC6Sot19S0RWf.FmrOaLnC";
+      };
 
     };
 
