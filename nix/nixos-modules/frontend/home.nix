@@ -75,13 +75,6 @@ in
       ];
     })
 
-    # # You can also create simple shell scripts directly inside your
-    # # configuration. For example, this adds a command 'my-hello' to your
-    # # environment:
-    # (pkgs.writeShellScriptBin "my-hello" ''
-    #   echo "Hello, ${config.home.username}!"
-    # '')
-
   ];
 
   programs = {
@@ -89,10 +82,6 @@ in
     bash = {
       enable = true;
       enableCompletion = true;
-      # fix for https://github.com/nix-community/home-manager/issues/3091, from https://github.com/NixOS/nix/issues/2033#issuecomment-1366974053
-      #bashrcExtra = ''
-      #  export  NIXPATH="/nix/var/nix/profiles/per-user/$USER/channels:nixos-config=/etc/nixos/configuration.nix"
-      #'';
     };
 
     chromium = {
