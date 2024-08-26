@@ -400,6 +400,7 @@ in
         cups-pdf = {
           enable = true;
         };
+        enableAutoDiscovery = true;
         stateless = true; # TODO test
       };
 
