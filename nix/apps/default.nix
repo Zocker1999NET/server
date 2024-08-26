@@ -1,7 +1,7 @@
 {
+  flake,
   inputs,
   lib,
-  self,
   ...
 }@flakeArg:
 { system, ... }@sysArg:
@@ -12,6 +12,6 @@
     assert lib.assertMsg (system == "x86_64-linux") ''
       secrix is currently only compatible with x86_64-linux
     '';
-    inputs.secrix.secrix self;
+    inputs.secrix.secrix flake;
 
 }

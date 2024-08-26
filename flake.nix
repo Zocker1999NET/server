@@ -48,6 +48,7 @@
         # Usage in submodule:
         # { ... }@flakeArg: { }
         # add "..." this so new ones can easily be added
+        flake = self; # full flake reflection
         inherit
           # tools / shortcuts
           lib # nixpkgs & my lib combined
