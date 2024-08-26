@@ -13,6 +13,7 @@ in
     ./command-not-found.nix
     ./firefox.nix
     ./networking.nix
+    ./power-profiles-daemon.nix
     ./powertop-tlp.nix
     ./sshAuthorize.nix
     ./wayland.nix
