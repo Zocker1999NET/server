@@ -49,7 +49,7 @@ in
         inputs.home-manager.nixosModules.home-manager
         inputs.impermanence.nixosModules.impermanence
         inputs.secrix.nixosModules.secrix
-        outputs.nixosModules.banananetwork
+        self.banananetwork
       ];
       config = {
         nixpkgs.overlays = lib.singleton outputs.overlays.backports;
