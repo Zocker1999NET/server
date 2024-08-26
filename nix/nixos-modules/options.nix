@@ -21,6 +21,7 @@
           This is used by other option{x-banananetwork} modules.
         '';
         type = with lib.types; nullOr str;
+        default = null;
         example = "ssh-ed25519 …";
       };
 
