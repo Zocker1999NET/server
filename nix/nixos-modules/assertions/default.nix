@@ -1,6 +1,6 @@
 {
   imports = [
     # files
-    ./podman.nix
+    ./nixos.nix
   ];
 }

@@ -3,7 +3,8 @@ let
   channelsEn = config.nix.channel.enable;
   nixFeature = lib.trivial.flip builtins.elem config.nix.settings.experimental-features;
   packageNames = map lib.strings.getName config.environment.systemPackages;
-  gitInst = builtins.elem "git" packageNames;
+  isInstalled = lib.trivial.flip builtins.elem packageNames;
+  gitInst = isInstalled "git";
   gitEn = config.programs.git.enable;
 in
 {

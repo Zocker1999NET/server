@@ -12,11 +12,16 @@ in
 
   default = self.withDepends;
 
+  # assertions checking for good practices
+  assertions = importModule ./assertions;
+
   # this one includes all of my modules
   # - most of them only change things when enabled (e.g. x-banananetwork.*.enable)
   # - others only introduce small, reasonable changes if other module’s options are set, as reasonable defaults (if I intend to upstream them)
   # however, use on your own discretion
   banananetwork.imports = [
+    # flake
+    self.assertions
     # directories
     ./extends
     ./frontend
