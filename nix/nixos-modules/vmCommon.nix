@@ -8,29 +8,6 @@
 }:
 let
   cfg = config.x-banananetwork.vmCommon;
-  # Based on https://unix.stackexchange.com/questions/16578/resizable-serial-console-window
-  resize = pkgs.writeShellScriptBin "resize" ''
-    export PATH="${lib.getBin pkgs.coreutils}/bin"
-    if [ ! -t 0 ]; then
-      # not a interactive...
-      exit 0
-    fi
-    TTY="$(tty)"
-    if [[ "$TTY" != /dev/ttyS* ]] && [[ "$TTY" != /dev/ttyAMA* ]] && [[ "$TTY" != /dev/ttySIF* ]]; then
-      # probably not a known serial console, we could make this check more
-      # precise by using `setserial` but this would require some additional
-      # dependency
-      exit 0
-    fi
-    old=$(stty -g)
-    stty raw -echo min 0 time 5
-
-    printf '\0337\033[r\033[999;999H\033[6n\0338' > /dev/tty
-    IFS='[;R' read -r _ rows cols _ < /dev/tty
-
-    stty "$old"
-    stty cols "$cols" rows "$rows"
-  '';
 in
 {
 
@@ -39,7 +16,7 @@ in
     x-banananetwork.vmCommon = {
 
       enable = lib.mkEnableOption ''
-        settings common to all hosts running in VMs
+        settings for all my VMs
       '';
 
       userName = lib.mkOption {
@@ -98,26 +75,6 @@ in
 
         boot = {
 
-          initrd = {
-            availableKernelModules = [
-              "9p"
-              "9pnet_virtio"
-              "virtio_blk"
-              "virtio_mmio"
-              "virtio_net"
-              "virtio_pci"
-              "virtio_scsi"
-            ];
-            kernelModules = [
-              "virtio_balloon"
-              "virtio_console"
-              "virtio_gpu"
-              "virtio_rng"
-            ];
-          };
-
-          kernelParams = lib.singleton "console=ttyS0,115200";
-
           loader = {
             efi.canTouchEfiVariables = true;
             grub.enable = false;
@@ -130,10 +87,6 @@ in
 
         };
 
-        console.keyMap = "de";
-
-        # for fast debugging of systems, keep small
-        environment.systemPackages = [ resize ];
 
         networking = {
 
@@ -184,8 +137,6 @@ in
 
         services = {
 
-          qemuGuest.enable = true;
-
           openssh = {
             enable = true;
             authorizedKeysInHomedir = false;
@@ -207,10 +158,6 @@ in
           flake = lib.mkDefault "git+https://git.bananet.work/banananetwork/server#${config.networking.fqdnOrHostName}"; # ===SYNC:general/meta/repo/url===
           operation = "boot"; # change only on reboots
         };
-
-        systemd.services."serial-getty@".environment.TERM = "xterm-256color";
-
-        time.hardwareClockInLocalTime = false; # just to make sure
 
         users = {
           mutableUsers = false;
@@ -235,8 +182,6 @@ in
           #privacy.enable = true;
 
         };
-
-        # TODO disko config, see https://github.com/nix-community/disko/blob/master/docs/INDEX.md
 
         # TODO wishlist items (in prio order):
         # - ntfy.sh as mailer

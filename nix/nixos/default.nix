@@ -44,6 +44,7 @@ in
           ];
         };
       }
+      outputs.nixosProfiles.blade
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
       {
         # hardware

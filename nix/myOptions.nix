@@ -12,6 +12,33 @@ in
 {
   config = {
 
+    # personal defaults across the board
+
+    console.keyMap = lib.mkDefault "de";
+
+    documentation = {
+
+      man.mandoc.settings.output = {
+        paper = lib.mkDefault "a4";
+      };
+
+    };
+
+    i18n = {
+      # inspired by https://wiki.archlinux.org/title/Locale
+      defaultLocale = lib.mkDefault "en_US.UTF-8";
+      extraLocaleSettings = {
+        LANGUAGE = lib.mkDefault "en_US:en:C:de_DE";
+        LC_COLLATE = lib.mkDefault "C.UTF-8"; # language independent sorting
+        LC_MEASUREMENT = "de_DE.UTF-8"; # metric
+        LC_PAPER = "de_DE.UTF-8"; # metric
+        LC_TELEPHONE = "de_DE.UTF-8";
+        LC_TIME = lib.mkDefault "en_DK.UTF-8"; # ISO 8601
+      };
+    };
+
+    # for my own modules
+
     x-banananetwork = {
 
       # options defined in nixos-modules/options.nix

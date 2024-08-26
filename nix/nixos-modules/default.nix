@@ -28,11 +28,9 @@ in
     ./improvedDefaults
     ./vmDisko
     # files
-    ./allCommon.nix
     ./autoUnfree.nix
     ./debugMinimal.nix
     ./graphics.nix
-    ./hwCommon.nix
     ./kernel.nix
     ./options.nix
     ./privacy.nix

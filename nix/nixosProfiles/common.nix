@@ -17,20 +17,27 @@ in
 
     x-banananetwork.allCommon = {
 
-      enable = lib.mkEnableOption ''
-        settings common to all systems
-        a set of opionated options to make systems useable & debugable for users.
-
-        This means e.g. adding common, useful tools and add documentation.
-      '';
+      # TODO remove option, plan:
+      # - verify all configs still build (nix flake check)
+      #   - i.e. all with allCommon.enable=true are using this module
+      # - remove option here & from all configs
+      # - again: nix flake check
+      enable = lib.mkEnableOption "for compatibility reasons" // {
+        default = true;
+        internal = true;
+      };
 
     };
 
   };
 
-  config = lib.mkIf cfg.enable {
+  config = {
 
     assertions = [
+      {
+        assertion = cfg.enable;
+        message = "config imported profiles/common but tried to disable it";
+      }
       (
         let
           defName = options.networking.hostName.default;
@@ -42,40 +49,15 @@ in
       )
     ];
 
-    documentation = {
-
-      man.mandoc.settings.output = {
-        paper = lib.mkDefault "a4";
-      };
-
-    };
-
-    i18n = {
-      # inspired by https://wiki.archlinux.org/title/Locale
-      defaultLocale = lib.mkDefault "en_US.UTF-8";
-      extraLocaleSettings = {
-        LANGUAGE = lib.mkDefault "en_US:en:C:de_DE";
-        LC_COLLATE = lib.mkDefault "C.UTF-8"; # language independent sorting
-        LC_MEASUREMENT = "de_DE.UTF-8"; # metric
-        LC_PAPER = "de_DE.UTF-8"; # metric
-        LC_TELEPHONE = "de_DE.UTF-8";
-        LC_TIME = lib.mkDefault "en_DK.UTF-8"; # ISO 8601
-      };
-    };
-
     nix = {
 
       channel.enable = false;
 
-      daemonCPUSchedPolicy = "batch";
-      daemonIOSchedClass = "best-effort";
-      daemonIOSchedPriority = 7;
+      daemonCPUSchedPolicy = lib.mkDefault "batch";
+      daemonIOSchedClass = lib.mkDefault "best-effort";
+      daemonIOSchedPriority = lib.mkDefault 7;
 
       settings = {
-        allowed-users = [
-          "root"
-          "@wheel"
-        ];
         auto-optimise-store = true;
         experimental-features = [
           "flakes"
@@ -93,7 +75,6 @@ in
       OOMScoreAdjust = lib.mkDefault 250;
     };
 
-    # well-known public keys
     programs = {
 
       # for nixos-rebuild with flakes
@@ -104,6 +85,7 @@ in
           "ssh-ed25519"
           "ssh-rsa"
         ];
+        # well-known public keys
         knownHosts = {
           "git.banananet.work".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE854AkY/LYJ8kMe1olR+OsAxKIgvZ/JK+G+e0mMVWdH";
           "git.sr.ht".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZvRd4EtM7R+IHVMWmDkVU3VLQTSwQDSAvW0t2Tkj60";
@@ -172,7 +154,6 @@ in
     '';
 
     time = {
-      hardwareClockInLocalTime = lib.mkDefault false;
       timeZone = lib.mkDefault "Etc/UTC";
     };
 

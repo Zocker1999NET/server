@@ -101,6 +101,8 @@
 
       nixosModules = importFlakeMod ./nix/nixos-modules;
 
+      nixosProfiles = importFlakeMod ./nix/nixosProfiles;
+
       overlays = importFlakeMod ./nix/overlays;
 
       packages = importFlakeModWithSystem ./nix/packages;
