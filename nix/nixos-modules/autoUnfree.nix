@@ -73,16 +73,9 @@ in
       let
         inherit (lib.lists) flatten optional optionals;
         # supported (ordered by long option name)
-        amd = config.hardware.cpu.amd;
-        intel = config.hardware.cpu.intel;
         steam = config.programs.steam;
       in
       flatten [
-        # hardware.cpu
-        # TODO in nixpkgs, create {amd,intel}.microcodePackage options
-        # TODO test if this is really required
-        #(optional amd.updateMicrocode pkgs.microcodeAmd)
-        #(optional intel.updateMicrocode pkgs.microcodeIntel)
         # programs
         (optional steam.enable steam.package)
         # TODO improve pulling in dependencies more accurate
