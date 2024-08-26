@@ -400,7 +400,7 @@ in
         cups-pdf = {
           enable = true;
         };
-        stateless = true; # test
+        stateless = true; # TODO test
       };
 
       pcscd.enable = true;
