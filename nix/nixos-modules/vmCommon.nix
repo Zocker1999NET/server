@@ -98,6 +98,24 @@ in
 
         boot = {
 
+          initrd = {
+            availableKernelModules = [
+              "9p"
+              "9pnet_virtio"
+              "virtio_blk"
+              "virtio_mmio"
+              "virtio_net"
+              "virtio_pci"
+              "virtio_scsi"
+            ];
+            kernelModules = [
+              "virtio_balloon"
+              "virtio_console"
+              "virtio_gpu"
+              "virtio_rng"
+            ];
+          };
+
           kernelParams = lib.singleton "console=ttyS0,115200";
 
           loader = {
