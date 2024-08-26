@@ -453,8 +453,8 @@ in
 
     users = {
 
-      users."${cfg.username}" = {
-        description = "${cfg.username}";
+      users.${cfg.username} = {
+        description = cfg.username;
         extraGroups =
           with lib.lists;
           flatten [
