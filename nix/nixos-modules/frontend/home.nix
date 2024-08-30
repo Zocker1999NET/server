@@ -205,15 +205,15 @@ in
         #ytdl-format = "bestvideo[height<=?1080]+bestaudio/best";
       };
       scripts = with pkgs.mpvScripts; [
-        autoload
-        evafast
-        modernx-zydezu
+        autoload # "autoplay" files in same dir
+        evafast # VHC rewind effect
+        modernx-zydezu # modern OSC
         mpris
-        quack
-        quality-menu
-        reload
+        quack # fade volume on seek
+        quality-menu # select quality on yt-dlp streaming
+        reload # reload on connection-loss
         sponsorblock
-        thumbfast
+        thumbfast # thumbnails on modernx
       ];
       scriptOpts =
         let
