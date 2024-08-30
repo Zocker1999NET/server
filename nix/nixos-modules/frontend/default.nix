@@ -63,6 +63,11 @@ in
         driSupport = true;
       };
 
+      sane = {
+        enable = true;
+        openFirewall = true;
+      };
+
       usb-modeswitch.enable = true; # for specific WLAN/WWAN cards
 
     };
