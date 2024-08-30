@@ -197,6 +197,10 @@ in
         thumbfast
       ];
       scriptOpts =
+        let
+          scriptNames = map (p: lib.getName p) config.programs.mpv.scripts;
+          mkIfScript = name: lib.mkIf (builtins.elem name scriptNames);
+        in
         {
           modernx = {
             # order by README (https://github.com/zydezu/ModernX#configurable-options)
@@ -208,6 +212,19 @@ in
             timetotal = false;
             downloadbutton = false;
             showyoutubecomments = false;
+          };
+          sponsorblock = {
+            skip_categories = "sponsor,intro,outro,interaction,selfpromo";
+            local_database = true;
+            auto_update = true;
+            skip_once = true;
+            server_fallback = true;
+            make_chapters = true;
+            audio_fade = mkIfScript "quack" false; # quack does the same, but always
+            fast_forward = false;
+            # Lua pattern: https://www.lua.org/pil/20.2.html
+            # TL;DR: '%' = '\', rest is as normal
+            local_pattern = (lib.mkIf config.programs.yt-dlp.enable "[%s_-]%[([%w-_]+)%]%.[mw][kpe][v4b]m?$"); # tuned for yt-dlp default
           };
         };
     };
