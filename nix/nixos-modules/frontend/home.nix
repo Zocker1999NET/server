@@ -422,6 +422,19 @@ in
       };
     };
 
+    yt-dlp = {
+      enable = true;
+      settings = {
+        no-playlist = true; # only relevant if URL refers to video & playlist
+        remux-video = "aac>m4a/mkv";
+        sub-format = "ass/srt/best";
+        sub-langs = "en.*,de.*,-live_chat";
+        embed-subs = true;
+        embed-thumbnail = true;
+        embed-metadata = true; # includes: chapters & info-json
+      };
+    };
+
   };
 
   services = {
