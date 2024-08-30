@@ -196,23 +196,20 @@ in
         sponsorblock
         thumbfast
       ];
-      scriptOpts = {
-        modernx = {
-          # order by README (https://github.com/zydezu/ModernX#configurable-options)
-
-          # general
-          welcomescreen = true;
-
-          # interface
-          persistentprogress = true;
-
-          # button
-          timetotal = false;
-          downloadbutton = false;
-          showyoutubecomments = false;
-
+      scriptOpts =
+        {
+          modernx = {
+            # order by README (https://github.com/zydezu/ModernX#configurable-options)
+            # general
+            welcomescreen = true;
+            # interface
+            persistentprogress = true;
+            # button
+            timetotal = false;
+            downloadbutton = false;
+            showyoutubecomments = false;
+          };
         };
-      };
     };
 
     texlive = {
