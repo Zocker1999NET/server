@@ -444,6 +444,7 @@ in
       enable = true;
       enableExtraSocket = true;
       enableScDaemon = true;
+      # ssh-addkey needs to be done for every key manually, read man gpg-agent
       enableSshSupport = true;
       enableZshIntegration = true;
       pinentryPackage = pkgs.pinentry-qt;
