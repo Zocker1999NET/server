@@ -52,7 +52,12 @@ in
 
     # tools
     fzf # fuzzy finder  # TODO integrate better: https://home-manager-options.extranix.com/?query=fzf&release=master
+    ipv6calc # IPv4/IPv6 swiss kit
     jdupes
+    kalker # advanced calculator
+    pcalc # programmer’s calculator
+    rink # unit aware calculator
+    subnetcalc # IPv4/IPv6 subnet info parser
 
     # UI
     element-desktop
