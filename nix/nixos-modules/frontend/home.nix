@@ -90,6 +90,12 @@ in
     };
 
     chromium = {
+      commandLineArgs = [
+        "--no-default-browser-check"
+        "--no-first-run"
+        "--no-service-autorun" # just in case
+        "--use-system-default-printer" # instead of least recently used
+      ];
       dictionaries = with pkgs.hunspellDictsChromium; [
         de_DE
         en_US
