@@ -167,6 +167,23 @@ in
         WHEEL_RIGHT = "ignore";
       };
       extraInput = ''
+        # video: move
+        Alt+Shift+LEFT add video-pan-x 0.01
+        Alt+Shift+RIGHT add video-pan-x -0.01
+        Alt+Shift+UP add video-pan-y 0.01
+        Alt+Shift+DOWN add video-pan-y -0.01
+        # video: resize
+        Alt++ ignore
+        Alt+- ignore
+        Alt+SHARP add video-zoom 0.01
+        Alt++ add video-zoom 0.01
+        Alt+- add video-zoom -0.01
+        # video: rotate
+        r cycle_values video-rotate 90 180 270 0
+        R cycle_values video-rotate 270 180 90 0
+        # audio
+        Shift+m af toggle "lavfi=[pan=1c|c0=0.5*c0+0.5*c1]" ; show-text "Audio mix set to Mono"
+        # playback speed (make keys more sane)
         [ ignore
         ] ignore
         [ add speed -0.05
@@ -175,6 +192,8 @@ in
         } ignore
         { add speed -0.2
         } add speed 0.2
+        # misc
+        + script-binding console/enable
       '';
       config = {
         save-position-on-quit = true;
