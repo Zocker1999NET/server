@@ -178,7 +178,7 @@ in
       '';
       config = {
         save-position-on-quit = true;
-        vo = "gpu"; # or: dmabuf-wayland
+        vo = "gpu";
         hwdec = "auto-safe";
         gpu-context = "wayland";
         alpha = "yes";
