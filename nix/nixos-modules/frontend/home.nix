@@ -89,6 +89,15 @@ in
       enableCompletion = true;
     };
 
+    bat = {
+      enable = true;
+      extraPackages = with pkgs.bat-extras; [
+        batdiff
+        batwatch
+        prettybat # format code before
+      ];
+    };
+
     chromium = {
       commandLineArgs = [
         "--no-default-browser-check"
