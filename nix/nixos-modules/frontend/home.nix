@@ -347,7 +347,7 @@ in
 
     ssh = {
       enable = true;
-      controlMaster = "autoask";
+      controlMaster = "auto";
       controlPath = "~/.ssh/connections/%r@%h:%p";
       controlPersist = "10m";
       matchBlocks = {
