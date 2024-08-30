@@ -465,7 +465,11 @@ in
         extraGroups =
           with lib.lists;
           flatten [
+            # TODO make user groups an assertion
+            (optional config.programs.gamemode.enable "gamemode")
+            (optional config.services.printing.enable "lpadmin")
             (optional config.networking.networkmanager.enable "networkmanger")
+            (optional config.hardware.sane.enable "scanner")
             "wheel"
           ];
         isNormalUser = true;
