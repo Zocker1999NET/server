@@ -71,6 +71,9 @@ in
     yubikey-manager
     yubioath-flutter
 
+    # Gaming
+    steamcontroller # userspace driver (manual start/stop)
+
     # utilities
     fira
     (pkgs.nerdfonts.override {
