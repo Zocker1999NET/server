@@ -293,6 +293,30 @@ in
         # IDE-specific
         jnoortheen.nix-ide
       ];
+      keybindingsNext = {
+        # tabbing in *visually visible* order
+        "ctrl+tab" = [
+          {
+            command = "-workbench.action.quickOpenNavigateNextInEditorPicker";
+            when = "inEditorsPicker && inQuickOpen";
+          }
+          "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup"
+          "workbench.action.nextEditor"
+        ];
+        "ctrl+shift+tab" = [
+          {
+            command = "-workbench.action.quickOpenNavigatePreviousInEditorPicker";
+            when = "inEditorsPicker && inQuickOpen";
+          }
+          "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup"
+          "workbench.action.previousEditor"
+        ];
+        # disable overlappings from vim plugin
+        "ctrl+p" = lib.singleton {
+          command = "-extension.vim_ctrl+p";
+          when = "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'";
+        };
+      };
       mutableExtensionsDir = false;
       package = pkgs.vscodium;
       userSettings = {
