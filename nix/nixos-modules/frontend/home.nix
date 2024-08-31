@@ -261,6 +261,22 @@ in
         };
     };
 
+    retroarch = {
+      enable = true;
+      cores = with pkgs.libretro; [
+        # as recommended by https://emulation.gametechwiki.com
+        mesen # 1983 NES
+        sameboy # 1989 GB
+        bsnes-hd # 1990 SNES
+        mupen64plus # 1996 N64 (multi, maybe for SNES too; not for NES)
+        sameboy # 1998 GBC
+        mgba # 2001 GBA
+        dolphin # 2001 GCN
+        melonds # 2004 NDS (+NDSi)
+        dolphin # 2006 Wii
+      ];
+    };
+
     texlive = {
       enable = true;
       # TODO filter hard to save storage
