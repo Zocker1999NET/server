@@ -6,6 +6,7 @@
   ...
 }@flakeArg:
 let
+  importModuleGroup = lib.importFlakeMod;
   importModule = path: { imports = lib.singleton path; };
 in
 {
@@ -59,5 +60,13 @@ in
         nixpkgs.overlays = lib.singleton outputs.overlays.backports;
       };
     };
+
+  # from sub groups
+  # NOTE: these will change possibly unsensible stuff just by importing them
+
+  inherit (importModuleGroup ./overlays)
+    # (make list commitable)
+    systemd-radv-fadeout
+    ;
 
 }

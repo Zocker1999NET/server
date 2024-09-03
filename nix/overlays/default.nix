@@ -11,4 +11,6 @@ in
 
   backports = importOverlay ./backports.nix;
 
+  systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
+
 }
