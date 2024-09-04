@@ -2,6 +2,8 @@
 { pkgs, system, ... }@sysArg:
 {
 
+  nft-update-addresses = pkgs.callPackage ./nft-update-addresses { };
+
   secrix-wrapper =
     let
       secrixExe = outputs.apps.${system}.secrix.program;
