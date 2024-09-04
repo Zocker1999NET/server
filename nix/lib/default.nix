@@ -1,20 +1,21 @@
 { inputs, lib, ... }@flakeArg:
 let
   nixpkgs = inputs.nixpkgs;
+  libO = nixpkgs.lib;
 in
-nixpkgs.lib
+libO
 // {
 
-  supportedSystems = builtins.attrNames inputs.nixpkgs.legacyPackages;
+  supportedSystems = builtins.attrNames nixpkgs.legacyPackages;
 
   systemSpecificVars = system: {
-    pkgs = import inputs.nixpkgs { inherit system; };
+    pkgs = import nixpkgs { inherit system; };
     pkgs_unstable = import inputs.nixpkgs_unstable { inherit system; };
     inherit system;
   };
 
   forAllSystems =
-    gen: inputs.nixpkgs.lib.genAttrs lib.supportedSystems (system: gen (lib.systemSpecificVars system));
+    gen: lib.genAttrs lib.supportedSystems (system: gen (lib.systemSpecificVars system));
 
   importFlakeModWithSystem = path: lib.forAllSystems (lib.importFlakeMod path);
 
