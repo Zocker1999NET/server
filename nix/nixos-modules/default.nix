@@ -57,7 +57,10 @@ in
         self.banananetwork
       ];
       config = {
-        nixpkgs.overlays = lib.singleton outputs.overlays.backports;
+        nixpkgs.overlays = [
+          outputs.overlays.backports
+          outputs.overlays.fromFlake
+        ];
       };
     };
 
