@@ -6,6 +6,12 @@ in
 libO
 // {
 
+  # groups
+
+  types = libO.types // lib.importFlakeMod ./types.nix;
+
+  # functions
+
   supportedSystems = builtins.attrNames nixpkgs.legacyPackages;
 
   systemSpecificVars = system: {

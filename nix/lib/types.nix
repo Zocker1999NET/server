@@ -1,0 +1,100 @@
+{
+  inputs,
+  lib,
+  self,
+  ...
+}@flakeArg:
+# TODO upstream
+let
+  inherit (builtins) concatStringsSep;
+  repeat = expr: count: builtins.genList (_: expr) count;
+  concatRepeat =
+    sep: str: count:
+    concatStringsSep sep (repeat str count);
+  concatGroup = patterns: "(${concatStringsSep "|" patterns})";
+  repeatOptional =
+    sep: pattern: count:
+    "${concatRepeat "" "(${pattern}${sep})?" count}${pattern}";
+  matchType =
+    { description, pattern }: lib.types.strMatching "^${pattern}$" // { inherit description; };
+  # === regex parts
+  hexChar = "[0-9A-Fa-f]";
+  ipv4Block = "(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])";
+  euiHexBlock = concatRepeat "" hexChar 2;
+  euiWith = concatRepeat "[.:_-]?" euiHexBlock;
+  eui48 = euiWith 6;
+  eui64 = euiWith 8;
+  ipv4Addr = concatRepeat "\\." ipv4Block 4;
+  ipv6Block = repeatOptional "" hexChar 4;
+  ipv6Addr =
+    let
+      genVariant =
+        max: rightNum:
+        let
+          leftNum = max - rightNum - 1;
+          leftPart = concatRepeat ":" ipv6Block leftNum;
+          middlePart = lib.optionalString (rightNum == 0) "(${ipv6Block})?"; # full address only required once
+          rightPart = repeatOptional ":" ipv6Block rightNum;
+        in
+        "${leftPart}:${middlePart}:${rightPart}";
+      genAll = max: builtins.genList (genVariant max) max;
+      normals = genAll 8;
+      ipv4Mapped = map (x: "${x}:${ipv4Addr}") (genAll 6);
+    in
+    concatGroup (normals ++ ipv4Mapped);
+  v4CIDR = "/(3[0-2]|2[0-9]|1?[0-9])";
+  v6CIDR = "/(12[0-8]|1[0-2][0-9]|[1-9]?[0-9])";
+  interfaceId = "(%[[:alnum:]]+)?";
+  # === references
+  ipv6Ref = "RFC 4291 Section 2.2";
+in
+# extensions to the nix option types library
+{
+
+  eui48 = matchType {
+    description = "EUI-48 (i.e. MAC address)";
+    pattern = eui48;
+  };
+
+  eui64 = matchType {
+    description = "EUI-64";
+    pattern = eui64;
+  };
+
+  ipAddress = lib.types.either self.ipv4Address self.ipv6Address;
+
+  ipAddressPlain = lib.types.either self.ipv4AddressPlain self.ipv6AddressPlain;
+
+  ipNetwork = lib.types.either self.ipv4Network self.ipv6Network;
+
+  ipv4Address = matchType {
+    description = "IPv4 address (no CIDR, opt. interface identifier)";
+    pattern = ipv4Addr + interfaceId;
+  };
+
+  ipv4AddressPlain = matchType {
+    description = "IPv4 address (no CIDR, no interface identifier)";
+    pattern = ipv4Addr;
+  };
+
+  ipv4Network = matchType {
+    description = "IPv4 address/network with CIDR";
+    pattern = ipv4Addr + v4CIDR;
+  };
+
+  ipv6Address = matchType {
+    description = "IPv6 address (${ipv6Ref}, no CIDR, opt. interface identifier)";
+    pattern = ipv6Addr + interfaceId;
+  };
+
+  ipv6AddressPlain = matchType {
+    description = "IPv6 address (${ipv6Ref}, no CIDR, no interface identifier)";
+    pattern = ipv6Addr;
+  };
+
+  ipv6Network = matchType {
+    description = "IPv6 address/network with CIDR (${ipv6Ref})";
+    pattern = ipv6Addr + v6CIDR;
+  };
+
+}
