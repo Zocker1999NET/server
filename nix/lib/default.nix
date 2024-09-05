@@ -8,6 +8,8 @@ libO
 
   # groups
 
+  modules = libO.modules // lib.importFlakeMod ./modules.nix;
+
   types = libO.types // lib.importFlakeMod ./types.nix;
 
   x-banananetwork-unused = lib.importFlakeMod ./unused.nix;
