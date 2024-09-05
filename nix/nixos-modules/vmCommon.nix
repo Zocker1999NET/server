@@ -91,7 +91,7 @@ in
         networking = {
 
           firewall = {
-            logRefusedConnections = false;
+            logRefusedConnections = lib.mkDefault false;
             # TODO
           };
 
