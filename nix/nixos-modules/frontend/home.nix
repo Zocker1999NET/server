@@ -303,8 +303,11 @@ in
       extensions = with pkgs.vscode-extensions; [
         # general
         vscodevim.vim
-        # IDE-specific
+        # IDE: Nix
         jnoortheen.nix-ide
+        # IDE: Python
+        ms-python.black-formatter
+        ms-python.python
       ];
       keybindingsNext = {
         # tabbing in *visually visible* order
