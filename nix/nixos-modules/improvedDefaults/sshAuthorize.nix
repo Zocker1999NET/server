@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 let
   myOpts = config.x-banananetwork;
   cfg = config.x-banananetwork.improvedDefaults;
@@ -44,8 +39,11 @@ in
           inherit (lib.lists) any;
           # variables
           users = config.users.users;
-          wheelUsers = lib.trivial.pipe users [
+          nonRootUsers = lib.trivial.pipe users [
             (filterAttrs (n: v: n != "root"))
+            (filterAttrs (n: v: v.isNormalUser))
+          ];
+          wheelUsers = lib.trivial.pipe nonRootUsers [
             (filterAttrs (n: v: builtins.elem "wheel" v.extraGroups))
           ];
           areKeysSet = authKeysOpts: any (x: true) (authKeysOpts.keys ++ authKeysOpts.keyFiles);
@@ -54,6 +52,7 @@ in
           isNonRootAuthed = any isUserAuthed (attrValues wheelUsers);
           isRootAuthed = isUserAuthed users."root";
           doRootAuth = !isNonRootAuthed;
+          otherUserExists = nonRootUsers != [ ];
         in
         {
 
@@ -63,7 +62,10 @@ in
           users.users.root.openssh.authorizedKeys.keys = lib.mkIf doRootAuth (
             lib.mkDefault myOpts.sshPublicKeys
           );
-          warnings = lib.mkIf doRootAuth [
+
+          # warn only if other users exist -> multi-user machine
+          # compared to "root"-only systems (e.g. installer, embedded systems)
+          warnings = lib.mkIf (doRootAuth && otherUserExists) [
             ''
               root’s authorized keys were automatically configured
               because no other user with wheel permission has authorized keys configured
