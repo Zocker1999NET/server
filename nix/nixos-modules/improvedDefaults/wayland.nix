@@ -41,6 +41,12 @@ in
 
     (lib.mkIf (config.services.wayland.enable) {
 
+      # TODO mirror on home-manager
+      environment.sessionVariables = {
+        MOZ_ENABLE_WAYLAND = lib.mkIf config.programs.firefox.enable "1";
+        NIXOS_OZONE_WL = "1";
+      };
+
       # make Steam Input events possible
       programs.steam.extest.enable = lib.mkIf config.programs.steam.enable true;
 
