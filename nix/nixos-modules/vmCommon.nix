@@ -91,6 +91,7 @@ in
         networking = {
 
           firewall = {
+            allowPing = lib.mkDefault true;
             logRefusedConnections = lib.mkDefault false;
             # TODO
           };
