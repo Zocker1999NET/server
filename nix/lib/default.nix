@@ -10,6 +10,8 @@ libO
 
   types = libO.types // lib.importFlakeMod ./types.nix;
 
+  x-banananetwork-unused = lib.importFlakeMod ./unused.nix;
+
   # functions
 
   supportedSystems = builtins.attrNames nixpkgs.legacyPackages;
