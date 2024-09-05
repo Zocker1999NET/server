@@ -33,7 +33,6 @@ in
     ./autoUnfree.nix
     ./debugMinimal.nix
     ./graphics.nix
-    ./kernel.nix
     ./options.nix
     ./privacy.nix
     ./secrix.nix
