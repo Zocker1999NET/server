@@ -141,15 +141,18 @@ in
     git = {
       enable = true;
       extraConfig =
+        let
+          inherit (config.programs) vscode;
+        in
         {
           diff = {
-            tool = "vscode";
+            tool = lib.mkIf vscode.enable "vscode";
           };
           difftool = {
             prompt = false;
           };
-          "difftool \"vscode\"" = {
-            cmd = "${lib.getExe config.programs.vscode.package} --wait --diff $LOCAL $REMOTE";
+          "difftool \"vscode\"" = lib.mkIf vscode.enable {
+            cmd = "${lib.getExe vscode.package} --wait --diff $LOCAL $REMOTE";
           };
         };
       userName = "Felix Stupp";
