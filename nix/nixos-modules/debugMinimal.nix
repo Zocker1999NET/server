@@ -38,6 +38,9 @@ in
         enableCompletion = true;
         enableLsColors = true;
         vteIntegration = true;
+        interactiveShellInit = ''
+          export HISTCONTROL=ignoreboth:erasedups
+        '';
       };
 
       htop = {
