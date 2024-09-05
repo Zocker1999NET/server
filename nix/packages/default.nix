@@ -1,6 +1,16 @@
-{ lib, outputs, ... }@flakeArg:
-{ pkgs, system, ... }@sysArg:
 {
+  inputs,
+  lib,
+  outputs,
+  ...
+}@flakeArg:
+{ pkgs, system, ... }@sysArg:
+let
+  craneLib = inputs.crane.mkLib pkgs;
+in
+{
+
+  librespot-auth = pkgs.callPackage ./librespot-auth { inherit craneLib; };
 
   nft-update-addresses = pkgs.callPackage ./nft-update-addresses { };
 
