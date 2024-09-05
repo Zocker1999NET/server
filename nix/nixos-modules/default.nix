@@ -28,6 +28,7 @@ in
     ./frontend
     ./improvedDefaults
     ./packages
+    (lib.importFlakeMod ./router)
     ./vmDisko
     # files
     ./autoUnfree.nix
