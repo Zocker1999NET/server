@@ -52,6 +52,10 @@ in
           intel-media-sdk
           libvdpau-va-gl
         ];
+        extraPackages32 = with pkgs.pkgsi686Linux; [
+          # limited set for Steam & co.
+          intel-media-driver
+        ];
       };
     })
 
