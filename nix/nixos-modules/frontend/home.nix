@@ -91,6 +91,11 @@ in
     bash = {
       enable = true;
       enableCompletion = true;
+      historyControl = [
+        "ignoredups"
+        "erasedups"
+        "ignorespace"
+      ];
     };
 
     bat = {
