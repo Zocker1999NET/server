@@ -140,17 +140,18 @@ in
 
     git = {
       enable = true;
-      extraConfig = {
-        diff = {
-          tool = "vscode";
+      extraConfig =
+        {
+          diff = {
+            tool = "vscode";
+          };
+          difftool = {
+            prompt = false;
+          };
+          "difftool \"vscode\"" = {
+            cmd = "${lib.getExe config.programs.vscode.package} --wait --diff $LOCAL $REMOTE";
+          };
         };
-        difftool = {
-          prompt = false;
-        };
-        "difftool \"vscode\"" = {
-          cmd = "${lib.getExe config.programs.vscode.package} --wait --diff $LOCAL $REMOTE";
-        };
-      };
       userName = "Felix Stupp";
       userEmail = "felix.stupp@banananet.work";
       signing = {
