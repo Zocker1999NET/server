@@ -36,7 +36,6 @@ in
     ./options.nix
     ./privacy.nix
     ./secrix.nix
-    ./sshSecurity.nix
     ./useable.nix
     ./vmCommon.nix
   ];

@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -9,9 +8,9 @@ let
 in
 {
 
-  options = {
+  options.services.openssh = {
 
-    services.openssh.authorizedKeysOnly = lib.mkEnableOption ''
+    authorizedKeysOnly = lib.mkEnableOption ''
       only logins using ssh keys (improving over default settings)
     '';
 
