@@ -66,6 +66,7 @@ in
     keepassxc
     krita
     wireshark
+    tor-browser
     trilium-desktop
     xournalpp
     yubikey-manager
