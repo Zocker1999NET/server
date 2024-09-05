@@ -27,27 +27,27 @@ in
 
     documentation = {
 
-      enable = true;
-      dev.enable = true;
-      doc.enable = true;
-      info.enable = true;
+      enable = lib.mkDefault true;
+      dev.enable = lib.mkDefault true;
+      doc.enable = lib.mkDefault true;
+      info.enable = lib.mkDefault true;
 
       man = {
 
-        enable = true;
+        enable = lib.mkDefault true;
         generateCaches = true;
 
-        man-db.enable = false; # see mandoc
+        man-db.enable = lib.mkDefault false; # see mandoc
 
         mandoc = {
-          enable = true;
+          enable = lib.mkDefault true;
         };
 
       };
 
       nixos = {
-        enable = true;
-        includeAllModules = true;
+        enable = lib.mkDefault true;
+        includeAllModules = lib.mkDefault true;
       };
 
     };
