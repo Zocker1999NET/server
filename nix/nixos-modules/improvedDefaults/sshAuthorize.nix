@@ -56,8 +56,9 @@ in
         in
         {
 
+          # TODO mkOverride until https://github.com/NixOS/nixpkgs/pull/339786
           services.openssh.settings.PermitRootLogin =
-            if isRootAuthed then "prohibit-password" else lib.mkDefault "no";
+            if isRootAuthed then lib.mkOverride 99 "prohibit-password" else lib.mkDefault "no";
 
           users.users.root.openssh.authorizedKeys.keys = lib.mkIf doRootAuth (
             lib.mkDefault myOpts.sshPublicKeys
