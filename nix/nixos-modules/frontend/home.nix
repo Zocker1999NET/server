@@ -50,6 +50,9 @@ in
     sptlrx # spotify subtitle generator
     # TODO server with: your_spotify
 
+    # dev
+    nix-output-monitor
+
     # tools
     fzf # fuzzy finder  # TODO integrate better: https://home-manager-options.extranix.com/?query=fzf&release=master
     ipv6calc # IPv4/IPv6 swiss kit
