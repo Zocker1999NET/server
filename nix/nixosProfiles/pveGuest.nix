@@ -46,24 +46,6 @@ in
 
     boot = {
 
-      # TODO duplicated by imported profile from nixpkgs
-      initrd = {
-        availableKernelModules = [
-          "9p"
-          "9pnet_virtio"
-          "virtio_blk"
-          "virtio_mmio"
-          "virtio_net"
-          "virtio_pci"
-          "virtio_scsi"
-        ];
-        kernelModules = [
-          "virtio_balloon"
-          "virtio_console"
-          "virtio_gpu"
-          "virtio_rng"
-        ];
-      };
 
       kernelParams = [
         # show kernel log on serial
