@@ -52,7 +52,10 @@ let
     assert builtins.isString sep;
     assert builtins.isAttrs attr;
     assert builtins.isFunction mapFun;
-    builtins.concatStringsSep sep (filterMapAttrsToList attr (x: x.enable) mapFun);
+    lib.trivial.pipe mapFun [
+      (filterMapAttrsToList attr (x: x.enable))
+      (builtins.concatStringsSep sep)
+    ];
   mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };
   # TODO think about to make it just readOnly, requiring defaultText
   mkOutputOption =
@@ -90,7 +93,10 @@ let
       ];
       goodChars = map (x: "") badChars;
     in
-    mac: builtins.replaceStrings badChars goodChars mac;
+    mac:
+    lib.trivial.pipe mac [
+      (builtins.replaceStrings badChars goodChars)
+    ];
   protoList = [
     "dccp"
     "sctp"
