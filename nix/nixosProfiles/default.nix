@@ -7,4 +7,5 @@ in
   blade = importProfile ./blade.nix;
   common = importProfile ./common.nix;
   pveGuest = importProfile ./pveGuest.nix;
+  pveGuestHwSupport.nix = importProfile ./pveGuestHwSupport.nix;
 }
