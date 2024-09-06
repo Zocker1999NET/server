@@ -46,6 +46,8 @@ in
 
     boot = {
 
+      # TODO probably until https://github.com/NixOS/nixpkgs/issues/340086
+      initrd.availableKernelModules = lib.singleton "virtio_iommu";
 
       kernelParams = [
         # show kernel log on serial
