@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   outputs,
   ...
 }@flakeArg:
@@ -24,6 +25,8 @@ let
       # expose module cleanly
       _banananetwork_systemArgs = systemArgs;
     };
+  inherit (lib) importFlakeMod;
+  importSystem = path: nixosSystem (importFlakeMod path);
 in
 {
 
