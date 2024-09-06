@@ -587,6 +587,7 @@ class ProtocolConfig:
 )
 class InterfaceConfig:
     ifname: IfName
+    macs_direct: Sequence[MACAddress]
     protocols: Sequence[ProtocolConfig]
 
     @cached_property
@@ -594,6 +595,7 @@ class InterfaceConfig:
         return tuple(
             set(
                 chain(
+                    self.macs_direct,
                     (mac for proto in self.protocols for mac in proto.exposed.keys()),
                     (mac for proto in self.protocols for mac in proto.forwarded.keys()),
                 )
@@ -602,11 +604,21 @@ class InterfaceConfig:
 
     @staticmethod
     def from_json(ifname: str, obj: JsonObj) -> InterfaceConfig:
-        assert set(obj.keys()) <= set(("ports",))
+        assert set(obj.keys()) <= set(
+            (
+                "macs",
+                "ports",
+            )
+        )
+        macs = obj.get("macs")
+        assert macs == None or isinstance(macs, Sequence)
         ports = obj.get("ports")
         assert ports == None or isinstance(ports, Mapping)
         return InterfaceConfig(
             ifname=IfName(ifname),
+            macs_direct=tuple()
+            if macs == None
+            else tuple(to_mac(cast(str, mac)) for mac in macs),  # type: ignore[union-attr]
             protocols=tuple()
             if ports == None
             else tuple(

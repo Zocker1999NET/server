@@ -871,7 +871,10 @@ in
           nftTable = "nixos-fw";
           interfaces = {
             ${wanName} = { };
-            ${lanName}.ports = protoPortCfg cfg.lanDevices;
+            ${lanName} = {
+              macs = lib.mapAttrsToList (_: dev: dev.mac) cfg.lanDevices;
+              ports = protoPortCfg cfg.lanDevices;
+            };
           };
         };
     };
