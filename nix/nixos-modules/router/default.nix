@@ -54,6 +54,7 @@ let
     assert builtins.isFunction mapFun;
     lib.trivial.pipe mapFun [
       (filterMapAttrsToList attr (x: x.enable))
+      (builtins.filter (x: x != null && x != ""))
       (builtins.concatStringsSep sep)
     ];
   mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };
