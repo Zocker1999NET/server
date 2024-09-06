@@ -51,7 +51,7 @@ in
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAEaWqcgeNh3BjyDXCg0DQfbuPg5VLVYlt8ucYu7VZNr zocker@x13yz 2024-07-04"
       ];
 
-      userName = "zocker";
+      userName = lib.mkDefault "zocker";
 
       # defaults for other modules, derived from them above
 
