@@ -1,6 +1,7 @@
-{ ... }@flakeArg:
+{ lib, ... }@flakeArg:
 let
   importProfile = path: import path;
+  importProfileMod = lib.importFlakeMod;
 in
 {
   blade = importProfile ./blade.nix;
