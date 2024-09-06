@@ -53,6 +53,8 @@ in
           isRootAuthed = isUserAuthed users."root";
           doRootAuth = !isNonRootAuthed;
           otherUserExists = nonRootUsers != [ ];
+          # explicit installer check required because installer set ups user "nixos" for installation
+          isInstaller = config.system.nixos.variant_id == "installer";
         in
         {
 
@@ -66,7 +68,7 @@ in
 
           # warn only if other users exist -> multi-user machine
           # compared to "root"-only systems (e.g. installer, embedded systems)
-          warnings = lib.mkIf (doRootAuth && otherUserExists) [
+          warnings = lib.mkIf (doRootAuth && otherUserExists && !isInstaller) [
             ''
               root’s authorized keys were automatically configured
               because no other user with wheel permission has authorized keys configured
