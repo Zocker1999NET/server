@@ -13,13 +13,16 @@ let
         outputs.nixosModules.withDepends
         { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
       ] ++ modules;
-    in
-    nixpkgs.lib.nixosSystem {
-      modules = modsExtended;
-      specialArgs = {
-        flake = flakeArg;
+      systemArgs = {
+        modules = modsExtended;
+        # be aware: specialArgs will break in my nixos integration tests
+        inherit system;
       };
-      inherit system;
+    in
+    nixpkgs.lib.nixosSystem systemArgs
+    // {
+      # expose module cleanly
+      _banananetwork_systemArgs = systemArgs;
     };
 in
 {
