@@ -81,6 +81,10 @@ in
       git.enable = true;
 
       ssh = {
+        extraConfig = ''
+          Host *
+            VerifyHostKeyDNS yes
+        '';
         hostKeyAlgorithms = [
           "ssh-ed25519"
           "ssh-rsa"
