@@ -97,6 +97,7 @@ let
     mac:
     lib.trivial.pipe mac [
       (builtins.replaceStrings badChars goodChars)
+      lib.strings.toLower
     ];
   protoList = [
     "dccp"
