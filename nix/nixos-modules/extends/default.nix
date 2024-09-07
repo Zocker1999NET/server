@@ -6,5 +6,6 @@
     ./openssh.nix
     ./podman.nix
     ./printing.nix
+    ./tailscale.nix
   ];
 }
