@@ -389,9 +389,6 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             values=(data.ip.network.compressed,),
         )
         if data.ip in IPv6_ULA_NET:
-            logger.debug(
-                f"{self.config.ifname}: only updated {set_prefix}net for changes in fc00::/7"
-            )
             return
         yield NftUpdate(
             obj_type="set",
