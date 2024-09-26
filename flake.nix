@@ -79,7 +79,7 @@
           lib = inputs.nixpkgs.lib;
           inherit (lib.asserts) assertMsg;
         in
-        {
+        rec {
           # ({?} -> ?) -> {?} -> ?
           # gives a function access to its own return value
           # by adding it to its first argument (assuming that’s an attrset)
@@ -97,7 +97,8 @@
               result = outputs;
             in
             result;
-          importFlakeMod = path: outputs.libAnchors.reflect (import path) flakeArg;
+          initFlakeMod = mod: reflect mod flakeArg;
+          importFlakeMod = path: initFlakeMod (import path);
         };
 
       nixosConfigurations = importFlakeMod ./nix/nixos;
