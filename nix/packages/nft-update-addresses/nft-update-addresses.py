@@ -388,8 +388,6 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             operation=op,
             values=(data.ip.network.compressed,),
         )
-        if data.ip in IPv6_ULA_NET:
-            return
         yield NftUpdate(
             obj_type="set",
             obj_name=f"all_ipv{data.ip.version}addr",
@@ -402,6 +400,9 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             operation=op,
             values=(data.ip.ip.compressed,),
         )
+        # ignore unique link locals for prefix-dependent destinations
+        if data.ip in IPv6_ULA_NET:
+            return
         if data.ip.version != 6:
             return
         slaacs = {mac: slaac_eui48(data.ip.network, mac) for mac in self.config.macs}
