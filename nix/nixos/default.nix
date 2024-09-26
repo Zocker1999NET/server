@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  flake,
   outputs,
   ...
 }@flakeArg:
@@ -10,6 +11,11 @@ let
     { modules, system }:
     let
       modsExtended = [
+        {
+          system.configurationRevision = toString (
+            flake.shortRev or flake.dirtyShortRev or flake.lastModified or "unknown"
+          );
+        }
         outputs.nixosModules.myOptions
         outputs.nixosModules.withDepends
         { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
