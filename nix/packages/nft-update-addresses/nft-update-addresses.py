@@ -376,6 +376,12 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
         op = NftValueOperation.if_deleted(data.deleted)
         yield NftUpdate(
             obj_type="set",
+            obj_name=f"all_ipv{data.ip.version}net",
+            operation=op,
+            values=(f"{self.config.ifname} . {data.ip.network.compressed}",),
+        )
+        yield NftUpdate(
+            obj_type="set",
             obj_name=f"{set_prefix}net",
             operation=op,
             values=(data.ip.network.compressed,),
@@ -386,6 +392,12 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                 f"{self.config.ifname}: only updated {set_prefix}net for changes in fc00::/7"
             )
             return
+        yield NftUpdate(
+            obj_type="set",
+            obj_name=f"all_ipv{data.ip.version}addr",
+            operation=op,
+            values=(f"{self.config.ifname} . {data.ip.ip.compressed}",),
+        )
         yield NftUpdate(
             obj_type="set",
             obj_name=f"{set_prefix}addr",
@@ -688,6 +700,13 @@ def _gen_if_updater(
 
 
 def static_part_generation(config: AppConfig) -> None:
+    for ipV in [4, 6]:
+        print(gen_set_def("set", f"all_ipv{ipV}addr", f"ifname . ipv{ipV}_addr"))
+        print(
+            gen_set_def(
+                "set", f"all_ipv{ipV}net", f"ifname . ipv{ipV}_addr", "interval"
+            )
+        )
     dummy = IgnoreHandler()
     if_updater = _gen_if_updater(config.interfaces, dummy)
     for if_up in if_updater:
