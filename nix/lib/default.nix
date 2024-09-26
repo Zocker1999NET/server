@@ -13,6 +13,7 @@ nixpkgs.lib
   math = ./math.nix;
   modules = ./modules.nix;
   network = ./network.nix;
+  strings = ./strings.nix;
   types = ./types.nix;
   x-banananetwork-unused = ./unused.nix;
 }
