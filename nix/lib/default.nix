@@ -12,6 +12,8 @@ libO
 
   modules = libO.modules // lib.importFlakeMod ./modules.nix;
 
+  network = lib.importFlakeMod ./network.nix;
+
   types = libO.types // lib.importFlakeMod ./types.nix;
 
   x-banananetwork-unused = lib.importFlakeMod ./unused.nix;
