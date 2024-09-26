@@ -405,19 +405,20 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             return
         if data.ip.version != 6:
             return
+        op = NftValueOperation.if_emptied(data.deleted)
         slaacs = {mac: slaac_eui48(data.ip.network, mac) for mac in self.config.macs}
         for mac in self.config.macs:
             yield NftUpdate(
                 obj_type="set",
                 obj_name=f"{set_prefix}_{mac}",
-                operation=NftValueOperation.REPLACE,
+                operation=op,
                 values=(slaacs[mac].ip.compressed,),
             )
         for proto in self.config.protocols:
             yield NftUpdate(
                 obj_type="set",
                 obj_name=f"{set_prefix}exp{proto.protocol}",
-                operation=NftValueOperation.REPLACE,
+                operation=op,
                 values=tuple(
                     f"{slaacs[mac].ip.compressed} . {port}"
                     for mac, portList in proto.exposed.items()
@@ -427,7 +428,7 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             yield NftUpdate(
                 obj_type="map",
                 obj_name=f"{set_prefix}dnat{proto.protocol}",
-                operation=NftValueOperation.REPLACE,
+                operation=op,
                 values=tuple(
                     f"{wan} : {slaacs[mac].ip.compressed} . {lan}"
                     for mac, portMap in proto.forwarded.items()
@@ -491,10 +492,15 @@ class NftValueOperation(Enum):
     ADD = auto()
     DELETE = auto()
     REPLACE = auto()
+    EMPTY = auto()
 
     @staticmethod
     def if_deleted(b: bool) -> NftValueOperation:
         return NftValueOperation.DELETE if b else NftValueOperation.ADD
+
+    @staticmethod
+    def if_emptied(b: bool) -> NftValueOperation:
+        return NftValueOperation.EMPTY if b else NftValueOperation.REPLACE
 
     @property
     def set_operation(self) -> str:
@@ -513,6 +519,7 @@ class NftValueOperation(Enum):
     def flushes_values(self) -> bool:
         return self in {
             NftValueOperation.REPLACE,
+            NftValueOperation.EMPTY,
         }
 
 
