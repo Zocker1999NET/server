@@ -8,6 +8,8 @@ libO
 
   # groups
 
+  math = (libO.math or { }) // lib.importFlakeMod ./math.nix;
+
   modules = libO.modules // lib.importFlakeMod ./modules.nix;
 
   types = libO.types // lib.importFlakeMod ./types.nix;
