@@ -10,6 +10,7 @@ nixpkgs.lib
 
 # groups
 // mapAttrs (autoExtend nixpkgs.lib) {
+  attrsets = ./attrsets.nix;
   math = ./math.nix;
   modules = ./modules.nix;
   network = ./network.nix;
