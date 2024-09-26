@@ -496,6 +496,25 @@ class NftValueOperation(Enum):
     def if_deleted(b: bool) -> NftValueOperation:
         return NftValueOperation.DELETE if b else NftValueOperation.ADD
 
+    @property
+    def set_operation(self) -> str:
+        assert self.passes_values
+        return "destroy" if self == NftValueOperation.DELETE else "add"
+
+    @property
+    def passes_values(self) -> bool:
+        return self in {
+            NftValueOperation.ADD,
+            NftValueOperation.REPLACE,
+            NftValueOperation.DELETE,
+        }
+
+    @property
+    def flushes_values(self) -> bool:
+        return self in {
+            NftValueOperation.REPLACE,
+        }
+
 
 @define(
     frozen=True,
@@ -511,10 +530,10 @@ class NftUpdate:
         lines = []
         # inet family is the only which supports shared IPv4 & IPv6 entries
         obj_id = f"inet {table} {self.obj_name}"
-        if self.operation == NftValueOperation.REPLACE:
+        if self.operation.flushes_values:
             lines.append(f"flush {self.obj_type} {obj_id}")
-        if len(self.values) > 0:
-            op_str = "destroy" if self.operation == NftValueOperation.DELETE else "add"
+        if self.operation.passes_values and len(self.values) > 0:
+            op_str = self.operation.set_operation
             values_str = ", ".join(self.values)
             lines.append(f"{op_str} element {obj_id} {{ {values_str} }}")
         return "\n".join(lines)
