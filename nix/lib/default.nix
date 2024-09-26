@@ -11,6 +11,7 @@ nixpkgs.lib
 # groups
 // mapAttrs (autoExtend nixpkgs.lib) {
   attrsets = ./attrsets.nix;
+  backport = ./backport.nix;
   lists = ./lists.nix;
   math = ./math.nix;
   modules = ./modules.nix;
