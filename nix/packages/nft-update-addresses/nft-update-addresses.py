@@ -271,17 +271,10 @@ class IpAddressUpdate:
         )
 
 
-def monitor_ip(
+def kickoff_ip(
     ip_cmd: list[str],
     handler: UpdateHandler[IpAddressUpdate],
-) -> NoReturn:
-    proc = subprocess.Popen(
-        ip_cmd + ["-o", "monitor", "address"],
-        stdout=subprocess.PIPE,
-        text=True,
-    )
-    # initial kickoff (AFTER starting monitoring, to not miss any update)
-    logger.info("kickoff IP monitoring with current data")
+) -> None:
     res = subprocess.run(
         ip_cmd + ["-o", "address", "show"],
         check=True,
@@ -295,7 +288,21 @@ def monitor_ip(
         update = IpAddressUpdate.parse_line(line)
         logger.debug(f"pass IP update: {update!r}")
         handler.update(update)
-    logger.info("loading kickoff finished; start regular monitoring")
+
+
+def monitor_ip(
+    ip_cmd: list[str],
+    handler: UpdateHandler[IpAddressUpdate],
+) -> NoReturn:
+    proc = subprocess.Popen(
+        ip_cmd + ["-o", "monitor", "address"],
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+    # initial kickoff (AFTER starting monitoring, to not miss any update)
+    logger.info("kickoff IP monitoring with current data")
+    kickoff_ip(ip_cmd, handler)
+    logger.info("start regular monitoring")
     while True:
         rc = proc.poll()
         if rc != None:
