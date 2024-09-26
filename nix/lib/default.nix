@@ -1,24 +1,28 @@
 { inputs, lib, ... }@flakeArg:
 let
-  nixpkgs = inputs.nixpkgs;
-  libO = nixpkgs.lib;
+  inherit (inputs) nixpkgs;
+  inherit (builtins) isAttrs mapAttrs;
+  inherit (lib) autoExtend importFlakeMod;
 in
-libO
+
+# be a drop-in replacement
+nixpkgs.lib
+
+# groups
+// mapAttrs (autoExtend nixpkgs.lib) {
+  math = ./math.nix;
+  modules = ./modules.nix;
+  network = ./network.nix;
+  types = ./types.nix;
+  x-banananetwork-unused = ./unused.nix;
+}
+
+# functions
 // {
 
-  # groups
-
-  math = (libO.math or { }) // lib.importFlakeMod ./math.nix;
-
-  modules = libO.modules // lib.importFlakeMod ./modules.nix;
-
-  network = lib.importFlakeMod ./network.nix;
-
-  types = libO.types // lib.importFlakeMod ./types.nix;
-
-  x-banananetwork-unused = lib.importFlakeMod ./unused.nix;
-
-  # functions
+  autoExtend =
+    upstream: name: obj:
+    (upstream.${name} or { }) // (if isAttrs obj then obj else importFlakeMod obj);
 
   supportedSystems = builtins.attrNames nixpkgs.legacyPackages;
 
