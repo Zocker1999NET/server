@@ -214,6 +214,8 @@ class IpFlag(Flag):
         return flags
 
 
+IPv6_ULA_NET = IPv6Network("fc00::/7")  # because ip.is_private is wrong
+
 IP_MON_PATTERN = re.compile(
     r"""(?x)^
         (?P<deleted>[Dd]eleted\s+)?
@@ -386,8 +388,7 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             operation=op,
             values=(data.ip.network.compressed,),
         )
-        link_local_space = IPv6Network("fc00::/7")  # because ip.is_private is wrong
-        if data.ip in link_local_space:
+        if data.ip in IPv6_ULA_NET:
             logger.debug(
                 f"{self.config.ifname}: only updated {set_prefix}net for changes in fc00::/7"
             )
