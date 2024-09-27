@@ -648,12 +648,7 @@ class InterfaceConfig:
 
     @staticmethod
     def from_json(ifname: str, obj: JsonObj) -> InterfaceConfig:
-        assert set(obj.keys()) <= set(
-            (
-                "macs",
-                "ports",
-            )
-        )
+        assert set(obj.keys()) <= set(("macs", "ports"))
         macs = obj.get("macs")
         assert macs == None or isinstance(macs, Sequence)
         ports = obj.get("ports")
