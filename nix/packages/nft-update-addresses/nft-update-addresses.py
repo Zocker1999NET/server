@@ -426,6 +426,16 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                 ),
             )
             yield NftUpdate(
+                obj_type="set",
+                obj_name=f"{set_prefix}dnat{proto.protocol}-allow",
+                operation=op,
+                values=tuple(
+                    f"{slaacs[mac].ip.compressed} . {lan}"
+                    for mac, portMap in proto.forwarded.items()
+                    for _, lan in portMap.items()
+                ),
+            )
+            yield NftUpdate(
                 obj_type="map",
                 obj_name=f"{set_prefix}dnat{proto.protocol}",
                 operation=op,
@@ -452,6 +462,13 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                     gen_set_def(
                         "set",
                         f"{set_prefix}exp{proto.protocol}",
+                        f"{addr_type} . inet_service",
+                    )
+                )
+                output.append(
+                    gen_set_def(
+                        "set",
+                        f"{set_prefix}dnat{proto.protocol}-allow",
                         f"{addr_type} . inet_service",
                     )
                 )
