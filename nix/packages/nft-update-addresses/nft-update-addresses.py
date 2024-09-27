@@ -32,6 +32,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+from string import Template
 import subprocess
 import threading
 from threading import (
@@ -445,6 +446,17 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                     for wan, lan in portMap.items()
                 ),
             )
+        slaacs_sub = {
+            f"ipv6_{self.config.ifname}_{mac}": addr.ip.compressed
+            for mac, addr in slaacs.items()
+        }
+        for one_set in self.config.sets:
+            yield NftUpdate(
+                obj_type=one_set.set_type,
+                obj_name=one_set.name,
+                operation=op,
+                values=tuple(one_set.sub_elements(slaacs_sub)),
+            )
 
     def gen_set_definitions(self) -> str:
         output = []
@@ -479,6 +491,7 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                         f"inet_service : {addr_type} . inet_service",
                     )
                 )
+        output.extend(s.definition for s in self.config.sets)
         return "\n".join(output)
 
 
@@ -595,8 +608,7 @@ class NftUpdateHandler(UpdateStackHandler[NftUpdate]):
 class SystemdHandler(UpdateHandler[object]):
     def update(self, data: object) -> None:
         # TODO improve status updates
-        # daemon.notify("READY=1\nSTATUS=Updated successfully.\n")
-        daemon.notify("READY=1\n")
+        daemon.notify("READY=1\nSTATUS=operating …\n")
 
     def update_stack(self, data: Sequence[object]) -> None:
         self.update(None)
@@ -606,39 +618,78 @@ class SystemdHandler(UpdateHandler[object]):
     frozen=True,
     kw_only=True,
 )
-class ProtocolConfig:
-    protocol: NftProtocol
-    exposed: Mapping[MACAddress, Sequence[Port]]
-    "only when direct public IPs are available"
-    forwarded: Mapping[MACAddress, Mapping[Port, Port]]  # wan -> lan
-    "i.e. DNAT"
+class SetConfig:
+    ifname: str
+    set_type: str
+    name: str
+    data_type: str
+    flags: str | None
+    elements: Sequence[Template] = field()
 
-    @staticmethod
-    def from_json(protocol: str, obj: JsonObj) -> ProtocolConfig:
-        assert set(obj.keys()) <= set(("exposed", "forwarded"))
-        exposed_raw = obj.get("exposed")
-        exposed = defaultdict[MACAddress, list[Port]](list)
-        if exposed_raw is not None:
-            assert isinstance(exposed_raw, Sequence)
-            for fwd in exposed_raw:
-                assert isinstance(fwd, Mapping)
-                dest = to_mac(fwd["dest"])  # type: ignore[arg-type]
-                port = to_port(fwd["port"])  # type: ignore[arg-type]
-                exposed[dest].append(port)
-        forwarded_raw = obj.get("forwarded")
-        forwarded = defaultdict[MACAddress, dict[Port, Port]](dict)
-        if forwarded_raw is not None:
-            assert isinstance(forwarded_raw, Sequence)
-            for smap in forwarded_raw:
-                assert isinstance(smap, Mapping)
-                dest = to_mac(smap["dest"])  # type: ignore[arg-type]
-                wanPort = to_port(smap["wanPort"])  # type: ignore[arg-type]
-                lanPort = to_port(smap["lanPort"])  # type: ignore[arg-type]
-                forwarded[dest][wanPort] = lanPort
-        return ProtocolConfig(
-            protocol=NftProtocol(protocol),
-            exposed=exposed,
-            forwarded=forwarded,
+    @elements.validator
+    def __elem_validate(self, attribute: str, value: Sequence[Template]) -> None:
+        regex = self.__supported_vars
+        for temp in self.elements:
+            for var in temp.get_identifiers():
+                m = regex.search(var)
+                if m == None:
+                    raise ValueError(
+                        f"set {self.name!r} for if {self.ifname!r} uses invalid template variable {var!r}"
+                    )
+
+    @property
+    def __supported_vars(self) -> re.Pattern[str]:
+        return re.compile(rf"^ipv6_{re.escape(self.ifname)}_(?P<mac>[0-9a-f]{{12}})$")
+
+    @property
+    def embedded_macs(self) -> Iterable[MACAddress]:
+        regex = self.__supported_vars
+        for temp in self.elements:
+            for var in temp.get_identifiers():
+                m = regex.search(var)
+                assert m != None
+                yield to_mac(m.group("mac"))  # type: ignore[union-attr]
+
+    @property
+    def definition(self) -> str:
+        return gen_set_def(
+            set_type=self.set_type,
+            name=self.name,
+            data_type=self.data_type,
+            flags=self.flags,
+            # non matching rules at the beginning (in static part)
+            # to verify that all supplied patterns are correct
+            # undefined address should be safest to use here, because:
+            # - as src, it is valid, but if one can spoof this one, it can spoof other addresses (and routers should have simple anti-spoof mechanisms in place)
+            # - as dest, it is invalid
+            # - as NAT target, it is invalid
+            elements=self.sub_elements(defaultdict(lambda: "::")),
+        )
+
+    def sub_elements(self, substitutions: Mapping[str, str]) -> Sequence[str]:
+        return tuple(elem.substitute(substitutions) for elem in self.elements)
+
+    @classmethod
+    def from_json(cls, *, ifname: str, name: str, obj: JsonObj) -> SetConfig:
+        assert set(obj.keys()) <= set(("set_type", "name", "type", "flags", "elements"))
+        set_type = obj["set_type"]
+        assert isinstance(set_type, str)
+        data_type = obj["type"]
+        assert isinstance(data_type, str)
+        flags = obj.get("flags")
+        assert flags == None or isinstance(flags, str)
+        elements = obj["elements"]
+        assert isinstance(elements, Sequence) and all(
+            isinstance(elem, str) for elem in elements
+        )
+        templates = tuple(map(lambda s: Template(cast(str, s)), elements))
+        return SetConfig(
+            set_type=set_type,
+            ifname=ifname,
+            name=name,
+            data_type=data_type,
+            flags=cast(None | str, flags),
+            elements=templates,
         )
 
 
@@ -650,6 +701,7 @@ class InterfaceConfig:
     ifname: IfName
     macs_direct: Sequence[MACAddress]
     protocols: Sequence[ProtocolConfig]
+    sets: Sequence[SetConfig]
 
     @cached_property
     def macs(self) -> Sequence[MACAddress]:
@@ -659,17 +711,20 @@ class InterfaceConfig:
                     self.macs_direct,
                     (mac for proto in self.protocols for mac in proto.exposed.keys()),
                     (mac for proto in self.protocols for mac in proto.forwarded.keys()),
+                    (mac for one_set in self.sets for mac in one_set.embedded_macs),
                 )
             )
         )
 
     @staticmethod
     def from_json(ifname: str, obj: JsonObj) -> InterfaceConfig:
-        assert set(obj.keys()) <= set(("macs", "ports"))
+        assert set(obj.keys()) <= set(("macs", "ports", "sets"))
         macs = obj.get("macs")
         assert macs == None or isinstance(macs, Sequence)
         ports = obj.get("ports")
         assert ports == None or isinstance(ports, Mapping)
+        sets = obj.get("sets")
+        assert sets == None or isinstance(sets, Mapping)
         return InterfaceConfig(
             ifname=IfName(ifname),
             macs_direct=tuple()
@@ -681,6 +736,9 @@ class InterfaceConfig:
                 ProtocolConfig.from_json(proto, cast(JsonObj, proto_cfg))
                 for proto, proto_cfg in ports.items()  # type: ignore[union-attr]
             ),
+            sets=tuple()
+            if sets == None
+            else tuple(SetConfig.from_json(ifname=ifname, name=name, obj=cast(JsonObj, one_set)) for name, one_set in sets.items()),  # type: ignore[union-attr]
         )
 
 
