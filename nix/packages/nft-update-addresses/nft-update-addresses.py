@@ -421,37 +421,6 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                 operation=op,
                 values=(slaacs[mac].ip.compressed,),
             )
-        for proto in self.config.protocols:
-            yield NftUpdate(
-                obj_type="set",
-                obj_name=f"{set_prefix}exp{proto.protocol}",
-                operation=op,
-                values=tuple(
-                    f"{slaacs[mac].ip.compressed} . {port}"
-                    for mac, portList in proto.exposed.items()
-                    for port in portList
-                ),
-            )
-            yield NftUpdate(
-                obj_type="set",
-                obj_name=f"{set_prefix}dnat{proto.protocol}-allow",
-                operation=op,
-                values=tuple(
-                    f"{slaacs[mac].ip.compressed} . {lan}"
-                    for mac, portMap in proto.forwarded.items()
-                    for _, lan in portMap.items()
-                ),
-            )
-            yield NftUpdate(
-                obj_type="map",
-                obj_name=f"{set_prefix}dnat{proto.protocol}",
-                operation=op,
-                values=tuple(
-                    f"{wan} : {slaacs[mac].ip.compressed} . {lan}"
-                    for mac, portMap in proto.forwarded.items()
-                    for wan, lan in portMap.items()
-                ),
-            )
         slaacs_sub = {
             f"ipv6_{self.config.ifname}_{mac}": addr.ip.compressed
             for mac, addr in slaacs.items()
@@ -475,28 +444,6 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                 continue
             for mac in self.config.macs:
                 output.append(gen_set_def("set", f"{set_prefix}_{mac}", addr_type))
-            for proto in self.config.protocols:
-                output.append(
-                    gen_set_def(
-                        "set",
-                        f"{set_prefix}exp{proto.protocol}",
-                        f"{addr_type} . inet_service",
-                    )
-                )
-                output.append(
-                    gen_set_def(
-                        "set",
-                        f"{set_prefix}dnat{proto.protocol}-allow",
-                        f"{addr_type} . inet_service",
-                    )
-                )
-                output.append(
-                    gen_set_def(
-                        "map",
-                        f"{set_prefix}dnat{proto.protocol}",
-                        f"inet_service : {addr_type} . inet_service",
-                    )
-                )
         output.extend(s.definition for s in self.config.sets)
         return "\n".join(output)
 
@@ -706,7 +653,6 @@ class SetConfig:
 class InterfaceConfig:
     ifname: IfName
     macs_direct: Sequence[MACAddress]
-    protocols: Sequence[ProtocolConfig]
     sets: Sequence[SetConfig]
 
     @cached_property
@@ -715,8 +661,6 @@ class InterfaceConfig:
             set(
                 chain(
                     self.macs_direct,
-                    (mac for proto in self.protocols for mac in proto.exposed.keys()),
-                    (mac for proto in self.protocols for mac in proto.forwarded.keys()),
                     (mac for one_set in self.sets for mac in one_set.embedded_macs),
                 )
             )
@@ -724,11 +668,9 @@ class InterfaceConfig:
 
     @staticmethod
     def from_json(ifname: str, obj: JsonObj) -> InterfaceConfig:
-        assert set(obj.keys()) <= set(("macs", "ports", "sets"))
+        assert set(obj.keys()) <= set(("macs", "sets"))
         macs = obj.get("macs")
         assert macs == None or isinstance(macs, Sequence)
-        ports = obj.get("ports")
-        assert ports == None or isinstance(ports, Mapping)
         sets = obj.get("sets")
         assert sets == None or isinstance(sets, Mapping)
         return InterfaceConfig(
@@ -736,12 +678,6 @@ class InterfaceConfig:
             macs_direct=tuple()
             if macs == None
             else tuple(to_mac(cast(str, mac)) for mac in macs),  # type: ignore[union-attr]
-            protocols=tuple()
-            if ports == None
-            else tuple(
-                ProtocolConfig.from_json(proto, cast(JsonObj, proto_cfg))
-                for proto, proto_cfg in ports.items()  # type: ignore[union-attr]
-            ),
             sets=tuple()
             if sets == None
             else tuple(SetConfig.from_json(ifname=ifname, name=name, obj=cast(JsonObj, one_set)) for name, one_set in sets.items()),  # type: ignore[union-attr]
