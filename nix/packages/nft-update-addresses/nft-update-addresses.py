@@ -43,6 +43,7 @@ import traceback
 from typing import (
     Any,
     Iterable,
+    Literal,
     NewType,
     NoReturn,
     Protocol,
@@ -237,7 +238,18 @@ IP_MON_PATTERN = re.compile(
         (?P<flags>(?:(\S+)\s)*)  # (single spaces required for parser below to work correctly)
         (?:\S+)?  # random interface name repetition on inet
         [\\]\s+
-        .*  # lifetimes which are not interesting yet
+        valid_lft\s+(
+            (?P<valid_lft_sec>\d+)sec
+            |
+            (?P<valid_lft_forever>forever)
+        )
+        \s+
+        preferred_lft\s+(
+            (?P<preferred_lft_sec>\d+)sec
+            |
+            (?P<preferred_lft_forever>forever)
+        )
+        \s*
     $"""
 )
 
@@ -253,9 +265,11 @@ class IpAddressUpdate:
     ip: IPv4Interface | IPv6Interface
     scope: str
     flags: IpFlag
+    valid_lft: int | Literal["forever"]
+    preferred_lft: int | Literal["forever"]
 
-    @staticmethod
-    def parse_line(line: str) -> IpAddressUpdate:
+    @classmethod
+    def parse_line(cls, line: str) -> IpAddressUpdate:
         m = IP_MON_PATTERN.search(line)
         if not m:
             raise Exception(f"Could not parse ip monitor output: {line!r}")
@@ -277,7 +291,22 @@ class IpAddressUpdate:
             ip=ip,
             scope=grp["scope"],
             flags=flags,
+            valid_lft=cls.parse_lifetime(grp, "valid"),
+            preferred_lft=cls.parse_lifetime(grp, "preferred"),
         )
+
+    @staticmethod
+    def parse_lifetime(
+        grp: Mapping[str, str | None], name: str
+    ) -> int | Literal["forever"]:
+        if grp[f"{name}_lft_forever"] != None:
+            return "forever"
+        sec = grp[f"{name}_lft_sec"]
+        if sec == None:
+            raise ValueError(
+                "IP address update parse error: expected regex group for seconds != None (bug in code)"
+            )
+        return int(sec)  # type: ignore[arg-type]
 
 
 def kickoff_ip(
