@@ -224,6 +224,7 @@ class IpFlag(Flag):
 
 IPv6_ULA_NET = IPv6Network("fc00::/7")  # because ip.is_private is wrong
 
+# parses output of "ip -o address" / "ip -o monitor address"
 IP_MON_PATTERN = re.compile(
     r"""(?x)^
         (?P<deleted>[Dd]eleted\s+)?
