@@ -123,7 +123,7 @@ def is_port(port: int) -> TypeGuard[Port]:
 def slaac_eui48(prefix: IPv6Network, eui48: MACAddress) -> IPv6Interface:
     if prefix.prefixlen > 64:
         raise ValueError(
-            f"a SLAAC IPv6 address requires a CIDR of at least /64, got {prefix}"
+            f"a SLAAC IPv6 address requires a prefix with CIDR of at least /64, got {prefix}"
         )
     eui64 = eui48[0:6] + "fffe" + eui48[6:]
     modified = hex(int(eui64[0:2], 16) ^ 2)[2:].zfill(2) + eui64[2:]
