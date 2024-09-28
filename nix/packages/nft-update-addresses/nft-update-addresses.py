@@ -90,6 +90,7 @@ T = TypeVar("T", contravariant=True)
 
 MACAddress = NewType("MACAddress", str)
 """format: aabbccddeeff (lower-case, without separators)"""
+IPInterface: TypeAlias = IPv4Interface | IPv6Interface
 NftProtocol = NewType("NftProtocol", str)  # e.g. tcp, udp, …
 Port = NewType("Port", int)
 IfName = NewType("IfName", str)
@@ -263,7 +264,7 @@ class IpAddressUpdate:
     deleted: bool
     ifindex: int
     ifname: IfName
-    ip: IPv4Interface | IPv6Interface
+    ip: IPInterface
     scope: str
     flags: IpFlag
     valid_lft: int | Literal["forever"]
@@ -275,7 +276,7 @@ class IpAddressUpdate:
         if not m:
             raise Exception(f"Could not parse ip monitor output: {line!r}")
         grp = m.groupdict()
-        ip_type: type[IPv4Interface | IPv6Interface] = (
+        ip_type: type[IPInterface] = (
             IPv6Interface if grp["type"] == "inet6" else IPv4Interface
         )
         try:
@@ -415,11 +416,12 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
         # ignore unique link locals for SLAAC sets
         if data.ip.version != 6 or data.ip in IPv6_ULA_NET:
             return
+        # TODO track on IPv6 which are valid & so auto select for which prefix to apply rules for
         yield from self.__update_slaac_sets(data.ip, data.deleted)
 
     def __update_network_sets(
         self,
-        ip: IPv4Interface | IPv6Interface,
+        ip: IPInterface,
         deleted: bool = False,
     ) -> Iterable[NftUpdate]:
         set_prefix = f"{self.config.ifname}v{ip.version}"
