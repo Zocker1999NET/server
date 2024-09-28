@@ -344,13 +344,13 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
 
     def _update_stack(self, data: Sequence[IpAddressUpdate]) -> None:
         nft_updates = tuple(
-            chain.from_iterable(self.__gen_updates(single) for single in data)
+            chain.from_iterable(self.__parse_update(single) for single in data)
         )
         if len(nft_updates) <= 0:
             return
         self.nft_handler.update_stack(nft_updates)
 
-    def __gen_updates(self, data: IpAddressUpdate) -> Iterable[NftUpdate]:
+    def __parse_update(self, data: IpAddressUpdate) -> Iterable[NftUpdate]:
         if data.ifname != self.config.ifname:
             return
         if data.ip.is_link_local:
@@ -381,39 +381,52 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             else:
                 logger.info(f"{self.config.ifname}: discovered IP {data.ip}")
                 ip_list.append(data.ip)  # type: ignore[arg-type]
-        set_prefix = f"{self.config.ifname}v{data.ip.version}"
-        op = NftValueOperation.if_deleted(data.deleted)
+        yield from self.__update_network_sets(data.ip, data.deleted)
+        # ignore unique link locals for SLAAC sets
+        if data.ip.version != 6 or data.ip in IPv6_ULA_NET:
+            return
+        yield from self.__update_slaac_sets(data.ip, data.deleted)
+
+    def __update_network_sets(
+        self,
+        ip: IPv4Interface | IPv6Interface,
+        deleted: bool = False,
+    ) -> Iterable[NftUpdate]:
+        set_prefix = f"{self.config.ifname}v{ip.version}"
+        op = NftValueOperation.if_deleted(deleted)
         yield NftUpdate(
             obj_type="set",
-            obj_name=f"all_ipv{data.ip.version}net",
+            obj_name=f"all_ipv{ip.version}net",
             operation=op,
-            values=(f"{self.config.ifname} . {data.ip.network.compressed}",),
+            values=(f"{self.config.ifname} . {ip.network.compressed}",),
         )
         yield NftUpdate(
             obj_type="set",
             obj_name=f"{set_prefix}net",
             operation=op,
-            values=(data.ip.network.compressed,),
+            values=(ip.network.compressed,),
         )
         yield NftUpdate(
             obj_type="set",
-            obj_name=f"all_ipv{data.ip.version}addr",
+            obj_name=f"all_ipv{ip.version}addr",
             operation=op,
-            values=(f"{self.config.ifname} . {data.ip.ip.compressed}",),
+            values=(f"{self.config.ifname} . {ip.ip.compressed}",),
         )
         yield NftUpdate(
             obj_type="set",
             obj_name=f"{set_prefix}addr",
             operation=op,
-            values=(data.ip.ip.compressed,),
+            values=(ip.ip.compressed,),
         )
-        # ignore unique link locals for prefix-dependent destinations
-        if data.ip in IPv6_ULA_NET:
-            return
-        if data.ip.version != 6:
-            return
-        op = NftValueOperation.if_emptied(data.deleted)
-        slaacs = {mac: slaac_eui48(data.ip.network, mac) for mac in self.config.macs}
+
+    def __update_slaac_sets(
+        self,
+        ip: IPv6Interface,
+        deleted: bool = False,
+    ) -> Iterable[NftUpdate]:
+        set_prefix = f"{self.config.ifname}v{ip.version}"
+        op = NftValueOperation.if_emptied(deleted)
+        slaacs = {mac: slaac_eui48(ip.network, mac) for mac in self.config.macs}
         for mac in self.config.macs:
             yield NftUpdate(
                 obj_type="set",
