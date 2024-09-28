@@ -89,7 +89,7 @@ JsonObj: TypeAlias = Mapping[str, JsonVal]
 T = TypeVar("T", contravariant=True)
 
 MACAddress = NewType("MACAddress", str)
-# format: aabbccddeeff (lower-case, without separators)
+"""format: aabbccddeeff (lower-case, without separators)"""
 NftProtocol = NewType("NftProtocol", str)  # e.g. tcp, udp, …
 Port = NewType("Port", int)
 IfName = NewType("IfName", str)
