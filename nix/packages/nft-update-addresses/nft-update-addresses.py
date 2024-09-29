@@ -71,7 +71,7 @@ logger = logging.getLogger(__name__)
 
 def raise_and_exit(args: Any) -> None:
     Timer(0.01, os._exit, args=(1,)).start()
-    logging.error(repr(args.exc_value))
+    logger.error(repr(args.exc_value))
     logger.error(
         "\n".join(traceback.format_tb(args.exc_traceback))
         if args.exc_traceback != None
