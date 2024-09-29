@@ -856,7 +856,7 @@ def service_execution(args: argparse.Namespace, config: AppConfig) -> NoReturn:
     )
     if_updater = _gen_if_updater(config.interfaces, nft_burst_handler)
     burst_handler = UpdateBurstHandler[IpAddressUpdate](
-        burst_interval=0.5,
+        burst_interval=0.1,
         handler=if_updater,
     )
     monitor_ip(shlex.split(args.ip_command), burst_handler)
