@@ -859,7 +859,8 @@ def service_execution(args: argparse.Namespace, config: AppConfig) -> NoReturn:
         burst_interval=0.1,
         handler=if_updater,
     )
-    monitor_ip(shlex.split(args.ip_command), burst_handler)
+    ip_cmd = shlex.split(args.ip_command)
+    monitor_ip(ip_cmd, burst_handler)
 
 
 def setup_logging(args: Any) -> None:
