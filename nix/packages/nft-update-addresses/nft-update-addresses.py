@@ -12,6 +12,10 @@ from collections.abc import (
     Mapping,
     Sequence,
 )
+from datetime import (
+    datetime,
+    timedelta,
+)
 from enum import (
     Enum,
     Flag,
@@ -267,8 +271,8 @@ class IpAddressUpdate:
     ip: IPInterface
     scope: str
     flags: IpFlag
-    valid_lft: int | Literal["forever"]
-    preferred_lft: int | Literal["forever"]
+    valid_until: datetime
+    preferred_until: datetime
 
     @classmethod
     def parse_line(cls, line: str) -> IpAddressUpdate:
@@ -293,22 +297,20 @@ class IpAddressUpdate:
             ip=ip,
             scope=grp["scope"],
             flags=flags,
-            valid_lft=cls.parse_lifetime(grp, "valid"),
-            preferred_lft=cls.parse_lifetime(grp, "preferred"),
+            valid_until=cls.__parse_lifetime(grp, "valid_lft"),
+            preferred_until=cls.__parse_lifetime(grp, "preferred_lft"),
         )
 
     @staticmethod
-    def parse_lifetime(
-        grp: Mapping[str, str | None], name: str
-    ) -> int | Literal["forever"]:
-        if grp[f"{name}_lft_forever"] != None:
-            return "forever"
-        sec = grp[f"{name}_lft_sec"]
-        if sec == None:
+    def __parse_lifetime(grp: Mapping[str, str | None], name: str) -> datetime:
+        if grp[f"{name}_forever"] != None:
+            return datetime.now() + timedelta(days=30)
+        sec = grp[f"{name}_sec"]
+        if sec is None:
             raise ValueError(
                 "IP address update parse error: expected regex group for seconds != None (bug in code)"
             )
-        return int(sec)  # type: ignore[arg-type]
+        return datetime.now() + timedelta(seconds=int(sec))
 
 
 def kickoff_ip(
