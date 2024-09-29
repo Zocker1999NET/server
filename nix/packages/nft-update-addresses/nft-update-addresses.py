@@ -260,6 +260,10 @@ IP_MON_PATTERN = re.compile(
 )
 
 
+class SpecialIpUpdate(Enum):
+    FLUSH_RULES = auto()
+
+
 @define(
     frozen=True,
     kw_only=True,
@@ -361,7 +365,7 @@ def monitor_ip(
         handler.update(update)
 
 
-class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
+class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate | SpecialIpUpdate]):
     # TODO regularly check (i.e. 1 hour) if stored lists are still correct
     slaac_prefix: IPv6Interface | None
 
@@ -376,7 +380,7 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
         self.addrs = dict[IPInterface, IpAddressUpdate]()
         self.slaac_prefix = None
 
-    def _update_stack(self, data: Sequence[IpAddressUpdate]) -> None:
+    def _update_stack(self, data: Sequence[IpAddressUpdate | SpecialIpUpdate]) -> None:
         nft_updates = tuple(
             chain.from_iterable(self.__parse_update(single) for single in data)
         )
@@ -384,7 +388,19 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             return
         self.nft_handler.update_stack(nft_updates)
 
-    def __parse_update(self, data: IpAddressUpdate) -> Iterable[NftUpdate]:
+    def __parse_update(
+        self, data: IpAddressUpdate | SpecialIpUpdate
+    ) -> Iterable[NftUpdate]:
+        if isinstance(data, SpecialIpUpdate):
+            if data is not SpecialIpUpdate.FLUSH_RULES:
+                raise ValueError(f"unknown special update {data!r}")
+            # TODO maybe flush all sets completely, for good measure
+            for addr in self.addrs.keys():
+                yield from self.__update_network_sets(addr, deleted=True)
+            self.addrs = dict()
+            yield from self.__empty_slaac_sets()
+            self.slaac_prefix = None
+            return
         if data.ifname != self.config.ifname:
             return
         if data.ip.is_link_local:
