@@ -105,7 +105,7 @@ in
     networking.nftables.tables.${cfg.settings.nftTable}.content = lib.mkIf cfg.includeStaticDefinitions staticDefs;
 
     systemd.services.${servName} = {
-      description = "IPv6 prefix updater for subnet & NAT rules for nftables router setup";
+      description = "IPv6 prefix rules updater for nftables";
       after = [
         "nftables.service"
         "network.target"
