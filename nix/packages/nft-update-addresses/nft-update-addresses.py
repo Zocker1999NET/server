@@ -651,7 +651,7 @@ class SetConfig:
         for temp in self.elements:
             for var in temp.get_identifiers():
                 m = regex.search(var)
-                if m == None:
+                if m is None:
                     raise ValueError(
                         f"set {self.name!r} for if {self.ifname!r} uses invalid template variable {var!r}"
                     )
@@ -696,7 +696,7 @@ class SetConfig:
         data_type = obj["type"]
         assert isinstance(data_type, str)
         flags = obj.get("flags")
-        assert flags == None or isinstance(flags, str)
+        assert flags is None or isinstance(flags, str)
         elements = obj["elements"]
         assert isinstance(elements, Sequence) and all(
             isinstance(elem, str) for elem in elements
@@ -707,7 +707,7 @@ class SetConfig:
             ifname=ifname,
             name=name,
             data_type=data_type,
-            flags=cast(None | str, flags),
+            flags=flags,
             elements=templates,
         )
 
@@ -736,17 +736,22 @@ class InterfaceConfig:
     def from_json(ifname: str, obj: JsonObj) -> InterfaceConfig:
         assert set(obj.keys()) <= set(("macs", "sets"))
         macs = obj.get("macs")
-        assert macs == None or isinstance(macs, Sequence)
+        assert macs is None or isinstance(macs, Sequence)
         sets = obj.get("sets")
-        assert sets == None or isinstance(sets, Mapping)
+        assert sets is None or isinstance(sets, Mapping)
         return InterfaceConfig(
             ifname=IfName(ifname),
             macs_direct=tuple()
-            if macs == None
-            else tuple(to_mac(cast(str, mac)) for mac in macs),  # type: ignore[union-attr]
+            if macs is None
+            else tuple(to_mac(cast(str, mac)) for mac in macs),
             sets=tuple()
-            if sets == None
-            else tuple(SetConfig.from_json(ifname=ifname, name=name, obj=cast(JsonObj, one_set)) for name, one_set in sets.items()),  # type: ignore[union-attr]
+            if sets is None
+            else tuple(
+                SetConfig.from_json(
+                    ifname=ifname, name=name, obj=cast(JsonObj, one_set)
+                )
+                for name, one_set in sets.items()
+            ),
         )
 
 
