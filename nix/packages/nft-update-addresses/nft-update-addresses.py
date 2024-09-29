@@ -36,6 +36,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+from signal import SIGHUP, signal
 from string import Template
 import subprocess
 import threading
@@ -860,6 +861,19 @@ def static_part_generation(config: AppConfig) -> None:
         print(if_up.gen_set_definitions())
 
 
+def on_service_reload(
+    ip_cmd: list[str], handler: UpdateHandler[IpAddressUpdate | SpecialIpUpdate]
+) -> None:
+    # for now, reloading is kind of a hack to be able to react to nftables.service reloadings
+    # because then we need to re-apply all of our rules again
+    logger.info(
+        "reload signal received; reapply all rules (config file will not be read on reload)"
+    )
+    daemon.notify("RELOADING=1\nSTATUS=reloading all rules …\n")
+    handler.update(SpecialIpUpdate.FLUSH_RULES)
+    kickoff_ip(ip_cmd, handler)
+
+
 def service_execution(args: argparse.Namespace, config: AppConfig) -> NoReturn:
     nft_updater = NftUpdateHandler(
         table=config.nft_table,
@@ -871,11 +885,13 @@ def service_execution(args: argparse.Namespace, config: AppConfig) -> NoReturn:
         handler=(nft_updater,),
     )
     if_updater = _gen_if_updater(config.interfaces, nft_burst_handler)
-    burst_handler = UpdateBurstHandler[IpAddressUpdate](
+    burst_handler = UpdateBurstHandler[IpAddressUpdate | SpecialIpUpdate](
         burst_interval=0.1,
         handler=if_updater,
     )
     ip_cmd = shlex.split(args.ip_command)
+    # in case of systemd service reload
+    signal(SIGHUP, lambda *_a, **_b: on_service_reload(ip_cmd, burst_handler))
     monitor_ip(ip_cmd, burst_handler)
 
 
