@@ -850,7 +850,11 @@ def service_execution(args: argparse.Namespace, config: AppConfig) -> NoReturn:
         update_cmd=shlex.split(args.nft_command),
         handler=SystemdHandler(),
     )
-    if_updater = _gen_if_updater(config.interfaces, nft_updater)
+    nft_burst_handler = UpdateBurstHandler[NftUpdate](
+        burst_interval=0.1,
+        handler=(nft_updater,),
+    )
+    if_updater = _gen_if_updater(config.interfaces, nft_burst_handler)
     burst_handler = UpdateBurstHandler[IpAddressUpdate](
         burst_interval=0.5,
         handler=if_updater,
