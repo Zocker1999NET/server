@@ -114,6 +114,7 @@ in
       requisite = lib.singleton "nftables.service";
       wantedBy = lib.singleton "multi-user.target";
       upheldBy = lib.singleton "systemd-networkd.service";
+      unitConfig.ReloadPropagatedFrom = lib.singleton "nftables.service";
       restartIfChanged = true;
       restartTriggers = config.systemd.services.nftables.restartTriggers;
       serviceConfig = {
