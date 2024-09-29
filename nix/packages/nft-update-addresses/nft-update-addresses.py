@@ -372,8 +372,7 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
         self.nft_handler = nft_handler
         self.lock = RLock()
         self.config = config
-        self.ipv4Addrs = list[IPv4Interface]()
-        self.ipv6Addrs = list[IPv6Interface]()
+        self.addrs = dict[IPInterface, IpAddressUpdate]()
 
     def _update_stack(self, data: Sequence[IpAddressUpdate]) -> None:
         nft_updates = tuple(
@@ -403,18 +402,20 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             return  # ignore (yet) tentiative addresses
         logger.debug(f"{self.config.ifname}: process change of IP {data.ip}")
         with self.lock:
-            ip_list: list[IPv4Interface] | list[IPv6Interface] = (
-                self.ipv6Addrs if isinstance(data.ip, IPv6Interface) else self.ipv4Addrs
-            )
-            if data.deleted != (data.ip in ip_list):
-                return  # no change required
+            stored = data.ip in self.addrs
+            changed = stored != (not data.deleted)
             if data.deleted:
+                if not changed:
+                    return  # no updates required
                 logger.info(f"{self.config.ifname}: deleted IP {data.ip}")
-                ip_list.remove(data.ip)  # type: ignore[arg-type]
+                del self.addrs[data.ip]
             else:
-                logger.info(f"{self.config.ifname}: discovered IP {data.ip}")
-                ip_list.append(data.ip)  # type: ignore[arg-type]
-        yield from self.__update_network_sets(data.ip, data.deleted)
+                if not stored:
+                    logger.info(f"{self.config.ifname}: discovered IP {data.ip}")
+                self.addrs[data.ip] = data  # keep entry up to date
+        if changed:
+            yield from self.__update_network_sets(data.ip, data.deleted)
+        # even if "not changed", still check SLAAC rules because of lifetimes
         # ignore unique link locals for SLAAC sets
         if data.ip.version != 6 or data.ip in IPv6_ULA_NET:
             return
