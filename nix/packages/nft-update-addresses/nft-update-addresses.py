@@ -420,7 +420,11 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
         if data.ip.version != 6 or data.ip in IPv6_ULA_NET:
             return
         # TODO track on IPv6 which are valid & so auto select for which prefix to apply rules for
-        yield from self.__update_slaac_sets(data.ip, data.deleted)
+        yield from (
+            self.__empty_slaac_sets()
+            if not data.deleted
+            else self.__update_slaac_sets(data.ip)
+        )
 
     def __update_network_sets(
         self,
@@ -454,13 +458,9 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
             values=(ip.ip.compressed,),
         )
 
-    def __update_slaac_sets(
-        self,
-        ip: IPv6Interface,
-        deleted: bool = False,
-    ) -> Iterable[NftUpdate]:
-        set_prefix = f"{self.config.ifname}v{ip.version}"
-        op = NftValueOperation.if_emptied(deleted)
+    def __update_slaac_sets(self, ip: IPv6Interface) -> Iterable[NftUpdate]:
+        set_prefix = f"{self.config.ifname}v6"
+        op = NftValueOperation.REPLACE
         slaacs = {mac: slaac_eui48(ip.network, mac) for mac in self.config.macs}
         for mac in self.config.macs:
             yield NftUpdate(
@@ -479,6 +479,24 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpAddressUpdate]):
                 obj_name=one_set.name,
                 operation=op,
                 values=tuple(one_set.sub_elements(slaacs_sub)),
+            )
+
+    def __empty_slaac_sets(self) -> Iterable[NftUpdate]:
+        set_prefix = f"{self.config.ifname}v6"
+        op = NftValueOperation.EMPTY
+        for mac in self.config.macs:
+            yield NftUpdate(
+                obj_type="set",
+                obj_name=f"{set_prefix}_{mac}",
+                operation=op,
+                values=tuple(),
+            )
+        for one_set in self.config.sets:
+            yield NftUpdate(
+                obj_type=one_set.set_type,
+                obj_name=one_set.name,
+                operation=op,
+                values=tuple(),
             )
 
     def gen_set_definitions(self) -> str:
