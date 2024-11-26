@@ -63,6 +63,10 @@ in
           config.services.hardware.bolt.enable && config.services.desktopManager.plasma6.enable
         ) kdePackages.plasma-thunderbolt) # TODO upstream
 
+        (optionals config.hardware.bluetooth.enable [
+          bluetuith
+        ])
+
         (optionals config.hardware.graphics.amd.enable [ nvtopPackages.amd ])
         (optionals config.hardware.graphics.intel.enable [
           intel-gpu-tools
