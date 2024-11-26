@@ -47,7 +47,7 @@ in
 
       nixos = {
         enable = lib.mkDefault true;
-        includeAllModules = lib.mkDefault true;
+        includeAllModules = lib.mkDefault false; # otherwise rebuilds full manual on each change of value
       };
 
     };

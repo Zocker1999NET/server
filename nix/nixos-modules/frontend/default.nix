@@ -35,6 +35,8 @@ in
       useXkbConfig = true;
     };
 
+    documentation.nixos.includeAllModules = true; # full manual aids NixOS dev
+
     environment = {
 
       pathsToLink = [
