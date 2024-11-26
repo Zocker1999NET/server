@@ -141,6 +141,7 @@ in
 
     };
 
+    # TODO upstream
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
