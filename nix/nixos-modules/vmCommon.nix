@@ -73,6 +73,17 @@ in
           dates = lib.singleton "05:30";
         };
 
+        services.zfs = {
+          autoScrub = {
+            interval = "Sun *-*-01..07 06:30";
+            randomizedDelaySec = "1min"; # has near to no effect
+          };
+          trim = {
+            interval = "Sam *-*-* 06:30";
+            randomizedDelaySec = "1min";
+          };
+        };
+
       }
 
       {
