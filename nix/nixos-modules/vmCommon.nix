@@ -53,7 +53,7 @@ in
           rebootWindow.lower = "01:00";
           dates = "01:00";
           randomizedDelaySec = "45min";
-          rebootWindow.upper = "04:00";
+          rebootWindow.upper = "02:50";
         };
 
         nix.gc = {
