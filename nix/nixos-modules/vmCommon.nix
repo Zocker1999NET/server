@@ -170,6 +170,8 @@ in
               device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi${toString n}";
               options = "-d ignore";
             });
+            # TODO smartd.defaults.autodetected, set automatic self-tests
+            # TODO smartd configure notifications
           };
 
         };
