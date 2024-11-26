@@ -170,6 +170,8 @@ in
               device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi${toString n}";
               options = "-d ignore";
             });
+            # TODO this prevents invalid config files from failing smartd, but makes it run without any devices at start (no alternative implemented yet; mind NixOS does NOT validate the config on rebuild)
+            extraOptions = [ "--quit=never" ];
             # TODO smartd.defaults.autodetected, set automatic self-tests
             # TODO smartd configure notifications
           };
