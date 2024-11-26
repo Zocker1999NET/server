@@ -39,6 +39,7 @@ in
     ./secrix.nix
     ./useable.nix
     ./vmCommon.nix
+    ./zfsServer.nix
   ];
 
   # this one defines common options for my systems to my modules
