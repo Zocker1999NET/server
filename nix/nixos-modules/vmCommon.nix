@@ -8,6 +8,8 @@
 }:
 let
   cfg = config.x-banananetwork.vmCommon;
+  inherit (builtins) genList;
+  inherit (lib.trivial) flip;
 in
 {
 
@@ -160,6 +162,14 @@ in
             authorizedKeysInHomedir = false;
             authorizedKeysOnly = true;
             openFirewall = true;
+          };
+
+          smartd = {
+            # ignore QEMU drives
+            devices = flip genList 9 (n: {
+              device = "/dev/disk/by-id/scsi-0QEMU_QEMU_HARDDISK_drive-scsi${toString n}";
+              options = "-d ignore";
+            });
           };
 
         };
