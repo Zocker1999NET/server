@@ -29,6 +29,7 @@ in
       parallel
       psmisc
       pv
+      smem # RAM / swap usage per process
       wcurl
     ];
 
