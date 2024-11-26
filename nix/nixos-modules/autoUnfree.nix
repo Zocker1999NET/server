@@ -32,6 +32,21 @@ in
         by using the option{x-banananetwork.autoUnfree.packages} option.
       '';
 
+      names = lib.mkOption {
+        description = ''
+          Lists all package names which should be allowed to be installed
+          despite of them being unfree.
+          Only works when option{x-banananetwork.autoUnfree.enable} is set to true.
+
+          This option is mainly intended to be used by other module developers
+          to add support for this on their own.
+
+          Users may also use this additionally allow packages on their own.
+        '';
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
+
       packages = lib.mkOption {
         description = ''
           Lists all packages which should be allowed to be installed
@@ -63,7 +78,11 @@ in
 
     nixpkgs.config = {
 
-      allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) (map lib.getName cfg.packages);
+      allowUnfreePredicate =
+        let
+          names = cfg.names ++ (map lib.getName cfg.packages);
+        in
+        pkg: builtins.elem (lib.getName pkg) names;
 
     };
 
