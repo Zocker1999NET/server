@@ -19,7 +19,6 @@
       grub.enable = lib.mkDefault false;
       grub.efiSupport = true; # in case grub is preferred for some reason
       systemd-boot.enable = lib.mkDefault true;
-
     };
 
   };
