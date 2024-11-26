@@ -308,6 +308,11 @@ in
         jnoortheen.nix-ide
         # IDE: Python
         ms-python.black-formatter
+        ms-python.debugpy
+        matangover.mypy
+        # TODO (feature) maybe add isort, https://github.com/microsoft/vscode-isort, in nixpkgs
+        # pylance does not work with VSCodium due to MSFT
+        ms-pyright.pyright
         ms-python.python
       ];
       keybindingsNext = {
@@ -404,6 +409,7 @@ in
         "markdown.preview.fontFamily" = "-apple-system, BlinkMacSystemFont, 'DejaVu Sans', 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif";
 
         "mypy-type-checker.importStrategy" = "fromEnvironment";
+        "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
         "mypy.runUsingActiveInterpreter" = true;
 
         "notebook.cellToolbarLocation" = {
