@@ -65,11 +65,6 @@ in
 
       graphics.required = true;
 
-      opengl = {
-        enable = true;
-        driSupport = true;
-      };
-
       sane = {
         enable = true;
         openFirewall = true;
