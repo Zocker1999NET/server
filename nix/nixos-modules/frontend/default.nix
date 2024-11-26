@@ -477,6 +477,7 @@ in
             (optional config.services.printing.enable "lpadmin")
             (optional config.networking.networkmanager.enable "networkmanger")
             (optional config.hardware.sane.enable "scanner")
+            (optional config.programs.light.enable "video")
             "wheel"
           ];
         isNormalUser = true;
