@@ -299,7 +299,7 @@ in
 
     vscode = {
       enable = true;
-      enableExtensionUpdateCheck = true;
+      enableExtensionUpdateCheck = config.programs.vscode.mutableExtensionsDir;
       enableUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
         # general
