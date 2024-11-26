@@ -56,6 +56,12 @@ in
           rebootWindow.upper = "02:50";
         };
 
+        # service specific operations
+        services.nextcloud = {
+          autoUpdateApps.startAt = "03:00";
+          settings.maintenance_window_start = 3; # +4h
+        };
+
         nix.gc = {
           # could take longer
           dates = "04:15";
