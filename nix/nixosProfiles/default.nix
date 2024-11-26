@@ -4,6 +4,7 @@ let
   importProfileMod = lib.importFlakeMod;
 in
 {
+  allHardware = importProfile ./allHardware.nix;
   blade = importProfile ./blade.nix;
   common = importProfile ./common.nix;
   installer = importProfileMod ./installer.nix;
