@@ -19,6 +19,8 @@ in
 
       Be aware that a Wayland compositor or desktop environment is not enabled automatically
       as there is no main implementation of Wayland.
+
+      Gets enabled by default if any known wayland compositor is enabled.
     '';
 
   };
