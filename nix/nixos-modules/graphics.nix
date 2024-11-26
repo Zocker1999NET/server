@@ -34,15 +34,13 @@ in
       ];
     }
 
-    (
-      # TODO replace with drivers
-      lib.mkIf cfg.amd.enable {
-        assertions = lib.singleton {
-          assertion = !cfg.amd.enable;
-          message = "graphics module missing support for AMD drivers";
-        };
-      }
-    )
+    # source: https://wiki.nixos.org/wiki/AMD_GPU
+    (lib.mkIf cfg.amd.enable {
+      hardware.opengl = {
+        enable = true;
+        # more seems not required
+      };
+    })
 
     (lib.mkIf cfg.intel.enable {
       hardware.opengl = {
