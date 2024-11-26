@@ -19,6 +19,11 @@ in
 
       intel.enable = lib.mkEnableOption "Intel graphic drivers";
 
+      nvidia = {
+        enable = lib.mkEnableOption "Nvidia graphic drivers (meaning newest drivers by default)";
+        open = lib.mkEnableOption "open-source kernel module in favor of (check [NixOS Wiki](https://wiki.nixos.org/wiki/Nvidia))";
+      };
+
     };
 
   };
@@ -28,7 +33,7 @@ in
     {
       assertions = [
         {
-          assertion = cfg.required -> cfg.amd.enable || cfg.intel.enable;
+          assertion = cfg.required -> cfg.amd.enable || cfg.intel.enable || cfg.nvidia.enable;
           message = "'hardware.graphics.required' not fullfilled by any of 'hardware.graphics.*.enable'";
         }
       ];
@@ -55,6 +60,30 @@ in
           intel-media-driver
         ];
       };
+    })
+
+    # source: https://wiki.nixos.org/wiki/Nvidia
+    (lib.mkIf cfg.nvidia.enable {
+      hardware = {
+        # TODO set priority per case
+        nvidia = lib.mkDefault {
+          modesetting.enable = true;
+          powerManagement.enable = false;
+          powerManagement.finegrained = false;
+          open = cfg.nvidia.open;
+          nvidiaSettings = true;
+          # TODO select driver based on GPU generation
+        };
+        opengl = {
+          enable = true;
+        };
+      };
+      services.xserver.videoDrivers = lib.singleton "nvidia";
+      x-banananetwork.autoUnfree.names = [
+        "nvidia-persistenced"
+        "nvidia-settings"
+        "nvidia-x11"
+      ];
     })
 
   ];
