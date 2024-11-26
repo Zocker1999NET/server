@@ -141,6 +141,13 @@ in
 
     };
 
+    services = {
+      smartd = {
+        # so smartd reports them by their /dev/disk/by-id name (https://www.smartmontools.org/ticket/1390#comment:2)
+        defaults.autodetected = "-d by-id";
+      };
+    };
+
     # TODO upstream
     system.activationScripts.diff = {
       supportsDryActivation = true;
