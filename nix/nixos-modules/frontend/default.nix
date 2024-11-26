@@ -65,6 +65,11 @@ in
 
       graphics.required = true;
 
+      logitech.wireless = {
+        enable = true;
+        enableGraphical = true;
+      };
+
       sane = {
         enable = true;
         openFirewall = true;
