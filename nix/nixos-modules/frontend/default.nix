@@ -47,6 +47,11 @@ in
         baloo # do not need an indexer, which runs at arbitarily times
       ];
 
+      systemPackages = with pkgs; [
+        kdePackages.kio-fuse # for dolphin to mount remote filesystems via FUSE
+        kdePackages.kio-extras # extra protocols support (sftp, fish and more)
+      ];
+
     };
 
     hardware = {
