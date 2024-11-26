@@ -50,6 +50,7 @@
 
       smartd = {
         enable = true;
+        # TODO smartd configure fallback notifications (servers are/should be configured somewhere else)
       };
 
       tlp = {
