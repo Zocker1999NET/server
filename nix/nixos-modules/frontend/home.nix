@@ -61,6 +61,7 @@ in
     pcalc # programmer’s calculator
     rink # unit aware calculator
     subnetcalc # IPv4/IPv6 subnet info parser
+    (lib.mkIf osConfig.services.wayland.enable wl-clipboard)
 
     # UI
     element-desktop
