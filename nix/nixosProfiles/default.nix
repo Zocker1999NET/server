@@ -8,5 +8,5 @@ in
   common = importProfile ./common.nix;
   installer = importProfileMod ./installer.nix;
   pveGuest = importProfile ./pveGuest.nix;
-  pveGuestHwSupport.nix = importProfile ./pveGuestHwSupport.nix;
+  pveGuestHwSupport = importProfile ./pveGuestHwSupport.nix;
 }
