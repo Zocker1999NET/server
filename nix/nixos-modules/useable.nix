@@ -55,13 +55,9 @@ in
     environment.systemPackages =
       with pkgs;
       let
-        inherit (lib.lists) flatten optional optionals;
+        inherit (lib.lists) flatten optionals;
       in
       flatten [
-
-        (optional (
-          config.services.hardware.bolt.enable && config.services.desktopManager.plasma6.enable
-        ) kdePackages.plasma-thunderbolt) # TODO upstream
 
         (optionals config.hardware.bluetooth.enable [
           bluetuith
