@@ -29,7 +29,11 @@ let
     toIntBase10
     toLower
     ;
-  inherit (lib.trivial) flip pipe toHexString;
+  inherit (lib.trivial)
+    flip
+    pipe
+    toHexString
+    ;
   fixedWidthStrSuffix =
     width: filler: str:
     let
