@@ -5,7 +5,6 @@ let
     concatStringsSep
     mapAttrs
     elemAt
-    fromTOML
     genList
     isAttrs
     length
