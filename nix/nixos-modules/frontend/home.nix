@@ -69,6 +69,7 @@ in
     kdePackages.kleopatra
     keepassxc
     krita
+    libreoffice-qt6-fresh # "qt6" for KDE Plasma; "fresh" to get newer features
     wireshark
     tor-browser
     trilium-desktop
