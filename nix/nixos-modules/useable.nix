@@ -79,8 +79,10 @@ in
         reptyr
         psitop
         unixtools.xxd
+        unzip
         up # ultimate plumber
         usbtop
+        zip
       ];
 
     programs = {
