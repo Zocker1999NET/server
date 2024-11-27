@@ -7,6 +7,7 @@
 }:
 
 let
+  inherit (builtins) concatStringsSep;
   myGpgKey = pkgs.fetchurl {
     url = "https://keys.openpgp.org/vks/v1/by-fingerprint/73D09948B2392D688A45DC8393E1BD26F6B02FB7";
     hash = "sha256-tbRDhXZJk2aBIF4Ed0HIR8jalxnPJDNziBy51I9Awxs=";
@@ -230,6 +231,7 @@ in
         alpha = "yes";
         speed = 1.2;
         #ytdl-format = "bestvideo[height<=?1080]+bestaudio/best";
+        ytdl-format = "ytdl"; # use yt-dlp config
       };
       scripts = with pkgs.mpvScripts; [
         autoload # "autoplay" files in same dir
@@ -492,6 +494,14 @@ in
     yt-dlp = {
       enable = true;
       settings = {
+        # format used by mpv for streaming
+        format = concatStringsSep "/" [
+          # prefer audio track in original language (e.g. YouTube)
+          "bestvideo*+bestaudio[format_note*=original]"
+          # otherwise use yt-dlp default
+          "bestvideo*+bestaudio"
+          "best"
+        ];
         no-playlist = true; # only relevant if URL refers to video & playlist
         remux-video = "aac>m4a/mkv";
         sub-format = "ass/srt/best";
