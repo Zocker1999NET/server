@@ -72,6 +72,7 @@ in
         bat
         batmon # TODO only on systems wich batteries
         bmon # better than nethogs for graphs
+        file
         manix
         massren
         nethogs # better than bmon for process identification
