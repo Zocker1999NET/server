@@ -71,9 +71,10 @@ in
 
         bat
         batmon # TODO only on systems wich batteries
+        bmon # better than nethogs for graphs
         manix
         massren
-        nethogs
+        nethogs # better than bmon for process identification
         reptyr
         psitop
         unixtools.xxd
