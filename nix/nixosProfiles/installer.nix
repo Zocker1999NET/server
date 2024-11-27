@@ -15,7 +15,7 @@
     inputs.unattended-installer.nixosModules.default
     # from here
     ./common.nix
-    ./pveGuestHwSupport.nix
+    ./pveGuestHwSupport.nix # also for guest agent, serial out, ...
   ];
   config = {
     isoImage = {
