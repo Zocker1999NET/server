@@ -1,9 +1,8 @@
 { config, lib, ... }:
 let
   cfg = config.services.tailscale;
-  boolToStr = v: if v then "true" else "false";
   toTsCli = lib.cli.toGNUCommandLine {
-    mkBool = k: v: lib.singleton "--${k}=${boolToStr v}";
+    mkBool = k: v: lib.singleton "--${k}=${lib.boolToString v}";
     mkList = k: v: lib.singleton "--${k}=${builtins.concatStringsSep "," v}";
     mkOption =
       k: v:
