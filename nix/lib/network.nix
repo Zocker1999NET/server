@@ -31,6 +31,7 @@ let
     ;
   inherit (lib.trivial)
     flip
+    fromHexString
     pipe
     toHexString
     ;
@@ -43,7 +44,6 @@ let
     assert lib.assertMsg (strw <= width)
       "fixedWidthString: requested string length (${toString width}) must not be shorter than actual length (${toString strw})";
     if strw == width then str else fixedWidthStrSuffix reqWidth filler str + filler;
-  fromHexString = str: (fromTOML "v=0x${str}").v; # TODO not (yet) available in nixpkgs.lib
   toHex = str: toLower (toHexString str);
   toIpClass =
     ipArg:

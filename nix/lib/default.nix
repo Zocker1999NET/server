@@ -17,6 +17,7 @@ nixpkgs.lib
   modules = ./modules.nix;
   network = ./network.nix;
   strings = ./strings.nix;
+  trivial = ./trivial.nix;
   types = ./types.nix;
   x-banananetwork-unused = ./unused.nix;
 }
