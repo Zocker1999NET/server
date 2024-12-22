@@ -68,6 +68,10 @@ in
           intel-gpu-tools
           nvtopPackages.intel
         ])
+        (optionals config.hardware.graphics.nvidia.enable [
+          # TODO requires package "cuda-merged" with CUDA EULA license
+          #nvtopPackages.nvidia
+        ])
 
         bat
         batmon # TODO only on systems wich batteries

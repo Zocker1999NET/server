@@ -132,7 +132,7 @@ in
         RestartMaxDelaySec = "3s";
         TimeoutSec = "10s";
         Restart = "always";
-        NotifyAccess = "all"; # bash script opens subprocesses in pipes
+        NotifyAccess = "main";
         # Paths
         ProtectProc = "noaccess";
         ProcSubset = "pid";

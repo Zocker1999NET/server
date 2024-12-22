@@ -1,0 +1,77 @@
+diff --git a/Source/Core/DolphinLibretro/Boot.cpp b/Source/Core/DolphinLibretro/Boot.cpp
+index 928045737c..aff81124ab 100644
+--- a/Source/Core/DolphinLibretro/Boot.cpp
++++ b/Source/Core/DolphinLibretro/Boot.cpp
+@@ -12,6 +12,7 @@
+ #include "Core/ConfigManager.h"
+ #include "Core/Core.h"
+ #include "Core/HW/DVD/DVDInterface.h"
++#include "Core/HW/EXI/EXI_Device.h"
+ #include "Core/HW/VideoInterface.h"
+ #include "Core/PowerPC/PowerPC.h"
+ #include "DolphinLibretro/Input.h"
+@@ -109,6 +110,15 @@ bool retro_load_game(const struct retro_game_info* game)
+   SConfig::GetInstance().bOnScreenDisplayMessages = Libretro::Options::osdEnabled;
+   SConfig::GetInstance().bFastDiscSpeed = Libretro::Options::fastDiscSpeed;
+
++  switch (Libretro::Options::bba)
++  {
++    case 0:  // none
++      break;
++    case 1:  // Station 1
++      SConfig::GetInstance().m_EXIDevice[2] = ExpansionInterface::EXIDEVICE_ETH;
++      // SConfig::GetInstance().m_bba_mac = "aa:bb:cc:dd:ee:ff";
++  }
++
+   Config::SetBase(Config::SYSCONF_LANGUAGE, (u32)(DiscIO::Language)Libretro::Options::Language);
+   Config::SetBase(Config::SYSCONF_WIDESCREEN, Libretro::Options::Widescreen);
+   Config::SetBase(Config::SYSCONF_PROGRESSIVE_SCAN, Libretro::Options::progressiveScan);
+@@ -290,7 +300,7 @@ static bool retro_set_image_index(unsigned index)
+ {
+   if (eject_state)
+     disk_index = index;
+-
++
+   return eject_state;
+ }
+
+diff --git a/Source/Core/DolphinLibretro/Main.cpp b/Source/Core/DolphinLibretro/Main.cpp
+index 9ce0e4d43e..bb84949f41 100644
+--- a/Source/Core/DolphinLibretro/Main.cpp
++++ b/Source/Core/DolphinLibretro/Main.cpp
+@@ -139,7 +139,7 @@ void retro_get_system_info(retro_system_info* info)
+   info->need_fullpath = true;
+   info->valid_extensions = "elf|dol|gcm|iso|tgc|wbfs|ciso|gcz|wad|wia|rvz|m3u";
+   info->library_version = Common::scm_desc_str.c_str();
+-  info->library_name = "dolphin-emu";
++  info->library_name = "dolphin-emu (BBA patch)";
+   info->block_extract = true;
+ }
+
+diff --git a/Source/Core/DolphinLibretro/Options.cpp b/Source/Core/DolphinLibretro/Options.cpp
+index 47978c2ef9..b41770502e 100644
+--- a/Source/Core/DolphinLibretro/Options.cpp
++++ b/Source/Core/DolphinLibretro/Options.cpp
+@@ -112,6 +112,10 @@ Option<bool>::Option(const char* id, const char* name, bool initial) : m_id(id),
+   Register();
+ }
+
++Option<int> bba("dolphin_bba", "Broadband Adapter (WIP, @Zocker1999NET)", {
++  {"none", 0},
++  {"on (random MAC)", 1},
++});
+ Option<std::string> renderer("dolphin_renderer", "Renderer", {"Hardware", "Software"
+ #if defined(_DEBUG) || defined(DEBUGFAST)
+     , "Null"
+diff --git a/Source/Core/DolphinLibretro/Options.h b/Source/Core/DolphinLibretro/Options.h
+index 5eaf0b8e67..1c1810bbf5 100644
+--- a/Source/Core/DolphinLibretro/Options.h
++++ b/Source/Core/DolphinLibretro/Options.h
+@@ -89,6 +89,7 @@ private:
+   std::vector<std::pair<std::string, T>> m_list;
+ };
+
++extern Option<int> bba;
+ extern Option<std::string> renderer;
+ extern Option<int> efbScale;
+ extern Option<bool> Widescreen;

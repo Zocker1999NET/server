@@ -6,6 +6,7 @@
   ...
 }@flakeArg:
 let
+  inherit (lib.modules) importApplyMod;
   importModuleGroup = lib.importFlakeMod;
   importModule = path: { imports = lib.singleton path; };
 in
@@ -28,10 +29,11 @@ in
     ./frontend
     ./improvedDefaults
     ./packages
-    (lib.importFlakeMod ./router)
+    (importApplyMod ./router)
     ./vmDisko
     # files
     ./autoUnfree.nix
+    (importApplyMod ./backports.nix)
     ./debugMinimal.nix
     ./graphics.nix
     ./options.nix
@@ -61,6 +63,7 @@ in
         nixpkgs.overlays = [
           outputs.overlays.backports
           outputs.overlays.fromFlake
+          outputs.overlays.upgrades
         ];
       };
     };

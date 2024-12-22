@@ -1,0 +1,23 @@
+table inet anyos-fw {
+
+  set ipv4-trace {
+    typeof meta iifname . ip saddr . ip daddr . ip protocol . th sport . th dport
+    flags interval
+    elements = { "tailscale0" . 100.64.0.0/10 . 100.64.0.0/10 . icmp . 0/0 . 0/0, "lan0" . 0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0, "lan1" . 0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0 }
+  }
+  chain trace-ipv4 {
+    type filter hook prerouting priority -301; policy accept;
+    meta iifname . ip saddr . ip daddr . ip protocol . th sport . th dport == @ipv4-trace meta nftrace set 1
+  }
+
+  set ipv6-trace {
+    typeof meta iifname . ip6 saddr . ip6 daddr . ip6 nexthdr . th sport . th dport
+    flags interval
+    elements = { "tailscale0" . fd00::/8 . fd00::/8 . ipv6-icmp . 0/0 . 0/0, "lan0" . ::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0, "lan1" . ::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0 }
+  }
+  chain trace-ipv6 {
+    type filter hook prerouting priority -301; policy accept;
+    meta iifname . ip6 saddr . ip6 daddr . ip6 nexthdr . th sport . th dport == @ipv6-trace meta nftrace set 1
+  }
+
+}

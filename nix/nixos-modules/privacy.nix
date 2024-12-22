@@ -17,6 +17,7 @@ in
         system settings which attempt to increase privacy.
       '';
 
+      # TODO implement
       ipv6IncreasedPrivacy = lib.mkEnableOption ''
         increased IPv6 privacy meassures.
 

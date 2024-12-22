@@ -7,7 +7,7 @@
   nftables,
 }:
 let
-  version = "2024.09.04";
+  version = "2024.12.22";
   project_toml = writeText "nft-update-addresses_pyproject" ''
     [build-system]
     requires = ["setuptools >= 61.0"]
@@ -17,7 +17,7 @@ let
     version = ${lib.escapeShellArg version}
     requires-python = ">= 3.11"
     [project.scripts]
-    nft-update-addresses = "nft_update_addresses:main"
+    nft-update-addresses = "update_addresses:main"
   '';
 in
 python3Packages.buildPythonPackage {
@@ -39,9 +39,9 @@ python3Packages.buildPythonPackage {
   ];
 
   unpackPhase = ''
-    mkdir -p ./src/nft_update_addresses
     cp ${project_toml} ./pyproject.toml
-    cp ${./nft-update-addresses.py} ./src/nft_update_addresses/__init__.py
+    cp -r ${./../../../update-addresses} ./src
+    chmod --recursive u=rwX ./src  # required so further build steps can create wrapper files
     ${lib.getExe mypy} --strict ./src
   '';
 

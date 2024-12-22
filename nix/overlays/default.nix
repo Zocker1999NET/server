@@ -9,10 +9,18 @@ let
 in
 {
 
+  # TODO combine reasonable stuff into default
+
   backports = importOverlay ./backports.nix;
+
+  customisations = importOverlay ./customisations.nix;
 
   fromFlake = importOverlay ./fromFlake.nix;
 
+  libretro-dolphin-bba = importOverlay ./libretro-dolphin-bba;
+
   systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
+
+  upgrades = importOverlay ./upgrades.nix;
 
 }

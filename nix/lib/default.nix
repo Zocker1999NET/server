@@ -16,6 +16,7 @@ nixpkgs.lib
   math = ./math.nix;
   modules = ./modules.nix;
   network = ./network.nix;
+  options = ./options.nix;
   strings = ./strings.nix;
   trivial = ./trivial.nix;
   types = ./types.nix;
@@ -41,5 +42,7 @@ nixpkgs.lib
     gen: lib.genAttrs lib.supportedSystems (system: gen (lib.systemSpecificVars system));
 
   importFlakeModWithSystem = path: lib.forAllSystems (lib.importFlakeMod path);
+
+  # TODO sort
 
 }

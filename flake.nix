@@ -67,6 +67,8 @@
 
       apps = importFlakeModWithSystem ./nix/apps;
 
+      checks = outputs.nixosTests;
+
       devShells = importFlakeModWithSystem ./nix/devShells;
 
       homeManagerModules = importFlakeMod ./nix/hmModules;
@@ -106,6 +108,8 @@
       nixosModules = importFlakeMod ./nix/nixos-modules;
 
       nixosProfiles = importFlakeMod ./nix/nixosProfiles;
+
+      nixosTests = importFlakeModWithSystem ./nix/nixosTests;
 
       overlays = importFlakeMod ./nix/overlays;
 
