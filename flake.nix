@@ -9,6 +9,7 @@
 
     # required submodules
     disko = {
+      # TODO maybe refer to releases instead of master
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
