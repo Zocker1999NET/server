@@ -9,7 +9,10 @@ in
     "wan0" = {
       kind = "wan-rfc7084";
       description = "WAN device";
-      workarounds.dhcpv6PrefixDelegationWithoutAddress = true;
+      workarounds = {
+        dhcpv6IsAvmFritzBox = true;
+        dhcpv6PrefixDelegationWithoutAddress = true;
+      };
     };
 
     "lan0" = {
