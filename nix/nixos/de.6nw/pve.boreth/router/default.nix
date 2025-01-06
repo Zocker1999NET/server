@@ -64,7 +64,7 @@ in
         secrix.services.tailscale.secrets.authKey.encrypted.file = ./tailscale-auth-key;
         # workaround to work with FRITZ!Box which releases a broken NTP answer via DHCPv6
         systemd.network.networks."10-wan0".dhcpV6Config.UseNTP = false;
-        #systemd.services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
+        systemd.services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
         x-banananetwork = {
           useable.enable = true;
           vmCommon.enable = true;
