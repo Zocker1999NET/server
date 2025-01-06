@@ -1,4 +1,5 @@
 { lib, self, ... }@flakeArg:
+# TODO (improvement) check how much of this is obsolete, see nixpkgs#lib.network.ipv6
 let
   inherit (builtins)
     concatMap
