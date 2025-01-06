@@ -224,10 +224,8 @@ in
     networkd.dhcpServerStaticLeases = pipe devs [
       (filter (d: d.staticIPv4 != null))
       (map (d: {
-        dhcpServerStaticLeaseConfig = {
-          MACAddress = d.mac;
-          Address = d.staticIPv4;
-        };
+        MACAddress = d.mac;
+        Address = d.staticIPv4;
       }))
     ];
 

@@ -41,13 +41,11 @@ let
           DNS = "_link_local";
           Domains = mkDefault routCfg.domain;
         };
-        ipv6Prefixes = singleton {
-          ipv6PrefixConfig = mkIf (routCfg.ipv6ULAPrefix != null) {
-            Prefix = routCfg.ipv6ULAPrefix;
-            Assign = true;
-            Token = ifIdToken;
-          };
-        };
+        ipv6Prefixes = mkIf (routCfg.ipv6ULAPrefix != null) (singleton {
+          Prefix = routCfg.ipv6ULAPrefix;
+          Assign = true;
+          Token = ifIdToken;
+        });
         dhcpPrefixDelegationConfig = {
           UplinkInterface = routCfg.upstream;
           SubnetId = toString routCfg.upstreamIdx;

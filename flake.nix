@@ -4,7 +4,7 @@
   inputs = {
 
     # packages repositories
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs_unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     # required submodules
@@ -13,14 +13,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
     secrix = {
-      # TODO revert after my pulls are merged: https://github.com/Platonic-Systems/secrix/pulls/Zocker1999NET
-      #url = "github:Platonic-Systems/secrix";
-      url = "github:Zocker1999NET/secrix/release-bnet";
+      url = "github:Platonic-Systems/secrix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

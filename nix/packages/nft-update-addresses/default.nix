@@ -14,7 +14,7 @@ let
     build-backend = "setuptools.build_meta"
     [project]
     name = "nft-update-addresses"
-    version = ${lib.escapeShellArg version}
+    version = "${version}"
     requires-python = ">= 3.11"
     [project.scripts]
     nft-update-addresses = "update_addresses:main"
