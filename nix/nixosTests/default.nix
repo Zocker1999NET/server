@@ -227,7 +227,7 @@ in
                 kind = "wan-rfc7084";
                 matchConfig.PermanentMACAddress = qemuNicMac config 0;
                 # TODO build test so it requires:
-                workarounds.dhcpv6PrefixDelegationWithoutAddress = false;
+                workarounds.dhcpv6IsAvmFritzBox = false;
               };
               lan0 = {
                 kind = "lan-rfc7084";
