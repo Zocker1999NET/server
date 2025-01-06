@@ -98,10 +98,8 @@ in
           (map (
             { mac, ipv4, ... }:
             {
-              dhcpServerStaticLeaseConfig = {
-                MACAddress = mac;
-                Address = ipv4;
-              };
+              MACAddress = mac;
+              Address = ipv4;
             }
           ))
         ];
@@ -112,11 +110,9 @@ in
           OtherInformation = true;
         };
         ipv6Prefixes = singleton {
-          ipv6PrefixConfig = {
-            Prefix = "2001:db8:1:1::/64";
-            Assign = true;
-            Token = "static:::1";
-          };
+          Prefix = "2001:db8:1:1::/64";
+          Assign = true;
+          Token = "static:::1";
         };
       };
     };

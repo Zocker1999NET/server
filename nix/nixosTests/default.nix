@@ -623,7 +623,7 @@ in
                   region_id = 999;
                   stun_listen_addr = "0.0.0.0:${toString stunPort}";
                 };
-                dns_config.base_domain = "example"; # default is .test otherwise
+                dns.base_domain = "example"; # default is .test otherwise
               };
             };
             nginx = {
