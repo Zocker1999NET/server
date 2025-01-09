@@ -100,8 +100,7 @@ in
         # TODO improve pulling in dependencies more accurate
         (optionals steam.enable ([
           pkgs.steam-run
-          pkgs.steamPackages.steam
-          pkgs.steamPackages.steam-runtime
+          pkgs.steam-unwrapped
         ]))
       ];
 

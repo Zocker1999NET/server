@@ -41,14 +41,14 @@ in
 
     # source: https://wiki.nixos.org/wiki/AMD_GPU
     (lib.mkIf cfg.amd.enable {
-      hardware.opengl = {
+      hardware.graphics = {
         enable = true;
         # more seems not required
       };
     })
 
     (lib.mkIf cfg.intel.enable {
-      hardware.opengl = {
+      hardware.graphics = {
         enable = true;
         extraPackages = with pkgs; [
           intel-media-driver
@@ -74,7 +74,7 @@ in
           nvidiaSettings = true;
           # TODO select driver based on GPU generation
         };
-        opengl = {
+        graphics = {
           enable = true;
         };
       };

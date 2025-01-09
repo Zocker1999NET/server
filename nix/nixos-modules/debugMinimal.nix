@@ -36,7 +36,7 @@ in
     programs = {
 
       bash = {
-        enableCompletion = true;
+        completion.enable = true;
         enableLsColors = true;
         vteIntegration = true;
         interactiveShellInit = ''
