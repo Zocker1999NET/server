@@ -538,6 +538,7 @@ in
       pinentryPackage = pkgs.pinentry-qt;
     };
 
+    # manual pairing required
     kdeconnect = {
       enableSettings = true;
       settings.customDevices = [
