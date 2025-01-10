@@ -6,6 +6,9 @@
 }@flakeArg:
 { pkgs, ... }@systemArg:
 let
+  # import only simple flake lib functions (favorize machine specific lib for more realistic testing)
+  inherit (lib.lists) singleton;
+  # (end)
   libO = inputs.nixpkgs.lib;
   machines = outputs.nixosConfigurations;
   qemu-common = import "${inputs.nixpkgs}/nixos/lib/qemu-common.nix" {
@@ -128,6 +131,32 @@ let
       ])
     );
 
+  # TODO migrate docs test to a simpler documentation builder flake check (is not required to be a full blown NixOS test)
+  nixosDocTest =
+    {
+      # local options (blacklisted below)
+      modules,
+      config ? { },
+      # (required) passthrough options
+      name,
+      ...
+    }@args:
+    nixosTest (
+      {
+        nodes.tested = {
+          imports = modules;
+          config = config // {
+            documentation.nixos.includeAllModules = true;
+          };
+        };
+        testScript = ""; # VM execution not required, build is sufficient
+      }
+      // (builtins.removeAttrs args [
+        "config"
+        "modules"
+      ])
+    );
+
 in
 {
 
@@ -135,6 +164,54 @@ in
     testScript = ''
       tested.wait_for_unit("default.target")
     '';
+  };
+
+  # === flake input extended/integration tests
+  # (maybe upstream someday)
+
+  # most basic, verifies my own testing method as already upstreamed
+  docs_includeAllModules_nixpkgs = nixosDocTest {
+    name = "docs_includeAllModules_nixpkgs";
+    modules = [ ]; # nixpkgs already included
+  };
+  # input-specific doc tests
+  docs_includeAllModules_disko = nixosDocTest {
+    name = "docs_includeAllModules_disko";
+    modules = singleton inputs.disko.nixosModules.disko;
+  };
+  docs_includeAllModules_home-manager = nixosDocTest {
+    name = "docs_includeAllModules_home-manager";
+    modules = singleton inputs.home-manager.nixosModules.home-manager;
+  };
+  docs_includeAllModules_impermanence = nixosDocTest {
+    name = "docs_includeAllModules_impermanence";
+    modules = singleton inputs.impermanence.nixosModules.impermanence;
+  };
+  docs_includeAllModules_secrix = nixosDocTest {
+    name = "docs_includeAllModules_secrix";
+    modules = singleton inputs.secrix.nixosModules.secrix;
+  };
+
+  # == own module tests
+
+  # all module doc test
+  # - indicates missing dependency-specific test or failure in banananetwork module
+  docs_includeAllModules_banananetwork = nixosDocTest {
+    name = "docs_includeAllModules_banananetwork";
+    modules = [
+      outputs.nixosModules.withDepends # bnet modules require their dependencies
+      outputs.nixosModules.myOptions
+      outputs.nixosProfiles.common # TODO remove when x-banananetwork.allCommon gets removed
+    ];
+  };
+
+  # own home-manager module doc test
+  docs_includeAllModules_hm_banananetwork = nixosDocTest {
+    name = "docs_includeAllModules_hm_banananetwork";
+    modules = [
+      inputs.home-manager.nixosModules.home-manager
+      { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
+    ];
   };
 
   router = nixosTest {
