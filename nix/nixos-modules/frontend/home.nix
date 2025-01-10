@@ -63,13 +63,27 @@ in
 
     # tools
     fzf # fuzzy finder  # TODO integrate better: https://home-manager-options.extranix.com/?query=fzf&release=master
-    ipv6calc # IPv4/IPv6 swiss kit
     jdupes
+    (lib.mkIf osConfig.services.wayland.enable wl-clipboard)
+
+    ## calculators
+    ipv6calc # IPv4/IPv6 swiss kit
     kalker # advanced calculator
     pcalc # programmer’s calculator
     rink # unit aware calculator
     subnetcalc # IPv4/IPv6 subnet info parser
-    (lib.mkIf osConfig.services.wayland.enable wl-clipboard)
+    (writeShellApplication {
+      # TODO extract as helper function/module
+      name = "calc"; # tool group
+      text = ''
+        echo "you probably mean either:"
+        echo "- ipv6calc # IPv4/IPv6 swiss kit"
+        echo "- kalker # advanced calculator"
+        echo "- pcalc # programmer’s calculator"
+        echo "- rink # unit aware calculator"
+        echo "- subnetcalc # IPv4/IPv6 subnet info parser"
+      '';
+    })
 
     # UI
     element-desktop
