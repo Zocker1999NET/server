@@ -70,6 +70,9 @@ in
       readOnly = true;
       type = lib.types.path;
       default =
+        assert lib.assertMsg (
+          cfg.generation != null
+        ) ".generation needs to be set for .generationPath to be available";
         let
           path = cfg.generationsDir + "/${cfg.generation}";
         in
