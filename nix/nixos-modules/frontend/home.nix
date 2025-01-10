@@ -96,7 +96,7 @@ in
       '';
     })
 
-    # UI
+    # UI (mostly require manual setup)
     anki
     element-desktop
     kdePackages.filelight
