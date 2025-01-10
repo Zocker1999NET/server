@@ -97,6 +97,7 @@ in
     })
 
     # UI
+    anki
     element-desktop
     kdePackages.filelight
     kdePackages.kleopatra
