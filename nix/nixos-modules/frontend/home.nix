@@ -108,6 +108,7 @@ in
     tor-browser
     trilium-desktop
     xournalpp
+    yakuake
     yubikey-manager
     yubioath-flutter
 
