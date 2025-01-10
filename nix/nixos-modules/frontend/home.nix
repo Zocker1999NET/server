@@ -64,6 +64,17 @@ in
     # tools
     fzf # fuzzy finder  # TODO integrate better: https://home-manager-options.extranix.com/?query=fzf&release=master
     jdupes
+    (writeShellApplication {
+      # TODO extract as helper function/derivation
+      # (I do not use module, as I see its config as user-data)
+      name = "task";
+      runtimeInputs = [
+        # required by my plugins
+        python3
+      ];
+      meta = pkgs.taskwarrior3.meta;
+      text = ''exec ${lib.getExe taskwarrior3} "$@"'';
+    })
     (lib.mkIf osConfig.services.wayland.enable wl-clipboard)
 
     ## calculators
