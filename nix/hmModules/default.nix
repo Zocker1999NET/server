@@ -6,9 +6,9 @@
   # combination of all my custom modules
   # these should not change anything until you enable their custom options
   default.imports = [
-    # flake
+    # standalone (exposed on their own as well)
     self.assertions
-    # directories
+    # non-standalone (only exposed through this)
     ./extends
   ];
 
