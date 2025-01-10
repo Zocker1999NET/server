@@ -468,6 +468,14 @@ in
         #linux_5_15 = pkgs.linuxPackages_5_15;
       };
 
+    system = {
+      extraDependencies = with pkgs; [
+        ## (caching for ~/projects/pferd), TODO remove or integrate sometime
+        pferd
+        rsnapshot
+      ];
+    };
+
     users = {
 
       users.${cfg.username} = {
