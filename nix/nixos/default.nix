@@ -156,6 +156,42 @@ in
           };
         }
       )
+      # leak SSH public key hashes on getty login screen
+      # TODO publish dynamic etc issue generation as NixOS module
+      #  and add test for that (checking screen content via OCR / serial)
+      # TODO deploy on all VMs
+      (
+        { config, lib, ... }:
+        let
+          inherit (lib.modules) mkIf;
+          inherit (lib.lists) singleton;
+          serviceName = "etc-issue.d-ssh-host-key";
+        in
+        mkIf config.services.openssh.enable {
+          systemd.services = {
+            ${serviceName} = {
+              description = "publish SSH host public key hashes onto login screen via /etc/issue.d";
+              after = singleton "sshd.service";
+              restartIfChanged = true;
+              script = ''
+                mkdir --parents /etc/issue.d
+                out_file="/etc/issue.d/ssh-host-key.issue"
+                (
+                  for f in /etc/ssh/ssh_host_*_key.pub; do
+                    ${config.services.openssh.package}/bin/ssh-keygen -lf "$f"
+                  done
+                  echo  # extra new line at end of file as spacer
+                ) > /etc/issue.d/ssh-host-key.issue
+              '';
+              serviceConfig = {
+                Type = "oneshot";
+                RemainAfterExit = true;
+              };
+            };
+            "getty@".wants = singleton "${serviceName}.service";
+          };
+        }
+      )
       # hardware
       outputs.nixosProfiles.allHardware
       # other config
