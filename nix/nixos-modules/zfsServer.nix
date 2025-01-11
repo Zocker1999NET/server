@@ -55,6 +55,7 @@ in
       mgmtScripts
       ++ (with pkgs; [
         jdupes
+        zfs-tools
       ]);
     services.zfs = {
       autoScrub.enable = true;
