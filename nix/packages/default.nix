@@ -6,13 +6,14 @@
 }@flakeArg:
 { pkgs, system, ... }@sysArg:
 let
+  inherit (pkgs) callPackage;
   craneLib = inputs.crane.mkLib pkgs;
 in
 {
 
-  librespot-auth = pkgs.callPackage ./librespot-auth { inherit craneLib; };
+  librespot-auth = callPackage ./librespot-auth { inherit craneLib; };
 
-  nft-update-addresses = pkgs.callPackage ./nft-update-addresses { };
+  nft-update-addresses = callPackage ./nft-update-addresses { };
 
   secrix-wrapper =
     let
