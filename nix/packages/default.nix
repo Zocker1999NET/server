@@ -63,4 +63,6 @@ in
       '';
     };
 
+  zfs-tools = callPackage ./zfs-tools { };
+
 }
