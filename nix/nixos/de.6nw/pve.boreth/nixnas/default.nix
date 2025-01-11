@@ -65,6 +65,9 @@ in
               ];
               "server min protocol" = "SMB3";
               #"server smb encrypt" = "desired"; # even "desired" not supported by some Linux implementations
+              # disable default shenanigangs because Samba is optimized for Linux-Windows sharing
+              "map archive" = "no"; # https://stackoverflow.com/a/20966148
+              "nt acl support" = "no";
             };
             # for internal services (VMs)
             pbs-boreth = {
