@@ -197,6 +197,7 @@ in
         users = {
           mutableUsers = false;
           users.${cfg.userName} = {
+            uid = 1000;
             description = cfg.userName;
             extraGroups = [
               (lib.mkIf config.networking.networkmanager.enable "networkmanager")

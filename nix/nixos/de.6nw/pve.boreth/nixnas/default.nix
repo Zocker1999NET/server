@@ -112,8 +112,15 @@ in
             samba.passwordFile =
               config.secrix.services."samba-user-config".secrets."smb_pbs-boreth".decrypted.path;
           };
+          # rewrite existing users for permission allignment
+          # TODO remove when adapted globally
+          zocker = {
+            group = "zocker";
+            extraGroups = singleton "users";
+          };
         };
         users.groups.smb = { };
+        users.groups.zocker.gid = config.users.users.zocker.uid;
         # secrets management
         secrix.services."samba-user-config".secrets = {
           # xkcdpass -n 8 | secr encrypt nixnas.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/nixnas/smb_pbs-boreth.age
