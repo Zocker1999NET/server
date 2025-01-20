@@ -156,6 +156,7 @@ in
         vmCommon.enable = true;
         zfsServer = {
           enable = true;
+          optimizeArcMemory = true;
           # timing globally defined in vmCommon (ensure that)
           warnOnDefaultTimings = true;
         };
@@ -166,10 +167,6 @@ in
 
     # host config
     {
-      boot.kernelParams = [
-        "zfs.zfs_arc_sys_free=${toString (2 * 1024 * 1024 * 1024)}"
-        "zfs.zfs_arc_max=${toString (14 * 1024 * 1024 * 1024)}"
-      ];
       networking = {
         hostName = "nixnas";
         domain = "boreth.pve.6nw.de";
