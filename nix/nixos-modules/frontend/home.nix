@@ -119,7 +119,7 @@ in
     # Gaming
     steamcontroller # userspace driver (manual start/stop)
 
-    # utilities
+    # fonts (require fonts.fontconfig.enable)
     fira
     (pkgs.nerdfonts.override {
       fonts = [
