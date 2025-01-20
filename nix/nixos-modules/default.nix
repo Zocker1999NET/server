@@ -36,6 +36,7 @@ in
     (importApplyMod ./backports.nix)
     ./debugMinimal.nix
     ./graphics.nix
+    ./memory.nix
     ./options.nix
     ./privacy.nix
     ./secrix.nix
