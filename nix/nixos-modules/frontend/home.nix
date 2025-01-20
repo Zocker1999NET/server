@@ -97,7 +97,7 @@ in
     })
 
     # UI (mostly require manual setup)
-    anki
+    anki # requires fonts listed below
     element-desktop
     kdePackages.filelight
     kdePackages.kleopatra
@@ -127,6 +127,8 @@ in
         "Hasklig"
       ];
     })
+    ## for Anki decks
+    kochi-substitute # "Kochi Mincho" for Japanese decks
 
   ];
 
