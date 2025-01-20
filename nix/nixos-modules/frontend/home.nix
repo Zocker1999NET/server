@@ -403,7 +403,8 @@ in
         "diffEditor.renderSideBySide" = false;
 
         "editor.cursorBlinking" = "solid";
-        "editor.fontFamily" = "'FiraCode Nerd Font', 'Fira Code','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'";
+        "editor.fontFamily" =
+          "'FiraCode Nerd Font', 'Fira Code','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'";
         "editor.fontLigatures" = true;
         "editor.formatOnSave" = true;
         "editor.largeFileOptimizations" = false;
@@ -449,7 +450,8 @@ in
         "latex-workshop.message.update.show" = false;
         "latex-workshop.view.pdf.viewer" = "tab";
 
-        "markdown.preview.fontFamily" = "-apple-system, BlinkMacSystemFont, 'DejaVu Sans', 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif";
+        "markdown.preview.fontFamily" =
+          "-apple-system, BlinkMacSystemFont, 'DejaVu Sans', 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif";
 
         "mypy-type-checker.importStrategy" = "fromEnvironment";
         "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
