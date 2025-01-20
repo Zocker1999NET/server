@@ -183,6 +183,7 @@ in
       # Broadcom / LSI SAS2308 PCI-Express Fusion-MPT SAS-2 [1000:0087] (rev 05)
       # Subsystem: Broadcom / LSI 9207-8i SAS2.1 HBA [1000:3020]
       boot.kernelParams = [ "iommu=pt" ];
+      hardware.memory.availableBytes = 16 * 1024 * 1024 * 1024;
     }
 
     # installation state
