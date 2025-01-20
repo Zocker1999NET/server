@@ -8,8 +8,9 @@
 let
   # library
   inherit (lib.lists) singleton;
-  inherit (lib.modules) mkIf;
+  inherit (lib.modules) mkDefault mkIf mkMerge;
   inherit (lib.options) mkEnableOption;
+  inherit (lib.trivial) max;
   # config
   cfg = config.x-banananetwork.zfsServer;
   servOpts = options.services.zfs;
@@ -39,6 +40,11 @@ let
     })
   ];
 
+  # memory optimization
+  memoryAssignmentName = "x-banananetwork.zfsServer";
+  memoryAssigned = config.hardware.memory.assignments.${memoryAssignmentName};
+  systemMemoryBytes = config.hardware.memory.availableBytes;
+
 in
 {
 
@@ -57,6 +63,17 @@ in
         jdupes
         zfs-tools
       ]);
+    hardware.memory.assignments.${memoryAssignmentName} = mkMerge [
+      # wild guess
+      {
+        averageBytes = mkDefault ((with memoryAssigned; maximumBytes + minimumBytes) / 2);
+      }
+      # from OpenZFS default module parameters
+      {
+        minimumBytes = mkDefault (max (32 * 1024 * 1024) (systemMemoryBytes / 32)); # zfs_arc_min
+        maximumBytes = mkDefault (max (64 * 1024 * 1024) (systemMemoryBytes / 2)); # zfs_arc_max
+      }
+    ];
     services.zfs = {
       autoScrub.enable = true;
       trim.enable = true;
