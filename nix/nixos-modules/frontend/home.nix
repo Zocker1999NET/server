@@ -64,6 +64,7 @@ in
     # tools
     fzf # fuzzy finder  # TODO integrate better: https://home-manager-options.extranix.com/?query=fzf&release=master
     jdupes
+    pdfgrep # for scansystem
     (writeShellApplication {
       # TODO extract as helper function/derivation
       # (I do not use module, as I see its config as user-data)
