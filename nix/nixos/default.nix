@@ -45,6 +45,8 @@ in
 
   "nyxlite.pc.6nw.de" = importSystem ./de.6nw/pc/nyxlite;
 
+  "steamos.pc.6nw.de" = importSystem ./de.6nw/pc/steamos;
+
   "emu0.pc.6nw.de" = importSystem ./de.6nw/pc/emu/emu0.nix;
   "emu1.pc.6nw.de" = importSystem ./de.6nw/pc/emu/emu1.nix;
   "emu2.pc.6nw.de" = importSystem ./de.6nw/pc/emu/emu2.nix;
