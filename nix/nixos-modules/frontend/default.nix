@@ -109,6 +109,11 @@ in
 
     programs = {
 
+      ausweisapp = {
+        enable = true;
+        openFirewall = true;
+      };
+
       captive-browser = {
         enable = true;
         bindInterface = true;
