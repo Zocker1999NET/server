@@ -39,7 +39,7 @@ in
       ];
     }
 
-    # source: https://wiki.nixos.org/wiki/AMD_GPU
+    # see: https://wiki.nixos.org/wiki/AMD_GPU
     (lib.mkIf cfg.amd.enable {
       hardware.graphics = {
         enable = true;
@@ -62,7 +62,7 @@ in
       };
     })
 
-    # source: https://wiki.nixos.org/wiki/Nvidia
+    # see: https://wiki.nixos.org/wiki/NVIDIA
     (lib.mkIf cfg.nvidia.enable {
       hardware = {
         # TODO set priority per case
