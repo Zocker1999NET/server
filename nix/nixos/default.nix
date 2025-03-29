@@ -249,6 +249,30 @@ in
     system = "x86_64-linux";
   };
 
+  # TODO integrate into auto-iso, see taskwarrior:///fd89851a-0cf7-4e18-bd53-592d0e68cc48
+  # (note) build: .#nixosConfigurations.mgmt-iso.config.system.build.isoImage
+  "mgmt-iso" = nixosSystem {
+    modules = [
+      outputs.nixosProfiles.installer
+      (
+        { config, pkgs, ... }:
+        {
+          config = {
+            documentation.info.enable = lib.mkForce false;
+            isoImage.edition = "de.6nw-mgmt";
+            networking.hostName = "mgmt-iso";
+            users.users.root.openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
+            x-banananetwork = {
+              allCommon.enable = true;
+              useable.enable = true;
+            };
+          };
+        }
+      )
+    ];
+    system = "x86_64-linux";
+  };
+
   "iehsrv995" = nixosSystem {
     # TODO copy config from host
     modules = [
