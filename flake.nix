@@ -40,6 +40,12 @@
 
     # required for configs
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    jovian-nixos = {
+      url = "github:Jovian-Experiments/Jovian-NixOS/development";
+      inputs.nixpkgs.follows = "nixpkgs";
+      # used for:
+      # - SteamOS Gaming Setup
+    };
 
     disko-install-menu = {
       url = "github:Zocker1999NET/disko-install-menu";
