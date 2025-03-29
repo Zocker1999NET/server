@@ -175,8 +175,7 @@ in
               # Refined GitHub
               "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = { };
               # Request Control
-              # TODO (maybe) alternative: Redirector (https://github.com/einaregilsson/Redirector)
-              # - in future, can be configured via policies, https://github.com/einaregilsson/Redirector/pull/399
+              # TODO alternative taskwarrior:///31217b57-efa9-44b5-874b-6ee597e95c9a
               "{1b1e6108-2d88-4f0f-a338-01f9dbcccd6f}" = {
                 default_area = "navbar";
               };
@@ -185,12 +184,14 @@ in
               # SteamDB
               "firefox-extension@steamdb.info" = { };
               # Tab Stash
+              # TODO replace, taskwarrior:///544aa57e-584d-4ea5-b55d-a78dab0df7be
               "tab-stash@condordes.net" = {
                 default_area = "navbar";
               };
               # Tabliss
               "extension@tabliss.io" = { };
               # uBlock Origin
+              # TODO use policies, taskwarrior:///5f7649da-66aa-4355-bc7d-119c02275e56
               "uBlock0@raymondhill.net" = {
                 default_area = "navbar";
               };
