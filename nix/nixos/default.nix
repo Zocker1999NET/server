@@ -249,7 +249,7 @@ in
     system = "x86_64-linux";
   };
 
-  # TODO integrate into auto-iso, see taskwarrior:///fd89851a-0cf7-4e18-bd53-592d0e68cc48
+  # TODO integrate into auto-iso, see taskwarrior:///321e5090-fe7d-4fc8-aeee-0117a344f33a
   # (note) build: .#nixosConfigurations.mgmt-iso.config.system.build.isoImage
   "mgmt-iso" = nixosSystem {
     modules = [
