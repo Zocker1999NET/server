@@ -35,6 +35,26 @@
         "type": "github"
       }
     },
+    "disko-install-menu": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1743781323,
+        "narHash": "sha256-AzXehOhw2htpy7ngAxzU4U7oyRuwA/KimIaM1es4Ih8=",
+        "owner": "Zocker1999NET",
+        "repo": "disko-install-menu",
+        "rev": "d999d6a5c3bcd1a36f7e169d297f267d4ac708bf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Zocker1999NET",
+        "repo": "disko-install-menu",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -123,6 +143,7 @@
       "inputs": {
         "crane": "crane",
         "disko": "disko",
+        "disko-install-menu": "disko-install-menu",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "nixos-hardware": "nixos-hardware",

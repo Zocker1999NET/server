@@ -12,6 +12,7 @@
     # from nixpkgs
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" # includes allHardware configs
     # from flake inputs
+    inputs.disko-install-menu.nixosModules.default
     inputs.unattended-installer.nixosModules.default
     # from here
     ./common.nix

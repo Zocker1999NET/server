@@ -261,6 +261,14 @@ in
             documentation.info.enable = lib.mkForce false;
             isoImage.edition = "de.6nw-mgmt";
             networking.hostName = "mgmt-iso";
+            programs.disko-install-menu = {
+              enable = true;
+              options = {
+                # TODO autostart
+                defaultFlake = "github:Zocker1999NET/server/deployed"; # ===SYNC:general/meta/repo/url
+                defaultHost = "empty";
+              };
+            };
             users.users.root.openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
             x-banananetwork = {
               allCommon.enable = true;

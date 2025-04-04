@@ -28,6 +28,11 @@
     # required for configs
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
+    disko-install-menu = {
+      url = "github:Zocker1999NET/disko-install-menu";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     unattended-installer = {
       url = "github:chrillefkr/nixos-unattended-installer";
       inputs.disko.follows = "disko";
