@@ -345,8 +345,11 @@ in
             pluginName = "zocker";
             version = "unstable-2019-11-07";
             src = pkgs.fetchFromGitea {
-              domain = "git.banananet.work";
-              owner = "zocker";
+              # TODO revert to custom Git when up again
+              #domain = "git.banananet.work";
+              #owner = "zocker";
+              domain = "github.com";
+              owner = "Zocker1999NET";
               repo = "tmux-custom";
               rev = "f9bafb8b29fad4b1ba77994540f069a49bb10e38";
               hash = "sha256-v0zkIqYnFYDcwgkjrRbOH2AXWUm1RXvFbcbQB/N1lzo=";
