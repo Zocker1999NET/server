@@ -352,18 +352,17 @@ in
         "nixos-fw".content = ''
           set same-if {
             type ifname . ifname;
-            ${
-              ruleFromList
-                (map (
-                  c:
-                  nftConcat [
-                    c.name
-                    c.name
-                  ]
-                ) ifConfigs)
-                (set: ''
-                  elements = { ${set} }
-                '')
+            ${ruleFromList
+              (map (
+                c:
+                nftConcat [
+                  c.name
+                  c.name
+                ]
+              ) ifConfigs)
+              (set: ''
+                elements = { ${set} }
+              '')
             }
           }
           set ipv4-linklocal {
@@ -434,15 +433,15 @@ in
           }
           set srcnat-ipv4 {
             type ifname . ifname;
-            ${
-              setElemList (flip concatMap ifConfigs (s: flip map s.srcnat.ipv4.enableFor (d: "${s.name} . ${d}")))
-            }
+            ${setElemList (
+              flip concatMap ifConfigs (s: flip map s.srcnat.ipv4.enableFor (d: "${s.name} . ${d}"))
+            )}
           }
           set srcnat-ipv6 {
             type ifname . ifname;
-            ${
-              setElemList (flip concatMap ifConfigs (s: flip map s.srcnat.ipv6.enableFor (d: "${s.name} . ${d}")))
-            }
+            ${setElemList (
+              flip concatMap ifConfigs (s: flip map s.srcnat.ipv6.enableFor (d: "${s.name} . ${d}"))
+            )}
           }
         '';
         /*
