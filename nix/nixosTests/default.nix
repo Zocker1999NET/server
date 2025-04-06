@@ -789,6 +789,7 @@ in
                 ];
                 bootstraps = config.x-banananetwork.routerVM.dns.upstreams;
                 fallbacks = [ ];
+                webui.password = ""; # invalid password
               };
             };
             networking.nftables = {
