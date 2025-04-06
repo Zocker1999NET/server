@@ -3,6 +3,8 @@
 let
   cfg = config.x-banananetwork.routerVM;
   ts = config.services.tailscale;
+  inherit (lib.modules) mkIf;
+  mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };
   routerFlags = {
     # in general: do not mess with the router module
     # see https://tailscale.com/kb/1241/tailscale-up
@@ -14,7 +16,17 @@ let
 in
 {
 
-  config = lib.mkIf (cfg.enable && ts.enable) {
+  options.x-banananetwork.routerVM.compat.tailscale = mkDisableOption ''
+    options ensuring compatibility with Tailscale.
+
+    These assertions & options only affect options of the Tailscale module
+    and are hereby only effective if the Tailscale module is configured.
+
+    Only disable these compatibility options
+    after you checked why those are set.
+  '';
+
+  config = mkIf (cfg.enable && ts.enable && cfg.compat.tailscale) {
 
     assertions =
       let
