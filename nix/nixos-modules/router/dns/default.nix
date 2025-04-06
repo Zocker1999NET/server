@@ -27,7 +27,7 @@ in
     bootstraps = lib.mkOption {
       description = ''
         List of DNS servers used to bootstrap list of other DNS servers.
-        Used by DNS server for clients.
+        Not used by DNS server for clients.
       '';
       type = with types; listOf str;
       default = cfg.localFallbacks;
