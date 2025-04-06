@@ -50,6 +50,13 @@ in
     };
 
     webui = {
+      port = lib.mkOption {
+        description = ''
+          Port under which the AdGuard Home web interface will be made accessible.
+        '';
+        type = types.port;
+        default = 3000;
+      };
       username = lib.mkOption {
         description = ''
           Username for AdGuard Home admin account.
@@ -83,7 +90,7 @@ in
       enable = true;
       allowDHCP = false;
       mutableSettings = false;
-      port = 3000;
+      port = cfg.webui.port;
       settings = {
         http = {
           session_ttl = "5:00";
