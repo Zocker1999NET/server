@@ -744,6 +744,7 @@ in
                     input.checkDestination = false;
                   };
                   # TODO build test so it requires:
+                  workarounds.dhcpv6IsAvmFritzBox = false;
                   workarounds.dhcpv6PrefixDelegationWithoutAddress = false;
                 };
                 lan0 = {
