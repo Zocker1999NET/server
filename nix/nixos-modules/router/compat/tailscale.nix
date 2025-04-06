@@ -57,6 +57,7 @@ in
 
     services.tailscale = {
       setFlags = routerFlags;
+      useRoutingFeatures = "none"; # just in case
     };
 
   };
