@@ -41,28 +41,32 @@ in
       default = [ ];
     };
 
-    webui.username = lib.mkOption {
-      description = ''
-        Username for AdGuard Home admin account.
-      '';
-      type = types.str;
-    };
-    webui.password = lib.mkOption {
-      description = ''
-        Hash for AdGuard Home admin account.
-        Can be created with .e.g. {command}`mkpasswd --method=bcrypt`'
-
-        For more info, read in the [Adguard Home Wiki](https://github.com/AdguardTeam/AdguardHome/wiki/Configuration#reset-web-password)
-      '';
-      type = types.str;
-    };
-
     filterlists = lib.mkOption {
       description = ''
         List of URLs of filterlists which entries should be blocked.
       '';
       type = with types; listOf str;
       default = [ ];
+    };
+
+    webui = {
+      username = lib.mkOption {
+        description = ''
+          Username for AdGuard Home admin account.
+        '';
+        type = types.str;
+        default = "admin";
+        example = "myuser";
+      };
+      password = lib.mkOption {
+        description = ''
+          Hash for AdGuard Home admin account.
+          Can be created with .e.g. {command}`mkpasswd --method=bcrypt`'
+
+          For more info, read in the [Adguard Home Wiki](https://github.com/AdguardTeam/AdguardHome/wiki/Configuration#reset-web-password)
+        '';
+        type = types.str;
+      };
     };
 
   };
@@ -85,8 +89,8 @@ in
           session_ttl = "5:00";
         };
         users = lib.singleton {
-          name = "admin";
-          password = ""; # TODO bcrypt htpasswd random stuff
+          name = cfg.webui.username;
+          password = cfg.webui.password;
         };
         auth_attempts = 5;
         block_auth_min = 5;
