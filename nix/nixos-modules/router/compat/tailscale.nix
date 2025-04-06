@@ -4,11 +4,12 @@ let
   cfg = config.x-banananetwork.routerVM;
   ts = config.services.tailscale;
   routerFlags = {
-    # do not mess with the router module
-    accept-dns = false;
-    exit-node = "";
-    netfilter-mode = "none";
-    snat-subnet-rules = false;
+    # in general: do not mess with the router module
+    # see https://tailscale.com/kb/1241/tailscale-up
+    accept-dns = false; # do not overwrite local DNS settings
+    exit-node = ""; # use interface routes to selectively route traffic through Tailscale
+    netfilter-mode = "none"; # prevent Tailscale from modifying nftables at all
+    snat-subnet-rules = false; # use interface options for applying SNAT
   };
 in
 {
