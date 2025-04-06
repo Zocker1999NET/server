@@ -289,7 +289,8 @@ in
             let
               defaults = {
                 #firewall.blackhole.sets.documentation.all = false;
-                firewall.input.checkDestination = false;
+                # TODO add test case differentiating for this
+                #firewall.input.checkDestination = false;
               };
               insertDefaults = builtins.mapAttrs (
                 _: v:
