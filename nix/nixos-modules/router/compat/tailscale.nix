@@ -28,7 +28,7 @@ in
           builtins.length matched <= 1;
         assertOpt = optionsName: options: name: {
           assertion = isOptSetOnce name options;
-          message = "--${name} in services.tailscale.${optionsName} is already configured by router settings";
+          message = "--${name} in services.tailscale.${optionsName} is already configured by router settings & cannot be configured manually";
         };
         assertSetOpt = assertOpt "extraSetFlags" ts.extraSetFlags;
       in

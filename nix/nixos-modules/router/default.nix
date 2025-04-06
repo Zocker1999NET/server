@@ -129,11 +129,10 @@ in
     # modules
     outputs.nixosModules.systemd-radv-fadeout
     # directories
+    ./compat
     ./dns
     # files
     ./references.nix
-    # compatibility with third-party services
-    ./tailscale.nix
   ];
 
   options = {
