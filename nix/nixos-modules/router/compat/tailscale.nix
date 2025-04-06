@@ -16,17 +16,19 @@ let
 in
 {
 
-  options.x-banananetwork.routerVM.compat.tailscale = mkDisableOption ''
-    options ensuring compatibility with Tailscale.
+  options.x-banananetwork.routerVM.compat.tailscale = {
+    enable = mkDisableOption ''
+      options ensuring compatibility with Tailscale.
 
-    These assertions & options only affect options of the Tailscale module
-    and are hereby only effective if the Tailscale module is configured.
+      These assertions & options only affect options of the Tailscale module
+      and are hereby only effective if the Tailscale module is configured.
 
-    Only disable these compatibility options
-    after you checked why those are set.
-  '';
+      Only disable these compatibility options
+      after you checked why those are set.
+    '';
+  };
 
-  config = mkIf (cfg.enable && ts.enable && cfg.compat.tailscale) {
+  config = mkIf (cfg.enable && ts.enable && cfg.compat.tailscale.enable) {
 
     assertions =
       let
