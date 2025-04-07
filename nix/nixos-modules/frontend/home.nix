@@ -312,6 +312,7 @@ in
               "opus"
             ];
             profile-restore = "copy-equal";
+            audio-display = "no";
             speed = 1;
           };
           tv_series = {
