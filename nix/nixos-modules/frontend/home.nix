@@ -269,7 +269,6 @@ in
         vo = "gpu";
         hwdec = "auto-safe";
         gpu-context = "wayland";
-        alpha = "yes";
         speed = 1.2;
         #ytdl-format = "bestvideo[height<=?1080]+bestaudio/best";
         ytdl-format = "ytdl"; # use yt-dlp config
