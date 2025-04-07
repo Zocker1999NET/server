@@ -265,11 +265,14 @@ in
         + script-binding console/enable
       '';
       config = {
-        save-position-on-quit = true;
+        # == video playback
         vo = "gpu";
         hwdec = "auto-safe";
         gpu-context = "wayland";
+        # == playback settings
+        save-position-on-quit = true;
         speed = 1.2;
+        # == youtube-dl / yt-dlp settings
         ytdl-format = "ytdl"; # use yt-dlp config
       };
       scripts = with pkgs.mpvScripts; [
