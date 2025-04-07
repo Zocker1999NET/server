@@ -286,6 +286,13 @@ in
         speed = 1.2;
         # == youtube-dl / yt-dlp settings
         ytdl-format = "ytdl"; # use yt-dlp config
+        # == caching
+        prefetch-playlist = true;
+        cache = "auto";
+        demuxer-thread = true;
+        demuxer-readahead-secs = 15;
+        demuxer-max-bytes = "512MiB";
+        demuxer-max-back-bytes = "64MiB";
       };
       scripts = with pkgs.mpvScripts; [
         autoload # "autoplay" files in same dir
