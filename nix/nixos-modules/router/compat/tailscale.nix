@@ -25,6 +25,13 @@ in
 
       Only disable these compatibility options
       after you checked why those are set.
+
+      When using Tailscale, be aware of:
+      - The {option}`.firewall.sources.expected` option for the Tailscale interface must be configured statically.
+        These compat options aid by setting it to Tailscale’s default IPs `100.64.0.0/10` & `fd7a:115c:a1e0::/48`.
+        If your tailnet operates in different ranges, you need to overwrite the {option}`.firewall.sources.expected` option,
+        otherwise you may experience connection problems or security issues.
+        You can & should leave the other compat options intact.
     '';
   };
 
@@ -58,6 +65,17 @@ in
     services.tailscale = {
       setFlags = routerFlags;
       useRoutingFeatures = "none"; # just in case
+    };
+
+    x-banananetwork.routerVM.interfaces.${ts.interfaceName} = {
+      # cannot rely on automatic detection of source addresses
+      # because Tailscale assigns /32 & /128 bit masks
+      # see https://github.com/tailscale/tailscale/issues/7340
+      firewall.sources.expected = [
+        # addresses according to: https://tailscale.com/kb/1033/ip-and-dns-addresses
+        "100.64.0.0/10"
+        "fd7a:115c:a1e0::/48"
+      ];
     };
 
   };
