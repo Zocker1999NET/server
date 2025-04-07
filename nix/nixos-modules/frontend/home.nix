@@ -269,6 +269,15 @@ in
         vo = "gpu";
         hwdec = "auto-safe";
         gpu-context = "wayland";
+        # == audio playback
+        # because mpv does 5.1 down mix to 2.1 not correctly, these options might help
+        # 5.1 Test Audio: https://www.youtube.com/watch?v=q9eKLPCciWw
+        # uses ffmpeg filter to down mix 5.1 / 7.1 to 2.1 correctly
+        af = ''lavfi="pan=stereo|FL < 0.5*FC + 0.3*FLC + 0.3*FL + 0.3*BL + 0.3*SL + 0.5*LFE | FR < 0.5*FC + 0.3*FRC + 0.3*FR + 0.3*BR + 0.3*SR + 0.5*LFE",lavfi="acompressor=6"'';
+        # alternative: uses ffmpeg filter to normalize volumes (not really fixing downmix, but might be an easy fix)
+        #af=lavfi=[loudnorm=I=-16:TP=-3:LRA=4]
+        # alternative: uses ffmpeg filter to normalize volumes (not really fixing downmix, but might be an easy fix)
+        #af=drc=2
         # == playback settings
         save-position-on-quit = true;
         speed = 1.2;
