@@ -265,6 +265,9 @@ in
         + script-binding console/enable
       '';
       config = {
+        # == user interface
+        osd-font = "Bitstream Vera Sans"; # in case no default font is given by GTK/…
+        screenshot-format = "png";
         # == video playback
         vo = "gpu";
         hwdec = "auto-safe";
