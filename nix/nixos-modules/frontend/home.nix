@@ -270,7 +270,6 @@ in
         hwdec = "auto-safe";
         gpu-context = "wayland";
         speed = 1.2;
-        #ytdl-format = "bestvideo[height<=?1080]+bestaudio/best";
         ytdl-format = "ytdl"; # use yt-dlp config
       };
       scripts = with pkgs.mpvScripts; [
