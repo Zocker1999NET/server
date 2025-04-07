@@ -294,6 +294,36 @@ in
         demuxer-max-bytes = "512MiB";
         demuxer-max-back-bytes = "64MiB";
       };
+      profiles =
+        let
+          filename = ''get("filename", "DEFAULT"):lower()'';
+          multiMatching =
+            input: patterns:
+            "(${concatStringsSep " or " (map (pat: "${input}:match(${pat})") patterns)}) ~= nil";
+          extensionMatching = input: extensions: multiMatching input (map (ext: "\"%.${ext}$\"") extensions);
+        in
+        {
+          music = {
+            profile-desc = "for Music";
+            profile-cond = extensionMatching filename [
+              "flac"
+              "m4a"
+              "mp3"
+              "opus"
+            ];
+            profile-restore = "copy-equal";
+            speed = 1;
+          };
+          tv_series = {
+            profile-desc = "for TV Series";
+            profile-cond = multiMatching filename [
+              ''"s%d+e%d+"''
+              ''"%(%d+%)"''
+            ];
+            profile-restore = "copy-equal";
+            speed = 1;
+          };
+        };
       scripts = with pkgs.mpvScripts; [
         autoload # "autoplay" files in same dir
         evafast # VHC rewind effect
