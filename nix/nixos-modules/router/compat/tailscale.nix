@@ -2,6 +2,7 @@
 { config, ... }:
 let
   cfg = config.x-banananetwork.routerVM;
+  compTsCfg = cfg.compat.tailscale;
   ts = config.services.tailscale;
   inherit (lib.modules) mkIf;
   mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };
@@ -35,7 +36,7 @@ in
     '';
   };
 
-  config = mkIf (cfg.enable && ts.enable && cfg.compat.tailscale.enable) {
+  config = mkIf (cfg.enable && ts.enable && compTsCfg.enable) {
 
     assertions =
       let
