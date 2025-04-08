@@ -90,7 +90,8 @@ in
         The CIDR automatically determines the DHCP pool,
         if not defined otherwise.
       '';
-      type = types.ipv4Network;
+      type = with types; nullOr ipv4Network;
+      default = null;
     };
     ipv6InterfaceId = lib.mkOption {
       description = ''

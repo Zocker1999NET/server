@@ -13,6 +13,12 @@ let
     "custom" = { };
 
     "nat+dhcp" = {
+      assertions = [
+        {
+          assertion = !isNull routCfg.ipv4Address;
+          message = ".routing.ipv4Address required for DHCP server";
+        }
+      ];
       networkd = {
         linkConfig.RequiredForOnline = mkDefault false; # we are providing internet
         networkConfig = {
