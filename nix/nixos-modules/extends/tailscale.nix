@@ -18,7 +18,7 @@ in
         Options which are given to `tailscale set` on every boot.
         Will be translated to {option}`services.tailscale.extraSetFlags`.
       '';
-      type = lib.types.anything;
+      type = with lib.types; attrsOf anything;
       default = { };
       example = {
         advertise-exit-node = true;
@@ -34,7 +34,7 @@ in
       description = ''
         Will be translated to {option}`services.tailscale.extraUpFlags`.
       '';
-      type = lib.types.anything;
+      type = with lib.types; attrsOf anything;
       default = { };
       example = {
         ssh = true;
