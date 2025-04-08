@@ -1,5 +1,5 @@
-{ ... }@flakeArg:
-{ config, lib, ... }:
+{ lib, ... }@flakeArg:
+{ config, ... }:
 let
   cfg = config.x-banananetwork.routerVM;
   ts = config.services.tailscale;
