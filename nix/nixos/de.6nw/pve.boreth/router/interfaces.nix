@@ -129,7 +129,6 @@ in
       description = "Tailscale Network";
       srcnat.both.enableFor = [
         "wan0"
-        "lan0"
       ];
     };
 
