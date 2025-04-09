@@ -744,10 +744,6 @@ in
                 wan0 = {
                   kind = "wan-rfc7084";
                   matchConfig.PermanentMACAddress = qemuNicMac config 0;
-                  firewall = {
-                    #blackhole.sets.documentation.all = false;
-                    input.checkDestination = false;
-                  };
                   # TODO build test so it requires:
                   workarounds.dhcpv6IsAvmFritzBox = false;
                   workarounds.dhcpv6PrefixDelegationWithoutAddress = false;
@@ -756,10 +752,6 @@ in
                   # without Tailnet access
                   kind = "lan-rfc7084";
                   matchConfig.PermanentMACAddress = qemuNicMac config 1;
-                  firewall = {
-                    #blackhole.sets.documentation.all = false;
-                    input.checkDestination = false;
-                  };
                   routing = {
                     domain = "local";
                     ipv4Address = "10.32.0.1/24";
@@ -770,10 +762,6 @@ in
                   # with Tailnet access (srcnat)
                   kind = "lan-rfc7084";
                   matchConfig.PermanentMACAddress = qemuNicMac config 2;
-                  firewall = {
-                    #blackhole.sets.documentation.all = false;
-                    input.checkDestination = false;
-                  };
                   routing = {
                     domain = "local";
                     ipv4Address = "10.32.1.1/24";
