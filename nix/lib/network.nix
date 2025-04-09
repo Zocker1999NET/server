@@ -215,6 +215,7 @@ rec {
   parseBinNet =
     ipV: binStr:
     let
+      _group_count = ipClassStatics.${ipV}._group_count;
       ip = toIpClass {
         version = ipV;
         _input = binStr;
@@ -223,6 +224,8 @@ rec {
         binRaw = fixedWidthStrSuffix ip._cidr_max "0" binStr;
         binGroups = genList (i: substring (ip._group_bits * i) ip._group_bits ip.binRaw) ip._group_count;
         decGroups = map binToInt ip.binGroups;
+        # decoy for asserts
+        _groups = genList (i: throw "_groups values not available for parseBinNet") _group_count;
         # shortcuts
         binRawNet = binStr;
       };
