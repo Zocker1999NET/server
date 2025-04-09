@@ -417,8 +417,8 @@ in
       def getIp(machine, interface):
         run = lambda cmd: machine.succeed(cmd)
         return (
-          run(f"ip -4 addr show {interface} | grep -oP '(?<=inet\s)\d+(\.\d+)+(?=/\d+\s)' | head -n 1").strip(),
-          run(f"ip -6 addr show {interface} | grep -oP '(?<=inet6\s)(?!f[cde])[\da-f:]+(?=/\d+\s(?!.*temporary))' | head -n 1").strip(),
+          run(rf"ip -4 addr show {interface} | grep -oP '(?<=inet\s)\d+(\.\d+)+(?=/\d+\s)' | head -n 1").strip(),
+          run(rf"ip -6 addr show {interface} | grep -oP '(?<=inet6\s)(?!f[cde])[\da-f:]+(?=/\d+\s(?!.*temporary))' | head -n 1").strip(),
         )
       def dig(query, response):
         return f"dig {query} | tee /dev/stderr | grep -P {quote(response)} >/dev/null"
