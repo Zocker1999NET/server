@@ -127,6 +127,11 @@ in
     "tailscale0" = {
       kind = "custom";
       description = "Tailscale Network";
+      routing = {
+        plain = [
+          "lan0"
+        ];
+      };
       srcnat.both.enableFor = [
         "wan0"
       ];
