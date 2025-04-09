@@ -50,7 +50,7 @@ in
         };
         services.tailscale = {
           enable = true;
-          authKeyFile = config.secrix.services.tailscale.secrets.authKey.decrypted.path;
+          authKeyFile = config.secrix.services.tailscaled-autoconnect.secrets.authKey.decrypted.path;
           openFirewall = true;
           setFlags = {
             advertise-exit-node = true;
@@ -63,7 +63,7 @@ in
           # ensure all flags are already effective from first launch
           upFlags = config.services.tailscale.setFlags;
         };
-        secrix.services.tailscale.secrets.authKey.encrypted.file = ./tailscale-auth-key;
+        secrix.services.tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key;
         # workaround to work with FRITZ!Box which releases a broken NTP answer via DHCPv6
         systemd.network.networks."10-wan0".dhcpV6Config.UseNTP = false;
         systemd.services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";
