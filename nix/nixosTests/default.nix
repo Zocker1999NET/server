@@ -903,7 +903,7 @@ in
 
           peer.succeed(ping(router_ip))
           router.succeed(ping(peer_ip))
-          #client0.fail(ping(router_ip)) # might fail, then ignore for now
+          client0.fail(ping(router_ip))
           client0.fail(ping(peer_ip))
           client1.succeed(ping(router_ip))
           client1.succeed(ping(peer_ip))
