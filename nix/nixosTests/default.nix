@@ -898,6 +898,13 @@ in
         peer.wait_until_succeeds("tailscale ping router", 10)
         router.wait_until_succeeds("tailscale ping peer", 10)
 
+        # accept all routes
+        routes = headscale.succeed("headscale routes list --output json | jq '.[].id'").rstrip("\r\n").split("\n")
+        for route in routes:
+          headscale.succeed(f"headscale routes enable -r {route}")
+        # ensure router is acknowledged as possible exit node
+        peer.wait_until_succeeds("tailscale exit-node list | grep router", 10)
+
         # ensure all are ready (esp. clients)
         for m in machines:
           m.wait_for_unit("default.target")
