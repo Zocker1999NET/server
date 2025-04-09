@@ -124,7 +124,7 @@ in
       description = ''
         The upstream interface of this one.
 
-        ipv4Kind / ipv6Kind will define the relation with the upstream interface
+        ipv4Mode / ipv6Mode will define the relation with the upstream interface
         (e.g. if srcnat is required).
         Also, this setting is relevant for stuff like prefix delegation.
       '';
