@@ -95,6 +95,7 @@ let
           # TODO hexExploded
           # network
           binRawNet = substring 0 ip.cidrInt ip.binRaw;
+          network = self.parseBinNet ip.version ip.binRawNet;
           _cidr_max = ip._group_count * ip._group_bits;
           cidrInt = if ip._cidrGroup == null then ip._cidr_max else toIntBase10 ip._cidrGroup;
           cidrCompressed = "${ip.compressed}/${ip.cidrStr}";
