@@ -880,7 +880,7 @@ in
 
         # Create headscale user and preauth-key
         headscale.succeed("headscale users create test")
-        authkey = headscale.succeed("headscale preauthkeys -u test create --reusable")
+        authkey = headscale.succeed("headscale preauthkeys -u test create --reusable").rstrip("\r\n")
 
         # ensure all are ready (esp. isp)
         for m in machines:
