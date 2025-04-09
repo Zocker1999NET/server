@@ -720,7 +720,11 @@ in
           };
           virtualisation.vlans = lib.singleton 1;
         };
-        inherit peer;
+        peer = {
+          imports = [
+            peer
+          ];
+        };
         router =
           { config, nodes, ... }:
           {
@@ -817,11 +821,15 @@ in
             x-banananetwork.sshPublicKeys = [ ];
           };
         client0 = {
-          imports = lib.singleton client;
+          imports = [
+            client
+          ];
           virtualisation.vlans = lib.singleton 2;
         };
         client1 = {
-          imports = lib.singleton client;
+          imports = [
+            client
+          ];
           virtualisation.vlans = lib.singleton 3;
         };
       };
