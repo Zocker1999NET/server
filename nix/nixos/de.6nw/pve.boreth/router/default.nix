@@ -54,14 +54,15 @@ in
           openFirewall = true;
           setFlags = {
             advertise-exit-node = true;
+            hostname = "router-boreth";
+          };
+          # ensure all flags are already effective from first launch
+          upFlags = config.services.tailscale.setFlags // {
             advertise-tags = [
               "none"
               "iperf3"
             ];
-            hostname = "router-boreth";
           };
-          # ensure all flags are already effective from first launch
-          upFlags = config.services.tailscale.setFlags;
         };
         secrix.services.tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key;
         # workaround to work with FRITZ!Box which releases a broken NTP answer via DHCPv6
