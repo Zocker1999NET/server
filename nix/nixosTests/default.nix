@@ -896,7 +896,7 @@ in
         router.wait_until_succeeds("tailscale ping peer", 10)
 
         # TODO Verify routing capabilities
-        def verify_routing(ip_kind: str):
+        for ip_kind in ("ipv4", "ipv6"):
           ip_arg = "-4" if ip_kind == "ipv4" else "-6"
           peer_ip = router.succeed(f"tailscale ip {ip_arg} peer").strip()
           router_ip = peer.succeed(f"tailscale ip {ip_arg} router").strip()
@@ -909,9 +909,6 @@ in
           client1.succeed(ping(peer_ip))
 
           # TODO verify peer can reach clients (requires routing announcements)
-
-        verify_routing("ipv4")
-        verify_routing("ipv6")
       '';
     };
 
