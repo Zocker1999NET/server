@@ -891,8 +891,8 @@ in
         # (authkey should only be hexdecimal, hence no escape required)
         # (tailscaled-set.service needs to be started again, because the settings it applied are reset on initial "tailscale up")
         up_cmd = f"tailscale up --login-server 'https://headscale.test' --auth-key {authkey} --accept-dns=false && systemctl start tailscaled-set"
-        peer.execute(up_cmd)
-        router.execute(up_cmd)
+        peer.succeed(up_cmd)
+        router.succeed(up_cmd)
 
         # Verify reachability inside tailnet
         peer.wait_until_succeeds("tailscale ping router", 10)
