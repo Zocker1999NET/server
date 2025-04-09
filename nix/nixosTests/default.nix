@@ -657,6 +657,14 @@ in
       client = {
         networking.useNetworkd = true;
       };
+      echoPort = 8088;
+      echoService = {
+        networking.firewall.allowedTCPPorts = [ echoPort ];
+        systemd.services."echo-service" = {
+          serviceConfig.ExecStart = "${lib.getExe pkgs.python3} ${./router/echo_service.py} --port ${toString echoPort}";
+          wantedBy = lib.singleton "multi-user.target";
+        };
+      };
       headscalePort = 8080;
       stunPort = 3478;
     in
@@ -722,6 +730,7 @@ in
         };
         peer = {
           imports = [
+            echoService
             peer
           ];
           services.tailscale.extraSetFlags = [
@@ -735,6 +744,10 @@ in
               outputs.nixosProfiles.common
               outputs.nixosModules.withDepends
               peer
+            ];
+            services.tailscale.extraSetFlags = [
+              # TODO test for a working exit node routing
+              "--advertise-exit-node"
             ];
             virtualisation.vlans = [
               1
@@ -859,19 +872,41 @@ in
         client2 = {
           imports = [
             client
+            echoService
           ];
           virtualisation.vlans = lib.singleton 4;
         };
         client3 = {
           imports = [
             client
+            echoService
           ];
           virtualisation.vlans = lib.singleton 5;
         };
       };
       testScript = ''
+        from ipaddress import ip_address, ip_network
+
+        def getIp(machine, interface):
+          run = lambda cmd: machine.succeed(cmd)
+          return (
+            run(rf"ip -4 addr show {interface} | grep -oP '(?<=inet\s)\d+(\.\d+)+(?=/\d+\s)' | head -n 1").strip(),
+            # here, we actually require the use of the link-local addresses
+            run(rf"ip -6 addr show {interface} | grep -oP '(?<=inet6\s)fd[\da-f:]+(?=/\d+\s(?!.*temporary))' | head -n 1").strip(),
+          )
         def ping(target):
           return f"ping -A -c 2 -n -w 2 {target}"
+        def test_echo(node, target, compare, expected=True):
+          if ":" in target:
+            target = f"[{target}]"
+          echoed = node.succeed(f"curl --silent http://{target}:${toString echoPort}").strip()
+          if ":" in target:
+            # in case of IPv6, clients may also use their Privacy Extension addresses
+            # still, we can verify that no NAT was applied by checking the first 64 bit
+            compare_state = ip_network(f"{compare}/64", strict=False) == ip_network(f"{echoed}/64", strict=False)
+          else:
+            compare_state = ip_address(compare) == ip_address(echoed)
+          assert compare_state == expected, f"compared to {compare}, got {echoed}"
 
         start_all()
         headscale.wait_for_unit("headscale.service")
@@ -909,20 +944,49 @@ in
         for m in machines:
           m.wait_for_unit("default.target")
 
-        # TODO Verify routing capabilities
+        client0_ip_both = getIp(client0, "eth1")
+        client1_ip_both = getIp(client1, "eth1")
+        client2_ip_both = getIp(client2, "eth1")
+        client3_ip_both = getIp(client3, "eth1")
+
         for ip_kind in ("ipv4", "ipv6"):
           ip_arg = "-4" if ip_kind == "ipv4" else "-6"
+          ip_idx = 0 if ip_kind == "ipv4" else 1
           peer_ip = router.succeed(f"tailscale ip {ip_arg} peer").strip()
           router_ip = peer.succeed(f"tailscale ip {ip_arg} router").strip()
+          client0_ip = client0_ip_both[ip_idx]
+          client1_ip = client1_ip_both[ip_idx]
+          client2_ip = client2_ip_both[ip_idx]
+          client3_ip = client3_ip_both[ip_idx]
 
+          # internal connectivity
           peer.succeed(ping(router_ip))
           router.succeed(ping(peer_ip))
+          test_echo(router, peer_ip, router_ip)
+
+          # without Tailnet access
           client0.fail(ping(router_ip))
           client0.fail(ping(peer_ip))
+          peer.fail(ping(client0_ip))
+
+          # with Tailnet access (lan srcnat)
           client1.succeed(ping(router_ip))
           client1.succeed(ping(peer_ip))
+          test_echo(client1, peer_ip, client1_ip, expected=False)
+          peer.fail(ping(client1_ip))
 
-          # TODO verify peer can reach clients (requires routing announcements)
+          # with Tailnet access (Tailscale srcnat)
+          client2.fail(ping(router_ip))
+          client2.fail(ping(peer_ip))
+          peer.succeed(ping(client2_ip))
+          test_echo(peer, client2_ip, peer_ip, expected=False)
+
+          # with Tailnet access (plain)
+          client3.succeed(ping(router_ip))
+          client3.succeed(ping(peer_ip))
+          test_echo(client3, peer_ip, client3_ip)
+          peer.succeed(ping(client3_ip))
+          test_echo(peer, client3_ip, peer_ip)
       '';
     };
 
