@@ -12,7 +12,7 @@ let
     accept-dns = false; # do not overwrite local DNS settings
     exit-node = ""; # use interface routes to selectively route traffic through Tailscale
     netfilter-mode = "off"; # prevent Tailscale from modifying nftables at all
-    snat-subnet-rules = false; # use interface options for applying SNAT
+    snat-subnet-routes = false; # use interface options for applying SNAT
   };
 in
 {
