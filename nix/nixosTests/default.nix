@@ -888,6 +888,7 @@ in
         router.wait_for_unit("default.target")
 
         # Connect peers
+        # (authkey should only be hexdecimal, hence no escape required)
         # (tailscaled-set.service needs to be started again, because the settings it applied are reset on initial "tailscale up")
         up_cmd = f"tailscale up --login-server 'https://headscale.test' --auth-key {authkey} --accept-dns=false && systemctl start tailscaled-set"
         peer.execute(up_cmd)
