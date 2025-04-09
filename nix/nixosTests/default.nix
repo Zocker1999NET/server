@@ -882,9 +882,10 @@ in
         headscale.succeed("headscale users create test")
         authkey = headscale.succeed("headscale preauthkeys -u test create --reusable").rstrip("\r\n")
 
-        # ensure all are ready (esp. isp)
-        for m in machines:
-          m.wait_for_unit("default.target")
+        # ensure that ISP network is ready
+        isp.wait_for_unit("default.target")
+        peer.wait_for_unit("default.target")
+        router.wait_for_unit("default.target")
 
         # Connect peers
         up_cmd = f"tailscale up --login-server 'https://headscale.test' --auth-key {authkey} --accept-dns=false"
@@ -894,6 +895,10 @@ in
         # Verify reachability inside tailnet
         peer.wait_until_succeeds("tailscale ping router", 10)
         router.wait_until_succeeds("tailscale ping peer", 10)
+
+        # ensure all are ready (esp. clients)
+        for m in machines:
+          m.wait_for_unit("default.target")
 
         # TODO Verify routing capabilities
         for ip_kind in ("ipv4", "ipv6"):
