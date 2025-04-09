@@ -4,7 +4,12 @@ let
   cfg = config.x-banananetwork.routerVM;
   compTsCfg = cfg.compat.tailscale;
   ts = config.services.tailscale;
+  inherit (builtins) concatMap filter;
+  inherit (lib) types;
   inherit (lib.modules) mkIf;
+  inherit (lib.network) parseIP;
+  inherit (lib.options) mkOption;
+  inherit (lib.trivial) pipe;
   mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };
   routerFlags = {
     # in general: do not mess with the router module
@@ -13,6 +18,18 @@ let
     exit-node = ""; # use interface routes to selectively route traffic through Tailscale
     netfilter-mode = "off"; # prevent Tailscale from modifying nftables at all
     snat-subnet-routes = false; # use interface options for applying SNAT
+    advertise-routes = mkIf (!isNull compTsCfg.advertiseRoutesFor) (
+      pipe compTsCfg.advertiseRoutesFor [
+        (concatMap (
+          i: with cfg.interfaces.${i}.routing; [
+            ipv4Address
+            ipv6ULAPrefix
+          ]
+        ))
+        (filter (v: !isNull v))
+        (map (v: (parseIP v).network.cidrCompressed))
+      ]
+    );
   };
 in
 {
@@ -34,6 +51,31 @@ in
         otherwise you may experience connection problems or security issues.
         You can & should leave the other compat options intact.
     '';
+
+    advertiseRoutesFor = mkOption {
+      description = ''
+        List of interfaces, for which network’s routes will be advertised via Tailscale
+        if {option}`x-banananetwork.routerVM.compat.tailscale.advertiseAuto` is enabled.
+
+        This only refers to statically configured IPv4 & IPv6 subnets,
+        as adapting the advertised routes to dynamically assigned addresses
+        could trigger unexpected routing decisions,
+        e.g. other nodes in a tailnet suddenly attempt to reach a local network via Tailscale
+        or traffic users expected to always goes through Tailscale suddenly does not.
+
+        Defaults to the interfaces which are listed to be reachable from the Tailscale interface.
+
+        For weird edge cases:
+        You can set this option to null to prevent `--advertise-routes=` from being set by the router module.
+        E.g. an empty list would, by design, still trigger `--advertise-routes=` being added to the args.
+      '';
+      type = with types; nullOr (listOf ifName);
+      default = cfg.interfaces.${ts.interfaceName}.routing.allowTo;
+      defaultText = ''config.x-banananetwork.routerVM.interfaces''${config.services.tailscale.interfaceName}.routing.allowTo'';
+      example = [
+        "lan0"
+      ];
+    };
   };
 
   config = mkIf (cfg.enable && ts.enable && compTsCfg.enable) {
