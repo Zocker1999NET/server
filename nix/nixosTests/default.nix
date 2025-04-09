@@ -724,6 +724,9 @@ in
           imports = [
             peer
           ];
+          services.tailscale.extraSetFlags = [
+            "--accept-routes"
+          ];
         };
         router =
           { config, nodes, ... }:
