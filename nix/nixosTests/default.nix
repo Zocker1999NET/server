@@ -740,6 +740,8 @@ in
               1
               2
               3
+              4
+              5
             ];
             x-banananetwork.routerVM = {
               enable = true;
@@ -751,8 +753,8 @@ in
                   workarounds.dhcpv6IsAvmFritzBox = false;
                   workarounds.dhcpv6PrefixDelegationWithoutAddress = false;
                 };
+                # without Tailnet access
                 lan0 = {
-                  # without Tailnet access
                   kind = "lan-rfc7084";
                   matchConfig.PermanentMACAddress = qemuNicMac config 1;
                   routing = {
@@ -762,8 +764,8 @@ in
                     upstream = "wan0";
                   };
                 };
+                # with Tailnet access (lan1 srcnat)
                 lan1 = {
-                  # with Tailnet access (srcnat)
                   kind = "lan-rfc7084";
                   matchConfig.PermanentMACAddress = qemuNicMac config 2;
                   routing = {
@@ -774,11 +776,40 @@ in
                     upstream = "wan0";
                   };
                 };
+                # with Tailnet access (Tailscale srcnat)
+                lan2 = {
+                  kind = "lan-rfc7084";
+                  matchConfig.PermanentMACAddress = qemuNicMac config 3;
+                  routing = {
+                    domain = "local";
+                    ipv4Address = "10.32.2.1/24";
+                    ipv6ULAPrefix = "fd69:dead:beef:2::/64";
+                    upstream = "wan0";
+                  };
+                };
+                # with Tailnet access (plain)
+                lan3 = {
+                  kind = "lan-rfc7084";
+                  matchConfig.PermanentMACAddress = qemuNicMac config 4;
+                  routing = {
+                    domain = "local";
+                    ipv4Address = "10.32.3.1/24";
+                    ipv6ULAPrefix = "fd69:dead:beef:3::/64";
+                    plain = lib.singleton "tailscale0";
+                    upstream = "wan0";
+                  };
+                };
                 # TODO redesign "user interface"
                 tailscale0 = {
                   # TODO (feature) announce these routes via Tailscale
-                  #routing.natted = lib.singleton "wan0";
-                  routing.plain = lib.singleton "lan1";
+                  routing = {
+                    plain = [
+                      "lan3"
+                    ];
+                    natted = [
+                      "lan2"
+                    ];
+                  };
                 };
               };
               dns = lib.mkForce {
@@ -824,6 +855,18 @@ in
             client
           ];
           virtualisation.vlans = lib.singleton 3;
+        };
+        client2 = {
+          imports = [
+            client
+          ];
+          virtualisation.vlans = lib.singleton 4;
+        };
+        client3 = {
+          imports = [
+            client
+          ];
+          virtualisation.vlans = lib.singleton 5;
         };
       };
       testScript = ''
