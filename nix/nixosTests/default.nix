@@ -875,7 +875,8 @@ in
 
         start_all()
         headscale.wait_for_unit("headscale.service")
-        headscale.wait_for_open_port(443)
+        headscale.wait_for_open_port(${toString headscalePort})  # ensure headscale is ready for requests
+        headscale.wait_for_open_port(443)  # ensure nginx is ready to forward requests
 
         # Create headscale user and preauth-key
         headscale.succeed("headscale users create test")
