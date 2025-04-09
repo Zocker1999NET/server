@@ -758,6 +758,7 @@ in
                   routing = {
                     domain = "local";
                     ipv4Address = "10.32.0.1/24";
+                    ipv6ULAPrefix = "fd69:dead:beef:0::/64";
                     upstream = "wan0";
                   };
                 };
@@ -768,6 +769,7 @@ in
                   routing = {
                     domain = "local";
                     ipv4Address = "10.32.1.1/24";
+                    ipv6ULAPrefix = "fd69:dead:beef:1::/64";
                     natted = lib.singleton "tailscale0";
                     upstream = "wan0";
                   };
