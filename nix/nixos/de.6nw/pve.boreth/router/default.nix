@@ -59,8 +59,8 @@ in
           # ensure all flags are already effective from first launch
           upFlags = config.services.tailscale.setFlags // {
             advertise-tags = [
-              "none"
-              "iperf3"
+              "tag:none"
+              "tag:iperf3"
             ];
           };
         };
