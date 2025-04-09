@@ -221,7 +221,7 @@ rec {
         # special overwrites - TODO integrate into toIpClass
         cidrInt = stringLength binStr;
         binRaw = fixedWidthStrSuffix ip._cidr_max "0" binStr;
-        binGroups = genList (i: substring (ip._group_bits * i) ip.binRaw) ip._group_count;
+        binGroups = genList (i: substring (ip._group_bits * i) ip._group_bits ip.binRaw) ip._group_count;
         decGroups = map binToInt ip.binGroups;
         # shortcuts
         binRawNet = binStr;
