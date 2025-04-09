@@ -155,7 +155,7 @@ rec {
         version = "ipv4";
         _input = ipStr;
         _cidrGroup = last parsed;
-        _groups = substring 0 4 parsed;
+        _groups = sublist 0 4 parsed;
       };
     in
     assert parsed != null; # TODO improve
