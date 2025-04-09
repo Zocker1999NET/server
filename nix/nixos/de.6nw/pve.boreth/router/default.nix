@@ -49,7 +49,7 @@ in
           domain = "boreth.pve.6nw.de";
         };
         services.tailscale = {
-          enable = false; # TODO
+          enable = true;
           authKeyFile = config.secrix.services.tailscale.secrets.authKey.decrypted.path;
           openFirewall = true;
           setFlags = {
