@@ -86,7 +86,7 @@ let
           decGroups = map ip._group_toInt ip._groups;
           decCompressed = concatStringsSep ip._group_sep (map toString ip.decGroups);
           # binary
-          binGroups = map (v: intToBin ip._group_bits) ip.decGroups; # shortcut compared to hexGroups
+          binGroups = map (intToBin ip._group_bits) ip.decGroups; # shortcut compared to hexGroups
           binRaw = concatStringsSep "" ip.binGroups;
           # hex
           hexGroups = map toHex ip.decGroups;
