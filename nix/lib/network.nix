@@ -48,29 +48,36 @@ let
       "fixedWidthString: requested string length (${toString width}) must not be shorter than actual length (${toString strw})";
     if strw == width then str else fixedWidthStrSuffix reqWidth filler str + filler;
   toHex = str: toLower (toHexString str);
+  ipClassStatics = {
+    ipv4 = {
+      _group_bits = 8;
+      _group_count = 4;
+      _group_sep = ".";
+      _group_toInt = toIntBase10;
+    };
+    ipv6 = {
+      _group_bits = 16;
+      _group_count = 8;
+      _group_sep = ":";
+      _group_toInt = fromHexString;
+    };
+  };
   toIpClass =
     ipArg:
     let
-      statics = {
+      roles = {
         ipv4 = {
-          _group_bits = 8;
-          _group_count = 4;
-          _group_sep = ".";
-          _group_toInt = toIntBase10;
           compressed = ip.decCompressed;
           shorted = ip.decCompressed;
         };
         ipv6 = {
-          _group_bits = 16;
-          _group_count = 8;
-          _group_sep = ":";
-          _group_toInt = fromHexString;
           compressed = ip.hexShorted; # TODO temporary
           shorted = ip.hexShorted;
         };
       };
       ip =
-        statics.${ipArg.version} # avoid recursion error
+        ipClassStatics.${ipArg.version} # avoid recursion error
+        // roles.${ipArg.version} # avoid recursion error
         // {
           type = "ipAddress";
           # internal operators
