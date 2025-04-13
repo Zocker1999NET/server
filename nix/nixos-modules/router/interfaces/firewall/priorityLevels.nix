@@ -68,7 +68,7 @@ in
       };
       "l4_crucial" = {
         fullName = "OSI L4 crucial allow rules";
-        descriiption = ''
+        description = ''
           To allow traffic crucial to general network connectivity,
           e.g. certain ICMP & ICMPv6 traffic.
         '';
