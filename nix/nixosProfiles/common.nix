@@ -58,6 +58,19 @@ in
       daemonIOSchedClass = lib.mkDefault "best-effort";
       daemonIOSchedPriority = lib.mkDefault 7;
 
+      registry = {
+        "de-6nw" = {
+          # ===SYNC:general/meta/repo/url
+          exact = false;
+          to = {
+            type = "github";
+            owner = "Zocker1999NET";
+            repo = "server";
+            ref = "deployed";
+          };
+        };
+      };
+
       settings = {
         auto-optimise-store = true;
         experimental-features = [
