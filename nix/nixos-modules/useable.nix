@@ -76,6 +76,7 @@ in
         bat
         batmon # TODO only on systems wich batteries
         bmon # better than nethogs for graphs
+        csvkit
         file
         manix
         massren
