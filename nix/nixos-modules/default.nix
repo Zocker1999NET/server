@@ -35,6 +35,7 @@ in
     ./autoUnfree.nix
     (importApplyMod ./backports.nix)
     ./debugMinimal.nix
+    ./getty-helpLine-sshPublicHostKey.nix
     ./graphics.nix
     ./memory.nix
     ./options.nix

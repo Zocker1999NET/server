@@ -214,6 +214,29 @@ in
     ];
   };
 
+  getty-helpLine-sshPublicHostKey = nixosTest {
+    name = "getty-helpLine-sshPublicHostKey";
+    nodes.node = {
+      imports = [
+        outputs.nixosProfiles.common
+        outputs.nixosModules.withDepends
+      ];
+      services.getty.dynamicHelpLine.sshPublicHostKey.enable = true;
+      # required for host keys to be generated and displayed
+      services.openssh.enable = true;
+      # answer options with missing defaults
+      x-banananetwork.sshPublicKeys = [ ];
+    };
+    testScript = ''
+      node.wait_for_unit("getty@tty1.service")
+      service_name = "getty-helpLine-sshPublicHostKey.service"
+      node.succeed(f"systemctl is-enabled {service_name}")
+      node.fail(f"systemctl is-active {service_name}")
+      node.fail(f"systemctl is-failed {service_name}")
+      node.wait_until_tty_matches("1", r"\n\d+\s+[A-Z0-9]+:[A-Za-z0-9+/=]+\s+root@node\s+\([A-Z0-9]+\)\s+\n", 10)
+    '';
+  };
+
   router = nixosTest {
     name = "router";
 
