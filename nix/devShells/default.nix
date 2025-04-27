@@ -12,6 +12,7 @@ in
         rsync
         opentofu
         terranix
+        xkcdpass
         # tooling for services
         wireguard-tools
       ])
