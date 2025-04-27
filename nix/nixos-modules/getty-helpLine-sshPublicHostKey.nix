@@ -5,6 +5,7 @@
   ...
 }:
 let
+  # TODO publish as dynamic etc issue generation as NixOS module
   cfg = config.services.getty.dynamicHelpLine.${name};
   sshCfg = config.services.openssh;
   name = "sshPublicHostKey";
