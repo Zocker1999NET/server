@@ -65,7 +65,7 @@ in
         generation = "ext4-swap-1";
         mainDiskName = "main";
       };
-      x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAdq1IbVu7uaClh3nrewepnqx2vtZyxg6bVKypo6pMgk root@dns.boreth.pve.6nw.de 2024-11-01"; # TODO
+      x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICT2gW4pQm/FS23zHW7TmnCJ8vjUpsCnwk4ilv50FzUS root@dvorak.srv.6nw.de 2025-04-13";
     }
 
   ];
