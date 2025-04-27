@@ -159,6 +159,12 @@ in
 
         services = {
 
+          getty = {
+            dynamicHelpLine = {
+              sshPublicHostKey.enable = true;
+            };
+          };
+
           openssh = {
             enable = true;
             authorizedKeysInHomedir = false;
