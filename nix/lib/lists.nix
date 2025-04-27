@@ -39,4 +39,7 @@ in
     # catch errors while building groupers before values are passed through
     deepSeq pipeList (flip pipe pipeList);
 
+  # TODO check for lists.unique: if a groupBy variant would be more efficient
+  #   - lists.unique has O(n^2)
+
 }
