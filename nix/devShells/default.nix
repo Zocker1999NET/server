@@ -14,6 +14,7 @@ in
         terranix
         xkcdpass
         # tooling for services
+        bind # e.g. dnssec-keygen
         wireguard-tools
       ])
       ++ [
