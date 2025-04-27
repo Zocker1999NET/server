@@ -158,7 +158,6 @@ in
       )
       # leak SSH public key hashes on getty login screen
       # TODO publish dynamic etc issue generation as NixOS module
-      #  and add test for that (checking screen content via OCR / serial)
       # TODO deploy on all VMs
       (
         { config, lib, ... }:
