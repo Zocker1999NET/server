@@ -1,4 +1,4 @@
-{ lib, ... }@flakeArg:
+{ inputs, lib, ... }@flakeArg:
 let
   inherit (lib.modules) mkOverride;
 in
