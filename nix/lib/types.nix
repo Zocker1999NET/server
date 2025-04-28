@@ -6,26 +6,37 @@
 }@flakeArg:
 # TODO upstream
 let
-  inherit (builtins) concatStringsSep;
-  repeat = expr: count: builtins.genList (_: expr) count;
+  inherit (builtins) concatLists concatStringsSep elem;
   concatRepeat =
     sep: str: count:
-    concatStringsSep sep (repeat str count);
+    assert count >= 0;
+    if count == 0 then
+      ""
+    else if count == 1 then
+      str
+    else
+      "(${str}${sep}){${toString (count - 1)}}${str}";
   concatGroup = patterns: "(${concatStringsSep "|" patterns})";
   repeatOptional =
     sep: pattern: count:
-    "${concatRepeat "" "(${pattern}${sep})?" count}${pattern}";
+    assert count >= 0;
+    if count == 0 then
+      ""
+    else if count == 1 then
+      pattern
+    else
+      "(${pattern}${sep}){0,${toString (count - 1)}}${pattern}";
   matchType =
     { description, pattern }: lib.types.strMatching "^${pattern}$" // { inherit description; };
   # === regex parts
   hexChar = "[0-9A-Fa-f]";
   ipv4Block = "(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])";
-  euiHexBlock = concatRepeat "" hexChar 2;
+  euiHexBlock = "(${hexChar}){2}";
   euiWith = concatRepeat "[.:_-]?" euiHexBlock;
   eui48 = euiWith 6;
   eui64 = euiWith 8;
   ipv4Addr = concatRepeat "\\." ipv4Block 4;
-  ipv6Block = repeatOptional "" hexChar 4;
+  ipv6Block = "(${hexChar}){0,4}";
   ipv6Addr =
     let
       genVariant =
