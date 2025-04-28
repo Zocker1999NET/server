@@ -19,6 +19,7 @@ let
     singleton
     sublist
     ;
+  # TODO (improvement) check if lib.trivial.toBaseDigits is more performant
   inherit (lib.math) binToInt intToBin;
   inherit (lib.strings)
     commonPrefixLength
@@ -34,6 +35,7 @@ let
     pipe
     toHexString
     ;
+  # TODO export via lib.strings
   fixedWidthStrSuffix =
     width: filler: str:
     let
