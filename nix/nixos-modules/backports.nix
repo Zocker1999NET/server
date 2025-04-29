@@ -32,6 +32,10 @@ backportList [
     until = "24.11"; # for .<name>.group, required by immich
   }
   {
+    path = "services/network-filesystems/samba.nix";
+    until = "24.11"; # for .settings
+  }
+  {
     path = "services/web-apps/immich.nix";
     until = "24.11"; # missing for now
   }
