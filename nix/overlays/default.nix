@@ -17,4 +17,6 @@ in
 
   systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
 
+  upgrades = importOverlay ./upgrades.nix;
+
 }
