@@ -18,4 +18,6 @@ mapAttrs backport {
   immich = "24.11";
   nixfmt-rfc-style = "24.11";
   wcurl = "24.11";
+  # should always be compatible & improve experience
+  retroarch-joypad-autoconfig = "99.99";
 }
