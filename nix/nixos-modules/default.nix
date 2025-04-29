@@ -63,6 +63,7 @@ in
         nixpkgs.overlays = [
           outputs.overlays.backports
           outputs.overlays.fromFlake
+          outputs.overlays.upgrades
         ];
       };
     };
