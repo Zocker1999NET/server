@@ -74,6 +74,11 @@ in
     pattern = eui64;
   };
 
+  ifName = matchType {
+    description = "UNIX interface name";
+    pattern = interfaceName;
+  };
+
   ipAddress = lib.types.either self.ipv4Address self.ipv6Address;
 
   ipAddressPlain = lib.types.either self.ipv4AddressPlain self.ipv6AddressPlain;
