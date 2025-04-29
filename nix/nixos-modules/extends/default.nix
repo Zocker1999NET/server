@@ -3,6 +3,7 @@
     # files
     ./cpu.nix
     ./kernel.nix
+    ./nftables-marks.nix
     ./nftables-trace.nix
     ./openssh.nix
     ./podman.nix
