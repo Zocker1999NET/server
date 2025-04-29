@@ -23,4 +23,12 @@ let
   backportList = list: { imports = map backport list; };
 in
 backportList [
+  {
+    path = "services/databases/redis.nix";
+    until = "24.11"; # for .<name>.group, required by immich
+  }
+  {
+    path = "services/web-apps/immich.nix";
+    until = "24.11"; # missing for now
+  }
 ]
