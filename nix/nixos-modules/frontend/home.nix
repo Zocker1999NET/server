@@ -78,6 +78,10 @@ in
     yubikey-manager
     yubioath-flutter
 
+    # Dev Tools
+    gnumake
+    just
+
     # Gaming
     steamcontroller # userspace driver (manual start/stop)
 
