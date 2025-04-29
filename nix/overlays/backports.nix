@@ -2,19 +2,19 @@
 { pkgs_unstable, ... }@systemArg:
 final: prev:
 let
-  list = [
-    # TODO until 24.11
-    "nixfmt-rfc-style"
-    "wcurl"
-  ];
+  inherit (builtins) getAttr hasAttr mapAttrs;
+  inherit (lib.debug) warn;
   backport =
-    pkgAttrName:
+    name: until:
     let
-      alreadyStable = builtins.hasAttr pkgAttrName prev;
-      stableSource = lib.warn "consider removing ${pkgAttrName} from backports list as it is now available on stable" prev;
+      alreadyStable = hasAttr name prev && lib.versionAtLeast prev.lib.version until;
+      stableSource = warn "consider removing ${name} from backports list as it is now available since ${until}" prev;
       source = if alreadyStable then stableSource else pkgs_unstable;
-      pkg = builtins.getAttr pkgAttrName source;
+      pkg = getAttr name source;
     in
     pkg;
 in
-lib.genAttrs list backport
+mapAttrs backport {
+  nixfmt-rfc-style = "24.11";
+  wcurl = "24.11";
+}
