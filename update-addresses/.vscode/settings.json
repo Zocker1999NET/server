@@ -1,0 +1,7 @@
+{
+    "python.analysis.typeCheckingMode": "strict",
+    "python.analysis.include": [
+        "**/*.py"
+    ],
+    "mypy.runUsingActiveInterpreter": false,
+}

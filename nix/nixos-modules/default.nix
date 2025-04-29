@@ -29,7 +29,7 @@ in
     ./frontend
     ./improvedDefaults
     ./packages
-    (lib.importFlakeMod ./router)
+    (importApplyMod ./router)
     ./vmDisko
     # files
     ./autoUnfree.nix
