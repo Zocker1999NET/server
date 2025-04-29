@@ -6,6 +6,7 @@
   ...
 }@flakeArg:
 let
+  inherit (lib.modules) importApplyMod;
   importModuleGroup = lib.importFlakeMod;
   importModule = path: { imports = lib.singleton path; };
 in
@@ -32,6 +33,7 @@ in
     ./vmDisko
     # files
     ./autoUnfree.nix
+    (importApplyMod ./backports.nix)
     ./debugMinimal.nix
     ./graphics.nix
     ./options.nix
