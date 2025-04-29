@@ -15,6 +15,8 @@ in
 
   fromFlake = importOverlay ./fromFlake.nix;
 
+  libretro-dolphin-bba = importOverlay ./libretro-dolphin-bba;
+
   systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
 
   upgrades = importOverlay ./upgrades.nix;
