@@ -169,6 +169,8 @@ in
               # Refined GitHub
               "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = { };
               # Request Control
+              # TODO (maybe) alternative: Redirector (https://github.com/einaregilsson/Redirector)
+              # - in future, can be configured via policies, https://github.com/einaregilsson/Redirector/pull/399
               "{1b1e6108-2d88-4f0f-a338-01f9dbcccd6f}" = {
                 default_area = "navbar";
               };
