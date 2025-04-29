@@ -1,6 +1,7 @@
 {
   imports = [
     # files
+    ./bind-dynamic.nix
     ./cpu.nix
     ./kernel.nix
     ./nftables-marks.nix
