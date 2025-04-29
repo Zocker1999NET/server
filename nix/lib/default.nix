@@ -16,6 +16,7 @@ nixpkgs.lib
   math = ./math.nix;
   modules = ./modules.nix;
   network = ./network.nix;
+  options = ./options.nix;
   strings = ./strings.nix;
   trivial = ./trivial.nix;
   types = ./types.nix;
