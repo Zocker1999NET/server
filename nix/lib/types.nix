@@ -100,6 +100,15 @@ in
     pattern = ipv4Addr + v4CIDR;
   };
 
+  ipv6IfId = matchType {
+    description = "IPv6 interface identifier (64-bit hex suffix)";
+    # TODO maybe allow IPv4 suffix
+    pattern = concatGroup [
+      (concatRepeat ":" ipv6Block 4)
+      (":${repeatOptional ":" ipv6Block 3}")
+    ];
+  };
+
   ipv6Address = matchType {
     description = "IPv6 address (${ipv6Ref}, no CIDR, opt. interface identifier)";
     pattern = ipv6Addr + interfaceId;
