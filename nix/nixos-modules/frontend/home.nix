@@ -8,6 +8,8 @@
 
 let
   inherit (builtins) concatStringsSep;
+  inherit (config.lib.file) mkOutOfStoreSymlink;
+  mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myGpgKey = pkgs.fetchurl {
     url = "https://keys.openpgp.org/vks/v1/by-fingerprint/73D09948B2392D688A45DC8393E1BD26F6B02FB7";
     hash = "sha256-tbRDhXZJk2aBIF4Ed0HIR8jalxnPJDNziBy51I9Awxs=";
@@ -38,6 +40,11 @@ in
     ".ssh/connections/.keep".text = ''
       # created by home-manager (to create directory)
     '';
+
+    # User files
+
+    "Documents/Ablagen".source = mkHomeDirSymlink "Nextcloud/Dokumente/Ablagen";
+    "Documents/Scans".source = mkHomeDirSymlink "Nextcloud/Dokumente/Scans";
 
   };
 
