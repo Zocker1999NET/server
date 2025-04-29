@@ -7,6 +7,8 @@
 # TODO upstream
 let
   inherit (builtins) concatLists concatStringsSep elem;
+  inherit (lib.lists) toList;
+  inherit (lib.trivial) flip pipe;
   concatRepeat =
     sep: str: count:
     assert count >= 0;
@@ -63,6 +65,74 @@ let
 in
 # extensions to the nix option types library
 {
+
+  disectComposed =
+    typ:
+    let
+      disectable = [
+        "attrsOf"
+        "lazyAttrsOf"
+        "listOf"
+      ];
+    in
+    if lib.types.isOptionType typ then
+      if elem typ.name disectable then
+        {
+          type = typ.name;
+          recreate = lib.types.${typ.name};
+          value = typ.nestedTypes.elemType;
+        }
+      else
+        {
+          type = "direct";
+          recreate = (x: x);
+          value = typ;
+        }
+    else
+      {
+        type = "unknown";
+        recreate = throw "unknown type to extract submodule from, hence no recreate";
+        value = typ;
+      };
+
+  subCombined =
+    # TODO reuse submodule typeMerge
+    # TODO replace .getSubModules everywhere somehow with this
+    subMods:
+    let
+      extractOption = subM: if lib.options.isOption subM then subM.type else subM;
+      extractModules =
+        subM:
+        if lib.types.isOptionType subM then
+          assert subM.name == "submodule";
+          subM.getSubModules
+        else
+          lib.lists.singleton subM;
+    in
+    lib.types.submodule {
+      imports = pipe subMods [
+        toList
+        (map (
+          flip pipe [
+            extractOption
+            (x: (self.disectComposed x).value)
+            extractModules
+          ]
+        ))
+        concatLists
+      ];
+    };
+
+  extendsSubmodule =
+    opt:
+    let
+      type = if lib.isOption opt then opt.type else opt;
+      disected = self.disectComposed type;
+      sub = disected.value;
+    in
+    assert lib.types.isOptionType type;
+    assert lib.types.isOptionType sub && sub.name == "submodule";
+    arg: disected.recreate (self.subCombined (sub.getSubModules ++ [ arg ]));
 
   eui48 = matchType {
     description = "EUI-48 (i.e. MAC address)";
