@@ -25,4 +25,8 @@ let
     });
 in
 {
+  ipv6calc = wrapPackage prev.ipv6calc {
+    IPV6CALC_DB_IP2LOCATION_DISABLE = "1";
+    IPV6CALC_DB_DBIP2_DISABLE = "1";
+  };
 }
