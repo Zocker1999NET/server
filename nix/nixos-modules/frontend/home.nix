@@ -538,6 +538,15 @@ in
       pinentryPackage = pkgs.pinentry-qt;
     };
 
+    kdeconnect = {
+      enableSettings = true;
+      settings.customDevices = [
+        "100.99.238.6" # iehpc094a
+        "100.110.59.63" # zockerfair
+        "100.119.24.124" # zockerpc
+      ];
+    };
+
     # manual login required
     nextcloud-client.enable = true;
 
