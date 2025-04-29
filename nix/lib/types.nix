@@ -55,7 +55,9 @@ let
     concatGroup (normals ++ ipv4Mapped);
   v4CIDR = "/(3[0-2]|2[0-9]|1?[0-9])";
   v6CIDR = "/(12[0-8]|1[0-2][0-9]|[1-9]?[0-9])";
-  interfaceId = "(%[[:alnum:]]+)?";
+  # TODO restrict more according to https://www.freedesktop.org/software/systemd/man/latest/systemd.link.html#Name=
+  interfaceName = "[^:/%]{0,15}";
+  interfaceId = "(%${interfaceName})?";
   # === references
   ipv6Ref = "RFC 4291 Section 2.2";
 in
