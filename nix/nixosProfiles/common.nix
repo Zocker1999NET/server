@@ -66,7 +66,6 @@ in
             type = "github";
             owner = "Zocker1999NET";
             repo = "server";
-            ref = "deployed";
           };
         };
       };

@@ -232,7 +232,7 @@ in
               enable = true;
               options = {
                 # TODO autostart
-                defaultFlake = "github:Zocker1999NET/server/deployed"; # ===SYNC:general/meta/repo/url
+                defaultFlake = "github:Zocker1999NET/server"; # ===SYNC:general/meta/repo/url
                 defaultHost = "empty";
               };
             };
