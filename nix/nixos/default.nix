@@ -3,6 +3,7 @@
   lib,
   flake,
   outputs,
+  self,
   ...
 }@flakeArg:
 let
@@ -98,6 +99,39 @@ in
         services.fprintd.enable = true;
         x-banananetwork.frontend.enable = true;
       }
+    ];
+    system = "x86_64-linux";
+  };
+
+  # for VM infra
+
+  # (note) build: .#nixosConfigurations.auto-iso.config.system.build.isoImage
+  "auto-iso" = nixosSystem {
+    modules = [
+      outputs.nixosProfiles.installer
+      (
+        { config, pkgs, ... }:
+        {
+          config = {
+            isoImage.edition = "de.6nw-auto";
+            networking.hostName = "auto-iso";
+            unattendedInstaller = {
+              enable = true;
+              target = self.empty;
+            };
+            users.users.root.openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
+            # TODO for flake
+            #systemd.services.unattended-installer = {
+            #  path = [ pkgs.git ];
+            #  preStart = ''
+            #    echo waiting to ensure network fully established
+            #    sleep 20
+            #  '';
+            #};
+            #unattendedInstaller.flake = "git+https://git.banananet.work/banananetwork/server#empty-vm"; # ===SYNC:general/meta/repo/url
+          };
+        }
+      )
     ];
     system = "x86_64-linux";
   };
