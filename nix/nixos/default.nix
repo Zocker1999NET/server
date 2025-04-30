@@ -118,6 +118,8 @@ in
 
   "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
 
+  "ts-test.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/ts-test;
+
   "empty" = nixosSystem {
     # temporary, transistevy system
     modules = [
