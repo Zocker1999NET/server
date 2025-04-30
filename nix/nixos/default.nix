@@ -111,6 +111,7 @@ in
 
   # for VM infra
 
+  "nixnas.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/nixnas;
   "dns.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/dns;
 
   "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
