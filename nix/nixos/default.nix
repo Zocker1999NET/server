@@ -111,6 +111,8 @@ in
 
   # for VM infra
 
+  "dns.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/dns;
+
   "empty" = nixosSystem {
     # temporary, transistevy system
     modules = [
