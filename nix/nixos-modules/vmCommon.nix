@@ -106,6 +106,8 @@ in
 
         };
 
+        # TODO device if magic is enough
+        #disko.devices.disk.main.device = "/dev/sda";
 
         networking = {
 
