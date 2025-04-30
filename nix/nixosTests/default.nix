@@ -478,4 +478,239 @@ in
     '';
   };
 
+  # TODO (test) check "tailscale status" for "# Health check:" line, indicating an issue
+  # - test that with a route enabled (see https://github.com/tailscale/tailscale/issues/13863)
+
+  router-tailscale =
+    let
+      tls-cert = pkgs.runCommand "selfSignedCerts" { buildInputs = [ pkgs.openssl ]; } ''
+        openssl req \
+          -x509 -newkey rsa:4096 -sha256 -days 365 \
+          -nodes -out cert.pem -keyout key.pem \
+          -subj '/CN=headscale.test' -addext "subjectAltName=DNS:headscale.test"
+
+        mkdir -p $out
+        cp key.pem cert.pem $out
+      '';
+      peer = {
+        services.tailscale = {
+          enable = true;
+          extraDaemonFlags = lib.singleton "--no-logs-no-support";
+        };
+        security.pki.certificateFiles = [ "${tls-cert}/cert.pem" ];
+      };
+      client = {
+        networking.useNetworkd = true;
+      };
+      headscalePort = 8080;
+      stunPort = 3478;
+    in
+    nixosTest {
+      name = "router-tailscale";
+      nodes = {
+        isp =
+          { nodes, ... }:
+          {
+            imports = lib.singleton ./isp.nix;
+            config = {
+              staticLeases = {
+                headscale = {
+                  mac = qemuNicMac nodes.headscale 0;
+                  ipv4 = "10.1.1.10";
+                };
+              };
+              virtualisation.vlans = lib.singleton 1;
+            };
+          };
+        headscale = {
+          environment.systemPackages = [ pkgs.headscale ];
+          networking.useNetworkd = true;
+          networking.firewall = {
+            allowedTCPPorts = [
+              80
+              443
+            ];
+            allowedUDPPorts = [ stunPort ];
+          };
+          services = {
+            headscale = {
+              enable = true;
+              port = headscalePort;
+              settings = {
+                server_url = "https://headscale.test";
+                ip_prefixes = [
+                  "100.64.0.0/10"
+                  "fd7a:115c:a1e0::/48"
+                ];
+                derp.server = {
+                  enabled = true;
+                  region_id = 999;
+                  stun_listen_addr = "0.0.0.0:${toString stunPort}";
+                };
+                dns_config.base_domain = "example"; # default is .test otherwise
+              };
+            };
+            nginx = {
+              enable = true;
+              virtualHosts.headscale = {
+                addSSL = true;
+                sslCertificate = "${tls-cert}/cert.pem";
+                sslCertificateKey = "${tls-cert}/key.pem";
+                locations."/" = {
+                  proxyPass = "http://127.0.0.1:${toString headscalePort}";
+                  proxyWebsockets = true;
+                };
+              };
+            };
+          };
+          virtualisation.vlans = lib.singleton 1;
+        };
+        inherit peer;
+        router =
+          { config, nodes, ... }:
+          {
+            imports = [
+              outputs.nixosProfiles.common
+              outputs.nixosModules.withDepends
+              peer
+            ];
+            virtualisation.vlans = [
+              1
+              2
+              3
+            ];
+            x-banananetwork.routerVM = {
+              enable = true;
+              interfaces = {
+                wan0 = {
+                  kind = "wan-rfc7084";
+                  matchConfig.PermanentMACAddress = qemuNicMac config 0;
+                  firewall = {
+                    #blackhole.sets.documentation.all = false;
+                    input.checkDestination = false;
+                  };
+                  # TODO build test so it requires:
+                  workarounds.dhcpv6PrefixDelegationWithoutAddress = false;
+                };
+                lan0 = {
+                  # without Tailnet access
+                  kind = "lan-rfc7084";
+                  matchConfig.PermanentMACAddress = qemuNicMac config 1;
+                  firewall = {
+                    #blackhole.sets.documentation.all = false;
+                    input.checkDestination = false;
+                  };
+                  routing = {
+                    domain = "local";
+                    ipv4Address = "10.32.0.1/24";
+                    upstream = "wan0";
+                  };
+                };
+                lan1 = {
+                  # with Tailnet access (srcnat)
+                  kind = "lan-rfc7084";
+                  matchConfig.PermanentMACAddress = qemuNicMac config 2;
+                  firewall = {
+                    #blackhole.sets.documentation.all = false;
+                    input.checkDestination = false;
+                  };
+                  routing = {
+                    domain = "local";
+                    ipv4Address = "10.32.1.1/24";
+                    natted = lib.singleton "tailscale0";
+                    upstream = "wan0";
+                  };
+                };
+                # TODO redesign "user interface"
+                tailscale0 = {
+                  # TODO (feature) announce these routes via Tailscale
+                  #routing.natted = lib.singleton "wan0";
+                  routing.plain = lib.singleton "lan1";
+                };
+              };
+              dns = lib.mkForce {
+                upstreams = [
+                  "10.1.0.1"
+                  "2001:db8:1:1::1"
+                ];
+                bootstraps = config.x-banananetwork.routerVM.dns.upstreams;
+                fallbacks = [ ];
+              };
+            };
+            networking.nftables = {
+              traceToJournal = true;
+              traceIPv4 = [
+                ''"tailscale0" . 100.64.0.0/10 . 100.64.0.0/10 . icmp . 0/0 . 0/0''
+                ''"lan0" . 0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0''
+                ''"lan1" . 0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0''
+              ];
+              traceIPv6 = [
+                ''"tailscale0" . fd00::/8 . fd00::/8 . ipv6-icmp . 0/0 . 0/0''
+                ''"lan0" . ::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0''
+                ''"lan1" . ::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0''
+              ];
+            };
+            # more overwrites to make that isolated test feasible
+            services.adguardhome.settings = {
+              dns.enable_dnssec = lib.mkForce false;
+              filtering.safebrowsing_enabled = lib.mkForce false;
+              filters = lib.mkForce [ ];
+            };
+            # answer options with missing defaults
+            x-banananetwork.sshPublicKeys = [ ];
+          };
+        client0 = {
+          imports = lib.singleton client;
+          virtualisation.vlans = lib.singleton 2;
+        };
+        client1 = {
+          imports = lib.singleton client;
+          virtualisation.vlans = lib.singleton 3;
+        };
+      };
+      testScript = ''
+        def ping(target):
+          return f"ping -A -c 2 -n -w 2 {target}"
+
+        start_all()
+        headscale.wait_for_unit("headscale.service")
+        headscale.wait_for_open_port(443)
+
+        # Create headscale user and preauth-key
+        headscale.succeed("headscale users create test")
+        authkey = headscale.succeed("headscale preauthkeys -u test create --reusable")
+
+        # ensure all are ready (esp. isp)
+        for m in machines:
+          m.wait_for_unit("default.target")
+
+        # Connect peers
+        up_cmd = f"tailscale up --login-server 'https://headscale.test' --auth-key {authkey} --accept-dns=false"
+        peer.execute(up_cmd)
+        router.execute(up_cmd)
+
+        # Verify reachability inside tailnet
+        peer.wait_until_succeeds("tailscale ping router", 10)
+        router.wait_until_succeeds("tailscale ping peer", 10)
+
+        # TODO Verify routing capabilities
+        def verify_routing(ip_kind: str):
+          ip_arg = "-4" if ip_kind == "ipv4" else "-6"
+          peer_ip = router.succeed(f"tailscale ip {ip_arg} peer").strip()
+          router_ip = peer.succeed(f"tailscale ip {ip_arg} router").strip()
+
+          peer.succeed(ping(router_ip))
+          router.succeed(ping(peer_ip))
+          #client0.fail(ping(router_ip)) # might fail, then ignore for now
+          client0.fail(ping(peer_ip))
+          client1.succeed(ping(router_ip))
+          client1.succeed(ping(peer_ip))
+
+          # TODO verify peer can reach clients (requires routing announcements)
+
+        verify_routing("ipv4")
+        verify_routing("ipv6")
+      '';
+    };
+
 }
