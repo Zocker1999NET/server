@@ -113,6 +113,8 @@ in
 
   "dns.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/dns;
 
+  "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
+
   "empty" = nixosSystem {
     # temporary, transistevy system
     modules = [
