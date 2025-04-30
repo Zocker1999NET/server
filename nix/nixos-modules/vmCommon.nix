@@ -183,9 +183,10 @@ in
           allowReboot = true;
           fixedRandomDelay = true;
           flags = [
-            "--no-allow-dirty"
-            "--no-use-registries"
-            "--no-update-lock-file"
+            # not supported by nixos-rebuild
+            #"--no-allow-dirty"
+            #"--no-use-registries"
+            #"--no-update-lock-file"
           ];
           flake = lib.mkDefault "git+https://git.bananet.work/banananetwork/server#${config.networking.fqdnOrHostName}"; # ===SYNC:general/meta/repo/url===
           operation = "boot"; # change only on reboots
