@@ -478,6 +478,82 @@ in
     '';
   };
 
+  /*
+    environment.etc."octodns/config.yaml".text = lib.generators.toYAML { } {
+      providers = {
+        alpha = {
+          class = "octodns_bind.AxfrSource";
+          host = "127.0.0.1";
+        };
+        beta = {
+          class = "octodns_bind.AxfrSource";
+          host = "127.0.0.1";
+        };
+        zonefile = {
+          class = "octodns_bind.ZoneFileProvider";
+          directory = "/root";
+          file_extension = ".zone";
+        };
+      };
+      zones."example." = {
+        sources = [
+          "alpha"
+          "beta"
+        ];
+        targets = [ "zonefile" ];
+      };
+    };
+    environment.systemPackages = with pkgs; [
+      (octodns.withProviders (ps: [
+        #
+        octodns-providers.bind
+      ]))
+    ];
+  */
+
+  bind-dynamic = nixosTest {
+    name = "bind-dynamic";
+    nodes.server = {
+      imports = [
+        outputs.nixosProfiles.common
+        outputs.nixosModules.withDepends
+      ];
+      config = {
+        environment.systemPackages = with pkgs; [ dnsutils ];
+        networking.firewall.enable = false;
+        services.bind = {
+          enable = true;
+          zonesExt."example." = {
+            dynamic = true;
+            update-policy = lib.singleton ''grant "local-ddns" zonesub any'';
+            initialContent = ''
+              $TTL 3600
+              $ORIGIN example.
+              @ IN SOA internet. hostmaster.internet. 1 12h 15m 3w 2h
+              @ IN NS internet.
+              alpha IN NS dns.alpha.example.
+              dns.alpha.example. IN A 192.0.2.10
+            '';
+          };
+        };
+      };
+    };
+    testScript = ''
+      server.wait_for_unit("bind.service")
+      #server.succeed("dig @127.0.0.1 alpha.example. NS | grep 192.0.2.10")  # TODO remove, tests something else
+      # check that data does not already exist
+      server.succeed("dig @127.0.0.1 +short test.example. TXT | (! grep -iF HeLLoWoRld)")
+      # attempt dns update
+      server.succeed('echo "update add test.example. 3600 TXT HeLLoWoRld\nsend\n" | nsupdate -l')
+      server.succeed("dig @127.0.0.1 +short test.example. TXT | grep -iF HeLLoWoRld")
+      # check persistence after service restart
+      server.systemctl("stop bind.service")
+      server.systemctl("start bind.service")
+      server.wait_for_unit("bind.service")
+      server.succeed("dig @127.0.0.1 +short test.example. TXT | grep -iF HeLLoWoRld")
+    '';
+  };
+
   # TODO (test) check "tailscale status" for "# Health check:" line, indicating an issue
   # - test that with a route enabled (see https://github.com/tailscale/tailscale/issues/13863)
 
