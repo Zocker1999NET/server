@@ -213,4 +213,27 @@ in
     system = "x86_64-linux";
   };
 
+  /*
+    nixosInstPlasma = nixpkgs.lib.nixosSystem {
+      modules = lib.singleton (
+        { modulesPath, ... }:
+        {
+          imports = lib.singleton "${modulesPath}/installer/cd-dvd/installation-cd-graphical-calamares-plasma6.nix";
+          config.isoImage.squashfsCompression = "zstd";
+        }
+      );
+      system = "x86_64-linux";
+    };
+
+    nixosInstMinimal = nixpkgs.lib.nixosSystem {
+      modules = lib.singleton (
+        { modulesPath, ... }:
+        {
+          imports = lib.singleton "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix";
+        }
+      );
+      system = "x86_64-linux";
+    };
+  */
+
 }
