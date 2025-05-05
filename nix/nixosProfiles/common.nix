@@ -151,7 +151,7 @@ in
           "TrustAsia Global Root CA G4"
           # Turkiye Bilimsel ve Teknolojik Arastirma Kurumu - TUBITAK (TR)
           "TUBITAK Kamu SM SSL Kok Sertifikasi - Surum 1"
-          # UniTrust (CA)
+          # UniTrust (CN)
           "UCA Global G2 Root"
           "UCA Extended Validation Root"
         ];
