@@ -425,6 +425,14 @@ in
         cups-pdf = {
           enable = true;
         };
+        drivers = with pkgs; [
+          brlaser # for some Brother
+          gutenprint
+          gutenprintBin
+          hplip
+          postscript-lexmark
+          splix # for SPL (Samsung Printer Language)
+        ];
         enableAutoDiscovery = true;
         stateless = true; # TODO test
       };
