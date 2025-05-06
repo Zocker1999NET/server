@@ -99,6 +99,7 @@ in
 
     # UI (mostly require manual setup)
     anki # requires fonts listed below
+    bibletime
     element-desktop
     kdePackages.filelight
     kdePackages.kleopatra
