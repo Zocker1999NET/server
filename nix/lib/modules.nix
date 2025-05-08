@@ -1,7 +1,6 @@
 { inputs, lib, ... }@flakeArg:
 let
   inherit (builtins) isPath isString;
-  inherit (lib.backport) backportNixpkg;
   inherit (lib.modules) importApply importsApplyIf mkOverride;
 in
 {
@@ -16,8 +15,3 @@ in
   mkTestOverride = mkOverride 55;
 
 }
-# backports
-// backportNixpkg "lib.modules" [
-  #
-  "importApply"
-]
