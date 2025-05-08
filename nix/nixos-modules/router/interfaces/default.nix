@@ -12,6 +12,7 @@ in
     ./firewall
     ./nftables
     ./routing
+    ./services
     # files
     ./devices.nix
     ./groups.nix

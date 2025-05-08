@@ -1,0 +1,7 @@
+{ ... }@interface: {
+
+  imports = [
+    ./dhcp.nix
+  ];
+
+}

@@ -6,36 +6,14 @@ let
   inherit (builtins) attrNames;
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) flatten singleton;
-  inherit (lib.modules) mkDefault mkIf mkMerge;
+  inherit (lib.modules) mkIf mkMerge;
   mkMergeFlat = list: mkMerge (flatten list);
   modeOpts = {
 
     "custom" = { };
 
     "nat+dhcp" = {
-      assertions = [
-        {
-          assertion = !isNull routCfg.ipv4Address;
-          message = ".routing.ipv4Address required for DHCP server";
-        }
-      ];
-      networkd = {
-        linkConfig.RequiredForOnline = mkDefault false; # we are providing internet
-        networkConfig = {
-          DHCPServer = true;
-        };
-        dhcpServerConfig = {
-          ServerAddress = routCfg.ipv4Address; # also assigns address to interface
-          UplinkInterface = ":none"; # TODO rethink
-          DNS = mkDefault "_server_address"; # TODO conditionally
-          SendOption = singleton "15:string:${routCfg.domain}";
-          EmitNTP = mkDefault false;
-          EmitSIP = mkDefault false;
-          EmitPOP3 = mkDefault false;
-          EmitSMTP = mkDefault false;
-          EmitLPR = mkDefault false;
-        };
-      };
+      services.dhcp.enable = true;
       srcnat.ipv4.enableFor = singleton routCfg.upstream;
     };
 
