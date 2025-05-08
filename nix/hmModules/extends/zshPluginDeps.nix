@@ -17,6 +17,7 @@ let
   ];
   # dependencies
   pluginDeps = {
+    "djui/alias-tips" = singleton pkgs.python3;
   };
 in
 {
