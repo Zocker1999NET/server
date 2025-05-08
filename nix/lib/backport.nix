@@ -30,7 +30,8 @@ in
           path = pathList;
           update =
             _:
-            warnIf (hasAttrByPath pathFull orig) "${showOption pathFull} no longer needs to be backported"
+            warnIf (hasAttrByPath pathFull orig)
+              "${showOption pathFull} no longer needs to be backported"
               origVal;
         }
       ))
