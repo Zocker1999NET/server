@@ -31,7 +31,7 @@ in
           update =
             _:
             warnIf (hasAttrByPath pathFull orig)
-              "${showOption pathFull} no longer needs to be backported"
+              "backporting attribute ${showOption pathFull} no longer required"
               origVal;
         }
       ))
