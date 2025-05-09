@@ -162,6 +162,14 @@ in
         enable = true;
         enableBashCompletion = true;
         enableCompletion = true;
+        history = rec {
+          extended = true;
+          ignoreDups = true;
+          ignoreSpace = true;
+          size = 100000;
+          share = true;
+          save = size;
+        };
         syntaxHighlighting = {
           enable = true;
           highlighters = [
