@@ -151,6 +151,7 @@ in
       };
 
       zsh = {
+        autocd = true;
         autosuggestions = {
           enable = true;
           strategy = [
