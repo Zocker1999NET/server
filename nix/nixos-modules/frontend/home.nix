@@ -676,13 +676,18 @@ in
     plugins =
       let
         inherit (builtins) concatLists;
+        inherit (lib.modules) mkBefore;
+        omz_plugins = [
+        ];
         normal_plugins = [
           # external sourced
+          (mkBefore "getantidote/use-omz") # recommended to resolve Oh-My-ZSH lib dependencies (required before OMZ plugins)
           "djui/alias-tips"
         ];
       in
       concatLists [
         normal_plugins
+        (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
       ];
   };
 }
