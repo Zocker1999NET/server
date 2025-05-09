@@ -670,37 +670,39 @@ in
 
   # ZSH config
 
-  programs.zsh.enable = true;
-  programs.zsh.antidote = {
+  programs.zsh = {
     enable = true;
-    plugins =
-      let
-        inherit (builtins) concatLists;
-        inherit (lib.modules) mkBefore;
-        omz_plugins = [
-          "colorize" # command on-call
-          "command-not-found" # also works on NixOS
-          "common-aliases"
-          "dirhistory" # Alt+<ArrowKey> navigation on directories
-          "magic-enter"
-          # aliases / completion for specific apps (TODO conditional)
-          "man"
-          "nmap"
-          "systemd"
-          "tailscale"
-          "taskwarrior"
-          "tmux"
-          "vscode"
+    antidote = {
+      enable = true;
+      plugins =
+        let
+          inherit (builtins) concatLists;
+          inherit (lib.modules) mkBefore;
+          omz_plugins = [
+            "colorize" # command on-call
+            "command-not-found" # also works on NixOS
+            "common-aliases"
+            "dirhistory" # Alt+<ArrowKey> navigation on directories
+            "magic-enter"
+            # aliases / completion for specific apps (TODO conditional)
+            "man"
+            "nmap"
+            "systemd"
+            "tailscale"
+            "taskwarrior"
+            "tmux"
+            "vscode"
+          ];
+          normal_plugins = [
+            # external sourced
+            (mkBefore "getantidote/use-omz") # recommended to resolve Oh-My-ZSH lib dependencies (required before OMZ plugins)
+            "djui/alias-tips"
+          ];
+        in
+        concatLists [
+          normal_plugins
+          (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
         ];
-        normal_plugins = [
-          # external sourced
-          (mkBefore "getantidote/use-omz") # recommended to resolve Oh-My-ZSH lib dependencies (required before OMZ plugins)
-          "djui/alias-tips"
-        ];
-      in
-      concatLists [
-        normal_plugins
-        (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
-      ];
+    };
   };
 }
