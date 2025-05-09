@@ -678,6 +678,19 @@ in
         inherit (builtins) concatLists;
         inherit (lib.modules) mkBefore;
         omz_plugins = [
+          "colorize" # command on-call
+          "command-not-found" # also works on NixOS
+          "common-aliases"
+          "dirhistory" # Alt+<ArrowKey> navigation on directories
+          "magic-enter"
+          # aliases / completion for specific apps (TODO conditional)
+          "man"
+          "nmap"
+          "systemd"
+          "tailscale"
+          "taskwarrior"
+          "tmux"
+          "vscode"
         ];
         normal_plugins = [
           # external sourced
