@@ -673,6 +673,16 @@ in
   programs.zsh.enable = true;
   programs.zsh.antidote = {
     enable = true;
-    plugins = [ "djui/alias-tips" ];
+    plugins =
+      let
+        inherit (builtins) concatLists;
+        normal_plugins = [
+          # external sourced
+          "djui/alias-tips"
+        ];
+      in
+      concatLists [
+        normal_plugins
+      ];
   };
 }
