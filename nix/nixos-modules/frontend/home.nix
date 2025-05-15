@@ -349,7 +349,7 @@ in
             # general
             welcomescreen = true;
             # interface
-            persistentprogress = true;
+            persistentprogress = false; # tested, mostly irritating instead of useful
             # button
             timetotal = false;
             downloadbutton = false;
