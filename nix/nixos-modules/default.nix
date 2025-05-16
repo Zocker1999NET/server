@@ -37,6 +37,7 @@ in
     ./debugMinimal.nix
     ./getty-helpLine-sshPublicHostKey.nix
     ./graphics.nix
+    ./log-wakeup-reason.nix
     ./memory.nix
     ./options.nix
     ./privacy.nix
