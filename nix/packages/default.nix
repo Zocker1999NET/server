@@ -15,6 +15,30 @@ in
 
   nft-update-addresses = callPackage ./nft-update-addresses { };
 
+  pdfpagecount = pkgs.writeShellApplication {
+    name = "pdfpagecount";
+    runtimeInputs = with pkgs; [
+      pdftk
+      unixtools.column
+    ];
+    text = ''
+      help() {
+        echo "Usage:  $0 <pdf-file> ..."
+      }
+
+      if [[ $# -lt 1 ]]; then
+        help >&2
+        exit 2
+      fi
+
+      while [[ $# -ge 1 ]]; do
+        page_num=$(pdftk "$1" dump_data | awk '/^NumberOfPages:/ {print $2}')
+        echo "$page_num" "$1"
+        shift 1
+      done
+    '';
+  };
+
   secrix-wrapper =
     let
       secrixExe = outputs.apps.${system}.secrix.program;
