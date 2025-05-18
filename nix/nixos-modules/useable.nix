@@ -151,7 +151,6 @@ in
       };
 
       zsh = {
-        autocd = true;
         autosuggestions = {
           enable = true;
           strategy = [
@@ -162,14 +161,14 @@ in
         enable = true;
         enableBashCompletion = true;
         enableCompletion = true;
-        history = rec {
-          extended = true;
-          ignoreDups = true;
-          ignoreSpace = true;
-          size = 100000;
-          share = true;
-          save = size;
-        };
+        histSize = 100000;
+        setOptions = [
+          "EXTENDED_HISTORY"
+          "HIST_IGNORE_DUPS"
+          "HIST_IGNORE_SPACE"
+          "SHARE_HISTORY"
+          "autocd"
+        ];
         syntaxHighlighting = {
           enable = true;
           highlighters = [
