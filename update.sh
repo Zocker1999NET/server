@@ -11,7 +11,7 @@ nix flake update nixpkgs nixpkgs_unstable disko home-manager impermanence nixos-
 
 # issue commit, if required
 if ! git diff --exit-code; then
-    git commit -p flake.lock -m "update flake.lock"
+    git commit flake.lock -m "update flake.lock"
 fi
 
 exec ./tests.sh
