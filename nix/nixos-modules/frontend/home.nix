@@ -698,6 +698,7 @@ in
             # external sourced
             (mkBefore "getantidote/use-omz") # recommended to resolve Oh-My-ZSH lib dependencies (required before OMZ plugins)
             "djui/alias-tips"
+            "zpm-zsh/ls"
           ];
         in
         concatLists [
