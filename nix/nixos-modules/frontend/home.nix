@@ -7,8 +7,10 @@
 }:
 
 let
-  inherit (builtins) concatStringsSep;
+  inherit (builtins) concatLists concatStringsSep;
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  inherit (lib.meta) getExe;
+  inherit (lib.modules) mkBefore;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myGpgKey = pkgs.fetchurl {
     url = "https://keys.openpgp.org/vks/v1/by-fingerprint/73D09948B2392D688A45DC8393E1BD26F6B02FB7";
@@ -677,8 +679,6 @@ in
       enable = true;
       plugins =
         let
-          inherit (builtins) concatLists;
-          inherit (lib.modules) mkBefore;
           omz_plugins = [
             "colorize" # command on-call
             "command-not-found" # also works on NixOS
