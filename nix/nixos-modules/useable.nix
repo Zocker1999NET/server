@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.x-banananetwork.useable;
+  inherit (lib.modules) mkIf;
 in
 {
 
@@ -181,6 +182,8 @@ in
       };
 
     };
+
+    users.defaultUserShell = mkIf config.programs.zsh.enable pkgs.zsh;
 
     x-banananetwork = {
 
