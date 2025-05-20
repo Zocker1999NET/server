@@ -706,5 +706,73 @@ in
           (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
         ];
     };
+    # for configuring plugins loaded by Antidote
+    initExtraBeforeCompInit = mkBefore ''
+      MAGIC_ENTER_GIT_COMMAND='git status -u .'
+      MAGIC_ENTER_OTHER_COMMAND='ls -lh .'
+
+      if [[ -o login ]]; then
+        ZSH_TMUX_AUTOSTART=false
+      else
+        ZSH_TMUX_AUTOSTART=true
+        ZSH_TMUX_AUTOCONNECT=false
+        ZSH_TMUX_AUTOQUIT=true
+      fi
+
+      DISABLE_LS_COLORS="true" # To remove alias "ls=ls --color=tty" by oh-my-zsh for exa alias
+    '';
+    # for configuring everything else
+    initExtra = ''
+      ZSH_THEME="agnoster"
+      functions[prompt_hg]=""
+
+      # Disable flow control (^S/^Q freezing terminal)
+      stty -ixon
+
+      # autoopen files
+      alias -s json="jq <"
+
+      # misc configs
+      export ANSIBLE_NOCOWS=1
+
+
+      # helper functions
+
+      function mkcd() {
+        mkdir --parents "$1" && cd "$1";
+      }
+
+      function readme() {
+        EDITOR="''${EDITOR:=editor}";
+        f=$(/usr/bin/env ls --indicator-style=slash . | grep --perl-regexp --ignore-case '^readme(\.(md|txt))?$' | sort | head --lines=1);
+        "$EDITOR" "''${f:=README.md}";
+      }
+      function todo() {
+        EDITOR="''${EDITOR:=editor}";
+        f=$(/usr/bin/env ls --indicator-style=slash . | grep --perl-regexp --ignore-case '^todo(\.(md|txt))?$' | sort | head --lines=1);
+        "$EDITOR" "''${f:=TODO.md}";
+      }
+
+      function fork() {
+        "$@" >/dev/null 2>&1 &!;
+      }
+    '';
+    shellAliases = {
+      # shell meta helpers
+      echo-args = "${getExe pkgs.python3} -c 'import sys; print(sys.argv[1:])'";
+      # file management
+      resolve = ''cd "$(pwd -P)"'';
+      tree = "eza --tree";
+      # OS mgmt
+      please = "sudo";
+      swapclear = "sudo swapoff -a && sudo swapon -a";
+      # tmux
+      tnw = "tmux new-window";
+      tsv = "tmux split -v";
+      tsh = "tmux split -h";
+    };
+    shellGlobalAliases = {
+      U = "|& up";
+    };
   };
 }
