@@ -230,6 +230,9 @@ in
         {
           config = {
             documentation.info.enable = lib.mkForce false;
+            environment.systemPackages = with pkgs; [
+              nwipe # make wiping disks easier
+            ];
             isoImage.edition = "de.6nw-mgmt";
             networking.hostName = "mgmt-iso";
             programs.disko-install-menu = {
