@@ -160,7 +160,7 @@ in
             displayManager.lightdm = {
               enable = true;
             };
-            xbk.layout = "de"; # non neo for user-friendlyness
+            xkb.layout = "de"; # non neo for user-friendlyness
           };
         };
         users = {
