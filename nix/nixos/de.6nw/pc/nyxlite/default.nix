@@ -218,8 +218,7 @@ in
     {
       system.stateVersion = "24.05";
       x-banananetwork.vmDisko = {
-        # TODO re-install with some swap
-        generation = "ext4-1";
+        generation = "ext4-swap-1";
         mainDiskName = "main";
       };
     }
