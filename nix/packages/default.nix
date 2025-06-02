@@ -87,6 +87,8 @@ in
       '';
     };
 
+  taskcheck = callPackage ./taskcheck { };
+
   zfs-tools = callPackage ./zfs-tools { };
 
   # === packages inherited from flake inputs
