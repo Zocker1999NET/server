@@ -21,6 +21,8 @@ targets=(
     "nixosTests.x86_64-linux.getty-helpLine-sshPublicHostKey"
     "nixosTests.x86_64-linux.router"
     "nixosTests.x86_64-linux.router-tailscale"
+    # images which also must built (& are faster to be built remotely)
+    "nixosConfigurations.x13yz.config.system.build.toplevel"
     # last one to be available as result
     "nixosConfigurations.mgmt-iso.config.system.build.isoImage"
 )
