@@ -690,7 +690,6 @@ in
             "nmap"
             "systemd"
             "tailscale"
-            "taskwarrior"
             "tmux"
             "vscode"
           ];
