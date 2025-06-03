@@ -1,55 +1,58 @@
-commit b09851c2be354e592802fe9209b4cd6150bd818d
+commit 0858608b52a30495aa9718af4dece524dd567716
 Author: Felix Stupp <felix.stupp@banananet.work>
-Date:   Tue Sep 3 20:33:03 2024 +0000
+Date:   Tue Jun 3 07:48:44 2025 +0000
 
-    network/radv: fade out announced prefixes rather than just deleting them
-    
-    Fixes https://github.com/systemd/systemd/issues/29651
+    WIP radv prefix timeout
 
 diff --git a/src/libsystemd-network/sd-radv.c b/src/libsystemd-network/sd-radv.c
-index c384d4e627..537203c13b 100644
+index f241929ad5..c9fb3f842d 100644
 --- a/src/libsystemd-network/sd-radv.c
 +++ b/src/libsystemd-network/sd-radv.c
-@@ -679,6 +679,8 @@ void sd_radv_remove_prefix(
-         if (!prefix)
+@@ -548,6 +548,47 @@ void sd_radv_remove_prefix(
+         if (!ra || !prefix)
                  return;
  
-+        const char *addr_p = IN6_ADDR_PREFIX_TO_STRING(prefix, prefixlen);
++        // need current flags for prefix for potential fade out
++        bool opt_found = false;
++        sd_ndisc_option *opt;
++        SET_FOREACH(opt, ra->options) {
++                if (opt->type != SD_NDISC_OPTION_PREFIX_INFORMATION)
++                        continue;
 +
-         LIST_FOREACH(prefix, cur, ra->prefixes) {
-                 if (prefixlen != cur->opt.prefixlen)
-                         continue;
-@@ -686,9 +688,32 @@ void sd_radv_remove_prefix(
-                 if (!in6_addr_equal(prefix, &cur->opt.in6_addr))
-                         continue;
- 
-+                /* "Fade out" IPv6 prefix, i.e. informing clients about its sudden invalidity.
-+                 * Realized by announcing the prefix with preferred=0 & valid=2h.
-+                 * This makes clients rotating to a newer prefix if some is already defined.
-+                */
++                if (!in6_addr_prefix_intersect(&opt->prefix.address, opt->prefix.prefixlen, prefix, prefixlen))
++                        continue; /* no intersection */
 +
-+                // TODO is copying required here? (& does it do anything at all?)
-+                sd_radv_prefix *p = cur;
++                if (opt->prefix.prefixlen != prefixlen)
++                        continue; /* not the same prefix */
 +
-+                // TODO replace hacky way to get current time
-+                uint64_t current_time = cur->valid_until - cur->lifetime_valid_usec;
-+                // TODO replace constant with setting (valid lifetime) ?
-+                uint64_t two_hours_usec = (uint64_t) 2 * 60 * 60 * 1000000;
-+                sd_radv_prefix_set_preferred_lifetime(p, 0, current_time);
-+                sd_radv_prefix_set_valid_lifetime(p, two_hours_usec, current_time + two_hours_usec);
++                opt_found = true;
++                break;
++        }
 +
-+                // TODO is full replacement procedure required or can we just edit the stored prefix without this?
-+                // procedure cloned from sd_radv_add_prefix, if found. I do not call this here because of the duplicated search in the list & because of the different logging message
-+                sd_radv_prefix_ref(p);
-                 LIST_REMOVE(prefix, ra->prefixes, cur);
--                ra->n_prefixes--;
-                 sd_radv_prefix_unref(cur);
-+                LIST_APPEND(prefix, ra->prefixes, p);
++        // only trigger fade out when prefix information was found
++        if (opt_found) {
++                uint64_t current_time = now(CLOCK_REALTIME);
++                // TODO convert to being an option
++                uint64_t two_hours_usec = 2 * USEC_PER_HOUR;
++                // TODO decide to what limits error checking in this void function is feasable
++                // see https://github.com/systemd/systemd/pull/34244#issuecomment-2933872831
++                ndisc_option_set_prefix(
++                                &ra->options,
++                                opt->prefix.flags,
++                                prefixlen,
++                                prefix,
++                                // valid lifetime
++                                two_hours_usec,
++                                // preferred lifetime
++                                0,
++                                // valid until
++                                current_time + two_hours_usec,
++                                // preferred until
++                                current_time);
++                return;
++        }
 +
-+                log_radv(ra, "Fade out IPv6 prefix %s (preferred: %s, valid: %s)",
-+                         addr_p,
-+                         FORMAT_TIMESPAN(p->lifetime_preferred_usec, USEC_PER_SEC),
-+                         FORMAT_TIMESPAN(p->lifetime_valid_usec, USEC_PER_SEC));
-                 return;
-         }
- }
++        // if no prefix found, trigger removal anyway, just in case, preserving previous behavior
+         ndisc_option_remove(ra->options,
+                             &(sd_ndisc_option) {
+                                     .type = SD_NDISC_OPTION_PREFIX_INFORMATION,
