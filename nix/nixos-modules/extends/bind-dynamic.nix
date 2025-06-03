@@ -13,10 +13,14 @@ let
     mapAttrs
     ;
   inherit (lib) types;
+  inherit (lib.lists) optional;
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) literalExpression mkOption;
   inherit (lib.strings) escapeShellArg;
   inherit (lib.trivial) flip pipe;
+  dynamicDirDefaultName = "bind";
+  dynamicDirDefault = "/var/lib/${dynamicDirDefaultName}";
+  dynamicDirIsDefault = bindCfg.dynamicDataPath == dynamicDirDefault;
   extZonesMod =
     { config, name, ... }:
     {
@@ -127,11 +131,14 @@ in
       description = ''
         Directory where dynamic data for bind should be stored.
 
-        Directory will be created automatically, if it does not exist.
-        It should be accessible for the bind user.
+        If the default is selected,
+        it will be automaticall created & managed by systemd as `StateDirectory=`,
+        otherwise you need to create this yourself
+        & make sure it is accessible by bind.
       '';
+      readOnly = true;
       type = types.str;
-      default = "/var/lib/bind";
+      default = dynamicDirDefault;
     };
     zonesExt = mkOption {
       description = "extension to {option}`services.bind.zones`, because coercedTo type is not mergable";
@@ -155,40 +162,35 @@ in
       );
     };
     systemd.services.bind = {
-      preStart =
-        let
-          user = escapeShellArg config.users.users."named".name;
-          globalDir = escapeShellArg bindCfg.dynamicDataPath;
-        in
-        ''
-          # setup overall directory for mutable state
-          ${pkgs.coreutils}/bin/mkdir -m 0755 -p ${globalDir}
-          ${pkgs.coreutils}/bin/chown ${user} ${globalDir}
+      preStart = ''
+        set -x
 
-          # setup per-zone directories for mutable state
-          ${pipe bindCfg.zones [
-            (mapAttrs (n: x: x // bindCfg.zonesExt.${n} or { }))
-            attrValues
-            (filter (x: x.dynamic))
-            (map (
-              x:
-              let
-                dir = escapeShellArg x.dynamicDataPath;
-                zoneDb = escapeShellArg x.file;
-              in
-              ''
-                ${pkgs.coreutils}/bin/mkdir -m 0755 -p ${dir}
-                ${pkgs.coreutils}/bin/chown ${user} ${dir}
-                if [[ ! -e ${zoneDb} ]]; then
-                  echo "initialize dynamic zone at ${zoneDb}"
-                  cp ${escapeShellArg x.initialFile} ${zoneDb}
-                  ${pkgs.coreutils}/bin/chown ${user} ${zoneDb}
-                fi
-              ''
-            ))
-            (concatStringsSep "\n")
-          ]}
-        '';
+        # setup per-zone directories for mutable state
+        ${pipe bindCfg.zones [
+          (mapAttrs (n: x: x // bindCfg.zonesExt.${n} or { }))
+          attrValues
+          (filter (x: x.dynamic))
+          (map (
+            x:
+            let
+              dir = escapeShellArg x.dynamicDataPath;
+              zoneDb = escapeShellArg x.file;
+            in
+            ''
+              ${pkgs.coreutils}/bin/mkdir -m 0755 -p ${dir}
+              if [[ ! -e ${zoneDb} ]]; then
+                echo "initialize dynamic zone at ${zoneDb}"
+                cp ${escapeShellArg x.initialFile} ${zoneDb}
+              fi
+            ''
+          ))
+          (concatStringsSep "\n")
+        ]}
+      '';
+      serviceConfig = {
+        ReadWritePaths = optional (!dynamicDirIsDefault) bindCfg.dynamicDataPath;
+        StateDirectory = mkIf dynamicDirIsDefault dynamicDirDefaultName;
+      };
     };
   };
 
