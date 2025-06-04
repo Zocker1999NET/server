@@ -106,6 +106,7 @@ in
     element-desktop
     kdePackages.filelight
     kdePackages.kleopatra
+    kdePackages.yakuake
     keepassxc
     krita
     libreoffice-qt6-fresh # "qt6" for KDE Plasma; "fresh" to get newer features
@@ -113,7 +114,6 @@ in
     tor-browser
     trilium-desktop
     xournalpp
-    yakuake
     yubikey-manager
     yubioath-flutter
 
