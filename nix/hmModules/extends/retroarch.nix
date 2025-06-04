@@ -35,10 +35,13 @@ in
       description = "RetroArch package with the cores selected";
       type = types.package;
       readOnly = true;
-      default = if cfg.cores == [ ] then cfg.package else cfg.package.override { inherit (cfg) cores; };
+      default =
+        # providing the _coresBuiltin for selection via option is non-trivial
+        # but this should also be supported for now
+        if cfg.cores == [ ] then cfg.package else cfg.package.withCores (_coresBuiltin: cfg.cores);
       defaultText = ''
         with config.programs.retroarch;
-        package.override { inherit cores; }
+        package.withCores (_: cores)
       '';
     };
 
