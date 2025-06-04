@@ -618,7 +618,7 @@ in
       # ssh-addkey needs to be done for every key manually, read man gpg-agent
       enableSshSupport = true;
       enableZshIntegration = true;
-      pinentryPackage = pkgs.pinentry-qt;
+      pinentry.package = pkgs.pinentry-qt;
     };
 
     # manual pairing required
