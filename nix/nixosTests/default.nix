@@ -469,7 +469,12 @@ in
         # router
         router.wait_for_unit("default.target")
         debug_out(router, "ip addr show")
+
+        # network-online.target is not necessarily pulled in by another service
+        # but the router should be able to fullfil it
+        router.execute("systemctl start network-online.target")
         router.wait_for_unit("network-online.target")
+
         router.succeed("ip link show dev wan0")
         router.succeed("ip link show dev lan0")
         hasIp(router, "wan0", "10.1.0.", "2001:db8:1:1:")
