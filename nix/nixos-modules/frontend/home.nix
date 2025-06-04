@@ -10,7 +10,7 @@ let
   inherit (builtins) concatLists concatStringsSep;
   inherit (config.lib.file) mkOutOfStoreSymlink;
   inherit (lib.meta) getExe;
-  inherit (lib.modules) mkBefore;
+  inherit (lib.modules) mkBefore mkMerge mkOrder;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myGpgKey = pkgs.fetchurl {
     url = "https://keys.openpgp.org/vks/v1/by-fingerprint/73D09948B2392D688A45DC8393E1BD26F6B02FB7";
@@ -701,57 +701,64 @@ in
           (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
         ];
     };
-    # for configuring plugins loaded by Antidote
-    initExtraBeforeCompInit = mkBefore ''
-      MAGIC_ENTER_GIT_COMMAND='git status -u .'
-      MAGIC_ENTER_OTHER_COMMAND='ls -lh .'
+    # order from https://home-manager-options.extranix.com/?query=programs.zsh.initContent&release=release-25.05
+    initContent = mkMerge [
+      # 500: early initialization
+      # for configuring plugins loaded by Antidote
+      (mkOrder 520 ''
+        MAGIC_ENTER_GIT_COMMAND='git status -u .'
+        MAGIC_ENTER_OTHER_COMMAND='ls -lh .'
 
-      if [[ -o login ]]; then
-        ZSH_TMUX_AUTOSTART=false
-      else
-        ZSH_TMUX_AUTOSTART=true
-        ZSH_TMUX_AUTOCONNECT=false
-        ZSH_TMUX_AUTOQUIT=true
-      fi
+        if [[ -o login ]]; then
+          ZSH_TMUX_AUTOSTART=false
+        else
+          ZSH_TMUX_AUTOSTART=true
+          ZSH_TMUX_AUTOCONNECT=false
+          ZSH_TMUX_AUTOQUIT=true
+        fi
 
-      DISABLE_LS_COLORS="true" # To remove alias "ls=ls --color=tty" by oh-my-zsh for exa alias
-    '';
-    # for configuring everything else
-    initExtra = ''
-      ZSH_THEME="agnoster"
-      functions[prompt_hg]=""
+        DISABLE_LS_COLORS="true" # To remove alias "ls=ls --color=tty" by oh-my-zsh for exa alias
+      '')
+      # 550: before completion initialization
+      # 1000: General configuration
+      # for configuring everything else
+      (mkOrder 1050 ''
+        ZSH_THEME="agnoster"
+        functions[prompt_hg]=""
 
-      # Disable flow control (^S/^Q freezing terminal)
-      stty -ixon
+        # Disable flow control (^S/^Q freezing terminal)
+        stty -ixon
 
-      # autoopen files
-      alias -s json="jq <"
+        # autoopen files
+        alias -s json="jq <"
 
-      # misc configs
-      export ANSIBLE_NOCOWS=1
+        # misc configs
+        export ANSIBLE_NOCOWS=1
 
 
-      # helper functions
+        # helper functions
 
-      function mkcd() {
-        mkdir --parents "$1" && cd "$1";
-      }
+        function mkcd() {
+          mkdir --parents "$1" && cd "$1";
+        }
 
-      function readme() {
-        EDITOR="''${EDITOR:=editor}";
-        f=$(/usr/bin/env ls --indicator-style=slash . | grep --perl-regexp --ignore-case '^readme(\.(md|txt))?$' | sort | head --lines=1);
-        "$EDITOR" "''${f:=README.md}";
-      }
-      function todo() {
-        EDITOR="''${EDITOR:=editor}";
-        f=$(/usr/bin/env ls --indicator-style=slash . | grep --perl-regexp --ignore-case '^todo(\.(md|txt))?$' | sort | head --lines=1);
-        "$EDITOR" "''${f:=TODO.md}";
-      }
+        function readme() {
+          EDITOR="''${EDITOR:=editor}";
+          f=$(/usr/bin/env ls --indicator-style=slash . | grep --perl-regexp --ignore-case '^readme(\.(md|txt))?$' | sort | head --lines=1);
+          "$EDITOR" "''${f:=README.md}";
+        }
+        function todo() {
+          EDITOR="''${EDITOR:=editor}";
+          f=$(/usr/bin/env ls --indicator-style=slash . | grep --perl-regexp --ignore-case '^todo(\.(md|txt))?$' | sort | head --lines=1);
+          "$EDITOR" "''${f:=TODO.md}";
+        }
 
-      function fork() {
-        "$@" >/dev/null 2>&1 &!;
-      }
-    '';
+        function fork() {
+          "$@" >/dev/null 2>&1 &!;
+        }
+      '')
+      # 1500: Last to run configuration
+    ];
     shellAliases = {
       # shell meta helpers
       echo-args = "${getExe pkgs.python3} -c 'import sys; print(sys.argv[1:])'";
