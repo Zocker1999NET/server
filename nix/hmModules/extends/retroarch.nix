@@ -6,26 +6,34 @@
 }:
 let
   cfg = config.programs.retroarch;
+  inherit (lib) types;
+  inherit (lib.lists) singleton;
+  inherit (lib.options)
+    literalExpression
+    mkEnableOption
+    mkOption
+    mkPackageOption
+    ;
 in
 {
   options.programs.retroarch = {
 
-    enable = lib.mkEnableOption "RetroArch as user program";
+    enable = mkEnableOption "RetroArch as user program";
 
-    package = lib.mkPackageOption pkgs "retroarch" {
-      example = lib.literalExpression "pkgs.retroarchFull";
+    package = mkPackageOption pkgs "retroarch" {
+      example = literalExpression "pkgs.retroarchFull";
     };
 
-    cores = lib.mkOption {
+    cores = mkOption {
       description = "List of cores to install.";
-      type = lib.types.listOf lib.types.package;
+      type = types.listOf types.package;
       default = [ ];
-      example = lib.literalExpression "with pkgs.libretro; [ twenty-fortyeight ]";
+      example = literalExpression "with pkgs.libretro; [ twenty-fortyeight ]";
     };
 
-    finalPackage = lib.mkOption {
+    finalPackage = mkOption {
       description = "RetroArch package with the cores selected";
-      type = lib.types.package;
+      type = types.package;
       readOnly = true;
       default = if cfg.cores == [ ] then cfg.package else cfg.package.override { inherit (cfg) cores; };
       defaultText = ''
@@ -37,7 +45,7 @@ in
   };
   config = {
 
-    home.packages = lib.singleton cfg.finalPackage;
+    home.packages = singleton cfg.finalPackage;
 
   };
 }
