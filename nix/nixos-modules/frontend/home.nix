@@ -658,15 +658,6 @@ in
     };
   };
 
-  # allow unfree limited
-  # TODO merge with nixos-modules/frontend/default.nix
-  nixpkgs.config.allowUnfreePredicate =
-    pkg:
-    builtins.elem (lib.getName pkg) [
-      # mpv plugins missing licenses
-      "evafast"
-    ];
-
   # ZSH config
 
   programs.zsh = {
