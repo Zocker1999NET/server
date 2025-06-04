@@ -3,7 +3,7 @@
 final: prev:
 let
   inherit (builtins) getAttr hasAttr mapAttrs;
-  inherit (lib.debug) warn;
+  inherit (lib.trivial) warn;
   backport =
     name: until:
     let
