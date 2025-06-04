@@ -20,7 +20,6 @@
   ];
   config = {
     isoImage = {
-      isoBaseName = "nixos-${config.isoImage.edition}";
       squashfsCompression = "zstd"; # more efficient
     };
     networking.domain = lib.mkDefault "temp.6nw.de"; # acceptable here because temporary
