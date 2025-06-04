@@ -78,7 +78,7 @@ class SetConfig:
             for var in temp.get_identifiers():
                 m = regex.search(var)
                 assert m != None
-                yield to_mac(m.group("mac"))  # type: ignore[union-attr]
+                yield to_mac(m.group("mac"))
 
     @property
     def definition(self) -> str:
