@@ -126,12 +126,8 @@ in
 
     # fonts (require fonts.fontconfig.enable)
     fira
-    (pkgs.nerdfonts.override {
-      fonts = [
-        "FiraCode"
-        "Hasklig"
-      ];
-    })
+    nerd-fonts.fira-code
+    nerd-fonts.hasklug
     ## for Anki decks
     kochi-substitute # "Kochi Mincho" for Japanese decks
 
