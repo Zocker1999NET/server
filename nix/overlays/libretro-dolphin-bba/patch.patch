@@ -13,7 +13,7 @@ index 928045737c..aff81124ab 100644
 @@ -109,6 +110,15 @@ bool retro_load_game(const struct retro_game_info* game)
    SConfig::GetInstance().bOnScreenDisplayMessages = Libretro::Options::osdEnabled;
    SConfig::GetInstance().bFastDiscSpeed = Libretro::Options::fastDiscSpeed;
-
+ 
 +  switch (Libretro::Options::bba)
 +  {
 +    case 0:  // none
@@ -30,11 +30,11 @@ index 928045737c..aff81124ab 100644
  {
    if (eject_state)
      disk_index = index;
--
+-  
 +
    return eject_state;
  }
-
+ 
 diff --git a/Source/Core/DolphinLibretro/Main.cpp b/Source/Core/DolphinLibretro/Main.cpp
 index 9ce0e4d43e..bb84949f41 100644
 --- a/Source/Core/DolphinLibretro/Main.cpp
@@ -47,7 +47,7 @@ index 9ce0e4d43e..bb84949f41 100644
 +  info->library_name = "dolphin-emu (BBA patch)";
    info->block_extract = true;
  }
-
+ 
 diff --git a/Source/Core/DolphinLibretro/Options.cpp b/Source/Core/DolphinLibretro/Options.cpp
 index 47978c2ef9..b41770502e 100644
 --- a/Source/Core/DolphinLibretro/Options.cpp
@@ -55,7 +55,7 @@ index 47978c2ef9..b41770502e 100644
 @@ -112,6 +112,10 @@ Option<bool>::Option(const char* id, const char* name, bool initial) : m_id(id),
    Register();
  }
-
+ 
 +Option<int> bba("dolphin_bba", "Broadband Adapter (WIP, @Zocker1999NET)", {
 +  {"none", 0},
 +  {"on (random MAC)", 1},
@@ -70,7 +70,7 @@ index 5eaf0b8e67..1c1810bbf5 100644
 @@ -89,6 +89,7 @@ private:
    std::vector<std::pair<std::string, T>> m_list;
  };
-
+ 
 +extern Option<int> bba;
  extern Option<std::string> renderer;
  extern Option<int> efbScale;
