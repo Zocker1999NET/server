@@ -1,31 +1,44 @@
 #!/usr/bin/env bash
 
-set -euxo pipefail
+set -euo pipefail
 
 if [[ ! -e flake.nix ]]; then
     echo "missing flake.nix !!!" >&2
 fi
 
+architecture="x86_64-linux"
+
 # targets which are to be checked
-targets=(
-    # tests which must succeed
-    "nixosTests.x86_64-linux.bind-dynamic"
-    "nixosTests.x86_64-linux.docs_includeAllModules_banananetwork"
-    "nixosTests.x86_64-linux.docs_includeAllModules_disko"
-    "nixosTests.x86_64-linux.docs_includeAllModules_hm_banananetwork"
-    "nixosTests.x86_64-linux.docs_includeAllModules_home-manager"
-    "nixosTests.x86_64-linux.docs_includeAllModules_impermanence"
-    "nixosTests.x86_64-linux.docs_includeAllModules_nixpkgs"
-    "nixosTests.x86_64-linux.docs_includeAllModules_secrix"
-    "nixosTests.x86_64-linux.empty"
-    "nixosTests.x86_64-linux.getty-helpLine-sshPublicHostKey"
-    "nixosTests.x86_64-linux.router"
-    "nixosTests.x86_64-linux.router-tailscale"
-    # images which also must built (& are faster to be built remotely)
-    "nixosConfigurations.x13yz.config.system.build.toplevel"
-    # last one to be available as result
-    "nixosConfigurations.mgmt-iso.config.system.build.isoImage"
+targets=()
+
+# tests which must succeed
+test_targets=(
+    "bind-dynamic"
+    "docs_includeAllModules_banananetwork"
+    "docs_includeAllModules_disko"
+    "docs_includeAllModules_hm_banananetwork"
+    "docs_includeAllModules_home-manager"
+    "docs_includeAllModules_impermanence"
+    "docs_includeAllModules_nixpkgs"
+    "docs_includeAllModules_secrix"
+    "empty"
+    "getty-helpLine-sshPublicHostKey"
+    "router"
+    "router-tailscale"
 )
+for test_target in "${test_targets[@]}"; do
+    targets+=("nixosTests.${architecture}.${test_target}")
+done
+
+# all configs must succeed (& are faster to be built remotely)
+mapfile -t configs < <( nix eval --raw .#nixosConfigurations --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
+for config in "${configs[@]}"; do
+    targets+=("nixosConfigurations.\"${config}\".config.system.build.toplevel")
+done
+# last one to be available as result
+targets+=("nixosConfigurations.mgmt-iso.config.system.build.isoImage")
+
+set -x
 
 for target in "${targets[@]}"; do
     nom build --option builders-use-substitutes true --builders "ssh://iehadmin@iehsrv995.ieh.kit.edu x86_64-linux /root/.ssh/id_ed25519 8 100 kvm,big-parallel,nixos-test" .#"$target"
