@@ -103,6 +103,11 @@ in
         # temporary, see taskwarrior:///35f585ab-cb18-4313-bc89-d07d63351d55
         services.log-wakeup-reason.enable = true;
       }
+      {
+        nixpkgs.overlays = [
+          outputs.overlays.xmm7360
+        ];
+      }
     ];
     system = "x86_64-linux";
   };

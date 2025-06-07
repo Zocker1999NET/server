@@ -21,6 +21,8 @@ in
 
   systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
 
+  xmm7360 = importOverlay ./xmm7360;
+
   upgrades = importOverlay ./upgrades.nix;
 
 }
