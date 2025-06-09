@@ -59,13 +59,16 @@ in
       }
       outputs.nixosProfiles.blade
       inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
-      {
-        # hardware
-        hardware.cpu.type = "intel";
-        hardware.graphics.intel.enable = true;
-        programs.captive-browser.interface = "wlp0s20f3";
-        x-banananetwork.frontend.convertable = true;
-      }
+      (
+        { config, ... }:
+        {
+          # hardware
+          hardware.cpu.type = "intel";
+          hardware.graphics.intel.enable = true;
+          programs.captive-browser.interface = "wlp0s20f3";
+          x-banananetwork.frontend.convertable = true;
+        }
+      )
       {
         # as currently installed
         boot.initrd.luks.devices."luks-herske.lvm.6nw.de" = {
