@@ -65,6 +65,13 @@ in
           # hardware
           hardware.cpu.type = "intel";
           hardware.graphics.intel.enable = true;
+          networking.modemmanager.fccUnlockScripts = [
+            # Fibacom L850-GL / Intel XMM7360
+            {
+              id = "8086:7360";
+              path = "${config.networking.modemmanager.package}/share/ModemManager/fcc-unlock.available.d/8086:7360";
+            }
+          ];
           programs.captive-browser.interface = "wlp0s20f3";
           x-banananetwork.frontend.convertable = true;
         }
