@@ -119,6 +119,10 @@ in
           nixpkgs.overlays = [
             outputs.overlays.xmm7360
           ];
+          systemd.services.ModemManager.serviceConfig.ExecStart = [
+            "" # reset entries from before
+            "${pkgs.modemmanager}/sbin/ModemManager --debug"
+          ];
         }
       )
     ];
