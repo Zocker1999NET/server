@@ -122,6 +122,8 @@ in
 
   "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
 
+  "rfc-ss2025.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/rfc-ss2025;
+
   "ts-test.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/ts-test;
 
   "empty" = nixosSystem {

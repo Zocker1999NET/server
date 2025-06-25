@@ -121,6 +121,19 @@ in
             port = 22;
           };
         };
+        "rfc-ss2025" = {
+          mac = "BC:24:11:14:9B:F7";
+          exposedPorts = {
+            ssh = {
+              sources = singleton "network";
+              port = 22;
+            };
+            http = {
+              sources = singleton "network";
+              port = 80;
+            };
+          };
+        };
       };
     };
 
