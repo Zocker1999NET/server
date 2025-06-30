@@ -84,6 +84,7 @@ in
         nethogs # better than bmon for process identification
         reptyr
         psitop
+        speedtest-cli
         unixtools.xxd
         unzip
         up # ultimate plumber
