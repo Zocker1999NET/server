@@ -39,6 +39,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # single packages
+
+    pkgs_streamlined-client = {
+      url = "github:Zocker1999NET/entertainment-decider?dir=desktop-client";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # TODO experiment with
     # - https://git.sr.ht/~msalerno/wirenix
 

@@ -89,4 +89,8 @@ in
 
   zfs-tools = callPackage ./zfs-tools { };
 
+  # === packages inherited from flake inputs
+
+  inherit (inputs.pkgs_streamlined-client.packages."${system}") streamlined-client;
+
 }

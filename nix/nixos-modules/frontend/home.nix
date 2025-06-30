@@ -110,6 +110,7 @@ in
     keepassxc
     krita
     libreoffice-qt6-fresh # "qt6" for KDE Plasma; "fresh" to get newer features
+    streamlined-client # TODO manual required: xdg-settings set default-url-scheme-handler entertainment-decider streamlined-client_uri.desktop
     wireshark
     tor-browser
     trilium-desktop

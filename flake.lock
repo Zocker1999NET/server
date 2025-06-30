@@ -139,6 +139,28 @@
         "type": "github"
       }
     },
+    "pkgs_streamlined-client": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "dir": "desktop-client",
+        "lastModified": 1751228072,
+        "narHash": "sha256-hIVCrPCC40QUNobUNgoiedORbFnX3RbAWOK5+YaZP/Q=",
+        "owner": "Zocker1999NET",
+        "repo": "entertainment-decider",
+        "rev": "bbe590c1dda5a314e6c29ce4f89ecdf3287a2382",
+        "type": "github"
+      },
+      "original": {
+        "dir": "desktop-client",
+        "owner": "Zocker1999NET",
+        "repo": "entertainment-decider",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "crane": "crane",
@@ -149,6 +171,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs_unstable": "nixpkgs_unstable",
+        "pkgs_streamlined-client": "pkgs_streamlined-client",
         "secrix": "secrix",
         "unattended-installer": "unattended-installer"
       }

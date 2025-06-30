@@ -6,6 +6,7 @@ final: prev: {
     librespot-auth
     nft-update-addresses
     pdfpagecount
+    streamlined-client
     zfs-tools
     ;
 }
