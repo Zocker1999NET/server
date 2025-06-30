@@ -710,6 +710,9 @@ in
         fi
 
         DISABLE_LS_COLORS="true" # To remove alias "ls=ls --color=tty" by oh-my-zsh for exa alias
+
+        # disable oh-my-zsh plugin updates (loaded directly from nixpkgs)
+        zstyle ':omz:update' mode disabled
       '')
       # 550: before completion initialization
       # 1000: General configuration
