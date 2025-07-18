@@ -589,6 +589,8 @@ in
     yt-dlp = {
       enable = true;
       settings = {
+        # TODO make dependent on AV1 hw support
+        compat-options = "prefer-vp9-sort"; # no support for AV1 so far
         # format used by mpv for streaming
         format = concatStringsSep "/" [
           # prefer audio track in original language (e.g. YouTube)
