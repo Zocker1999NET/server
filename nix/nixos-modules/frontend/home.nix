@@ -760,6 +760,7 @@ in
     shellAliases = {
       # shell meta helpers
       echo-args = "${getExe pkgs.python3} -c 'import sys; print(sys.argv[1:])'";
+      launch = "fork";
       # file management
       resolve = ''cd "$(pwd -P)"'';
       tree = "eza --tree";
