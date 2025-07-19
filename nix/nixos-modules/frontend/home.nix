@@ -394,10 +394,33 @@ in
       ];
     };
 
+    ssh = {
+      enable = true;
+      controlMaster = "auto";
+      controlPath = "~/.ssh/connections/%r@%h:%p";
+      controlPersist = "10m";
+      matchBlocks = {
+        "*git*" = {
+          extraOptions = {
+            ControlMaster = "no";
+            ControlPersist = "no";
+          };
+        };
+      };
+    };
+
     texlive = {
       enable = true;
       # TODO filter hard to save storage
       extraPackages = tpkgs: { inherit (tpkgs) scheme-full; };
+    };
+
+    thunderbird = {
+      enable = true;
+      profiles.main = {
+        isDefault = true;
+        withExternalGnupg = true;
+      };
     };
 
     vscode = {
@@ -567,29 +590,6 @@ in
 
         "yaml.format.enable" = false;
 
-      };
-    };
-
-    ssh = {
-      enable = true;
-      controlMaster = "auto";
-      controlPath = "~/.ssh/connections/%r@%h:%p";
-      controlPersist = "10m";
-      matchBlocks = {
-        "*git*" = {
-          extraOptions = {
-            ControlMaster = "no";
-            ControlPersist = "no";
-          };
-        };
-      };
-    };
-
-    thunderbird = {
-      enable = true;
-      profiles.main = {
-        isDefault = true;
-        withExternalGnupg = true;
       };
     };
 
