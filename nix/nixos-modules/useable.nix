@@ -179,7 +179,6 @@ in
           highlighters = [
             "main"
             "brackets"
-            "root"
           ];
         };
         vteIntegration = true;
