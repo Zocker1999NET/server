@@ -374,6 +374,8 @@ in
 
     services = {
 
+      ddccontrol.enable = true;
+
       desktopManager.plasma6 = {
         enable = true;
       };
