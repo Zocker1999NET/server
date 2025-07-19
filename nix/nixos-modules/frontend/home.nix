@@ -730,25 +730,6 @@ in
         ZSH_THEME="agnoster"
         functions[prompt_hg]=""
 
-        # Disable flow control (^S/^Q freezing terminal)
-        stty -ixon
-
-        # allow jumping through words with CTRL
-        bindkey '^[[1;5D' backward-word  # Ctrl + Left Arrow
-        bindkey '^[[1;5C' forward-word   # Ctrl + Right Arrow
-
-        # configure history scroll to search by prefix (https://superuser.com/a/585004)
-        autoload -U up-line-or-beginning-search
-        autoload -U down-line-or-beginning-search
-        zle -N up-line-or-beginning-search
-        zle -N down-line-or-beginning-search
-        # (https://unix.stackexchange.com/a/405358)
-        bindkey "''${terminfo[kcuu1]}" up-line-or-beginning-search # Up
-        bindkey "''${terminfo[kcud1]}" down-line-or-beginning-search # Down
-
-        # autoopen files
-        alias -s json="jq <"
-
         # misc configs
         export ANSIBLE_NOCOWS=1
 
