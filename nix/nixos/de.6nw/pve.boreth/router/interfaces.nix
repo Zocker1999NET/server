@@ -134,6 +134,15 @@ in
             };
           };
         };
+        "nix-builder" = {
+          mac = "BC:24:11:B5:58:0C";
+          exposedPorts = {
+            ssh = {
+              sources = singleton "network";
+              port = 22;
+            };
+          };
+        };
       };
     };
 
