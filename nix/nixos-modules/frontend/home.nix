@@ -64,7 +64,6 @@ in
     nix-output-monitor
 
     # tools
-    fzf # fuzzy finder  # TODO integrate better: https://home-manager-options.extranix.com/?query=fzf&release=master
     jdupes
     pdfgrep # for scansystem
     pdfpagecount
@@ -181,6 +180,14 @@ in
       enableZshIntegration = true;
       git = true;
       icons = "auto";
+    };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+      tmux = {
+        enableShellIntegration = true;
+      };
     };
 
     git = {
