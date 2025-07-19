@@ -186,7 +186,7 @@ in
       enable = true;
       enableZshIntegration = true;
       tmux = {
-        enableShellIntegration = true;
+        enableShellIntegration = false; # IMO less optimal than without
       };
     };
 
