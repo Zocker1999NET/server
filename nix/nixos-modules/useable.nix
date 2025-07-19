@@ -96,6 +96,11 @@ in
 
       bandwhich.enable = true;
 
+      fzf = {
+        fuzzyCompletion = true;
+        keybindings = true;
+      };
+
       git = {
         enable = true;
         config = {
