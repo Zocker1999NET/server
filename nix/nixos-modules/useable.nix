@@ -164,6 +164,9 @@ in
         enableBashCompletion = true;
         enableCompletion = true;
         histSize = 100000;
+        promptInit = ''
+          export PS1=$'%{%(#~\e[1;31m~\e[1;32m)%}%n%{\e[1;33m%}@%{\e[1;36m%}%m %{\e[1;33m%}%~ %{\e[1;35m%}%(!.#.$) %{\e[0m%}'
+        '';
         setOptions = [
           "EXTENDED_HISTORY"
           "HIST_IGNORE_DUPS"
