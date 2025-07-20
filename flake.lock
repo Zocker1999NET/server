@@ -42,11 +42,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1743781323,
-        "narHash": "sha256-AzXehOhw2htpy7ngAxzU4U7oyRuwA/KimIaM1es4Ih8=",
+        "lastModified": 1753018791,
+        "narHash": "sha256-WYQWuRQzyOh7tIPLaQfBPzc+hbi3cpqNZuWBESTLXvw=",
         "owner": "Zocker1999NET",
         "repo": "disko-install-menu",
-        "rev": "d999d6a5c3bcd1a36f7e169d297f267d4ac708bf",
+        "rev": "3dcf23c5b8d577b2a8170c56742506624e76032c",
         "type": "github"
       },
       "original": {
