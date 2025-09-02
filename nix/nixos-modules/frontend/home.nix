@@ -419,6 +419,39 @@ in
       enable = true;
       profiles.main = {
         isDefault = true;
+        settings = {
+          "mail.compose.attachment_reminder_keywords" = concatStringsSep "," [
+            # file suffixes
+            ".doc"
+            ".docx"
+            ".log"
+            ".pdf"
+            ".pps"
+            ".ppt"
+            ".pptx"
+            ".rtf"
+            ".txt"
+            ".xls"
+            ".xlsx"
+            # English
+            "attach"
+            "attachment"
+            "attached"
+            "attaching"
+            "CV"
+            "cover letter"
+            "enclosed"
+            # German
+            "Anhang"
+            "angehangen"
+            "angehängt"
+            "angehängte"
+            "angehängtes"
+            "anhängen"
+          ];
+          "mailnews.display.html_as" = 1; # render "Message Body As" = "Plain Text"
+          "privacy.globalprivacycontrol.enabled" = true;
+        };
         withExternalGnupg = true;
       };
     };
