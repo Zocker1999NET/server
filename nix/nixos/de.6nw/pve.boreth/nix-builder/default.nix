@@ -10,6 +10,7 @@ in
       { config, ... }:
       {
         nix.sshServe = {
+          # provides remote builder with user nix-ssh
           enable = true;
           keys = concatLists [
             config.x-banananetwork.sshPublicKeys
