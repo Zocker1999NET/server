@@ -2,11 +2,17 @@
 let
   inherit (inputs) nixpkgs nixpkgs_unstable;
   inherit (nixpkgs) lib; # prevent infinite recursion
-  inherit (builtins) isString;
+  inherit (builtins)
+    isString
+    ;
   inherit (lib.attrsets) attrByPath hasAttrByPath updateManyAttrsByPath;
   inherit (lib.options) showOption;
   inherit (lib.strings) splitString;
-  inherit (lib.trivial) flip pipe warnIf;
+  inherit (lib.trivial)
+    flip
+    pipe
+    warnIf
+    ;
   inherit (self) backportByPath;
 in
 {
