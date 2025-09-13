@@ -1,11 +1,28 @@
 { lib, outputs, ... }@flakeArg:
 let
   inherit (builtins) concatStringsSep;
+  inherit (lib.backport) backportingOverlay;
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkForce;
 in
 {
   modules = [
+
+    # fix issue that Proxmox Backup Server could not make any backups because of samba server stacktracing away
+    # for context see: taskwarrior://4dda775e-f689-413c-a88b-c2526b6dbd91
+    (
+      { pkgs, ... }:
+      let
+        inherit (lib.systemSpecificVars pkgs.system) pkgs_unstable;
+      in
+      {
+        nixpkgs.overlays = singleton (
+          backportingOverlay pkgs_unstable {
+            samba4 = "25.11";
+          }
+        );
+      }
+    )
 
     # config
     # TODO split from blade to hdds
