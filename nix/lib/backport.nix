@@ -3,6 +3,9 @@ let
   inherit (inputs) nixpkgs nixpkgs_unstable;
   inherit (nixpkgs) lib; # prevent infinite recursion
   inherit (builtins)
+    getAttr
+    hasAttr
+    mapAttrs
     isString
     ;
   inherit (lib.attrsets) attrByPath hasAttrByPath updateManyAttrsByPath;
@@ -11,6 +14,7 @@ let
   inherit (lib.trivial)
     flip
     pipe
+    warn
     warnIf
     ;
   inherit (self) backportByPath;
@@ -45,5 +49,20 @@ in
     ];
 
   backportNixpkg = backportByPath nixpkgs_unstable nixpkgs;
+
+  backportingOverlay =
+    backportPkgs: packageVersionMap: final: prev:
+    let
+      backportOne =
+        name: until:
+        let
+          alreadyStable = hasAttr name prev && lib.versionAtLeast prev.lib.version until;
+          stableSource = warn "consider removing ${name} from backports list as it is now available since ${until}" prev;
+          source = if alreadyStable then stableSource else backportPkgs;
+          pkg = getAttr name source;
+        in
+        pkg;
+    in
+    mapAttrs backportOne packageVersionMap;
 
 }
