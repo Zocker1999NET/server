@@ -23,6 +23,14 @@ in
           trusted = true;
           write = true;
         };
+
+        # re-configure gc for longer preservation
+        nix = {
+          settings = {
+            max-free = 10 * 1024 * 1024 * 1024;
+            min-free = 5 * 1014 * 1024 * 1024;
+          };
+        };
       }
     )
 
