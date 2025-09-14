@@ -127,7 +127,7 @@ in
 
           gc = {
             automatic = true;
-            options = "--delete-older-than 30d";
+            options = lib.mkDefault "--delete-older-than 30d";
           };
 
           optimise = {
