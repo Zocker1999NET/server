@@ -123,6 +123,49 @@ in
       firefox = {
         enable = true;
         policies = {
+          "3rdparty".Extensions = {
+            # uBlock Origin
+            # see https://github.com/gorhill/uBlock/wiki/Deploying-uBlock-Origin:-configuration
+            "uBlock0@raymondhill.net" = {
+              "userSettings" = {
+                "cloudStorageEnabled" = true;
+              };
+              "toOverwrite" = {
+                # see https://github.com/gorhill/uBlock/blob/master/assets/assets.json
+                "filterLists" = [
+                  "user-filters"
+                  # uBlock filters
+                  "ublock-filters" # Ads
+                  "ublock-badware" # Badware risks
+                  "ublock-privacy" # Privacy
+                  "ublock-quick-fixes" # Quick fixes
+                  "ublock-unbreak" # Unbreak
+                  # Ads
+                  "adguard-generic" # Adguard - Ads
+                  "adguard-mobile" # Adguard - Mobile Ads
+                  "easylist" # EasyList
+                  # Privacy
+                  "adguard-spyware-url" # AdGuard URL Tracking Protection
+                  "block-lan" # Block Outsider Intrusion into LAN
+                  "easyprivacy" # EasyPrivacy
+                  # Malware protection, security
+                  "urlhaus-1" # Online Malicious URL Blocklist
+                  "curben-phishing" # Phishing URL Blocklist
+                  # Cookie notices
+                  "ublock-cookies-easylist" # uBlock filters - Cookie Notices
+                  # Social widgets
+                  "fanboy-social" # EasyList - Social Widgets
+                  "fanboy-thirdparty_social" # Fanboy - Anti-Facebook
+                  # Annoyances
+                  "ublock-annoyances" # uBlock filters - Annoyances
+                  # Multipurpose
+                  "plowe-0" # Peter Lowe’s Ad and tracking server list
+                  # Regions, languages
+                  "DEU-0" # 🇩🇪de 🇨🇭ch 🇦🇹at: EasyList Germany
+                ];
+              };
+            };
+          };
           Cookies = {
             Behavior = "reject-tracker-and-partition-foreign";
             BehaviorPrivateBrowsing = "reject-tracker-and-partition-foreign";
@@ -148,7 +191,8 @@ in
                   default_area = "menupanel";
                   installation_mode = "force_installed";
                   install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
-                } // opts;
+                }
+                // opts;
               };
               enrichAddons = id: opts: if id == "*" then opts else (addon id opts).value;
             in
@@ -192,7 +236,6 @@ in
               # Tabliss
               "extension@tabliss.io" = { };
               # uBlock Origin
-              # TODO use policies, taskwarrior:///5f7649da-66aa-4355-bc7d-119c02275e56
               "uBlock0@raymondhill.net" = {
                 default_area = "navbar";
               };
