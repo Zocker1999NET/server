@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.x-banananetwork.frontend;
+  inherit (builtins) concatStringsSep;
 in
 {
 
@@ -171,13 +172,18 @@ in
             BehaviorPrivateBrowsing = "reject-tracker-and-partition-foreign";
             Locked = true;
           };
+          DisableFirefoxStudies = true;
           DisablePocket = true;
           DisableSetDesktopBackground = true;
+          DisplayBookmarksToolbar = "never";
+          DontCheckDefaultBrowser = true;
           EnableTrackingProjection = {
             Value = true;
             Locked = true;
             Cryptomining = true;
             Fingerprinting = true;
+            EmailTracking = true;
+            SuspectedFingerprinting = true;
           };
           EncryptedMediaExtensions = {
             Enabled = true;
@@ -246,8 +252,16 @@ in
             SponsoredTopSites = false;
             Highlights = false;
             Pocket = false;
+            Stories = false;
             SponsoredPocket = false;
+            SponsoredStories = false;
             Snippets = true;
+            Locked = true;
+          };
+          FirefoxSuggest = {
+            WebSuggestions = false;
+            SponsoredSuggestions = false;
+            ImproveSuggest = false;
             Locked = true;
           };
           HttpAllowList = [
@@ -282,16 +296,22 @@ in
           PrimaryPassword = true;
           SearchBar = "unified";
           SearchEngines = {
-            # TODO setting search engines here only works on ESR
             Default = "DuckDuckGo";
+            Remove = [
+              "Google"
+              "Bing"
+            ];
           };
+          SearchSuggestEnabled = false;
           ShowHomeButton = false;
+          SkipTermsOfUse = true;
           UserMessaging = {
             ExtensionRecommendations = false;
             FeatureRecommendations = false;
             UrlbarInterventions = false;
             SkipOnboarding = true;
             MoreFromMozilla = false;
+            FirefoxLabs = false;
             Locked = true;
           };
         };
@@ -299,8 +319,11 @@ in
           "accessibility.typeaheadfind.flashBar" = 0;
           "browser.aboutConfig.showWarning" = false;
           "browser.language.detectLanguage" = false;
-          "browser.search.suggest.enabled" = false;
           "browser.startup.page" = 3; # restore previous session
+          "browser.translations.neverTranslateLanguages" = concatStringsSep "," [
+            "de"
+            "en"
+          ];
           "browser.urlbar.showSearchSuggestionsFirst" = false;
           "print.more-settings.open" = true;
           "security.insecure_connection_text.enabled" = true;
