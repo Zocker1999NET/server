@@ -1,0 +1,4 @@
+# from nix* build commands
+/.nixos-test-history
+result
+
