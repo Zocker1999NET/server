@@ -490,6 +490,8 @@ in
         extensions = with pkgs.vscode-extensions; [
           # general
           vscodevim.vim
+          # IDE: LaTeX
+          james-yu.latex-workshop
           # IDE: Nix
           jnoortheen.nix-ide
           # IDE: Python
