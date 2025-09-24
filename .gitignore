@@ -2,3 +2,9 @@
 /.nixos-test-history
 result
 
+# from my script
+/target
+
+/tofu/.terraform
+/tofu/.terraform.*
+
