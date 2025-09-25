@@ -64,6 +64,7 @@ in
     nix-output-monitor
 
     # tools
+    brightnessctl
     jdupes
     pdfgrep # for scansystem
     pdfpagecount
