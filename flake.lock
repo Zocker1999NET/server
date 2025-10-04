@@ -42,11 +42,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1753018791,
-        "narHash": "sha256-WYQWuRQzyOh7tIPLaQfBPzc+hbi3cpqNZuWBESTLXvw=",
+        "lastModified": 1759615916,
+        "narHash": "sha256-JAVdfFt5xhJ3Kin3r9qLNK58qF23//XjV2ubfzR6l4Q=",
         "owner": "Zocker1999NET",
         "repo": "disko-install-menu",
-        "rev": "3dcf23c5b8d577b2a8170c56742506624e76032c",
+        "rev": "558ddaef5baa352b42854b8c36d9c49029e093c8",
         "type": "github"
       },
       "original": {
@@ -93,11 +93,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1759261527,
-        "narHash": "sha256-wPd5oGvBBpUEzMF0kWnXge0WITNsITx/aGI9qLHgJ4g=",
+        "lastModified": 1759582739,
+        "narHash": "sha256-spZegilADH0q5OngM86u6NmXxduCNv5eX9vCiUPhOYc=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "e087756cf4abbe1a34f3544c480fc1034d68742f",
+        "rev": "3441b5242af7577230a78ffb03542add264179ab",
         "type": "github"
       },
       "original": {
