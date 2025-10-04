@@ -21,6 +21,8 @@ in
 
   systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
 
+  taskwarrior3-customs = importOverlay ./taskwarrior3-customs;
+
   upgrades = importOverlay ./upgrades.nix;
 
 }

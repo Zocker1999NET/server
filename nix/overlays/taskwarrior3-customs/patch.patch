@@ -1,0 +1,153 @@
+diff --git a/src/Task.cpp b/src/Task.cpp
+index 9779ed3bf..019563814 100644
+--- a/src/Task.cpp
++++ b/src/Task.cpp
+@@ -1909,14 +1909,42 @@ float Task::urgency_due() const {
+     Datetime now;
+     Datetime due(get_date("due"));
+ 
+-    // Map a range of 21 days to the value 0.2 - 1.0
++    // constants
++    float max_factor = 1.0;
++    float min_factor = 0.2;
++    float future_due = -14.0;
++    float past_overdue = 7.0;
++    // calculate ranges
++    float due_range = past_overdue - future_due;
++    // pre-calculated so that due:now urgency remains unscaled
++    float now_urgency = (-future_due * (max_factor - min_factor) / due_range) + min_factor;
++
++    // dynamic future due scaling
++    if (has("entry")) {
++      Datetime start_time(get_date("entry"));
++      if (has("wait")) {
++        Datetime wait(get_date("wait"));
++        start_time = wait;
++      }
++      if (start_time < due)
++        future_due = (start_time - due) / 86400.0;
++      else
++        future_due = 0;
++      //min_factor = 0.0; // TODO tests
++      // recalculate ranges
++      due_range = past_overdue - future_due;
++    }
++
++    // Map given range to the factor range
+     float days_overdue = (now - due) / 86400.0;
+-    if (days_overdue >= 7.0)
+-      return 1.0;  // < 1 wk ago
+-    else if (days_overdue >= -14.0)
+-      return ((days_overdue + 14.0) * 0.8 / 21.0) + 0.2;
++    if (days_overdue >= past_overdue)
++      return max_factor;  // < 1 wk ago
++    else if (days_overdue >= 0)
++      return (days_overdue * (1 - now_urgency) / past_overdue) + now_urgency;
++    else if (days_overdue >= future_due)
++      return ((days_overdue - future_due) * (now_urgency - min_factor) / (due_range - past_overdue)) + min_factor;
+     else
+-      return 0.2;  // > 2 wks
++      return min_factor;  // > 2 wks
+   }
+ 
+   return 0.0;
+diff --git a/test/filter.test.py b/test/filter.test.py
+index 47e32eccd..18656bb75 100755
+--- a/test/filter.test.py
++++ b/test/filter.test.py
+@@ -991,7 +991,7 @@ class TestBug1609(TestCase):
+ 
+     def test_urgency_comparison(self):
+         """1609: Test that urgency is filterable"""
+-        self.t("add one project:P due:yesterday +tag1 +tag2")
++        self.t("add one project:P entry:-14d due:yesterday +tag1 +tag2")
+         self.t("add two")
+ 
+         code, out, err = self.t("'urgency<10' next")
+diff --git a/test/operators.test.py b/test/operators.test.py
+index fcf4554d2..d50ca0d91 100755
+--- a/test/operators.test.py
++++ b/test/operators.test.py
+@@ -201,11 +201,11 @@ class TestOperatorsQuantity(TestCase):
+     def setUpClass(cls):
+         cls.t = Task()
+ 
+-        cls.t("add one   due:yesterday priority:H")
+-        cls.t("add two   due:tomorrow  priority:M")
++        cls.t("add one   entry:yesterday-14d due:yesterday priority:H")
++        cls.t("add two   entry:tomorrow-14d  due:tomorrow  priority:M")
+         cls.t("add three               priority:L")
+         cls.t("add four")
+-        cls.t("add five  due:today")
++        cls.t("add five  entry:today-14d     due:today")
+ 
+     # > operator #
+ 
+diff --git a/test/urgency.test.py b/test/urgency.test.py
+index 489dd786b..3b6cb7adf 100755
+--- a/test/urgency.test.py
++++ b/test/urgency.test.py
+@@ -43,6 +43,8 @@ class TestUrgency(TestCase):
+         cls.t.config("urgency.uda.priority.H.coefficient", "10")
+         cls.t.config("urgency.uda.priority.M.coefficient", "6.5")
+         cls.t.config("urgency.uda.priority.L.coefficient", "3")
++        # required for due tests with modified entry dates
++        cls.t.config("urgency.age.coefficient", "0")
+         cls.t.config("urgency.active.coefficient", "10")
+         cls.t.config("urgency.project.coefficient", "10")
+         cls.t.config("urgency.due.coefficient", "10")
+@@ -95,30 +97,30 @@ class TestUrgency(TestCase):
+         cls.t("add 8a")  # 17
+         cls.t("add 8b depends:17")  # 18
+ 
+-        cls.t("add 9a due:-10d")  # 19
+-        cls.t("add 9b due:-7d")  # 20
+-        cls.t("add 9c due:-6d")  # 21
+-        cls.t("add 9d due:-5d")  # 22
+-        cls.t("add 9e due:-4d")  # 23
+-        cls.t("add 9f due:-3d")  # 24
+-        cls.t("add 9g due:-2d")  # 25
+-        cls.t("add 9h due:-1d")  # 26
+-        cls.t("add 9i due:now")  # 27
+-        cls.t("add 9j due:25h")  # 28
+-        cls.t("add 9k due:49h")  # 29
+-        cls.t("add 9l due:73h")  # 30
+-        cls.t("add 9m due:97h")  # 31
+-        cls.t("add 9n due:121h")  # 32
+-        cls.t("add 9o due:145h")  # 33
+-        cls.t("add 9p due:169h")  # 34
+-        cls.t("add 9q due:193h")  # 35
+-        cls.t("add 9r due:217h")  # 36
+-        cls.t("add 9s due:241h")  # 37
+-        cls.t("add 9t due:265h")  # 38
+-        cls.t("add 9u due:289h")  # 39
+-        cls.t("add 9v due:313h")  # 40
+-        cls.t("add 9w due:337h")  # 41
+-        cls.t("add 9x due:361h")  # 42
++        cls.t("add 9a entry:-14d-10d  due:-10d")  # 19
++        cls.t("add 9b entry:-14d-7d   due:-7d")  # 20
++        cls.t("add 9c entry:-14d-6d   due:-6d")  # 21
++        cls.t("add 9d entry:-14d-5d   due:-5d")  # 22
++        cls.t("add 9e entry:-14d-4d   due:-4d")  # 23
++        cls.t("add 9f entry:-14d-3d   due:-3d")  # 24
++        cls.t("add 9g entry:-14d-2d   due:-2d")  # 25
++        cls.t("add 9h entry:-14d-1d   due:-1d")  # 26
++        cls.t("add 9i entry:-14d      due:now")  # 27
++        cls.t("add 9j entry:-14d+25h  due:25h")  # 28
++        cls.t("add 9k entry:-14d+49h  due:49h")  # 29
++        cls.t("add 9l entry:-14d+73h  due:73h")  # 30
++        cls.t("add 9m entry:-14d+97h  due:97h")  # 31
++        cls.t("add 9n entry:-14d+121h due:121h")  # 32
++        cls.t("add 9o entry:-14d+145h due:145h")  # 33
++        cls.t("add 9p entry:-14d+169h due:169h")  # 34
++        cls.t("add 9q entry:-14d+193h due:193h")  # 35
++        cls.t("add 9r entry:-14d+217h due:217h")  # 36
++        cls.t("add 9s entry:-14d+241h due:241h")  # 37
++        cls.t("add 9t entry:-14d+265h due:265h")  # 38
++        cls.t("add 9u entry:-14d+289h due:289h")  # 39
++        cls.t("add 9v entry:-14d+313h due:313h")  # 40
++        cls.t("add 9w entry:-14d+337h due:337h")  # 41
++        cls.t("add 9x entry:-14d+361h due:361h")  # 42
+ 
+         cls.t("add 10a project:PROJECT")  # 43
+ 
