@@ -68,6 +68,10 @@ in
         x-banananetwork.frontend.convertable = true;
       }
       {
+        # replace suspend with hybrid-sleep, contering wake up issues
+        systemd.services.systemd-hybrid-sleep.aliases = [ "systemd-suspend.service" ];
+      }
+      {
         # as currently installed
         boot.initrd.luks.devices."luks-herske.lvm.6nw.de" = {
           device = "/dev/disk/by-uuid/16b8f83d-0450-4c4d-9964-788575a31eec";
