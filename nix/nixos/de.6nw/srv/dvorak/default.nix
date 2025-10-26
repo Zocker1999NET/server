@@ -66,7 +66,7 @@ in
     # installation state
     {
       networking.hostId = "f567a250";
-      system.stateVersion = "24.05";
+      system.stateVersion = "25.05";
       x-banananetwork.vmDisko = {
         generation = "ext4-swap-1";
         mainDiskName = "main";
