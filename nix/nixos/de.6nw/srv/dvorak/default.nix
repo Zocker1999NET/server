@@ -56,6 +56,12 @@ in
 
     # hardware
     outputs.nixosProfiles.blade
+    {
+      hardware = {
+        cpu.type = "intel";
+        graphics.intel.enable = true;
+      };
+    }
 
     # installation state
     {
