@@ -20,7 +20,8 @@ let
         outputs.nixosModules.myOptions
         outputs.nixosModules.withDepends
         { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
-      ] ++ modules;
+      ]
+      ++ modules;
       systemArgs = {
         modules = modsExtended;
         # be aware: specialArgs will break in my nixos integration tests
