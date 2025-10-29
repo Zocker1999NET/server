@@ -40,6 +40,7 @@ in
     ./log-wakeup-reason.nix
     ./memory.nix
     ./options.nix
+    ./permittedInsecure.nix
     ./privacy.nix
     ./secrix.nix
     ./useable.nix

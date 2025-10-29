@@ -192,6 +192,14 @@ in
       }
     )
     {
+      nixpkgs.permitInsecurePackagesUntil = {
+        # mbedtls_2 was marked insecure because it is unmaintained
+        # see https://github.com/NixOS/nixpkgs/commit/bef41c7425e49b5b20a5124b4f21cd633dfc90e9
+        # but it is already unmaintained since 2025-03-24,
+        # see https://github.com/Mbed-TLS/mbedtls/releases/tag/mbedtls-2.28.10
+        # and in my case it is primarily used by dolphin-emu, hence I think I can ignore this for now
+        "mbedtls-2.28.10" = "25.05";
+      };
       home-manager.users.${gameUser} =
         {
           config,
