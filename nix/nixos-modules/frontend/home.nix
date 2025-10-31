@@ -14,7 +14,7 @@ let
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myGpgKey = pkgs.fetchurl {
     url = "https://keys.openpgp.org/vks/v1/by-fingerprint/73D09948B2392D688A45DC8393E1BD26F6B02FB7";
-    hash = "sha256-tbRDhXZJk2aBIF4Ed0HIR8jalxnPJDNziBy51I9Awxs=";
+    hash = "sha256-Zoorox+aMS3V3TWRzpbLuksAEp6hMikAb7EeQYJROZ0=";
   };
   archiveGpgKey = pkgs.fetchurl {
     url = "https://keys.openpgp.org/vks/v1/by-fingerprint/19C17AF30A1152D473A3849C28279F3E0A444E63";
