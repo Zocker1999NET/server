@@ -126,7 +126,6 @@ in
 
   "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
 
-  "rfc-ss2025.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/rfc-ss2025;
   "nix-builder.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/nix-builder;
 
   "ts-test.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/ts-test;
