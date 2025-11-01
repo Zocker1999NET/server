@@ -31,6 +31,7 @@
     disko-install-menu = {
       url = "github:Zocker1999NET/disko-install-menu";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.disko.follows = "disko";
     };
 
     unattended-installer = {
