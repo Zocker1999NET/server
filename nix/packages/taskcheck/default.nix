@@ -7,14 +7,14 @@
 }:
 python3Packages.buildPythonApplication rec {
   pname = "taskcheck";
-  version = "1.0.0-2";
+  version = "1.0.0-3";
   pyproject = true;
 
   src = fetchFromGitHub {
     owner = "00sapo";
     repo = "taskcheck";
     rev = "v${version}";
-    hash = "sha256-Cufie7mfvrhftJYUEPUc33n5mQwrE2S+BXO7e1OVGfQ=";
+    hash = "sha256-eTC5PHqIniRSi9pPlS9o7nYtZA1jcs9oKQ3xR+P4Wmw=";
   };
 
   build-system = with python3Packages; [
