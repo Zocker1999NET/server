@@ -107,6 +107,7 @@ Further informations on a sub-namespace might be found in following sections.
   - `disk.*` (bare storage media)
     - `luks` (its LUKS partition)
     - `pv` (its LVM physical volume)
+  - `esp.*` (ESP-like microcontrollers)
   - `net.*` (network devices)
   - `inv` (inventar system)
   - `lvm.*` (LVM volume group)
