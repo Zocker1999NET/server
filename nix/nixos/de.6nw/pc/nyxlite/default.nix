@@ -10,6 +10,17 @@ in
       # TODO cage with chromium (or other, more suitable module) for Grocy
     }
 
+    # SMD SAFT WiSe 2025/2026
+    (
+      { pkgs, ... }:
+      {
+        programs.java = {
+          enable = true;
+          binfmt = true;
+        };
+      }
+    )
+
     # Spotify appliance
     (
       { config, pkgs, ... }:
@@ -67,7 +78,8 @@ in
                       default_area = "menupanel";
                       installation_mode = "force_installed";
                       install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
-                    } // opts;
+                    }
+                    // opts;
                   };
                   enrichAddons = id: opts: if id == "*" then opts else (addon id opts).value;
                 in
