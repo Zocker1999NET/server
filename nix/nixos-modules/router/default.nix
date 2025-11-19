@@ -243,10 +243,6 @@ in
 
   config = lib.mkIf cfg.enable {
 
-    warnings = lib.singleton (
-      lib.mkIf (lib.versionAtLeast lib.version "24.11") "remove manual sysctl for ip forwarding, as can be replaced by systemd-networkd settings"
-    );
-
     # I will pin a lot of stuff, to ensure future changes on NixOS are noticed
     networking = {
       enableIPv6 = true; # also just a statement
@@ -254,7 +250,8 @@ in
         # localhost
         "::1"
         "127.0.0.1"
-      ] ++ cfg.dns.localFallbacks;
+      ]
+      ++ cfg.dns.localFallbacks;
       tempAddresses = "disabled"; # do not manage that here
       useDHCP = false; # do not intervene with router config
       useNetworkd = true;
@@ -264,8 +261,7 @@ in
     # general
     systemd.network = {
       enable = true;
-      config.networkConfig = lib.mkIf (lib.versionAtLeast lib.version "24.11") {
-        # these options are introduced with systemd 256 -> NixOS 24.11
+      config.networkConfig = {
         IPv4Forwarding = true;
         IPv6Forwarding = true;
         UseDomains = false;
@@ -276,12 +272,6 @@ in
         # more is configured per netdev/network as RequiredForOnline
         # TODO (upstream) add that hint to nixos docs in systemd.network.wait-online.anyInterface etc.
       };
-    };
-    boot.kernel.sysctl = lib.mkIf (!lib.versionAtLeast lib.version "24.11") {
-      "net.ipv4.conf.default.forwarding" = true;
-      "net.ipv4.conf.all.forwarding" = true;
-      "net.ipv6.conf.default.forwarding" = true;
-      "net.ipv6.conf.all.forwarding" = true;
     };
     # expose for easier debugging
     environment.systemPackages = lib.singleton config.services.nft-update-addresses.package;
