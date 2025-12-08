@@ -6,12 +6,17 @@
   ...
 }:
 let
+  inherit (lib.meta) getExe';
+  inherit (lib.options) mkOption;
+  inherit (lib.strings) concatMapStrings;
+  inherit (lib.trivial) flip;
+
   blocked = config.boot.blockedKernelModules;
 in
 {
 
   options = {
-    boot.blockedKernelModules = lib.mkOption {
+    boot.blockedKernelModules = mkOption {
       description = ''
         Kernel modules which are blocked from being loaded
         by using a rather hacky workaround called "fake install".
@@ -33,8 +38,8 @@ in
 
   config = {
     boot.blacklistedKernelModules = blocked;
-    boot.extraModprobeConfig = lib.flip lib.concatMapStrings blocked (module: ''
-      install ${module} ${lib.getExe' pkgs.coreutils "true"}
+    boot.extraModprobeConfig = flip concatMapStrings blocked (module: ''
+      install ${module} ${getExe' pkgs.coreutils "true"}
     '');
   };
 
