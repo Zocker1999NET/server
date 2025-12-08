@@ -24,6 +24,7 @@ in
   config = lib.mkIf cfg.enable {
 
     environment.systemPackages = with pkgs; [
+      curl
       dnsutils
       ethtool
       jq # JSON
@@ -31,7 +32,6 @@ in
       psmisc
       pv
       smem # RAM / swap usage per process
-      wcurl
     ];
 
     programs = {
