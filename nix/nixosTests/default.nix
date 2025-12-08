@@ -79,7 +79,7 @@ let
         };
       };
     in
-    pkgs.nixosTest (
+    pkgs.testers.nixosTest (
       args
       // {
         nodes = lib.flip builtins.mapAttrs nodes (
