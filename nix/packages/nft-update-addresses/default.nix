@@ -30,7 +30,7 @@ python3Packages.buildPythonPackage {
   dependencies = with python3Packages; [
     attrs
     setuptools
-    systemd
+    systemd-python
   ];
 
   propagatedBuildInputs = [
