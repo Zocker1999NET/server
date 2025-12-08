@@ -32,7 +32,7 @@ in
       services.wayland.enable = builtins.any (x: x) ([
         prgs.hyprland.enable
         prgs.miriway.enable
-        prgs.river.enable
+        prgs.river-classic.enable
         prgs.sway.enable
         prgs.wayfire.enable
         (xDM.mate.enable && xDM.mate.enableWaylandSession)
