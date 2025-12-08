@@ -460,9 +460,11 @@ in
         return f"ssh-keyscan {target}"
 
       def test_suite(ipv6_prefix):
+        isp.wait_for_unit("default.target")
         isp.wait_for_unit("kea-dhcp6-server.service")
 
         # server
+        server.wait_for_unit("default.target")
         server.wait_for_unit("static-web-server.service")
         hasIp(server, "eth1", "10.1.", "2001:db8:1:1:")
 
@@ -482,6 +484,7 @@ in
         router.wait_for_unit("nft-update-addresses.service", None, 5)
 
         # client
+        client.wait_for_unit("default.target")
         hasIp(client, "eth1", "10.32.1.", ipv6_prefix)
         debug_out(client, "ip addr show")
 
