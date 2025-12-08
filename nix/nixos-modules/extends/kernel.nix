@@ -32,7 +32,8 @@ in
         due to supported devices detected.
       '';
       type = options.boot.blacklistedKernelModules.type;
-      default = [ ];
+      apply = mods: lib.attrNames (lib.filterAttrs (_: v: v) mods);
+      default = { };
     };
   };
 
