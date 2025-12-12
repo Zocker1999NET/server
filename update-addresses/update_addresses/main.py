@@ -110,6 +110,7 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
         self.lock = RLock()
         self.config = config
         self.addrs = dict[IPInterface, IpAddressUpdate]()
+        self.net_count = 0  # efficient change detection for networks
         self.slaac_prefix = None
 
     def _update_stack(self, data: Sequence[IpUpdate]) -> None:
@@ -125,10 +126,12 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
             if data is not SpecialIpUpdate.FLUSH_RULES:
                 raise ValueError(f"unknown special update {data!r}")
             # TODO maybe flush all sets completely, for good measure
+            for net in self.networks:
+                yield from self.__update_network_sets(net, deleted=True)
             for addr in self.addrs.keys():
-                yield from self.__update_network_sets(addr.network, deleted=True)
                 yield from self.__update_address_sets(addr, deleted=True)
             self.addrs = dict()
+            self.net_count = 0
             yield from self.__empty_slaac_sets()
             self.slaac_prefix = None
             return
@@ -150,9 +153,9 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
         logger.debug(f"{self.config.ifname}: process change of IP {data.ip}")
         with self.lock:
             stored = data.ip in self.addrs
-            changed = stored != (not data.deleted)
+            addr_changed = stored != (not data.deleted)
             if data.deleted:
-                if not changed:
+                if not addr_changed:
                     return  # no updates required
                 logger.info(f"{self.config.ifname}: deleted IP {data.ip}")
                 del self.addrs[data.ip]
@@ -160,8 +163,12 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
                 if not stored:
                     logger.info(f"{self.config.ifname}: discovered IP {data.ip}")
                 self.addrs[data.ip] = data  # keep entry up to date
-        if changed:
+            new_net_count = len(self.networks)
+            nets_changed = self.net_count != new_net_count
+            self.net_count = new_net_count
+        if nets_changed:
             yield from self.__update_network_sets(data.ip.network, data.deleted)
+        if addr_changed:
             yield from self.__update_address_sets(data.ip, data.deleted)
         # even if "not changed", still check SLAAC rules because of lifetimes
         slaac_prefix = self.__select_slaac_prefix()
@@ -291,6 +298,10 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
                 output.append(gen_set_def("set", f"{set_prefix}_{mac}", addr_type))
         output.extend(s.definition for s in self.config.sets)
         return "\n".join(output)
+
+    @property
+    def networks(self) -> set[IPNetwork]:
+        return set(ip.network for ip in self.addrs.keys())
 
 
 class NftValueOperation(Enum):
