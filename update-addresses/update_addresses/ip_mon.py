@@ -16,6 +16,8 @@ from enum import (
     auto,
 )
 from ipaddress import (
+    IPv4Network,
+    IPv6Network,
     IPv4Interface,
     IPv6Interface,
 )
@@ -38,6 +40,7 @@ from .handlers import UpdateHandler
 logger = getLogger(__name__)
 
 
+IPNetwork: TypeAlias = IPv4Network | IPv6Network
 IPInterface: TypeAlias = IPv4Interface | IPv6Interface
 IfName = NewType("IfName", str)
 

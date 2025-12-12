@@ -60,6 +60,7 @@ from .logging import LogMgr
 from .ip_mon import (
     IpAddressUpdate,
     IpFlag,
+    IPNetwork,
     IPInterface,
     IpMonitor,
     IpUpdate,
@@ -125,7 +126,8 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
                 raise ValueError(f"unknown special update {data!r}")
             # TODO maybe flush all sets completely, for good measure
             for addr in self.addrs.keys():
-                yield from self.__update_network_sets(addr, deleted=True)
+                yield from self.__update_network_sets(addr.network, deleted=True)
+                yield from self.__update_address_sets(addr, deleted=True)
             self.addrs = dict()
             yield from self.__empty_slaac_sets()
             self.slaac_prefix = None
@@ -159,7 +161,8 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
                     logger.info(f"{self.config.ifname}: discovered IP {data.ip}")
                 self.addrs[data.ip] = data  # keep entry up to date
         if changed:
-            yield from self.__update_network_sets(data.ip, data.deleted)
+            yield from self.__update_network_sets(data.ip.network, data.deleted)
+            yield from self.__update_address_sets(data.ip, data.deleted)
         # even if "not changed", still check SLAAC rules because of lifetimes
         slaac_prefix = self.__select_slaac_prefix()
         if self.slaac_prefix == slaac_prefix:
@@ -174,23 +177,31 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
 
     def __update_network_sets(
         self,
-        ip: IPInterface,
+        net: IPNetwork,
         deleted: bool = False,
     ) -> Iterable[NftUpdate]:
-        set_prefix = f"{self.config.ifname}v{ip.version}"
+        set_prefix = f"{self.config.ifname}v{net.version}"
         op = NftValueOperation.if_deleted(deleted)
         yield NftUpdate(
             obj_type="set",
-            obj_name=f"all_ipv{ip.version}net",
+            obj_name=f"all_ipv{net.version}net",
             operation=op,
-            values=(f"{self.config.ifname} . {ip.network.compressed}",),
+            values=(f"{self.config.ifname} . {net.compressed}",),
         )
         yield NftUpdate(
             obj_type="set",
             obj_name=f"{set_prefix}net",
             operation=op,
-            values=(ip.network.compressed,),
+            values=(net.compressed,),
         )
+
+    def __update_address_sets(
+        self,
+        ip: IPInterface,
+        deleted: bool = False,
+    ) -> Iterable[NftUpdate]:
+        set_prefix = f"{self.config.ifname}v{ip.version}"
+        op = NftValueOperation.if_deleted(deleted)
         yield NftUpdate(
             obj_type="set",
             obj_name=f"all_ipv{ip.version}addr",
