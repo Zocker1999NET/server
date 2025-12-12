@@ -137,11 +137,9 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
                 f"{self.config.ifname}: ignore change for IP {data.ip} because link-local"
             )
             return
-        if IpFlag.temporary in data.flags:
-            logger.debug(
-                f"{self.config.ifname}: ignore change for IP {data.ip} because temporary"
-            )
-            return  # ignore IPv6 privacy extension addresses
+        # do NOT ignore temporary (e.g. IPv6 privacy extension) addresses
+        # because otherwise the address is not listed as assigned to the interface possibly breaking scenarios
+        # e.g. where incoming packets are verified for matching interface & dest IP combination ("inputDestination" in my NixOS router module)
         if IpFlag.tentiative in data.flags:
             logger.debug(
                 f"{self.config.ifname}: ignore change for IP {data.ip} because tentiative"
