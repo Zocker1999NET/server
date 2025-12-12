@@ -869,14 +869,14 @@ in
             networking.nftables = {
               traceToJournal = true;
               traceIPv4 = [
-                ''"tailscale0" . 100.64.0.0/10 . 100.64.0.0/10 . icmp . 0/0 . 0/0''
-                ''"lan0" . 0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0''
-                ''"lan1" . 0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0''
+                ''100.64.0.0/10 . 100.64.0.0/10 . icmp . 0/0 . 0/0'' # "tailscale0"
+                ''0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0'' # "lan0"
+                ''0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0'' # "lan1"
               ];
               traceIPv6 = [
-                ''"tailscale0" . fd00::/8 . fd00::/8 . ipv6-icmp . 0/0 . 0/0''
-                ''"lan0" . ::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0''
-                ''"lan1" . ::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0''
+                ''fd00::/8 . fd00::/8 . ipv6-icmp . 0/0 . 0/0'' # "tailscale0"
+                ''::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0'' # "lan0"
+                ''::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0'' # "lan1"
               ];
             };
             # more overwrites to make that isolated test feasible

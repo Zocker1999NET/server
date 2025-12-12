@@ -13,9 +13,12 @@ let
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkEnableOption mkOption;
   # TODO (minor) reuse generic translator from router implemenation
+  # TODO cannot match for "meta iifname", because then type of set becomes invalid
+  #   type is then used as "type verdict . …" making valid matching of anything impossible
+  #   to check, see output of "nft list ruleset"
   traceMatch = {
-    ipv4 = "meta iifname . ip saddr . ip daddr . ip protocol . th sport . th dport";
-    ipv6 = "meta iifname . ip6 saddr . ip6 daddr . ip6 nexthdr . th sport . th dport";
+    ipv4 = "ip saddr . ip daddr . ip protocol . th sport . th dport";
+    ipv6 = "ip6 saddr . ip6 daddr . ip6 nexthdr . th sport . th dport";
   };
 in
 # TODO upstream
