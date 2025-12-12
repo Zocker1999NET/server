@@ -257,6 +257,8 @@ class InterfaceUpdateHandler(UpdateStackHandler[IpUpdate]):
                 1 if now < data.valid_until else 0,
                 # prefer global unicast addresses
                 1 if data.ip not in IPv6_ULA_NET else 0,
+                # defer temporary (precautionary)
+                0 if IpFlag.temporary in data.flags else 1,
                 # if preferred, take longest preferred
                 max(now, data.preferred_until),
                 # otherwise longest valid
