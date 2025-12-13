@@ -737,12 +737,18 @@ in
                   "100.64.0.0/10"
                   "fd7a:115c:a1e0::/48"
                 ];
-                derp.server = {
-                  enabled = true;
-                  region_id = 999;
-                  stun_listen_addr = "0.0.0.0:${toString stunPort}";
+                derp = {
+                  server = {
+                    enabled = true;
+                    region_id = 999;
+                    stun_listen_addr = "0.0.0.0:${toString stunPort}";
+                  };
+                  urls = [ ];
                 };
-                dns.base_domain = "example"; # default is .test otherwise
+                dns = {
+                  base_domain = "example"; # default is .test otherwise
+                  override_local_dns = false;
+                };
               };
             };
             nginx = {
