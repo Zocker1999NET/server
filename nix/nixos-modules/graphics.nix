@@ -47,19 +47,23 @@ in
       };
     })
 
+    # see: https://wiki.nixos.org/wiki/Intel_Graphics
     (lib.mkIf cfg.intel.enable {
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+      };
       hardware.graphics = {
         enable = true;
         extraPackages = with pkgs; [
           intel-media-driver
-          intel-media-sdk
-          libvdpau-va-gl
+          vpl-gpu-rt
         ];
         extraPackages32 = with pkgs.pkgsi686Linux; [
           # limited set for Steam & co.
           intel-media-driver
         ];
       };
+      services.xserver.videoDrivers = lib.singleton "modesetting";
     })
 
     # see: https://wiki.nixos.org/wiki/NVIDIA
