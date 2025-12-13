@@ -727,6 +727,7 @@ in
             allowedUDPPorts = [ stunPort ];
           };
           services = {
+            # config mostly copied from <nixpkgs>/nixos/tests/headscale.nix
             headscale = {
               enable = true;
               port = headscalePort;
