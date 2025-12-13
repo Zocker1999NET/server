@@ -123,7 +123,7 @@ in
     just
 
     # Gaming
-    steamcontroller # userspace driver (manual start/stop)
+    sc-controller # userspace driver (manual start/stop)
 
     # fonts (require fonts.fontconfig.enable)
     fira
