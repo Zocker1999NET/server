@@ -381,18 +381,17 @@ in
 
     retroarch = {
       enable = true;
-      cores = with pkgs.libretro; [
-        # as recommended by https://emulation.gametechwiki.com
-        mesen # 1983 NES
-        sameboy # 1989 GB
-        bsnes-hd # 1990 SNES
-        mupen64plus # 1996 N64 (multi, maybe for SNES too; not for NES)
-        sameboy # 1998 GBC
-        mgba # 2001 GBA
-        dolphin # 2001 GCN
-        melonds # 2004 NDS (+NDSi)
-        dolphin # 2006 Wii
-      ];
+      cores = {
+        _1983-NES.enable = true;
+        _1989-GB.enable = true;
+        _1990-SNES.enable = true;
+        _1996-N64.enable = true;
+        _1998-GBC.enable = true;
+        _2001-GBA.enable = true;
+        _2001-GCN.enable = true;
+        _2004-NDS.enable = true;
+        _2006-Wii.enable = true;
+      };
     };
 
     ssh = {
