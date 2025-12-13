@@ -49,7 +49,7 @@ index 9ce0e4d43e..bb84949f41 100644
  }
  
 diff --git a/Source/Core/DolphinLibretro/Options.cpp b/Source/Core/DolphinLibretro/Options.cpp
-index 47978c2ef9..b41770502e 100644
+index bcb9b828c6..057978c912 100644
 --- a/Source/Core/DolphinLibretro/Options.cpp
 +++ b/Source/Core/DolphinLibretro/Options.cpp
 @@ -112,6 +112,10 @@ Option<bool>::Option(const char* id, const char* name, bool initial) : m_id(id),
@@ -60,9 +60,9 @@ index 47978c2ef9..b41770502e 100644
 +  {"none", 0},
 +  {"on (random MAC)", 1},
 +});
- Option<std::string> renderer("dolphin_renderer", "Renderer", {"Hardware", "Software"
+ Option<std::string> renderer("dolphin_renderer", "Renderer", {"Hardware"
  #if defined(_DEBUG) || defined(DEBUGFAST)
-     , "Null"
+     , "Software", "Null"
 diff --git a/Source/Core/DolphinLibretro/Options.h b/Source/Core/DolphinLibretro/Options.h
 index 5eaf0b8e67..1c1810bbf5 100644
 --- a/Source/Core/DolphinLibretro/Options.h
