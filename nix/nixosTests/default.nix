@@ -924,6 +924,7 @@ in
       };
       testScript = ''
         from ipaddress import ip_address, ip_network
+        import json
 
         def getIp(machine, interface):
           run = lambda cmd: machine.succeed(cmd)
@@ -953,7 +954,7 @@ in
 
         # Create headscale user and preauth-key
         headscale.succeed("headscale users create test")
-        authkey = headscale.succeed("headscale preauthkeys -u test create --reusable").rstrip("\r\n")
+        authkey = headscale.succeed("headscale preauthkeys -u 1 create --reusable").rstrip("\r\n")
 
         # ensure that ISP network is ready
         isp.wait_for_unit("default.target")
@@ -972,9 +973,13 @@ in
         router.wait_until_succeeds("tailscale ping peer", 10)
 
         # accept all routes
-        routes = headscale.succeed("headscale routes list --output json | jq '.[].id'").rstrip("\r\n").split("\n")
-        for route in routes:
-          headscale.succeed(f"headscale routes enable -r {route}")
+        nodes = json.loads(headscale.succeed("headscale nodes list-routes --output json"))
+        for node in nodes:
+          if "available_routes" not in node:
+            continue
+          node_id = node["id"]
+          routes = ",".join(node["available_routes"])
+          headscale.succeed(f"headscale nodes approve-routes --identifier {node_id} --routes {routes}")
         # ensure router is acknowledged as possible exit node
         peer.wait_until_succeeds("tailscale exit-node list | grep router", 10)
 
