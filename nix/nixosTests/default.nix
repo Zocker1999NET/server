@@ -302,6 +302,17 @@ in
           curl
           dnsutils
         ];
+        # tracing for simplified debugging
+        networking.nftables = {
+          traceIPv4 = [
+            ''10.1.0.0/16 . 10.1.0.0/16 . icmp . 0/8 . 0/0'' # ICMP Echo Reply (0)
+            ''10.1.0.0/16 . 10.1.0.0/16 . icmp . 2048/8 . 0/0'' # ICMP Echo Request (8)
+          ];
+          traceIPv6 = [
+            ''2001:db8:1:1::/32 . 2001:db8:1:1::/32 . ipv6-icmp . 32768/7 . 0/0'' # ICMPv6 Echo Request (128) & Echo Response (129)
+          ];
+          traceToJournal = true;
+        };
         virtualisation.vlans = [
           1
           2
