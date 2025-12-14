@@ -570,6 +570,7 @@ in
 
       # test firewall after nftables reload (flushes nftua sets)
       router.succeed("systemctl reload nftables.service")
+      # TODO verify that reload itself did not fail (maybe via journal output?)
       router.wait_for_unit("nft-update-addresses.service", None, 5)  # ensure unit still up
       test_suite("2001:db8:2a01:")
 
