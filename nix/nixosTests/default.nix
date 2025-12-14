@@ -293,6 +293,7 @@ in
     nodes.router =
       { config, nodes, ... }:
       {
+        # TODO increase log-level of nft-update-addresses to info via config (not implemented yet) for easier debugging
         imports = [
           outputs.nixosProfiles.common
           outputs.nixosModules.withDepends
