@@ -243,6 +243,13 @@ in
             networking.hostName = "mgmt-iso";
             programs.disko-install-menu = {
               enable = true;
+              listedFlakes.defaultFlake = {
+                offlineHosts = {
+                  "empty" = true;
+                };
+                offlineReference = flake;
+              };
+              offlineCapable = true;
               options = {
                 # TODO autostart
                 defaultFlake = "github:Zocker1999NET/server"; # ===SYNC:general/meta/repo/url
