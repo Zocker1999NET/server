@@ -188,6 +188,7 @@ in
 
     # ensure activation scripts are fine
     # TODO replace with proper check as seen in https://github.com/NixOS/nixpkgs/pull/149932
+    # (because of this: added shellcheck as "offline-installation dependencies")
     system.activatableSystemBuilderCommands = lib.mkAfter ''
       ${lib.getExe pkgs.shellcheck} --check-sourced --external-sources --norc --severity=warning $out/activate $out/dry-activate
     '';

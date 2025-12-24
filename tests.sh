@@ -14,6 +14,7 @@ targets=()
 # tests which must succeed
 test_targets=(
     "bind-dynamic"
+    "diskoOfflineInstall"
     "docs_includeAllModules_banananetwork"
     "docs_includeAllModules_disko"
     "docs_includeAllModules_hm_banananetwork"
