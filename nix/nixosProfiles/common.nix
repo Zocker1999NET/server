@@ -187,7 +187,7 @@ in
     };
 
     # ensure activation scripts are fine
-    # TODO upstream, probably replacing https://github.com/NixOS/nixpkgs/pull/149932
+    # TODO replace with proper check as seen in https://github.com/NixOS/nixpkgs/pull/149932
     system.activatableSystemBuilderCommands = lib.mkAfter ''
       ${lib.getExe pkgs.shellcheck} --check-sourced --external-sources --norc --severity=warning $out/activate $out/dry-activate
     '';
