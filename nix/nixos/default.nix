@@ -65,7 +65,6 @@ in
   "mgmt-iso" = importSystem ./de.6nw/temp/mgmt-iso;
 
   "iehsrv995" = nixosSystem {
-    # TODO copy config from host
     modules = [
       # TODO move into own modules
       (
