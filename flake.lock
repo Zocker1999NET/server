@@ -197,8 +197,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs_unstable": "nixpkgs_unstable",
         "pkgs_streamlined-client": "pkgs_streamlined-client",
-        "secrix": "secrix",
-        "unattended-installer": "unattended-installer"
+        "secrix": "secrix"
       }
     },
     "secrix": {
@@ -218,29 +217,6 @@
       "original": {
         "owner": "Platonic-Systems",
         "repo": "secrix",
-        "type": "github"
-      }
-    },
-    "unattended-installer": {
-      "inputs": {
-        "disko": [
-          "disko"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1724352083,
-        "narHash": "sha256-GP8YzfLFOFcSSRqGkzG7HGu/hT749saBgRUMSClkqwU=",
-        "owner": "chrillefkr",
-        "repo": "nixos-unattended-installer",
-        "rev": "25936f740d57d43a05adbb0e667deabd641d9ebc",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chrillefkr",
-        "repo": "nixos-unattended-installer",
         "type": "github"
       }
     }

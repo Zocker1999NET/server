@@ -34,12 +34,6 @@
       inputs.disko.follows = "disko";
     };
 
-    unattended-installer = {
-      url = "github:chrillefkr/nixos-unattended-installer";
-      inputs.disko.follows = "disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # single packages
 
     pkgs_streamlined-client = {
