@@ -42,6 +42,7 @@ in
     # (see https://nix-community.github.io/lanzaboote/getting-started/enable-secure-boot.html)
     {
       boot = {
+        initrd.systemd.enable = true; # required for TPM unlock of LUKS drive
         loader.systemd-boot.enable = mkForce false;
         lanzaboote = {
           enable = true;
