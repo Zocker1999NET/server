@@ -38,20 +38,22 @@ in
       };
     }
 
-    # secure boot
+    # Secure Boot
     # (see https://nix-community.github.io/lanzaboote/getting-started/enable-secure-boot.html)
     {
-      boot.loader.systemd-boot.enable = mkForce false;
-      boot.lanzaboote = {
-        enable = true;
-        pkiBundle = "/var/lib/sbctl";
-        # automatic provisioning
-        # (see https://nix-community.github.io/lanzaboote/explanation/automatic-provisioning.html)
-        autoEnrollKeys = {
+      boot = {
+        loader.systemd-boot.enable = mkForce false;
+        lanzaboote = {
           enable = true;
-          autoReboot = true;
+          pkiBundle = "/var/lib/sbctl";
+          # automatic provisioning
+          # (see https://nix-community.github.io/lanzaboote/explanation/automatic-provisioning.html)
+          autoEnrollKeys = {
+            enable = true;
+            autoReboot = true;
+          };
+          autoGenerateKeys.enable = true;
         };
-        autoGenerateKeys.enable = true;
       };
     }
 
