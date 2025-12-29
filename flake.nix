@@ -18,6 +18,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        # do not follow crane (using it for different purposes)
+      };
+    };
     secrix = {
       url = "github:Platonic-Systems/secrix";
       inputs.nixpkgs.follows = "nixpkgs";

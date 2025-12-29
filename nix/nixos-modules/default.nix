@@ -61,6 +61,7 @@ in
         inputs.disko.nixosModules.disko
         inputs.home-manager.nixosModules.home-manager
         inputs.impermanence.nixosModules.impermanence
+        inputs.lanzaboote.nixosModules.lanzaboote
         inputs.secrix.nixosModules.secrix
         self.banananetwork
       ];
