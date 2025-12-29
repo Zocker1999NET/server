@@ -46,6 +46,8 @@ in
   "emu1.pc.6nw.de" = importSystem ./de.6nw/pc/emu/emu1.nix;
   "emu2.pc.6nw.de" = importSystem ./de.6nw/pc/emu/emu2.nix;
 
+  "dvorak.srv.6nw.de" = importSystem ./de.6nw/srv/dvorak;
+
   # for VM infra
 
   "router.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/router;

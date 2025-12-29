@@ -66,9 +66,9 @@ in
     # installation state
     {
       networking.hostId = "f567a250";
-      system.stateVersion = "25.05";
+      system.stateVersion = "25.11";
       x-banananetwork.vmDisko = {
-        generation = "ext4-swap-1";
+        generation = "luks-lvm-1";
         mainDiskName = "main";
       };
       x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICT2gW4pQm/FS23zHW7TmnCJ8vjUpsCnwk4ilv50FzUS root@dvorak.srv.6nw.de 2025-04-13";
