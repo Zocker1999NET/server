@@ -6,6 +6,7 @@ in
   modules = importsApplyMods [
 
     # config
+    outputs.nixosModules.router
     (
       { config, ... }:
       let

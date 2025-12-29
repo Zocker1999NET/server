@@ -17,7 +17,7 @@ in
   # assertions checking for good practices
   assertions = importModule ./assertions;
 
-  # this one includes all of my modules
+  # this one includes most of my modules
   # - most of them only change things when enabled (e.g. x-banananetwork.*.enable)
   # - others only introduce small, reasonable changes if other module’s options are set, as reasonable defaults (if I intend to upstream them)
   # however, use on your own discretion
@@ -29,7 +29,6 @@ in
     ./frontend
     ./improvedDefaults
     ./packages
-    (importApplyMod ./router)
     ./vmDisko
     # files
     ./autoUnfree.nix
@@ -74,6 +73,11 @@ in
         ];
       };
     };
+
+  # my router module
+  # - for documentation, see ./router/README.md
+  # - served separatedly because it is large & because it modifies systemd via an overlay
+  router = (importApplyMod ./router);
 
   # from sub groups
   # NOTE: these will change possibly unsensible stuff just by importing them

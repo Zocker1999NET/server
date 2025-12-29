@@ -21,6 +21,7 @@ test_targets=(
     "docs_includeAllModules_home-manager"
     "docs_includeAllModules_impermanence"
     "docs_includeAllModules_nixpkgs"
+    "docs_includeAllModules_router"
     "docs_includeAllModules_secrix"
     "empty"
     "getty-helpLine-sshPublicHostKey"

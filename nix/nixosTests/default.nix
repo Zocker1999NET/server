@@ -261,6 +261,15 @@ in
     ];
   };
 
+  docs_includeAllModules_router = nixosDocTest {
+    name = "docs_includeAllModules_router";
+    modules = [
+      outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
+      outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
+      outputs.nixosModules.router
+    ];
+  };
+
   getty-helpLine-sshPublicHostKey = nixosTest {
     name = "getty-helpLine-sshPublicHostKey";
     nodes.node = {
@@ -342,8 +351,9 @@ in
       {
         # TODO increase log-level of nft-update-addresses to info via config (not implemented yet) for easier debugging
         imports = [
-          outputs.nixosProfiles.common
-          outputs.nixosModules.withDepends
+          outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
+          outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
+          outputs.nixosModules.router
         ];
         environment.systemPackages = with pkgs; [
           curl
@@ -685,7 +695,7 @@ in
     name = "bind-dynamic";
     nodes.server = {
       imports = [
-        outputs.nixosProfiles.common
+        outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
         outputs.nixosModules.withDepends
       ];
       config = {
@@ -839,8 +849,9 @@ in
           { config, nodes, ... }:
           {
             imports = [
-              outputs.nixosProfiles.common
-              outputs.nixosModules.withDepends
+              outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
+              outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
+              outputs.nixosModules.router
               peer
             ];
             services.tailscale.extraSetFlags = [
