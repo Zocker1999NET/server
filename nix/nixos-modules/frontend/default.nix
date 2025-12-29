@@ -522,6 +522,13 @@ in
 
       udisks2 = {
         enable = true;
+        settings = {
+          "mount_options.conf" = {
+            defaults = {
+              defaults = "sync"; # "sync" so transfers to USB sticks have correct ETAs
+            };
+          };
+        };
       };
 
       xserver = {
