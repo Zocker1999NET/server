@@ -43,6 +43,7 @@ in
     ./permittedInsecure.nix
     ./privacy.nix
     ./secrix.nix
+    ./serverCommon.nix
     ./useable.nix
     ./vmCommon.nix
     ./zfsServer.nix
