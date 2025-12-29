@@ -152,6 +152,7 @@ in
       services = {
 
         getty = {
+          helpLine = "IPs:  \\4  \\6";
           dynamicHelpLine = {
             sshPublicHostKey.enable = true;
           };
