@@ -1,6 +1,7 @@
 { lib, outputs, ... }@flakeArg:
 let
   inherit (lib.lists) singleton;
+  inherit (lib.modules) mkForce;
 in
 {
   modules = [
@@ -34,6 +35,23 @@ in
           enable = true;
           warnOnDefaultTimings = true;
         };
+      };
+    }
+
+    # secure boot
+    # (see https://nix-community.github.io/lanzaboote/getting-started/enable-secure-boot.html)
+    {
+      boot.loader.systemd-boot.enable = mkForce false;
+      boot.lanzaboote = {
+        enable = true;
+        pkiBundle = "/var/lib/sbctl";
+        # automatic provisioning
+        # (see https://nix-community.github.io/lanzaboote/explanation/automatic-provisioning.html)
+        autoEnrollKeys = {
+          enable = true;
+          autoReboot = true;
+        };
+        autoGenerateKeys.enable = true;
       };
     }
 
