@@ -12,9 +12,11 @@ let
     groupBy
     isAttrs
     mapAttrs
+    split
     ;
   inherit (lib) types;
   inherit (lib.attrsets) filterAttrs mapAttrsToList;
+  inherit (lib.lists) last;
   inherit (lib.modules) dischargeProperties mkMerge mkOrder;
   inherit (lib.options) mkOption;
   inherit (lib.trivial) flip pipe;
@@ -97,11 +99,13 @@ in
           isMkOrder = isAttrs x.value && x.value._type or "" == "order";
           rules = if isMkOrder then x.value.content else x.value;
           keepOrder = if isMkOrder then mkOrder x.value.priority else (x: x);
+          # truncate file path to avoid rebuilds on all changes to a flake
+          truncatedPath = last (split "^/nix/store/[^/-]+-source" x.file);
         in
         x
         // {
           value = keepOrder ''
-            # START: from .interfaces.${x.to}.firewall.forwardFromRules.${x.from}, defined in ${x.file}
+            # START: from .interfaces.${x.to}.firewall.forwardFromRules.${x.from}, defined in ${truncatedPath}
             ${rules}
             # END: rule list
           '';
