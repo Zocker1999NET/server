@@ -27,17 +27,8 @@ in
       }
     )
     {
-      services.zfs = {
-        autoScrub = {
-          interval = "Sun *-*-01..07 13:30";
-          randomizedDelaySec = "1min"; # for near to no effect
-        };
-        trim = {
-          interval = "Sun *-*-* 09:30";
-          randomizedDelaySec = "1min"; # for near to no effect
-        };
-      };
       x-banananetwork = {
+        serverCommon.enable = true;
         useable.enable = true;
         zfsServer = {
           enable = true;
