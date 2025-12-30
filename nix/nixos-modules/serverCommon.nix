@@ -114,7 +114,9 @@ in
 
         apparmor.enable = true;
 
-        lockKernelModules = true; # after boot loading not required on servers & VMs
+        # after boot loading not required on servers & VMs
+        # - may affect plug-n-play of USB devices which are not simple HIDs
+        lockKernelModules = true;
 
         sudo = {
           enable = true;
