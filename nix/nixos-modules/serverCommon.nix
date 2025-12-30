@@ -193,6 +193,15 @@ in
     # - ordered alphabetically
     {
 
+      services = {
+        logind.settings.Login = {
+          # do not suspend on closing lid (if existing)
+          HandleLidSwitch = "ignore";
+          HandleLidSwitchExternalPower = "ignore";
+          HandleLidSwitchDocked = "ignore";
+        };
+      };
+
       x-banananetwork = {
         allCommon.enable = true;
       };
