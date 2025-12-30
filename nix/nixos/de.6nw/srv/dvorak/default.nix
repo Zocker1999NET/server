@@ -88,6 +88,11 @@ in
     # hardware
     outputs.nixosProfiles.blade
     {
+      # main disk is a SSD
+      disko.devices.disk.main.content.partitions.luks.content.settings = {
+        allowDiscards = true; # reveal empty blocks for SSD lifetime & performance
+        bypassWorkqueues = true; # optimize performance
+      };
       hardware = {
         cpu.type = "intel";
         graphics.intel.enable = true;
