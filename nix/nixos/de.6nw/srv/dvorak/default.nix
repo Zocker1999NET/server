@@ -58,7 +58,8 @@ in
       };
     }
     # LUKS sealed against: with reasonings:
-    # --tpm2-pcrs=0+2+3+7+8+10+12+14+15:sha256=0000000000000000000000000000000000000000000000000000000000000000
+    # --tpm2-pcrs=0+2+3+7+8+10+12+14+15:sha1=0000000000000000000000000000000000000000
+    # (hw only supports sha1)
     # 0: for UEFI firmware upgrades/downgrades
     # (1: changes on every boot, for unknown reason)
     # 2: for executed option ROM changes
@@ -74,7 +75,7 @@ in
     # 12: protect against externally inserted kernel / systemd arguments
     # (13: unused, potentially changes between generations)
     # 14: shim, unused on this system
-    # 15: sealed against sha256:0x0 -> light PCR 15 validation by only allowing TPM to unlock first drive (when combined with tpm2-measure-pcr)
+    # 15: sealed against sha1:0x0 -> light PCR 15 validation by only allowing TPM to unlock first drive (when combined with tpm2-measure-pcr)
     # (read about PCRs: https://uapi-group.org/specifications/specs/linux_tpm_pcr_registry/)
 
     # host config
