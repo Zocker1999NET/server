@@ -14,16 +14,24 @@ in
           # TODO (feature) integrate into Syncthing (SSD as target)
           tailscale = {
             enable = true;
-            #authKeyFile = config.secrix.services.tailscale.secrets.authKey.decrypted.path;
+            authKeyFile = config.secrix.services.tailscaled-autoconnect.secrets.authKey.decrypted.path;
             openFirewall = true;
             setFlags = {
+              accept-dns = false;
               advertise-exit-node = true;
+            };
+            upFlags = {
+              # MUST match exactly with the tags configured for the authkey
               advertise-tags = [
-                "none"
-                "mesh-syncthing" # TODO
+                "tag:none"
+                "tag:mesh-syncthing-main"
               ];
             };
+            useRoutingFeatures = "both";
           };
+        };
+        secrix.services = {
+          tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key;
         };
       }
     )
