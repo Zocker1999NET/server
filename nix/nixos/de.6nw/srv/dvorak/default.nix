@@ -36,6 +36,18 @@ in
       }
     )
     {
+      boot.zfs = {
+        extraPools = [
+          "dia.zfs.6nw.de"
+        ];
+        # for automount, keys are stored on in plain text on disk (secured by LUKS FDE)
+        # location: /root/zfs-keys/<POOL-NAME>
+        requestEncryptionCredentials = [
+          "dia.zfs.6nw.de"
+        ];
+      };
+    }
+    {
       x-banananetwork = {
         serverCommon.enable = true;
         useable.enable = true;
