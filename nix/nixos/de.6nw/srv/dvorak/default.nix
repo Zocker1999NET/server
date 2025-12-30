@@ -57,6 +57,25 @@ in
         };
       };
     }
+    # LUKS sealed against: with reasonings:
+    # --tpm2-pcrs=0+2+3+7+8+10+12+14+15:sha256=0000000000000000000000000000000000000000000000000000000000000000
+    # 0: for UEFI firmware upgrades/downgrades
+    # (1: changes on every boot, for unknown reason)
+    # 2: for executed option ROM changes
+    # 3: for HW changes, stayed same with USB HID, USB drive, display changes
+    # (4: changes between generations because of initrd)
+    # (5: includes loader.cfg from systemd-boot, changes on new generation introduction)
+    # (6: unused)
+    # 7: secure boot state
+    # 8: GRUB unused on this system
+    # (9: changes between generations because of initrd)
+    # 10: Linux IMA unused on this system
+    # (11: changes between generations because of initrd)
+    # 12: protect against externally inserted kernel / systemd arguments
+    # (13: unused, potentially changes between generations)
+    # 14: shim, unused on this system
+    # 15: sealed against sha256:0x0 -> light PCR 15 validation by only allowing TPM to unlock first drive (when combined with tpm2-measure-pcr)
+    # (read about PCRs: https://uapi-group.org/specifications/specs/linux_tpm_pcr_registry/)
 
     # host config
     {
