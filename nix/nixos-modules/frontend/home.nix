@@ -564,6 +564,9 @@ in
 
           "html.format.enable" = false;
 
+          "json.format.enable" = true;
+          "json.format.keepLines" = true;
+
           "keyboard.dispatch" = "keyCode";
 
           "latex-workshop.message.update.show" = false;
