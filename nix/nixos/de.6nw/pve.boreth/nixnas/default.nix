@@ -58,6 +58,44 @@ in
       }
     )
 
+    # VM Service Access
+    # TODO convert to general module
+    (
+      { config, ... }:
+      let
+        # constants
+        userService = "samba-user-config";
+        groupName = "smb";
+        # service vars
+        shareName = "pbs-boreth";
+        userName = shareName;
+        dataPath = "/mnt/io.zfs.6nw.de/Backups/pbs.boreth.pve.6nw.de";
+        # derived constants
+        secretName = "smb_${userName}";
+      in
+      {
+        services.samba.settings.${shareName} = {
+          path = dataPath;
+          browseable = "no";
+          "read only" = "no";
+          "guest ok" = "no";
+          "valid users" = userName;
+        };
+        # to ensure permissions are set correctly
+        systemd.tmpfiles.rules = [
+          "e ${dataPath} 0700 ${userName} ${groupName} -"
+        ];
+        users.users.${userName} = {
+          isSystemUser = true;
+          group = groupName;
+          # by default, users cannot login (i.e. "nologin" shell & password locked)
+          samba.passwordFile = config.secrix.services.${userService}.secrets.${secretName}.decrypted.path;
+        };
+        # xkcdpass -n 8 | secr encrypt nixnas.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/nixnas/smb_pbs-boreth.age
+        secrix.services.${userService}.secrets.${secretName}.encrypted.file = ./${secretName}.age;
+      }
+    )
+
     # share our stuff
     (
       { config, ... }:
@@ -86,14 +124,6 @@ in
               "map archive" = "no"; # https://stackoverflow.com/a/20966148
               "nt acl support" = "no";
             };
-            # for internal services (VMs)
-            pbs-boreth = {
-              path = "/mnt/io.zfs.6nw.de/Backups/pbs.boreth.pve.6nw.de";
-              browseable = "no";
-              "read only" = "no";
-              "guest ok" = "no";
-              "valid users" = "pbs-boreth";
-            };
             # for external services
             Games = {
               path = "/mnt/metis.zfs.6nw.de/Gaming/Games";
@@ -119,19 +149,8 @@ in
             */
           };
         };
-        # to ensure permissions are set correctly
-        systemd.tmpfiles.rules = [
-          "e /mnt/io.zfs.6nw.de/Backups/pbs.boreth.pve.6nw.de 0700 pbs-boreth smb -"
-        ];
         # user management
         users.users = {
-          pbs-boreth = {
-            isSystemUser = true;
-            group = "smb";
-            # by default, users cannot login (i.e. "nologin" shell & password locked)
-            samba.passwordFile =
-              config.secrix.services."samba-user-config".secrets."smb_pbs-boreth".decrypted.path;
-          };
           # rewrite existing users for permission allignment
           # TODO remove when adapted globally
           zocker = {
@@ -141,11 +160,6 @@ in
         };
         users.groups.smb = { };
         users.groups.zocker.gid = config.users.users.zocker.uid;
-        # secrets management
-        secrix.services."samba-user-config".secrets = {
-          # xkcdpass -n 8 | secr encrypt nixnas.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/nixnas/smb_pbs-boreth.age
-          "smb_pbs-boreth".encrypted.file = ./smb_pbs-boreth.age;
-        };
       }
     )
 
