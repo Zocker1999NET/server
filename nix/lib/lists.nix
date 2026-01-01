@@ -6,7 +6,7 @@ let
     groupBy
     mapAttrs
     ;
-  inherit (lib.lists) singleton;
+  inherit (lib.lists) optional singleton;
   inherit (lib.trivial) flip pipe;
 in
 {
@@ -38,6 +38,8 @@ in
     in
     # catch errors while building groupers before values are passed through
     deepSeq pipeList (flip pipe pipeList);
+
+  optionalNonNull = a: optional (a != null) a;
 
   # TODO check for lists.unique: if a groupBy variant would be more efficient
   #   - lists.unique has O(n^2)
