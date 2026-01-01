@@ -1,12 +1,16 @@
 # configures options only really useable for me
 
 {
-  config,
   lib,
-  pkgs,
+  flake,
+  ...
+}@flakeArg:
+{
+  config,
   ...
 }:
 let
+  inherit (lib.lists) optionalNonNull;
   myOpts = config.x-banananetwork;
 in
 {
@@ -57,6 +61,11 @@ in
 
       frontend = {
         username = myOpts.userName;
+      };
+      sshHostKeyPropagation = {
+        enable = true;
+        sourceFlake = flake;
+        propagatedHostKeys = optionalNonNull myOpts.sshHostPublicKey;
       };
       vmCommon = {
         userName = myOpts.userName;

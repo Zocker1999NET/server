@@ -51,7 +51,7 @@ in
 
   # this one defines common options for my systems to my modules
   # you definitely do not want to use this
-  myOptions = importModule ../myOptions.nix;
+  myOptions = importApplyMod ../myOptions.nix;
 
   # this one also includes required dependencies from flake inputs
   withDepends =
