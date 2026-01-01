@@ -43,6 +43,7 @@ in
     ./privacy.nix
     ./secrix.nix
     ./serverCommon.nix
+    ./sshHostKeyPropagation.nix
     ./useable.nix
     ./vmCommon.nix
     ./zfsServer.nix
