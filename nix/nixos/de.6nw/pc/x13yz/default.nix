@@ -8,12 +8,32 @@
 
     # boot/system settings for "frontend" devices
     # TODO move to shared module
-    {
-      boot.plymouth = {
-        enable = true;
-        theme = "bgrt"; # UEFI logo
-      };
-    }
+    (
+      { pkgs, ... }:
+      {
+        # source: https://wiki.nixos.org/wiki/Plymouth#Usage
+        boot = {
+          plymouth = {
+            enable = true;
+            theme = "hexagon_red";
+            themePackages = with pkgs; [
+              (adi1090x-plymouth-themes.override {
+                selected_themes = [ "hexagon_red" ];
+              })
+            ];
+          };
+          # enable "silent boot"
+          consoleLogLevel = 3;
+          initrd.verbose = false;
+          kernelParams = [
+            "quiet"
+            "udev.log_priority=3"
+            "rd.systemd.show_status=auto"
+          ];
+          loader.timeout = 0; # systemd-boot will still appear when holding any key while booting, see loader.conf(5)
+        };
+      }
+    )
 
     # host config
     {
