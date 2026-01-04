@@ -6,6 +6,15 @@
 {
   modules = [
 
+    # boot/system settings for "frontend" devices
+    # TODO move to shared module
+    {
+      boot.plymouth = {
+        enable = true;
+        theme = "bgrt"; # UEFI logo
+      };
+    }
+
     # host config
     {
       networking.domain = "pc.6nw.de";
