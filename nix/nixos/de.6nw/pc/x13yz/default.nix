@@ -11,6 +11,9 @@
     (
       { pkgs, ... }:
       {
+        boot = {
+          initrd.systemd.enable = true; # required for password input to be handled by Plymouth
+        };
         # source: https://wiki.nixos.org/wiki/Plymouth#Usage
         boot = {
           plymouth = {
