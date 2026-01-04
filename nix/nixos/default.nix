@@ -66,6 +66,7 @@ in
   # (note) build: .#nixosConfigurations.mgmt-iso.config.system.build.isoImage
   "mgmt-iso" = importSystem ./de.6nw/temp/mgmt-iso;
 
+  "iehsrv994" = importSystem ./edu.kit.ieh/iehsrv994;
   "iehsrv995" = importSystem ./edu.kit.ieh/iehsrv995;
 
   /*
