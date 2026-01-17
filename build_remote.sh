@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+if [[ ${CI_MODE:-} != "" ]]; then
+    exec nix build "$@"
+fi
+
 cmd="nix"
 if command -v nom &>/dev/null; then
     cmd="nom"
