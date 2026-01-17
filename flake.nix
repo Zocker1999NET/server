@@ -128,5 +128,8 @@
 
       packages = importFlakeModWithSystem ./nix/packages;
 
+      # for auto update mechanism
+      inherit (importFlakeMod ./inputSorter.nix) orderedInputs;
+
     };
 }
