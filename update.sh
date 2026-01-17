@@ -6,8 +6,11 @@ if [[ ! -e flake.nix ]]; then
     echo "missing flake.nix !!!" >&2
 fi
 
-# I update those without checking the changelogs
-nix flake update nixpkgs nixpkgs_unstable disko home-manager impermanence nixos-hardware disko-install-menu
+orderedInputs="$(nix eval --raw --apply 'builtins.concatStringsSep " "' .#orderedInputs)"
+
+for input in $orderedInputs; do
+    nix flake update --commit-lock-file "$input"
+done
 
 # issue commit, if required
 if ! git diff --exit-code; then
