@@ -336,11 +336,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1746643487,
-        "narHash": "sha256-dcB/DArJObCvqE/ZEdQSDW2BZMeDyF83Se5KPfJvz60=",
+        "lastModified": 1763929380,
+        "narHash": "sha256-Yc7gZME/lcHoJH6bMPCG7CyjKWhOLJPqLI8MXtyKPHo=",
         "owner": "Platonic-Systems",
         "repo": "secrix",
-        "rev": "4c64203fa5b377953b1fb6d5388187df8b60c6d5",
+        "rev": "c6e3ca7af47c329dcf442a3d017ae171eee5612f",
         "type": "github"
       },
       "original": {
