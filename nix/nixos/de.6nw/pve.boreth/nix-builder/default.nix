@@ -6,6 +6,8 @@ in
 {
   modules = [
 
+    ./srv-autoUpdate
+
     (
       { config, ... }:
       {
