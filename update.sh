@@ -16,5 +16,3 @@ done
 if ! git diff --exit-code; then
     git commit flake.lock -m "update flake.lock"
 fi
-
-exec ./tests.sh
