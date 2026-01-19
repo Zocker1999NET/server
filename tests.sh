@@ -43,5 +43,14 @@ targets+=("nixosConfigurations.mgmt-iso.config.system.build.isoImage")
 set -x
 
 for target in "${targets[@]}"; do
-    ./build_remote.sh "$@" .#"$target"
+    for i in 0 1 last; do
+        if ./build_remote.sh "$@" .#"$target"; then
+            break  # continue outside
+        elif [[ $i == "last" ]]; then
+            echo "last attempt failed, forward error" >&2
+            exit 1
+        else
+            echo "attempt no. $i failed, retry" >&2
+        fi
+    done
 done
