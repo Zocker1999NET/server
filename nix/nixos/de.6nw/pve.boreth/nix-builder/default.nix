@@ -8,6 +8,22 @@ in
 
     ./srv-autoUpdate
 
+    # publish nix store via http
+    (
+      { config, ... }:
+      {
+        services.nix-serve = {
+          enable = true;
+          bindAddress = ""; # enable for both IPv4 & IPv6
+          port = 5000;
+          openFirewall = true;
+          secretKeyFile = config.secrix.services.nix-serve.secrets.secretKeyFile.decrypted.path;
+        };
+        # nix-store --generate-binary-cache-key nix-builder.boreth.pve.6nw.de-1 ./secret ./public
+        secrix.services.nix-serve.secrets.secretKeyFile.encrypted.file = ./secretKeyFile;
+      }
+    )
+
     (
       { config, ... }:
       {
