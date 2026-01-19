@@ -49,7 +49,8 @@ in
     groups.${userName} = { };
     users.${userName} = {
       createHome = true;
-      description = "user for auto-updating my server flake & running tests on local machine";
+      # description used by git as author
+      description = "${userName}@${config.networking.fqdnOrHostName}";
       group = userName;
       home = userHome;
       isSystemUser = true;
