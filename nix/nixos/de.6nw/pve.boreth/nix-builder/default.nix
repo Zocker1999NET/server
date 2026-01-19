@@ -61,6 +61,7 @@ in
         generation = "ext4-1";
         mainDiskName = "main";
       };
+      x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFVPIdZSEEc279bar6k8FEwH71IdeNKkN2YE1/yojz4i root@nix-builder.boreth.pve.6nw.de 2025-07-19";
     }
 
   ];
