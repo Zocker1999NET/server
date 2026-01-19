@@ -10,6 +10,7 @@
 }:
 let
   cfg = config.x-banananetwork.allCommon;
+  inherit (builtins) readFile;
   inherit (lib.modules) mkIf;
 in
 {
@@ -77,6 +78,12 @@ in
           "nix-command"
         ];
         hashed-mirrors = [ "https://tarballs.nixos.org/" ];
+        substituters = [
+          "http://[fde3:b424:b5ce:1:be24:11ff:feb5:580c]:5000" # nix-builder.boreth.pve.6nw.de
+        ];
+        trusted-public-keys = [
+          (readFile ./../nixos/de.6nw/pve.boreth/nix-builder/publicKeyFile)
+        ];
         trusted-users = [
           "root"
           "@wheel"
