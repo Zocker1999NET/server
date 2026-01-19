@@ -81,6 +81,8 @@ in
         };
       };
 
+      # nix-builder.boreth.pve.6nw.de : srv-autoUpdate at "Sam *-*-* 08:00"
+
     }
 
     # automatic maintenance

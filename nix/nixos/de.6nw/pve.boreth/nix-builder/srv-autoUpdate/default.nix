@@ -42,7 +42,7 @@ in
       Group = userName;
       User = userName;
     };
-    #startAt = ""; # TODO
+    startAt = "Sam *-*-* 08:00"; # documented in nixos-modules/serverCommon.nix
   };
 
   users = {
