@@ -59,8 +59,6 @@ in
 
   "nix-builder.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/nix-builder;
 
-  "ts-test.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/ts-test;
-
   "empty" = importSystem ./de.6nw/temp/empty;
 
   # (note) build: .#nixosConfigurations.mgmt-iso.config.system.build.isoImage
