@@ -190,14 +190,26 @@ in
         in
         services
         // {
-          dynamicIssue-preparation = {
-            description = "Pre-generate all ${issueDir} files"; # required because of strict isolation
-            before = moduleServiceNames;
+          # required as extra service so further services can be limited to issueDir
+          dynamicIssue-create-directory = {
+            description = "Create ${issueDir} for further dynamicIssue services";
             requiredBy = moduleServiceNames;
             serviceConfig = commonService;
             enableStrictShellChecks = true;
+            script = "mkdir --parents ${escapeShellArg issueDir}";
+          };
+          # required because of more strict isolation of module services
+          dynamicIssue-preparation = {
+            description = "Pre-generate all ${issueDir} files";
+            after = singleton "dynamicIssue-create-directory.service";
+            before = moduleServiceNames;
+            requires = singleton "dynamicIssue-create-directory.service";
+            requiredBy = moduleServiceNames;
+            serviceConfig = isolateService // {
+              ReadWritePaths = singleton issueDir;
+            };
+            enableStrictShellChecks = true;
             script = ''
-              mkdir --parents ${escapeShellArg issueDir}
               touch ${outFileNames}
             '';
           };
