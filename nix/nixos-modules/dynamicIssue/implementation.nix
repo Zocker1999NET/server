@@ -25,7 +25,11 @@ let
 
   # constant
   issueDir = "/etc/issue.d";
-  serviceConfigIsolation = {
+  commonService = {
+    RemainAfterExit = true;
+    Type = "oneshot";
+  };
+  isolateService = commonService // {
     NoNewPrivileges = true;
     PrivateDevices = true;
     PrivateTmp = "disconnected";
@@ -145,10 +149,8 @@ in
           wantedBy = singleton "getty@.service";
           # service config
           restartIfChanged = true;
-          serviceConfig = serviceConfigIsolation // {
+          serviceConfig = isolateService // {
             ReadWritePaths = singleton val.outFile;
-            RemainAfterExit = true;
-            Type = "oneshot";
           };
           # script
           enableStrictShellChecks = true;
@@ -192,10 +194,7 @@ in
             description = "Pre-generate all ${issueDir} files"; # required because of strict isolation
             before = moduleServiceNames;
             requiredBy = moduleServiceNames;
-            serviceConfig = {
-              RemainAfterExit = true;
-              Type = "oneshot";
-            };
+            serviceConfig = commonService;
             enableStrictShellChecks = true;
             script = ''
               mkdir --parents ${escapeShellArg issueDir}
