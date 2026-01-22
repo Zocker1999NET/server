@@ -45,6 +45,7 @@ let
   };
 
   descRender = desc: "displaying ${desc} via the greeter for unauthenticated users";
+  outNameRender = name: "dynamicIssue-module-${name}.issue";
 
   module = types.submodule (
     { config, name, ... }:
@@ -77,7 +78,7 @@ let
           type = types.str;
           internal = true;
           readOnly = true;
-          default = "${issueDir}/${name}.issue";
+          default = "${issueDir}/${outNameRender name}";
         };
 
         # options
