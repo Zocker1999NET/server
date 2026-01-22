@@ -8,15 +8,9 @@ let
   sshCfg = config.services.openssh;
 
   inherit (lib.lists) singleton;
-  inherit (lib.modules) mkIf mkRenamedOptionModule;
+  inherit (lib.modules) mkIf;
 in
 {
-  imports = [
-    (mkRenamedOptionModule
-      [ "services" "getty" "dynamicHelpLine" "sshPublicHostKey" ]
-      [ "services" "dynamicIssue" "modules" "sshHostKey" ]
-    )
-  ];
   config = {
     services.dynamicIssue.implementations.sshHostKey = {
       description = "hashes of SSH host public keys";

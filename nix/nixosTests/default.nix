@@ -277,7 +277,7 @@ in
         outputs.nixosProfiles.common
         outputs.nixosModules.withDepends
       ];
-      services.getty.dynamicHelpLine.sshPublicHostKey.enable = true;
+      services.dynamicIssue.modules.sshHostKey.enable = true;
       # required for host keys to be generated and displayed
       services.openssh.enable = true;
       # answer options with missing defaults

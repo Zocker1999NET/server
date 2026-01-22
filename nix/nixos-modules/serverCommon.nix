@@ -155,11 +155,12 @@ in
 
       services = {
 
+        dynamicIssue.modules = {
+          sshHostKey.enable = true;
+        };
+
         getty = {
           helpLine = "IPs:  \\4  \\6";
-          dynamicHelpLine = {
-            sshPublicHostKey.enable = true;
-          };
         };
 
         openssh = {

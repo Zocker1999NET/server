@@ -154,8 +154,8 @@ in
             };
           };
           getty.helpLine = "IPs:  \\4  \\6";
-          getty.dynamicHelpLine = {
-            sshPublicHostKey.enable = true;
+          dynamicIssue.modules = {
+            sshHostKey.enable = true;
           };
           openssh.enable = true;
           pipewire = {

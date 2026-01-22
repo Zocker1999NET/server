@@ -20,10 +20,10 @@
           systemd-boot.enable = true;
         };
         services = {
-          getty.helpLine = "IPs:  \\4  \\6";
-          getty.dynamicHelpLine = {
-            sshPublicHostKey.enable = true;
+          dynamicIssue.modules = {
+            sshHostKey.enable = true;
           };
+          getty.helpLine = "IPs:  \\4  \\6";
           openssh.enable = true;
         };
         x-banananetwork = {
