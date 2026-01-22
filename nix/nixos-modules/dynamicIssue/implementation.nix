@@ -201,7 +201,7 @@ in
           };
           # required because of more strict isolation of module services
           dynamicIssue-preparation = {
-            description = "Pre-generate all ${issueDir} files";
+            description = "Pre-generate all ${issueDir} files while cleaning up unused files";
             after = singleton "dynamicIssue-create-directory.service";
             before = moduleServiceNames;
             requires = singleton "dynamicIssue-create-directory.service";
@@ -211,6 +211,7 @@ in
             };
             enableStrictShellChecks = true;
             script = ''
+              rm -rf ${escapeShellArg issueDir}/${outNameRender "*"}
               touch ${outFileNames}
             '';
           };
