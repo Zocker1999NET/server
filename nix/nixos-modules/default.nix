@@ -25,6 +25,7 @@ in
     # flake
     self.assertions
     # directories
+    ./dynamicIssue
     ./extends
     ./frontend
     ./improvedDefaults
@@ -34,7 +35,6 @@ in
     ./autoUnfree.nix
     (importApplyMod ./backports.nix)
     ./debugMinimal.nix
-    ./getty-helpLine-sshPublicHostKey.nix
     ./graphics.nix
     ./log-wakeup-reason.nix
     ./memory.nix

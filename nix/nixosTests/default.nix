@@ -270,8 +270,8 @@ in
     ];
   };
 
-  getty-helpLine-sshPublicHostKey = nixosTest {
-    name = "getty-helpLine-sshPublicHostKey";
+  dynamicIssue-module-sshHostKey = nixosTest {
+    name = "dynamicIssue-module-sshHostKey";
     nodes.node = {
       imports = [
         outputs.nixosProfiles.common
@@ -285,9 +285,9 @@ in
     };
     testScript = ''
       node.wait_for_unit("getty@tty1.service")
-      service_name = "getty-helpLine-sshPublicHostKey.service"
+      service_name = "dynamicIssue-module-sshHostKey.service"
       node.succeed(f"systemctl is-enabled {service_name}")
-      node.fail(f"systemctl is-active {service_name}")
+      node.wait_until_succeeds(f"systemctl is-active {service_name}", 10)
       node.fail(f"systemctl is-failed {service_name}")
       node.wait_until_tty_matches("1", r"\n\d+\s+[A-Z0-9]+:[A-Za-z0-9+/=]+\s+root@node\s+\([A-Z0-9]+\)\s+\n", 10)
     '';

@@ -23,8 +23,8 @@ test_targets=(
     "docs_includeAllModules_nixpkgs"
     "docs_includeAllModules_router"
     "docs_includeAllModules_secrix"
+    "dynamicIssue-module-sshHostKey"
     "empty"
-    "getty-helpLine-sshPublicHostKey"
     "router"
     "router-tailscale"
 )
