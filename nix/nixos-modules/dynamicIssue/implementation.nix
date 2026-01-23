@@ -12,13 +12,14 @@ let
     attrNames
     attrValues
     concatStringsSep
-    filter
+    length
     mapAttrs
     ;
   inherit (lib) types;
   inherit (lib.attrsets) filterAttrs mapAttrs' nameValuePair;
   inherit (lib.lists) singleton;
   inherit (lib.meta) getExe;
+  inherit (lib.modules) mkIf;
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib.strings) escapeShellArg;
   inherit (lib.trivial) flip pipe;
@@ -111,6 +112,7 @@ let
   );
 
   enabledImpl = filterAttrs (_: val: val.enable) cfg.implementations;
+  anyImplEnabled = (length (attrValues enabledImpl)) > 0;
 in
 {
 
@@ -140,7 +142,7 @@ in
 
   };
 
-  config = {
+  config = mkIf anyImplEnabled {
     systemd.services = pipe enabledImpl [
       (mapAttrs' (
         name: val:
