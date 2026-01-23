@@ -723,6 +723,7 @@ in
             "dirhistory" # Alt+<ArrowKey> navigation on directories
             "magic-enter"
             # aliases / completion for specific apps (TODO conditional)
+            "git"
             "man"
             "nmap"
             "systemd"
