@@ -109,6 +109,8 @@ let
       };
     }
   );
+
+  enabledImpl = filterAttrs (_: val: val.enable) cfg.implementations;
 in
 {
 
@@ -139,8 +141,7 @@ in
   };
 
   config = {
-    systemd.services = pipe cfg.implementations [
-      (filterAttrs (_: val: val.enable))
+    systemd.services = pipe enabledImpl [
       (mapAttrs' (
         name: val:
         nameValuePair "dynamicIssue-module-${name}" {
@@ -182,9 +183,8 @@ in
             attrNames
             (map (name: "${name}.service"))
           ];
-          outFileNames = pipe cfg.implementations [
+          outFileNames = pipe enabledImpl [
             attrValues
-            (filter (x: x.enable))
             (map (x: escapeShellArg x.outFile))
             (concatStringsSep " ")
           ];
