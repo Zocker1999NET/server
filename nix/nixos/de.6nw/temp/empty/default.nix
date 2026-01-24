@@ -27,7 +27,6 @@
           openssh.enable = true;
         };
         x-banananetwork = {
-          allCommon.enable = true;
           useable.enable = true;
         };
         users = {

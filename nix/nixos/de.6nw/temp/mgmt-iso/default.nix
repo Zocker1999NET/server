@@ -36,7 +36,6 @@
           };
           users.users.root.openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
           x-banananetwork = {
-            allCommon.enable = true;
             useable.enable = true;
           };
         };

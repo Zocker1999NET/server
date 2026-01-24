@@ -205,10 +205,6 @@ in
         };
       };
 
-      x-banananetwork = {
-        allCommon.enable = true;
-      };
-
     }
 
   ]);

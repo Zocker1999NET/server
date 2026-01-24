@@ -595,8 +595,6 @@ in
 
     x-banananetwork = {
 
-      allCommon.enable = true;
-
       autoUnfree = {
         enable = true;
         packages = with pkgs.mpvScripts; [

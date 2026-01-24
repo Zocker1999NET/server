@@ -248,7 +248,6 @@ in
     modules = [
       outputs.nixosModules.withDepends # bnet modules require their dependencies
       outputs.nixosModules.myOptions
-      outputs.nixosProfiles.common # TODO remove when x-banananetwork.allCommon gets removed
     ];
   };
 
@@ -264,7 +263,6 @@ in
   docs_includeAllModules_router = nixosDocTest {
     name = "docs_includeAllModules_router";
     modules = [
-      outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
       outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
       outputs.nixosModules.router
     ];
@@ -274,7 +272,6 @@ in
     name = "dynamicIssue-module-sshHostKey";
     nodes.node = {
       imports = [
-        outputs.nixosProfiles.common
         outputs.nixosModules.withDepends
       ];
       services.dynamicIssue.modules.sshHostKey.enable = true;
@@ -351,7 +348,6 @@ in
       {
         # TODO increase log-level of nft-update-addresses to info via config (not implemented yet) for easier debugging
         imports = [
-          outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
           outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
           outputs.nixosModules.router
         ];
@@ -695,7 +691,6 @@ in
     name = "bind-dynamic";
     nodes.server = {
       imports = [
-        outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
         outputs.nixosModules.withDepends
       ];
       config = {
@@ -849,7 +844,6 @@ in
           { config, nodes, ... }:
           {
             imports = [
-              outputs.nixosProfiles.common # .withDepends requires that because of x-bananetwork.allCommon, TODO remove when no longer required
               outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
               outputs.nixosModules.router
               peer

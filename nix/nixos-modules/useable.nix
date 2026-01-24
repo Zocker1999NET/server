@@ -215,7 +215,6 @@ in
 
     x-banananetwork = {
 
-      allCommon.enable = true;
       debugMinimal.enable = true;
 
     };

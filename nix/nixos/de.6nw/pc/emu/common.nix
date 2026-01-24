@@ -287,7 +287,6 @@ in
           };
         };
         x-banananetwork = {
-          allCommon.enable = true;
           autoUnfree.enable = true;
           privacy.enable = true;
           useable.enable = true;

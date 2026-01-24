@@ -9,37 +9,14 @@
   ...
 }:
 let
-  cfg = config.x-banananetwork.allCommon;
   inherit (builtins) readFile;
   inherit (lib.modules) mkIf;
 in
 {
 
-  options = {
-
-    x-banananetwork.allCommon = {
-
-      # TODO remove option, plan:
-      # - verify all configs still build (nix flake check)
-      #   - i.e. all with allCommon.enable=true are using this module
-      # - remove option here & from all configs
-      # - again: nix flake check
-      enable = lib.mkEnableOption "for compatibility reasons" // {
-        default = true;
-        internal = true;
-      };
-
-    };
-
-  };
-
   config = {
 
     assertions = [
-      {
-        assertion = cfg.enable;
-        message = "config imported profiles/common but tried to disable it";
-      }
       (
         let
           defName = options.networking.hostName.default;
