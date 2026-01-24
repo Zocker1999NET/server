@@ -457,7 +457,7 @@ in
           "100.64.0.0/10"
           "fd7a:115c:a1e0::/96"
         ];
-        bantime = "10m";
+        bantime = "5m";
         bantime-increment = {
           enable = true;
           maxtime = "48h";
