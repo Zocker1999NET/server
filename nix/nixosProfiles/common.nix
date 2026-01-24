@@ -167,6 +167,7 @@ in
     };
 
     services = {
+
       smartd = {
         # so smartd reports them by their /dev/disk/by-id name (https://www.smartmontools.org/ticket/1390#comment:2)
         defaults.autodetected = "-d by-id";
@@ -179,6 +180,7 @@ in
       udev.extraRules = mkIf config.services.smartd.enable ''
         ACTION=="add|change|move|remove", SUBSYSTEM=="scsi_disk", RUN+="${config.systemd.package}/bin/systemctl --no-block try-reload-or-restart smartd.service"
       '';
+
     };
 
     # TODO upstream
