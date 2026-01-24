@@ -510,8 +510,7 @@ in
       tailscale = {
         enable = true;
         useRoutingFeatures = "client";
-        extraUpFlags = [
-          # TODO with next upgrade, use extraSetFlags
+        extraSetFlags = [
           "--operator=${cfg.username}"
           "--accept-dns=true"
           "--accept-routes=true"
