@@ -514,7 +514,7 @@ in
           "--operator=${cfg.username}"
           "--accept-dns=true"
           "--accept-routes=true"
-          "--exit-node=prox-vm134"
+          "--exit-node=prox-vm994" # iehsrv994.ieh.kit.edu
           "--exit-node-allow-lan-access=true"
         ];
       };
