@@ -450,21 +450,6 @@ in
         enable = true;
       };
 
-      fail2ban = {
-        # SSH managed by default
-        enable = true;
-        ignoreIP = lib.mkIf config.services.tailscale.enable [
-          "100.64.0.0/10"
-          "fd7a:115c:a1e0::/96"
-        ];
-        bantime = "5m";
-        bantime-increment = {
-          enable = true;
-          maxtime = "48h";
-          overalljails = true;
-        };
-      };
-
       hardware = {
         bolt.enable = true; # Thunderbolt
       };

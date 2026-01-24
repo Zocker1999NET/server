@@ -168,6 +168,20 @@ in
 
     services = {
 
+      fail2ban = {
+        enable = mkIf config.services.openssh.enable true;
+        ignoreIP = mkIf config.services.tailscale.enable [
+          "100.64.0.0/10"
+          "fd7a:115c:a1e0::/96"
+        ];
+        bantime = "5m";
+        bantime-increment = {
+          enable = true;
+          maxtime = "48h";
+          overalljails = true;
+        };
+      };
+
       smartd = {
         # so smartd reports them by their /dev/disk/by-id name (https://www.smartmontools.org/ticket/1390#comment:2)
         defaults.autodetected = "-d by-id";
