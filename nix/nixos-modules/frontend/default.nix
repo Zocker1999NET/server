@@ -318,6 +318,8 @@ in
         preferences = {
           "accessibility.typeaheadfind.flashBar" = 0;
           "browser.aboutConfig.showWarning" = false;
+          "browser.crashReports.unsubmittedCheck.autoSubmit2" = false; # "Automatically send crash reports" (can still be send manually per crash)
+          "browser.discovery.enabled" = false; # "Allow personalized extension recommendations"
           "browser.language.detectLanguage" = false;
           "browser.startup.page" = 3; # restore previous session
           "browser.translations.neverTranslateLanguages" = concatStringsSep "," [
@@ -325,6 +327,7 @@ in
             "en"
           ];
           "browser.urlbar.showSearchSuggestionsFirst" = false;
+          "datareporting.usage.uploadEnabled" = true; # "Send daily usage ping to Mozilla"
           "print.more-settings.open" = true;
           "security.insecure_connection_text.enabled" = true;
         };
