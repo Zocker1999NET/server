@@ -362,11 +362,11 @@ in
         # tracing for simplified debugging
         networking.nftables = {
           traceIPv4 = [
-            ''10.1.0.0/16 . 10.1.0.0/16 . icmp . 0/8 . 0/0'' # ICMP Echo Reply (0)
-            ''10.1.0.0/16 . 10.1.0.0/16 . icmp . 2048/8 . 0/0'' # ICMP Echo Request (8)
+            "10.1.0.0/16 . 10.1.0.0/16 . icmp . 0/8 . 0/0" # ICMP Echo Reply (0)
+            "10.1.0.0/16 . 10.1.0.0/16 . icmp . 2048/8 . 0/0" # ICMP Echo Request (8)
           ];
           traceIPv6 = [
-            ''2001:db8:1:1::/32 . 2001:db8:1:1::/32 . ipv6-icmp . 32768/7 . 0/0'' # ICMPv6 Echo Request (128) & Echo Response (129)
+            "2001:db8:1:1::/32 . 2001:db8:1:1::/32 . ipv6-icmp . 32768/7 . 0/0" # ICMPv6 Echo Request (128) & Echo Response (129)
           ];
           traceToJournal = true;
         };
@@ -947,14 +947,14 @@ in
             networking.nftables = {
               traceToJournal = true;
               traceIPv4 = [
-                ''100.64.0.0/10 . 100.64.0.0/10 . icmp . 0/0 . 0/0'' # "tailscale0"
-                ''0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0'' # "lan0"
-                ''0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0'' # "lan1"
+                "100.64.0.0/10 . 100.64.0.0/10 . icmp . 0/0 . 0/0" # "tailscale0"
+                "0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0" # "lan0"
+                "0.0.0.0/0 . 100.64.0.0/10 . icmp . 0/0 . 0/0" # "lan1"
               ];
               traceIPv6 = [
-                ''fd00::/8 . fd00::/8 . ipv6-icmp . 0/0 . 0/0'' # "tailscale0"
-                ''::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0'' # "lan0"
-                ''::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0'' # "lan1"
+                "fd00::/8 . fd00::/8 . ipv6-icmp . 0/0 . 0/0" # "tailscale0"
+                "::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0" # "lan0"
+                "::/0 . fd00::/8 . ipv6-icmp . 0/0 . 0/0" # "lan1"
               ];
             };
             # more overwrites to make that isolated test feasible

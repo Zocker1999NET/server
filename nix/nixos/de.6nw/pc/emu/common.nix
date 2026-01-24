@@ -100,27 +100,25 @@ in
                 if [[ -e ${escapeShellArg chtZip} ]]; then
                   # TODO extract cheats.zip
                   echo "Setup cheat mapping"
-                  ${
-                    pipe cheatMap [
-                      (mapAttrs (
-                        emu: sources:
-                        let
-                          emuE = escapeShellArg "${chtDir}/${emu}";
-                        in
-                        #rm -rf ${emuE}
-                        ''
-                          mkdir -p ${emuE}
-                          ${pipe sources [
-                            (map (x: "tar -C ${escapeShellArg "${chtDir}/${x}"} -cf - . | tar -C ${emuE} -xf -"))
-                            (concatStringsSep "\n")
-                          ]}
-                        ''
+                  ${pipe cheatMap [
+                    (mapAttrs (
+                      emu: sources:
+                      let
+                        emuE = escapeShellArg "${chtDir}/${emu}";
+                      in
+                      #rm -rf ${emuE}
+                      ''
+                        mkdir -p ${emuE}
+                        ${pipe sources [
+                          (map (x: "tar -C ${escapeShellArg "${chtDir}/${x}"} -cf - . | tar -C ${emuE} -xf -"))
+                          (concatStringsSep "\n")
+                        ]}
+                      ''
 
-                      ))
-                      attrValues
-                      (concatStringsSep "\n")
-                    ]
-                  }
+                    ))
+                    attrValues
+                    (concatStringsSep "\n")
+                  ]}
                   echo "Cheat mapping complete"
                 fi
                 exec gamescope -- retroarch --menu --fullscreen
