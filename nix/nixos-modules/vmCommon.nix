@@ -90,20 +90,6 @@ in
 
         };
 
-        system.autoUpgrade = {
-          enable = true;
-          allowReboot = true;
-          fixedRandomDelay = true;
-          flags = [
-            # not supported by nixos-rebuild
-            #"--no-allow-dirty"
-            #"--no-use-registries"
-            #"--no-update-lock-file"
-          ];
-          flake = lib.mkDefault "git+https://git.bananet.work/banananetwork/server#${config.networking.fqdnOrHostName}"; # ===SYNC:general/meta/repo/url===
-          operation = "boot"; # change only on reboots
-        };
-
         x-banananetwork = {
 
           serverCommon.enable = true;
