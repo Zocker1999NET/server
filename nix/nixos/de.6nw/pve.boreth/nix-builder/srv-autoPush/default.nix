@@ -53,6 +53,8 @@ in
     };
   };
 
+  nix.settings.allowed-users = singleton userName;
+
   systemd.services.${userName} = {
     environment = {
       CFG_repositoryRemote = repositoryRemote;

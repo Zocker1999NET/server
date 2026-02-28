@@ -43,11 +43,13 @@ in
           write = true;
         };
 
-        # re-configure gc for longer preservation
         nix = {
           settings = {
+            # re-configure gc for longer preservation
             max-free = 10 * 1024 * 1024 * 1024;
             min-free = 5 * 1014 * 1024 * 1024;
+            # harden nix daemon by restricting users allowing to access daemon (submodules will configure that accordingly)
+            allowed-users = [ ];
           };
         };
       }

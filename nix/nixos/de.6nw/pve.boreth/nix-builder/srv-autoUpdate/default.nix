@@ -10,6 +10,7 @@ let
     concatLists
     readFile
     ;
+  inherit (lib.lists) singleton;
   inherit (lib.meta) getExe;
 
   # module "config"
@@ -31,6 +32,8 @@ let
   };
 in
 {
+
+  nix.settings.allowed-users = singleton userName;
 
   systemd.services.${userName} = {
     environment = {
