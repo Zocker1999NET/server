@@ -87,6 +87,16 @@ in
 
     }
 
+    # remove legacy file from deving on productive machines
+    {
+      system.activationScripts.rm-issue-sshPublicHostKey = {
+        supportsDryActivation = false;
+        text = ''
+          rm /etc/issue.d/sshPublicHostKey.issue
+        '';
+      };
+    }
+
     # automatic maintenance
     # - ordered alphabetically
     {
