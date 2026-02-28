@@ -93,7 +93,9 @@ in
       system.activationScripts.rm-issue-sshPublicHostKey = {
         supportsDryActivation = false;
         text = ''
-          rm /etc/issue.d/sshPublicHostKey.issue
+          if [[ -e /etc/issue.d/sshPublicHostKey.issue ]]; then
+            rm -v /etc/issue.d/sshPublicHostKey.issue
+          fi
         '';
       };
     }
