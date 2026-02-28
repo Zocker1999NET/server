@@ -18,7 +18,7 @@ in
             "0"
           ];
           # ===SYNC:general/meta/repo/url===
-          flake = "github.com:Zocker1999NET/server#${config.networking.fqdnOrHostName}";
+          flake = "github:Zocker1999NET/server#${config.networking.fqdnOrHostName}";
           operation = "switch";
           upgrade = false; # honor flake.lock
         };
