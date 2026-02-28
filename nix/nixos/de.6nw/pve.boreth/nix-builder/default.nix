@@ -6,6 +6,7 @@ in
 {
   modules = [
 
+    ./srv-autoPush
     ./srv-autoUpdate
 
     # publish nix store via http
