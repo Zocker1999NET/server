@@ -11,15 +11,9 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   inherit (lib.meta) getExe;
   inherit (lib.modules) mkBefore mkMerge mkOrder;
+  inherit (lib.trivial) flip;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
-  myGpgKey = pkgs.fetchurl {
-    url = "https://keys.openpgp.org/vks/v1/by-fingerprint/73D09948B2392D688A45DC8393E1BD26F6B02FB7";
-    hash = "sha256-Zoorox+aMS3V3TWRzpbLuksAEp6hMikAb7EeQYJROZ0=";
-  };
-  archiveGpgKey = pkgs.fetchurl {
-    url = "https://keys.openpgp.org/vks/v1/by-fingerprint/19C17AF30A1152D473A3849C28279F3E0A444E63";
-    hash = "sha256-k81wvlyx3oUJjKx1Dpmas1LLvTwKW8FN4MEbOvfRyj8=";
-  };
+  myOpts = osConfig.x-banananetwork;
 in
 {
 
@@ -211,7 +205,7 @@ in
       userName = "Felix Stupp";
       userEmail = "felix.stupp@banananet.work";
       signing = {
-        key = "73D09948B2392D688A45DC8393E1BD26F6B02FB7";
+        key = myOpts.gpgSignatureKey.fingerprint;
         signByDefault = true;
       };
     };
@@ -220,16 +214,10 @@ in
       enable = true;
       mutableKeys = false;
       mutableTrust = false;
-      publicKeys = [
-        {
-          source = "${myGpgKey}";
-          trust = 5;
-        }
-        {
-          source = "${archiveGpgKey}";
-          trust = 5;
-        }
-      ];
+      publicKeys = flip map myOpts.gpgTrustedKeys (key: {
+        source = key.output;
+        trust = 5;
+      });
       scdaemonSettings = {
         disable-ccid = lib.mkIf osConfig.services.pcscd.enable true;
       };
