@@ -52,6 +52,7 @@ in
         rebootWindow.lower = "01:00";
         dates = "01:00";
         randomizedDelaySec = "45min";
+        fixedRandomDelay = true; # each unique system uses the same delay
         rebootWindow.upper = "02:50";
       };
 
