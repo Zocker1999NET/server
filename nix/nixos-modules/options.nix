@@ -8,38 +8,42 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib) types;
+  inherit (lib.options) mkOption;
+in
 {
 
   options = {
 
     x-banananetwork = {
 
-      sshHostPublicKey = lib.mkOption {
+      sshHostPublicKey = mkOption {
         description = ''
           SSH host public key of that system.
 
           This is used by other option{x-banananetwork} modules.
         '';
-        type = with lib.types; nullOr str;
+        type = with types; nullOr str;
         default = null;
         example = "ssh-ed25519 …";
       };
 
-      sshPublicKeys = lib.mkOption {
+      sshPublicKeys = mkOption {
         description = ''
           SSH public keys used to manage this system.
 
           This is used by other option{x-banananetwork} modules.
         '';
-        type = with lib.types; listOf str;
+        type = with types; listOf str;
         example = [ "ssh-ed25519 ..." ];
       };
 
-      userName = lib.mkOption {
+      userName = mkOption {
         description = ''
           my username for most/all uses
         '';
-        type = lib.types.str;
+        type = types.str;
         example = "zocker";
       };
 
