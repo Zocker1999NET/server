@@ -490,6 +490,8 @@ in
         extensions = with pkgs.vscode-extensions; [
           # general
           vscodevim.vim
+          # AI assistant
+          rooveterinaryinc.roo-cline
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
