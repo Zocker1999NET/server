@@ -50,6 +50,9 @@ in
 
       settings = {
         auto-optimise-store = true;
+        # making nix more feasable to use when one of the substituters cannot be reached
+        # (e.g. because of issues with VPN connections)
+        connect-timeout = 2; # for connecting to substituters
         experimental-features = [
           "flakes"
           "nix-command"
