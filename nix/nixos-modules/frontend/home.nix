@@ -393,10 +393,8 @@ in
           controlPersist = "10m";
         };
         "*git*" = {
-          extraOptions = {
-            ControlMaster = "no";
-            ControlPersist = "no";
-          };
+          controlMaster = "no";
+          controlPersist = "no";
         };
       };
     };
