@@ -11,6 +11,15 @@
 let
   inherit (builtins) readFile;
   inherit (lib.modules) mkIf;
+  thisFlake = {
+    # ===SYNC:general/meta/repo/url
+    exact = false;
+    to = {
+      type = "github";
+      owner = "Zocker1999NET";
+      repo = "server";
+    };
+  };
 in
 {
 
@@ -37,15 +46,13 @@ in
       daemonIOSchedPriority = lib.mkDefault 7;
 
       registry = {
-        "de-6nw" = {
-          # ===SYNC:general/meta/repo/url
-          exact = false;
-          to = {
-            type = "github";
-            owner = "Zocker1999NET";
-            repo = "server";
-          };
-        };
+        # I’m not sure which variant I prefer in day to day usage
+        "de.6nw" = thisFlake;
+        "de-6nw" = thisFlake;
+        "de6nw" = thisFlake;
+        "6nw.de" = thisFlake;
+        "6nw-de" = thisFlake;
+        "6nwde" = thisFlake;
       };
 
       settings = {
