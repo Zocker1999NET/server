@@ -13,6 +13,9 @@ let
     let
       modsExtended = [
         {
+          _module.args = {
+            inherit flake;
+          };
           system.configurationRevision = toString (
             flake.shortRev or flake.dirtyShortRev or flake.lastModified or "unknown"
           );
