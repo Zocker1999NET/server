@@ -386,10 +386,12 @@ in
 
     ssh = {
       enable = true;
-      controlMaster = "auto";
-      controlPath = "~/.ssh/connections/%r@%h:%p";
-      controlPersist = "10m";
       matchBlocks = {
+        "*" = {
+          controlMaster = "auto";
+          controlPath = "~/.ssh/connections/%r@%h:%p";
+          controlPersist = "10m";
+        };
         "*git*" = {
           extraOptions = {
             ControlMaster = "no";
