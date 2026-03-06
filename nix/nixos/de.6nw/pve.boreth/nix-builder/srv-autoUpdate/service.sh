@@ -42,8 +42,8 @@ git switch --force-create "$repoWorkingBranch"
 
 # apply updates
 export CI_MODE=1 # build locally, not on remotes
-./update.sh
-./tests.sh
 
-# when successfully finished
-git branch --force "$repoDestBranch"
+if ./update.sh && ./tests.sh; then
+    # when successfully finished
+    git branch --force "$repoDestBranch"
+fi

@@ -65,8 +65,9 @@ done
 
 # apply updates
 export CI_MODE=1 # build locally, not on remotes
-./tests.sh
 
-# when successfully finished
-git branch --force "$repoDestBranch"
-git push "$repoOrigin" "$repoDestBranch"
+if ./tests.sh; then
+    # when successfully finished
+    git branch --force "$repoDestBranch"
+    git push "$repoOrigin" "$repoDestBranch"
+fi
