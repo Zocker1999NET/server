@@ -187,7 +187,7 @@ in
 
     git = {
       enable = true;
-      extraConfig =
+      settings =
         let
           inherit (config.programs) vscode;
         in
@@ -201,9 +201,11 @@ in
           "difftool \"vscode\"" = lib.mkIf vscode.enable {
             cmd = "${lib.getExe vscode.package} --wait --diff $LOCAL $REMOTE";
           };
+          user = {
+            email = "felix.stupp@banananet.work";
+            name = "Felix Stupp";
+          };
         };
-      userName = "Felix Stupp";
-      userEmail = "felix.stupp@banananet.work";
       signing = {
         key = myOpts.gpgSignatureKey.fingerprint;
         signByDefault = true;
