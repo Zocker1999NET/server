@@ -386,11 +386,16 @@ in
 
     ssh = {
       enable = true;
+      enableDefaultConfig = false;
       matchBlocks = {
         "*" = {
           controlMaster = "auto";
           controlPath = "~/.ssh/connections/%r@%h:%p";
           controlPersist = "10m";
+          forwardAgent = false;
+          hashKnownHosts = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
         };
         "*git*" = {
           controlMaster = "no";
