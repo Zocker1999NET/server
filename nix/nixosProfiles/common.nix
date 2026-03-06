@@ -3,6 +3,7 @@
 
 {
   config,
+  flake,
   lib,
   options,
   pkgs,
@@ -18,6 +19,7 @@ let
       type = "github";
       owner = "Zocker1999NET";
       repo = "server";
+      rev = mkIf (flake ? rev) flake.rev;
     };
   };
 in
