@@ -11,7 +11,9 @@
 }:
 let
   inherit (builtins) readFile;
+  inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.modules) mkIf;
+  inherit (lib.trivial) flip;
   thisFlake = {
     # ===SYNC:general/meta/repo/url
     exact = false;
@@ -67,9 +69,15 @@ in
           "nix-command"
         ];
         hashed-mirrors = [ "https://tarballs.nixos.org/" ];
-        substituters = [
-          "http://[fde3:b424:b5ce:1:be24:11ff:feb5:580c]:5000" # nix-builder.boreth.pve.6nw.de
-        ];
+        substituters =
+          # only configure substituters when not being themself (allowing nix store repairs)
+          let
+            cfgName = config.networking.fqdnOrHostName;
+            subs = {
+              "nix-builder.boreth.pve.6nw.de" = "http://[fde3:b424:b5ce:1:be24:11ff:feb5:580c]:5000";
+            };
+          in
+          flip mapAttrsToList subs (name: url: mkIf (cfgName != name) url);
         trusted-public-keys = [
           (readFile ./../nixos/de.6nw/pve.boreth/nix-builder/publicKeyFile)
         ];
