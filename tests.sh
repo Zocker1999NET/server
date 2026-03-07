@@ -40,11 +40,19 @@ done
 # last one to be available as result
 targets+=("nixosConfigurations.mgmt-iso.config.system.build.isoImage")
 
+rememberGC() {
+    if [[ ${CI_GCROOT:-} == "" ]]; then
+        return 0
+    fi
+    mv ./result "$CI_GCROOT/$1"
+}
+
 set -x
 
 for target in "${targets[@]}"; do
     for i in 0 1 last; do
         if ./build_remote.sh "$@" .#"$target"; then
+            rememberGC "$target"
             break  # continue outside
         elif [[ $i == "last" ]]; then
             echo "last attempt failed, forward error" >&2

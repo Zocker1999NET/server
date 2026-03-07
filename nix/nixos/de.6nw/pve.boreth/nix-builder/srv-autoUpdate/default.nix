@@ -20,6 +20,7 @@ let
   # ===SYNC:general/meta/repo/url===
   repositoryRemote = "https://github.com/Zocker1999NET/server";
   repositoryLocal = "${userHome}/server";
+  gcrootsDir = "${userHome}/gcroots";
 
   serviceScript = pkgs.writeShellApplication {
     name = userName;
@@ -39,6 +40,7 @@ in
     environment = {
       CFG_repositoryRemote = repositoryRemote;
       CFG_repositoryLocal = repositoryLocal;
+      CFG_gcrootsDir = gcrootsDir;
     };
     serviceConfig = {
       ExecStart = "${getExe serviceScript}";

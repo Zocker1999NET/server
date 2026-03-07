@@ -6,6 +6,7 @@ set -euxo pipefail
 requiredConfigs=(
     CFG_repositoryLocal
     CFG_repositoryRemote
+    CFG_gcrootsDir
 )
 for name in "${requiredConfigs[@]}"; do
     if [[ ! -v "$name" ]]; then
@@ -40,10 +41,25 @@ git switch "$repoSrcBranch"
 git reset --hard "$repoOrigin/$repoSrcBranch"
 git switch --force-create "$repoWorkingBranch"
 
+# prepare gcroots
+# shellcheck disable=SC2154
+gcrootsDir="$CFG_gcrootsDir"
+gcrootsSuccess="$gcrootsDir/success"
+gcrootsWIP="$gcrootsDir/working"
+if [[ -d "$gcrootsWIP" ]]; then
+    rm --recursive "$gcrootsWIP"
+fi
+mkdir --parent "$gcrootsWIP"
+
 # apply updates
 export CI_MODE=1 # build locally, not on remotes
+export CI_GCROOT="$gcrootsWIP"
 
 if ./update.sh && ./tests.sh; then
     # when successfully finished
+    rm --recursive "$gcrootsSuccess"
+    mv "$gcrootsWIP" "$gcrootsSuccess"
     git branch --force "$repoDestBranch"
 fi
+
+# do not clean up, so the results can be reused on the next run

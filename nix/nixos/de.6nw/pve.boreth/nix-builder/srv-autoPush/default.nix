@@ -20,6 +20,7 @@ let
   # ===SYNC:general/meta/repo/url===
   repositoryRemote = "git@github.com:Zocker1999NET/server";
   repositoryLocal = "${userHome}/server";
+  gcrootsDir = "${userHome}/gcroots";
   gpgKey = config.x-banananetwork.gpgSignatureKey;
 
   serviceScript = pkgs.writeShellApplication {
@@ -59,6 +60,7 @@ in
     environment = {
       CFG_repositoryRemote = repositoryRemote;
       CFG_repositoryLocal = repositoryLocal;
+      CFG_gcrootsDir = gcrootsDir;
       CFG_gpgSignFingerprint = gpgKey.fingerprint;
       CFG_devKeyPath = config.secrix.services.${userName}.secrets.devKey.decrypted.path;
     };

@@ -6,6 +6,7 @@ set -euxo pipefail
 requiredConfigs=(
     CFG_repositoryLocal
     CFG_repositoryRemote
+    CFG_gcrootsDir
     CFG_gpgSignFingerprint
     CFG_devKeyPath
 )
@@ -63,11 +64,26 @@ for commit in $(git rev-list "$repoOrigin/$repoDestBranch"..HEAD); do
     fi
 done
 
+# prepare gcroots
+# shellcheck disable=SC2154
+gcrootsDir="$CFG_gcrootsDir"
+gcrootsSuccess="$gcrootsDir/success"
+gcrootsWIP="$gcrootsDir/working"
+if [[ -d "$gcrootsWIP" ]]; then
+    rm --recursive "$gcrootsWIP"
+fi
+mkdir --parent "$gcrootsWIP"
+
 # apply updates
 export CI_MODE=1 # build locally, not on remotes
+export CI_GCROOT="$gcrootsWIP"
 
 if ./tests.sh; then
     # when successfully finished
+    rm --recursive "$gcrootsSuccess"
+    mv "$gcrootsWIP" "$gcrootsSuccess"
     git branch --force "$repoDestBranch"
     git push "$repoOrigin" "$repoDestBranch"
 fi
+
+# do not clean up, so the results can be reused on the next run
