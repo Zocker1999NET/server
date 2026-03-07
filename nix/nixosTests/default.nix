@@ -112,7 +112,6 @@ let
         nodes = nodes // {
           tested = {
             imports = tested._banananetwork_systemArgs.modules;
-            config._module.args.flake = flakeArg;
           };
         };
         testScript = ''
