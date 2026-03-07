@@ -16,6 +16,9 @@ in
             "--print-build-logs"
             "--max-jobs"
             "0"
+            "--option"
+            "always-allow-substitutes"
+            "true"
           ];
           # ===SYNC:general/meta/repo/url===
           flake = "github:Zocker1999NET/server#${config.networking.fqdnOrHostName}";
