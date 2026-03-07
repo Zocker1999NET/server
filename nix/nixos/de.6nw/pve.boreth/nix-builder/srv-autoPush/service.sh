@@ -84,6 +84,9 @@ if ./tests.sh; then
         rm --recursive "$gcrootsSuccess"
     fi
     mv "$gcrootsWIP" "$gcrootsSuccess"
+    find "$gcrootsSuccess" -type l | while read -r l; do
+        nix-store --add-root "$l" --realise "$l"
+    done
     git branch --force "$repoDestBranch"
     git push "$repoOrigin" "$repoDestBranch"
 fi

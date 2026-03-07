@@ -27,6 +27,7 @@ let
     runtimeInputs = with pkgs; [
       config.nix.package
       bash
+      findutils
       git
     ];
     text = readFile ./service.sh;

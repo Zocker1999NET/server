@@ -28,6 +28,7 @@ let
     runtimeInputs = with pkgs; [
       config.nix.package
       bash
+      findutils
       git
       gnupg
       openssh # required manually because of defining GIT_SSH_COMMAND
