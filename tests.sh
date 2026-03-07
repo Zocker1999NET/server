@@ -44,7 +44,9 @@ rememberGC() {
     if [[ ${CI_GCROOT:-} == "" ]]; then
         return 0
     fi
-    mv ./result "$CI_GCROOT/$1"
+    new_loc="$CI_GCROOT/$1"
+    mv ./result "$new_loc"
+    nix-store --add-root "$new_loc" --realise "$new_loc"
 }
 
 set -x
