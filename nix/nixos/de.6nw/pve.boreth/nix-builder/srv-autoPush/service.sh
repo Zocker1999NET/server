@@ -69,7 +69,7 @@ done
 gcrootsDir="$CFG_gcrootsDir"
 gcrootsSuccess="$gcrootsDir/success"
 gcrootsWIP="$gcrootsDir/working"
-if [[ -d "$gcrootsWIP" ]]; then
+if [[ -e "$gcrootsWIP" ]]; then
     rm --recursive "$gcrootsWIP"
 fi
 mkdir --parent "$gcrootsWIP"
@@ -80,7 +80,9 @@ export CI_GCROOT="$gcrootsWIP"
 
 if ./tests.sh; then
     # when successfully finished
-    rm --recursive "$gcrootsSuccess"
+    if [[ -e "$gcrootsSuccess" ]]; then
+        rm --recursive "$gcrootsSuccess"
+    fi
     mv "$gcrootsWIP" "$gcrootsSuccess"
     git branch --force "$repoDestBranch"
     git push "$repoOrigin" "$repoDestBranch"
