@@ -5,29 +5,6 @@ in
 {
   modules = [
 
-    # testing automated system upgrades
-    (
-      { config, ... }:
-      {
-        system.autoUpgrade = {
-          enable = true;
-          allowReboot = true;
-          flags = [
-            "--print-build-logs"
-            "--max-jobs"
-            "0"
-            "--option"
-            "always-allow-substitutes"
-            "true"
-          ];
-          # ===SYNC:general/meta/repo/url===
-          flake = "github:Zocker1999NET/server#${config.networking.fqdnOrHostName}";
-          operation = "switch";
-          upgrade = false; # honor flake.lock
-        };
-      }
-    )
-
     # config
     (
       { config, pkgs, ... }:

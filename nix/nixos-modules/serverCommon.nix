@@ -126,6 +126,24 @@ in
         };
       };
 
+      system.autoUpgrade = {
+        enable = true;
+        allowReboot = true;
+        flags = [
+          "--print-build-logs"
+          # prevent building anything local, substitute everything, otherwise abort
+          "--max-jobs"
+          "0"
+          "--option"
+          "always-allow-substitutes"
+          "true"
+        ];
+        # ===SYNC:general/meta/repo/url===
+        flake = "github:Zocker1999NET/server#${config.networking.fqdnOrHostName}";
+        operation = "switch";
+        upgrade = false; # honor flake.lock
+      };
+
     }
 
     # security hardening
