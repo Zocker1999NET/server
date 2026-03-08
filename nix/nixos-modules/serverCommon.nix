@@ -50,13 +50,15 @@ in
       # nix-builder.boreth.pve.6nw.de : srv-autoPush at "*-*-* 23:00"
 
       # boreth.pve.6nw.de : VM backups at "01:00"
+      # - may take up to 1 hour, when VMs were recently restarted
+      # - requires router & nixnas VMs for reaching PBS & storing data
 
       system.autoUpgrade = {
-        rebootWindow.lower = "01:00";
-        dates = "01:00";
+        rebootWindow.lower = "02:00";
+        dates = "02:00";
         randomizedDelaySec = "45min";
         fixedRandomDelay = true; # each unique system uses the same delay
-        rebootWindow.upper = "02:50";
+        rebootWindow.upper = "02:55";
       };
 
       # service specific operations
