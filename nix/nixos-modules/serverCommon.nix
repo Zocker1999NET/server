@@ -44,6 +44,7 @@ in
 
     # timing-related options
     # - ordered by time of operation (ignoring date)
+    # - everything everywhere in UTC
     {
 
       # nix-builder.boreth.pve.6nw.de : srv-autoPush at "*-*-* 23:00"
