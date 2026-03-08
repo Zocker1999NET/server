@@ -49,6 +49,8 @@ in
 
       # nix-builder.boreth.pve.6nw.de : srv-autoPush at "*-*-* 23:00"
 
+      # boreth.pve.6nw.de : VM backups at "01:00"
+
       system.autoUpgrade = {
         rebootWindow.lower = "01:00";
         dates = "01:00";
@@ -86,6 +88,8 @@ in
       };
 
       # nix-builder.boreth.pve.6nw.de : srv-autoUpdate at "Sam *-*-* 08:00"
+
+      # boreth.pve.6nw.de : VM backups at "13:00"
 
     }
 
