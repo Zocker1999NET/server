@@ -543,9 +543,9 @@ in
         #linux_zen = pkgs.linuxPackages_zen;
         # older kernels (for cases like again: https://github.com/NixOS/nixpkgs/issues/330685)
         # list of supported kernels taken from https://www.kernel.org/releases.html
-        #linux_6_6 = pkgs.linuxPackages_6_6;
-        linux_6_1 = pkgs.linuxPackages_6_1;
-        #linux_5_15 = pkgs.linuxPackages_5_15;
+        #inherit (pkgs.linuxKernel.packages) linux_6_18;
+        #inherit (pkgs.linuxKernel.packages) linux_6_12;
+        inherit (pkgs.linuxKernel.packages) linux_6_6;
       };
 
     system = {
