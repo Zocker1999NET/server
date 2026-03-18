@@ -590,7 +590,7 @@ in
       podman = {
         enable = true;
         compose.enable = true;
-        dockerCompat = false; # fails since NixOS 25.11, see https://github.com/NixOS/nixpkgs/issues/470432
+        dockerCompat = true;
         dockerSocket.enable = true;
       };
 
