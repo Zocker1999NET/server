@@ -105,7 +105,6 @@ in
         assertion = cfg.enable -> config.networking.nftables.enable;
         message = "${servName} requires nftables to be configured";
       }
-      # TODO assert for port duplications
     ];
 
     networking.nftables.tables.${cfg.settings.nftTable}.content =
