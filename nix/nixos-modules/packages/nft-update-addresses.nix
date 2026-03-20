@@ -9,11 +9,17 @@ let
   cfg = config.services.${servName};
   settingsFormat = pkgs.formats.json { };
   mkDisableOption = desc: lib.mkEnableOption desc // { default = true; };
+  # JSON schema for validation
+  schemaFile = pkgs.writeTextFile {
+    name = "config.schema.json";
+    text = builtins.readFile ../../../update-addresses/config.schema.json;
+  };
   # output options values
   configFile = pkgs.writeTextFile {
     name = "${servName}.json";
     text = builtins.toJSON cfg.settings; # TODO can otherwise not easily check the file for errors
     checkPhase = ''
+      ${lib.getExe pkgs.jsonschema} ${schemaFile} "$out"
       ${lib.getExe cfg.package} --check-config --config-file "$out"
     '';
   };

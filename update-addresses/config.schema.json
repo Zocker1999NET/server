@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/update-addresses/config.schema.json",
+  "title": "Update Addresses Configuration",
+  "description": "Configuration schema for nft-update-addresses - defines nftables set configurations based on MAC addresses",
+  "type": "object",
+  "required": [ "nftTable", "interfaces" ],
+  "additionalProperties": false,
+  "properties": {
+    "nftTable": {
+      "$ref": "#/$defs/nftTable",
+      "description": "Name of the nftables table"
+    },
+    "interfaces": {
+      "type": "object",
+      "description": "Map of interface configurations keyed by interface name",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/ifName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/interfaceConfig"
+      }
+    }
+  },
+  "$defs": {
+    "nftablesSetKind": {
+      "type": "string",
+      "enum": [ "set", "map" ],
+      "description": "nftables set kind (set or map)"
+    },
+    "nftTable": {
+      "type": "string",
+      "pattern": "^[a-zA-Z_][a-zA-Z0-9_-]*$",
+      "description": "nftables table name (alphanumeric with underscores, hyphens)"
+    },
+    "ifName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Network interface name (e.g., eth0, wlan0)"
+    },
+    "macAddress": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]([.:_-]*[0-9a-fA-F]){11}$",
+      "description": "MAC address: 12 hex characters (0-9a-f) with optional separators (':', '.', '_', '-') between them. Examples: aabbccddeeff, aa:bb:cc:dd:ee:ff, aa-bb-cc-dd-ee-ff, aa.bb.cc.dd.ee.ff, aa_bb_cc_dd_ee_ff"
+    },
+    "setDataType": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+( *\\. *[a-z0-9_]+)*( *: *[a-z0-9_]+( *\\. *[a-z0-9_]+)*)?$",
+      "description": "nftables set element data type (can be a single type, a concatenation like 'ipv6_addr . inet_proto . inet_service', or a mapping like 'inet_proto . inet_service : ipv6_addr . inet_service')"
+    },
+    "setFlags": {
+      "type": "string",
+      "description": "Comma-separated list of set flags: interval, timeout, concat"
+    },
+    "interfaceConfig": {
+      "type": "object",
+      "description": "Configuration for a network interface",
+      "additionalProperties": false,
+      "properties": {
+        "macs": {
+          "type": "array",
+          "description": "List of MAC addresses to monitor for this interface",
+          "items": {
+            "$ref": "#/$defs/macAddress"
+          },
+          "uniqueItems": true
+        },
+        "sets": {
+          "type": "object",
+          "description": "Map of nftables set configurations",
+          "additionalProperties": {
+            "$ref": "#/$defs/setConfig"
+          }
+        }
+      }
+    },
+    "setConfig": {
+      "type": "object",
+      "description": "Configuration for an nftables set with template-based elements",
+      "required": [ "set_type", "type", "elements" ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the set (optional, can be used to override the key name)"
+        },
+        "set_type": {
+          "$ref": "#/$defs/nftablesSetKind",
+          "description": "Type of nftables set (determines set behavior)"
+        },
+        "type": {
+          "$ref": "#/$defs/setDataType",
+          "description": "Data type for set elements"
+        },
+        "flags": {
+          "$ref": "#/$defs/setFlags"
+        },
+        "elements": {
+          "type": "array",
+          "description": "List of element templates. Templates can contain variable placeholders like ${ipv6_eth0_aabbccddeeff} for dynamic substitution",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
