@@ -156,12 +156,13 @@ in
         {
           assertion = builtins.any (x: x) [
             config.security.sudo.enable
+            config.security.sudo-rs.enable
           ];
           message = "serverCommon: A sudo implementation must be enabled";
         }
       ];
 
-      security = {
+      security = rec {
 
         apparmor.enable = true;
 
@@ -175,6 +176,7 @@ in
             Defaults lecture = never
           '';
         };
+        sudo-rs = sudo;
 
       };
 
