@@ -10,6 +10,10 @@ let
 in
 {
 
+  imports = [
+    ./cli_cheatsheet.nix
+  ];
+
   options = {
 
     x-banananetwork.useable = {
