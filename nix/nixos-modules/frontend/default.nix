@@ -98,6 +98,7 @@ in
       firewall = {
         trustedInterfaces = [
           (mkIf config.services.tailscale.enable "tailscale0")
+          # not thunderbolt0, because may be an attack vector to devices
         ];
       };
 
