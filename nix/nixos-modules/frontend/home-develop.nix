@@ -31,6 +31,7 @@
       };
       enableBashIntegration = false; # explictly disable for bash so bash can be a fallback for that
       enableZshIntegration = true;
+      nix-direnv.enable = true;
     };
 
     vscode = {
