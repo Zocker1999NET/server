@@ -21,6 +21,18 @@
 
   programs = {
 
+    direnv = {
+      enable = true;
+      config = {
+        global = {
+          hide_env_diff = false;
+          strict_env = true;
+        };
+      };
+      enableBashIntegration = false; # explictly disable for bash so bash can be a fallback for that
+      enableZshIntegration = true;
+    };
+
     vscode = {
       enable = true;
       keybindingsNext = {
