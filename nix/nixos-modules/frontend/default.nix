@@ -6,8 +6,8 @@
 }:
 let
   cfg = config.x-banananetwork.frontend;
-  inherit (builtins) concatLists concatStringsSep;
-  inherit (lib.lists) optional;
+  inherit (builtins) concatStringsSep;
+  inherit (lib.modules) mkIf;
 in
 {
 
@@ -96,8 +96,8 @@ in
     networking = {
 
       firewall = {
-        trustedInterfaces = concatLists [
-          (optional config.services.tailscale.enable "tailscale0")
+        trustedInterfaces = [
+          (mkIf config.services.tailscale.enable "tailscale0")
         ];
       };
 
