@@ -12,7 +12,7 @@
 let
   inherit (builtins) readFile;
   inherit (lib.attrsets) mapAttrsToList;
-  inherit (lib.modules) mkIf;
+  inherit (lib.modules) mkDefault mkIf;
   inherit (lib.trivial) flip;
   thisFlake = {
     # ===SYNC:general/meta/repo/url
@@ -158,6 +158,10 @@ in
           "UCA Extended Validation Root"
         ];
       };
+
+      # prefer sudo-rs over sudo
+      sudo.enable = mkIf (config.security.sudo-rs.enable) false;
+      sudo-rs.enable = mkDefault true;
 
     };
 
