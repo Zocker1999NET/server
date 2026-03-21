@@ -152,6 +152,15 @@ in
     # - ordered alphabetically
     {
 
+      assertions = [
+        {
+          assertion = builtins.any (x: x) [
+            config.security.sudo.enable
+          ];
+          message = "serverCommon: A sudo implementation must be enabled";
+        }
+      ];
+
       security = {
 
         apparmor.enable = true;
@@ -161,7 +170,6 @@ in
         lockKernelModules = true;
 
         sudo = {
-          enable = true;
           execWheelOnly = mkDefault true;
           extraConfig = ''
             Defaults lecture = never
