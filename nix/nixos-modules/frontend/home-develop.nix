@@ -140,6 +140,8 @@
           };
 
           "git.autofetch" = true;
+          "git.blame.editorDecoration.enabled" = false; # annoying because displayed while editing
+          "git.blame.statusBarItem.enabled" = true; # useful, displayed in the bottom right corner
           "git.confirmSync" = false;
           "git.enableSmartCommit" = true;
 
