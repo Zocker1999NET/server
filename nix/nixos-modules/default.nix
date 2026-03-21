@@ -30,6 +30,7 @@ in
     ./frontend
     ./improvedDefaults
     ./packages
+    ./useable
     ./vmDisko
     # files
     ./autoUnfree.nix
@@ -45,7 +46,6 @@ in
     ./secrix.nix
     ./serverCommon.nix
     ./sshHostKeyPropagation.nix
-    ./useable.nix
     ./vmCommon.nix
     ./zfsServer.nix
   ];
