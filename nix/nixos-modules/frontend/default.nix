@@ -10,6 +10,10 @@ let
 in
 {
 
+  imports = [
+    ./nixos-develop.nix
+  ];
+
   options = {
 
     x-banananetwork.frontend = {
@@ -35,9 +39,6 @@ in
     console = {
       useXkbConfig = true;
     };
-
-    # TODO reenable, taskwarrior:///d3d19597-a834-4030-9f42-4e8fac56daac
-    documentation.nixos.includeAllModules = false; # full manual aids NixOS dev
 
     environment = {
 
