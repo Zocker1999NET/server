@@ -14,6 +14,8 @@ in
         # tooling for services
         bind # e.g. dnssec-keygen
         wireguard-tools
+        # MCPs for AI
+        mcp-nixos
       ])
       ++ [
         # flake stuff
