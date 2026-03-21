@@ -67,6 +67,7 @@
         enableUpdateCheck = false;
         extensions = with pkgs.vscode-extensions; [
           # general
+          mkhl.direnv
           vscodevim.vim
           # AI assistant
           rooveterinaryinc.roo-cline
