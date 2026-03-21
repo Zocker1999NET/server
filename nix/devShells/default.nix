@@ -10,8 +10,6 @@ in
         curl
         mkpasswd
         rsync
-        opentofu
-        terranix
         xkcdpass
         # tooling for services
         bind # e.g. dnssec-keygen
