@@ -34,6 +34,7 @@ in
     # files
     ./autoUnfree.nix
     (importApplyMod ./backports.nix)
+    ./cachedFlakesDevShell.nix
     ./debugMinimal.nix
     ./graphics.nix
     ./log-wakeup-reason.nix
