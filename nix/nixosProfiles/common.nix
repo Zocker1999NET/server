@@ -51,7 +51,6 @@ in
 
       registry = {
         # I’m not sure which variant I prefer in day to day usage
-        "de.6nw" = thisFlake;
         "de-6nw" = thisFlake;
         "de6nw" = thisFlake;
       };
