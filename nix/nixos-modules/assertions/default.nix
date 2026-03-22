@@ -5,5 +5,6 @@
     ./fileSystems.nix
     ./mdns.nix
     ./nixos.nix
+    ./registry.nix
   ];
 }

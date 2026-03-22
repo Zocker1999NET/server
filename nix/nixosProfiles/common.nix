@@ -49,7 +49,6 @@ in
       daemonIOSchedClass = lib.mkDefault "best-effort";
       daemonIOSchedPriority = lib.mkDefault 7;
 
-      # IDs starting with a number are not allowed
       registry = {
         # I’m not sure which variant I prefer in day to day usage
         "de.6nw" = thisFlake;
