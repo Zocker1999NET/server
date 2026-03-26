@@ -173,7 +173,7 @@ in
         sudo = {
           execWheelOnly = mkDefault true;
           extraConfig = ''
-            Defaults lecture = never
+            Defaults !lecture
           '';
         };
         sudo-rs = sudo;
