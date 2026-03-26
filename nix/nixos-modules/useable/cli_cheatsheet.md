@@ -42,3 +42,22 @@ BEFORE editing this cheatsheet, you MUST check the rules for its generation in .
 | `speedtest-cli` | Command-line internet bandwidth testing |
 | `up` | Linux tool for writing and testing data pipelines |
 | `usbtop` | Display USB bus bandwidth usage |
+
+
+## Frontend ZSH Plugins (Frontend Systems Only)
+
+| Tool | Description |
+|------|-------------|
+| `bofh` | Print random BOFH excuse |
+| `bofh_cow` | Print BOFH excuse in cowthink bubble |
+| `clip` | Copy or show clipboard |
+| `disable_auto_notify` | Temporarily disable auto-notify |
+| `enable_auto_notify` | Re-enable auto-notify |
+| `gtr` | Create signed git release tag |
+| `pbcopy` | Copy to clipboard |
+| `pbpaste` | Show clipboard contents |
+
+| Keybinding | Description |
+| `Alt+d` | Delete prompt prefix from current line |
+| `Ctrl+K+L` | lowercase word |
+| `Ctrl+K+U` | UPPERCASE word |

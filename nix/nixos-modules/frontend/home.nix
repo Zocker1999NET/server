@@ -57,7 +57,9 @@ in
 
     # tools
     brightnessctl
+    cowsay # for bofh_cow
     jdupes
+    libnotify # for zsh-auto-notify
     pdfgrep # for scansystem
     pdfpagecount
     (writeShellApplication {
@@ -529,6 +531,7 @@ in
       plugins =
         let
           omz_plugins = [
+            "bofh" # BOFH fortune quotes
             "colorize" # command on-call
             "command-not-found" # also works on NixOS
             "common-aliases"
@@ -548,6 +551,12 @@ in
             (mkBefore "getantidote/use-omz") # recommended to resolve Oh-My-ZSH lib dependencies (required before OMZ plugins)
             "djui/alias-tips"
             "zpm-zsh/ls"
+            "aoyama-val/zsh-delete-prompt" # ($ cmd -> cmd)
+            "ianthehenry/zsh-autoquoter" # applied to last arg
+            "Zocker1999NET/zsh-gtr" # git tag release
+            "MichaelAquilina/zsh-auto-notify" # notify on long tasks
+            "zpm-zsh/clipboard" # clipboard integration
+            "mtxr/zsh-change-case" # change case widget
           ];
         in
         concatLists [
@@ -586,6 +595,19 @@ in
         # misc configs
         export ANSIBLE_NOCOWS=1
 
+        # zsh-autoquoter: auto-quote arguments to certain commands
+        ZAQ_PREFIXES=(
+          'git commit( [^ ]##)# -[^ -]#m'
+          'ssh( -[^ ]##)# [^ -][^ ]#'
+        )
+
+        # zsh-change-case: change word case (Ctrl+K+U upper, Ctrl+K+L lower)
+        bindkey -r '^K'  # unbind Ctrl+K first to avoid conflicts
+        bindkey '^K^U' _mtxr-to-upper
+        bindkey '^K^L' _mtxr-to-lower
+
+        # zsh-delete-prompt: delete prompt text from current line (useful for pasted commands)
+        bindkey "^[d" delete-prompt  # Alt+d
 
         # helper functions
 

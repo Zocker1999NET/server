@@ -118,3 +118,55 @@ The Ultimate Plumber is a Linux tool for writing and testing data pipelines with
 
 ### usbtop
 A top-like utility that displays estimated instantaneous bandwidth usage on USB buses and connected devices. It helps identify which USB devices are consuming the most bandwidth in real-time.
+
+
+## Frontend ZSH Plugins (Frontend Systems Only)
+This section documents zsh plugins available on frontend systems with home-manager configured.
+
+### bofh
+A BOFH (Bastard Operator From Hell) fortune plugin that displays random excuses and tech humor. Useful for entertainment or as a fun MOTD.
+
+**Tools provided:**
+- `bofh`
+- `bofh_cow`
+
+### zpm-zsh/clipboard
+Cross-platform clipboard integration for zsh that works on macOS, X11, Wayland, Cygwin, and WSL. Provides familiar clipboard commands.
+
+**Tools provided:**
+- `pbcopy`
+- `pbpaste`
+- `clip`
+
+### zsh-auto-notify
+Sends desktop notifications when long-running commands complete, so you can switch to other tasks while waiting for builds or downloads to finish.
+
+**Tools provided:**
+- `disable_auto_notify`
+- `enable_auto_notify`
+
+### zsh-autoquoter
+Automatically adds quotes around arguments to certain commands like git commit and ssh. This saves time manually escaping quotes in complex command-line arguments.
+
+**Tools provided:**
+- `git commit -m` (auto-quoted prefix)
+- `ssh *` (auto-quoted prefix)
+
+### zsh-change-case
+A zle widget that changes the case of words in the command line, similar to VSCode and Sublime Text. Useful for quick case transformations.
+
+**Tools provided:**
+- `Ctrl+K+U` (UPPERCASE)
+- `Ctrl+K+L` (lowercase)
+
+### zsh-delete-prompt
+Deletes prompt text from the current line, useful when pasting commands from the web or README files. It detects leading non-alphanumeric characters as a prompt and removes them.
+
+**Tools provided:**
+- `Alt+d` (keybinding)
+
+### zsh-gtr
+Git Tag Release - creates signed git release tags with automatic versioning and pushing. The tag format is release-YYYY-MM-DD-HH-MM with an editable message.
+
+**Tools provided:**
+- `gtr`
