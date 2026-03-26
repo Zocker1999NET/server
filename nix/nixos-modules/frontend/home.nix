@@ -565,6 +565,7 @@ in
           normal_plugins
           (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
         ];
+      useFriendlyNames = false; # for plugin cache dir
     };
     # order from https://home-manager-options.extranix.com/?query=programs.zsh.initContent&release=release-25.05
     initContent = mkMerge [
