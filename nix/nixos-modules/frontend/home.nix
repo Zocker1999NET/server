@@ -528,6 +528,8 @@ in
     enable = true;
     antidote = {
       enable = true;
+      # lists of plugins:
+      # - https://github.com/unixorn/awesome-zsh-plugins
       plugins =
         let
           omz_plugins = [
