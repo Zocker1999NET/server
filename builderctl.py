@@ -41,49 +41,31 @@ def run_remote_command(
     check: bool = True,
 ) -> subprocess.CompletedProcess[str]:
     """Execute a command on the remote server via SSH."""
-    # Use shlex.join to properly quote and join arguments
     cmd_str = shlex.join(cmd)
     ssh_cmd = ["ssh", *ssh_args, f"{SERVER_USER}@{SERVER_HOST}", cmd_str]
-    result = subprocess.run(
-        ssh_cmd, check=check, capture_output=capture_output, text=True
-    )
-    return result
+    return run_command(*ssh_cmd, check=check, capture_output=capture_output)
 
 
 def run_remote_command_follow(*cmd: str) -> subprocess.CompletedProcess[str]:
     """Execute a command on the remote server via SSH with pseudo-terminal for interactive output."""
+    return run_remote_command(*cmd, ssh_args=("-t",), check=True)
+
+
+def run_remote_command_follow_safe(*cmd: str) -> subprocess.CompletedProcess[str]:
+    """Execute a command on the remote server via SSH with pseudo-terminal, handling KeyboardInterrupt gracefully."""
     try:
-        return run_remote_command(*cmd, ssh_args=("-t",), check=True)
-    except subprocess.CalledProcessError:
-        # Re-raise CalledProcessError so caller can handle it
-        raise
+        return run_remote_command_follow(*cmd)
     except KeyboardInterrupt:
         # Return a dummy result for KeyboardInterrupt
         # Create a minimal CompletedProcess to satisfy return type
         return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
 
 
-def get_service_status(service: str) -> None:
-    """Get and print the status of a systemd service on the remote server."""
-    try:
-        # Note: systemctl returns exit code 3 if service is inactive, so we don't check exit code
-        result = run_remote_command(
-            "systemctl", "status", f"{service}.service", "--no-pager",
-            capture_output=True, check=False
-        )
-        print(result.stdout)
-        if result.stderr:
-            print(result.stderr, file=sys.stderr)
-    except subprocess.SubprocessError as e:
-        print(f"Error getting status for {service}: {e}", file=sys.stderr)
-
-
-def get_services_status(services: list[str]) -> None:
-    """Get and print the status of multiple systemd services on the remote server."""
-    # Pass each service as a separate argument to systemctl
+def get_service_status(*services: str) -> None:
+    """Get and print the status of one or more systemd services on the remote server."""
     # Note: systemctl returns exit code 3 if any service is inactive, so we don't check exit code
     try:
-        cmd_args = ["systemctl", "status", "--no-pager"] + [f"{s}.service" for s in services]
+        cmd_args = ["systemctl", "status", "--no-pager"] + list(services)
         result = run_remote_command(*cmd_args, capture_output=True, check=False)
         print(result.stdout)
         if result.stderr:
@@ -92,41 +74,42 @@ def get_services_status(services: list[str]) -> None:
         print(f"Error getting status for services: {e}", file=sys.stderr)
 
 
-def start_service_follow(service: str) -> int:
+def start_service_follow(service_name: str) -> int:
     """Start a systemd service on the remote server and follow its journal logs."""
     # Run commands sequentially, not chained with &&
-    run_remote_command("systemctl", "start", f"{service}.service")
-    result = run_remote_command_follow("journalctl", "--follow", f"--unit={service}.service")
+    # Use check=True for the first command (like && would)
+    run_remote_command("systemctl", "start", service_name, check=True)
+    result = run_remote_command_follow("journalctl", "--follow", f"--unit={service_name}")
     return result.returncode
 
 
-def get_service_last_start_time(service: str) -> str:
+def get_service_last_start_time(service_name: str) -> str:
     """Get the last start time of a systemd service on the remote server."""
     result = run_remote_command(
-        "systemctl", "show", f"{service}.service",
+        "systemctl", "show", service_name,
         "--property=ActiveEnterTimestamp", "--value",
         capture_output=True, check=True
     )
     return result.stdout.strip()
 
 
-def journal_service(service: str, follow: bool = False) -> int:
+def journal_service(service_name: str, follow: bool = False) -> int:
     """
     Show journal logs for a systemd service starting from its last start time.
 
     Args:
-        service: The service name (e.g., "srv-autoPush" or "srv-autoUpdate")
+        service_name: The full systemd service name (e.g., "srv-autoPush.service")
         follow: Whether to follow the journal (like tail -f)
     """
-    last_start = get_service_last_start_time(service)
+    last_start = get_service_last_start_time(service_name)
 
     if not last_start:
-        print(f"Error: Could not determine last start time for {service}", file=sys.stderr)
+        print(f"Error: Could not determine last start time for {service_name}", file=sys.stderr)
         return 1
 
     cmd_args = [
         "journalctl",
-        f"--unit={service}.service",
+        f"--unit={service_name}",
         f"--since={last_start}",
     ]
     if follow:
@@ -144,8 +127,7 @@ def run_command(
     *cmd: str, check: bool = True, capture_output: bool = False
 ) -> subprocess.CompletedProcess[str]:
     """Run a shell command locally and return the result."""
-    result = subprocess.run(cmd, check=check, capture_output=capture_output, text=True)
-    return result
+    return subprocess.run(cmd, check=check, capture_output=capture_output, text=True)
 
 
 def run_commands(
@@ -177,12 +159,6 @@ def check_git_clean() -> bool:
 # =============================================================================
 # GLOBAL COMMANDS
 # =============================================================================
-
-
-def status_all() -> int:
-    """Check the status of autoPush and autoUpdate services on the server."""
-    get_services_status(["srv-autoPush", "srv-autoUpdate"])
-    return 0
 
 
 def show_config() -> int:
@@ -251,19 +227,23 @@ class ServiceDefinition(ABC):
         sub = parser.add_subparsers(dest=f"{self.name}_subcommand")
         self._add_commands(sub)
 
-    @abstractmethod
+    @property
+    def service_name(self) -> str:
+        """Return the systemd service name with proper suffix."""
+        return f"{self.systemd_name}.service"
+
     def trigger(self) -> int:
         """Trigger the service to run."""
-        pass
+        return start_service_follow(self.service_name)
 
     def status(self) -> int:
         """Show the status of the service."""
-        get_service_status(self.systemd_name)
+        get_service_status(self.service_name)
         return 0
 
     def journal(self) -> int:
         """Show the journal of the service."""
-        return journal_service(self.systemd_name)
+        return journal_service(self.service_name)
 
 
 class AutoPushService(ServiceDefinition):
@@ -276,13 +256,14 @@ class AutoPushService(ServiceDefinition):
     # Uses base class create_subparser and _add_commands (trigger, status, journal)
 
     def trigger(self) -> int:
+        # auto-push local changes for convenience
         result = run_command(
             "git", "branch", "--show-current", check=True, capture_output=True
         )
         branch = result.stdout.strip()
         if branch == STAGING_BRANCH:
             run_command("git", "push")
-        return start_service_follow(self.systemd_name)
+        return super().trigger()
 
 
 class AutoUpdateService(ServiceDefinition):
@@ -327,19 +308,6 @@ class AutoUpdateService(ServiceDefinition):
         )
         return 0
 
-    def trigger(self) -> int:
-        """Trigger autoUpdate on the server."""
-        return start_service_follow(self.systemd_name)
-
-    def status(self) -> int:
-        """Check status of autoUpdate service."""
-        get_service_status(self.systemd_name)
-        return 0
-
-    def journal(self) -> int:
-        """Show journal logs for autoUpdate service."""
-        return journal_service(self.systemd_name)
-
 
 # =============================================================================
 # SERVICE REGISTRY
@@ -357,6 +325,17 @@ class ServiceRegistry:
 
     def get(self, name: str) -> Optional[ServiceDefinition]:
         return self._services.get(name)
+
+    def get_all_service_names(self) -> list[str]:
+        """Return all systemd service names from registered services."""
+        return [svc.service_name for svc in self._services.values()]
+
+    def status_all(self) -> int:
+        """Check the status of all registered services on the server."""
+        service_names = self.get_all_service_names()
+        if service_names:
+            get_service_status(*service_names)
+        return 0
 
     def create_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
@@ -378,7 +357,7 @@ class ServiceRegistry:
     def dispatch(self, args: argparse.Namespace) -> int:
         # Global commands
         if args.command == "status":
-            return status_all()
+            return self.status_all()
         elif args.command == "config":
             return show_config()
 
