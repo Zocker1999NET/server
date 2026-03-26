@@ -90,6 +90,39 @@ def start_service_follow(service: str) -> int:
     return run_remote_command_follow(cmd)
 
 
+def get_service_last_start_time(service: str) -> str:
+    """Get the last start time of a systemd service on the remote server."""
+    cmd = f"systemctl show {service}.service --property=ActiveEnterTimestamp --value"
+    result = run_remote_command(cmd, capture_output=True, check=True)
+    return result.stdout.strip()
+
+
+def journal_service(service: str, follow: bool = False) -> int:
+    """
+    Show journal logs for a systemd service starting from its last start time.
+
+    Args:
+        service: The service name (e.g., "srv-autoPush" or "srv-autoUpdate")
+        follow: Whether to follow the journal (like tail -f)
+    """
+    # Get the last start time
+    last_start = get_service_last_start_time(service)
+
+    if not last_start:
+        print(f"Error: Could not determine last start time for {service}", file=sys.stderr)
+        return 1
+
+    # Build journalctl command
+    follow_flag = "--follow" if follow else ""
+    cmd = f"journalctl --unit={service}.service --since='{last_start}' {follow_flag}"
+
+    print(f"Showing logs since: {last_start}")
+    print(f"Command: {cmd}")
+    print("---")
+
+    return run_remote_command_follow(cmd)
+
+
 def get_service_name(service_type: str) -> str:
     """Get the actual service name for a given service type."""
     if service_type == "autoPush":
@@ -280,6 +313,7 @@ def main() -> int:
     autoUpdate_subparsers.add_parser(
         "status", help="Check status of autoUpdate service"
     )
+    autoUpdate_subparsers.add_parser("journal", help="Show journal logs since last start")
 
     # autoPush subcommands
     autoPush_parser = subparsers.add_parser(
@@ -288,6 +322,7 @@ def main() -> int:
     autoPush_subparsers = autoPush_parser.add_subparsers(dest="subcommand")
     autoPush_subparsers.add_parser("trigger", help="Trigger autoPush service on server")
     autoPush_subparsers.add_parser("status", help="Check status of autoPush service")
+    autoPush_subparsers.add_parser("journal", help="Show journal logs since last start")
 
     # Global commands
     subparsers.add_parser(
@@ -308,6 +343,8 @@ def main() -> int:
             return autoUpdate_trigger()
         elif args.subcommand == "status":
             return autoUpdate_status()
+        elif args.subcommand == "journal":
+            return journal_service(get_service_name("autoUpdate"))
         else:
             autoUpdate_parser.print_help()
             return 1
@@ -316,6 +353,8 @@ def main() -> int:
             return autoPush_trigger()
         elif args.subcommand == "status":
             return autoPush_status()
+        elif args.subcommand == "journal":
+            return journal_service(get_service_name("autoPush"))
         else:
             autoPush_parser.print_help()
             return 1
