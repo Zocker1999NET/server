@@ -464,6 +464,15 @@ in
         bolt.enable = true; # Thunderbolt
       };
 
+      hunspell = {
+        # e.g. used by Firefox
+        enable = true;
+        dictionaries = with pkgs.hunspellDicts; [
+          de_DE
+          en_US
+        ];
+      };
+
       openssh = {
         enable = true;
         authorizedKeysInHomedir = true;
