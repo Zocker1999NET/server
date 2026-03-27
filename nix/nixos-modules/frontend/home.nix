@@ -126,6 +126,13 @@ in
 
   programs = {
 
+    autojump = {
+      # for doc, see https://github.com/wting/autojump
+      enable = true;
+      enableBashIntegration = true;
+      enableZshIntegration = true;
+    };
+
     bash = {
       enable = true;
       enableCompletion = true;

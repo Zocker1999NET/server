@@ -123,6 +123,15 @@ A top-like utility that displays estimated instantaneous bandwidth usage on USB 
 ## Frontend ZSH Plugins (Frontend Systems Only)
 This section documents zsh plugins available on frontend systems with home-manager configured.
 
+### autojump
+A shell utility that enables quick navigation to previously visited directories using a weighted directory database. It tracks directory frequency and recency to offer the most likely target when typing `j`, making it faster than `cd` for frequently used folders.
+
+**Tools provided:**
+- `autojump --stat` (show statistics)
+- `j` (jump to directory)
+- `jc` (jump to child directory)
+- `jo` (open file manager in directory)
+
 ### bofh
 A BOFH (Bastard Operator From Hell) fortune plugin that displays random excuses and tech humor. Useful for entertainment or as a fun MOTD.
 
