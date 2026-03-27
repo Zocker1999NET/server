@@ -126,6 +126,10 @@ in
 
       firefox = {
         enable = true;
+        languagePacks = [
+          "de"
+          "en-US"
+        ];
         policies = {
           "3rdparty".Extensions = {
             # uBlock Origin
