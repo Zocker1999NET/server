@@ -3,6 +3,7 @@
     # files
     ./bind-dynamic.nix
     ./cpu.nix
+    ./hunspell.nix
     ./kernel.nix
     ./nftables-marks.nix
     ./nftables-trace.nix
