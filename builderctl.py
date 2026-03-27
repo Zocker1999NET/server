@@ -181,7 +181,7 @@ def show_config() -> int:
 class CommandHandler(Protocol):
     """Protocol defining the interface for command handlers."""
 
-    def __call__(self) -> int:
+    def __call__(self, args: argparse.Namespace) -> int:
         """Execute the command and return exit code."""
         ...
 
@@ -232,16 +232,16 @@ class ServiceDefinition(ABC):
         """Return the systemd service name with proper suffix."""
         return f"{self.systemd_name}.service"
 
-    def trigger(self) -> int:
+    def trigger(self, args: argparse.Namespace) -> int:
         """Trigger the service to run."""
         return start_service_follow(self.service_name)
 
-    def status(self) -> int:
+    def status(self, args: argparse.Namespace) -> int:
         """Show the status of the service."""
         get_service_status(self.service_name)
         return 0
 
-    def journal(self) -> int:
+    def journal(self, args: argparse.Namespace) -> int:
         """Show the journal of the service."""
         return journal_service(self.service_name)
 
@@ -255,7 +255,7 @@ class AutoPushService(ServiceDefinition):
 
     # Uses base class create_subparser and _add_commands (trigger, status, journal)
 
-    def trigger(self) -> int:
+    def trigger(self, args: argparse.Namespace) -> int:
         # auto-push local changes for convenience
         result = run_command(
             "git", "branch", "--show-current", check=True, capture_output=True
@@ -263,7 +263,7 @@ class AutoPushService(ServiceDefinition):
         branch = result.stdout.strip()
         if branch == STAGING_BRANCH:
             run_command("git", "push")
-        return super().trigger()
+        return super().trigger(args)
 
 
 class AutoUpdateService(ServiceDefinition):
@@ -278,7 +278,7 @@ class AutoUpdateService(ServiceDefinition):
         self._add_command(subparsers, "pull", "Pull autoUpdate from server", self.pull)
         super()._add_commands(subparsers)
 
-    def pull(self) -> int:
+    def pull(self, args: argparse.Namespace) -> int:
         """
         Pull autoUpdate from the server.
 
@@ -364,7 +364,7 @@ class ServiceRegistry:
         # Service-specific - handler already attached to namespace via set_defaults
         handler: Optional[CommandHandler] = getattr(args, f"{args.command}_handler", None)
         if handler is not None:
-            return handler()
+            return handler(args)
         return 1
 
 
