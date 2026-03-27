@@ -219,7 +219,11 @@ class ServiceDefinition(ABC):
         """
         self._add_command(subparsers, "trigger", "Trigger the service", self.trigger)
         self._add_command(subparsers, "status", "Show service status", self.status)
-        self._add_command(subparsers, "journal", "Show service journal", self.journal)
+        journal_parser = self._add_command(subparsers, "journal", "Show service journal", self.journal)
+        journal_parser.add_argument(
+            "-f", "--follow", action="store_true",
+            help="Follow the journal (like tail -f)"
+        )
 
     def create_subparser(self, subparsers: SubparsersAction) -> None:
         """Create the subparser for this service."""
@@ -243,7 +247,8 @@ class ServiceDefinition(ABC):
 
     def journal(self, args: argparse.Namespace) -> int:
         """Show the journal of the service."""
-        return journal_service(self.service_name)
+        follow = getattr(args, "follow", False)
+        return journal_service(self.service_name, follow=follow)
 
 
 class AutoPushService(ServiceDefinition):
