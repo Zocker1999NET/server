@@ -127,7 +127,7 @@ in
       firefox = {
         enable = true;
         languagePacks = [
-          "de"
+          # not "de", as Firefox itself in English is good enough
           "en-US"
         ];
         policies = {
