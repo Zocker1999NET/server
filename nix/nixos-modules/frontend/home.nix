@@ -533,7 +533,6 @@ in
       plugins =
         let
           omz_plugins = [
-            "bofh" # BOFH fortune quotes
             "colorize" # command on-call
             "command-not-found" # also works on NixOS
             "common-aliases"
@@ -559,6 +558,7 @@ in
             "MichaelAquilina/zsh-auto-notify" # notify on long tasks
             "zpm-zsh/clipboard" # clipboard integration
             "mtxr/zsh-change-case" # change case widget
+            "fundor333/bofh" # BOFH fortune quotes
           ];
         in
         concatLists [
