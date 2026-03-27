@@ -525,6 +525,7 @@ in
 
   programs.zsh = {
     enable = true;
+    # TODO configure dotDir = ".config/zsh"; (most probably requires or wants to be synced with system-level config)
     antidote = {
       enable = true;
       # lists of plugins:
