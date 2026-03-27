@@ -51,6 +51,7 @@ BEFORE editing this cheatsheet, you MUST check the rules for its generation in .
 | `autojump --stat` | Show autojump statistics |
 | `bofh` | Print random BOFH excuse |
 | `bofh_cow` | Print BOFH excuse in cowthink bubble |
+| `cde` | Change directory without clearing stack |
 | `clip` | Copy or show clipboard |
 | `disable_auto_notify` | Temporarily disable auto-notify |
 | `enable_auto_notify` | Re-enable auto-notify |
@@ -63,5 +64,9 @@ BEFORE editing this cheatsheet, you MUST check the rules for its generation in .
 
 | Keybinding | Description |
 | `Alt+d` | Delete prompt prefix from current line |
+| `Alt+Down` | Move into first child directory |
+| `Alt+Left` | Go to previous directory |
+| `Alt+Right` | Go to next directory |
+| `Alt+Up` | Move to parent directory |
 | `Ctrl+K+L` | lowercase word |
 | `Ctrl+K+U` | UPPERCASE word |

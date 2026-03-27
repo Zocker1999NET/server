@@ -139,6 +139,16 @@ A BOFH (Bastard Operator From Hell) fortune plugin that displays random excuses 
 - `bofh`
 - `bofh_cow`
 
+### dirhistory
+A zsh plugin that adds keyboard shortcuts for navigating directory history and hierarchy. It maintains a stack of previously visited directories (max 30) and allows quick navigation using Alt+Arrow keys. Also provides the `cde` alias for changing directories without clearing the future stack.
+
+**Tools provided:**
+- `cde` (change directory without clearing stack)
+- `Alt+Left` (go to previous directory)
+- `Alt+Right` (go to next directory)
+- `Alt+Up` (move to parent directory)
+- `Alt+Down` (move into first child directory)
+
 ### zpm-zsh/clipboard
 Cross-platform clipboard integration for zsh that works on macOS, X11, Wayland, Cygwin, and WSL. Provides familiar clipboard commands.
 
