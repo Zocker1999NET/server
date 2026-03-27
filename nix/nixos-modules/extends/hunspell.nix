@@ -37,7 +37,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.variables = {
+    # sessionVariables are made available to PAM sessions (i.e. desktop managers) & to shells
+    environment.sessionVariables = {
       # DICPATH is a colon-separated list of directories containing hunspell dictionaries
       DICPATH = pipe cfg.dictionaries [
         (map (dict: "${dict}/share/hunspell"))
