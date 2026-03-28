@@ -12,6 +12,7 @@ in
 {
 
   imports = [
+    ./nixos-convertable.nix
     ./nixos-develop.nix
   ];
 
@@ -20,8 +21,6 @@ in
     x-banananetwork.frontend = {
 
       enable = lib.mkEnableOption "frontend specific settings (highly opionated / customized)";
-
-      convertable = lib.mkEnableOption "convertable specific settings";
 
       username = lib.mkOption {
         description = "username of ego-centric single main primary user";
@@ -589,14 +588,9 @@ in
           ];
         isNormalUser = true;
         openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
-        packages =
-          with pkgs;
-          lib.lists.flatten [
-            kdePackages.kate
-            (lib.lists.optional cfg.convertable [
-              maliit-keyboard # on-screen keyboard (should just work, see https://discuss.kde.org/t/how-to-enable-virtual-keyboard-included-in-kde/264/2)
-            ])
-          ];
+        packages = with pkgs; [
+          kdePackages.kate
+        ];
       };
 
     };
