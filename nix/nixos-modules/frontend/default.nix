@@ -14,6 +14,7 @@ in
   imports = [
     ./nixos-convertable.nix
     ./nixos-develop.nix
+    ./nixos-security.nix
   ];
 
   options = {
@@ -622,7 +623,7 @@ in
     };
 
     # TODO wishlist:
-    # - lockdown more (at least disable systemd-boot.editor OR enable TPM PCR checks)
+    # - lockdown more (enable TPM PCR checks)
     # - enable & disable touch keyboard automatically based on convertable status
     # - https://github.com/cynicsketch/nix-mineral (NixOS hardening)
     # - programs.mepo
