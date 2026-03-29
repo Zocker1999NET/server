@@ -555,7 +555,12 @@ in
             "aoyama-val/zsh-delete-prompt" # ($ cmd -> cmd)
             "ianthehenry/zsh-autoquoter" # applied to last arg
             "Zocker1999NET/zsh-gtr" # git tag release
-            "MichaelAquilina/zsh-auto-notify" # notify on long tasks
+            # blocked until urgency can be configured or is !=critical
+            # (making Plasma to ignore auto timeout time)
+            # see https://github.com/MichaelAquilina/zsh-auto-notify/issues/26
+            # or https://github.com/MichaelAquilina/zsh-auto-notify/pull/24
+            # or https://github.com/MichaelAquilina/zsh-auto-notify/pull/49
+            #"MichaelAquilina/zsh-auto-notify" # notify on long tasks
             "zpm-zsh/clipboard" # clipboard integration
             "mtxr/zsh-change-case" # change case widget
             "fundor333/bofh" # BOFH fortune quotes
