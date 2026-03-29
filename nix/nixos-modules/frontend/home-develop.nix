@@ -83,6 +83,8 @@
           # pylance does not work with VSCodium due to MSFT
           ms-pyright.pyright
           ms-python.python
+          # IDE: Svelte
+          svelte.svelte-vscode
         ];
         userSettings = {
 
