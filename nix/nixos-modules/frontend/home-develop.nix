@@ -67,6 +67,7 @@
         enableUpdateCheck = false;
         extensions = with pkgs.vscode-extensions; [
           # general
+          jbockle.jbockle-format-files
           mkhl.direnv
           vscodevim.vim
           # AI assistant
