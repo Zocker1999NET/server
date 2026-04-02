@@ -608,6 +608,8 @@ in
           'git commit( [^ ]##)# -[^ -]#m'
           'ssh( -[^ ]##)# [^ -][^ ]#'
         )
+        # add to syntaxHighlighting, which should enabled in system config (progams.zsh.syntaxHighlightning)
+        ZSH_HIGHLIGHT_HIGHLIGHTERS+=(zaq)
 
         # zsh-change-case: change word case (Ctrl+K+U upper, Ctrl+K+L lower)
         bindkey -r '^K'  # unbind Ctrl+K first to avoid conflicts
