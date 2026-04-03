@@ -22,7 +22,14 @@ let
         }
         outputs.nixosModules.myOptions
         outputs.nixosModules.withDepends
-        { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
+        # configure home-manager
+        {
+          home-manager = {
+            sharedModules = [
+              outputs.homeManagerModules.default
+            ];
+          };
+        }
       ]
       ++ modules;
       systemArgs = {
