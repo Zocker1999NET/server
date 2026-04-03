@@ -26,6 +26,11 @@ let
         {
           home-manager = {
             sharedModules = [
+              {
+                _module.args = {
+                  inherit flake;
+                };
+              }
               outputs.homeManagerModules.default
             ];
           };
