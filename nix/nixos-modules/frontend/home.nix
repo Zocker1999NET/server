@@ -23,6 +23,7 @@ in
 {
 
   imports = [
+    ./antidote-omz.nix
     ./home-develop.nix
   ];
 
@@ -531,76 +532,34 @@ in
     # TODO configure dotDir = ".config/zsh"; (most probably requires or wants to be synced with system-level config)
     antidote = {
       enable = true;
+      ohMyZsh.enable = true;
       # lists of plugins:
       # - https://github.com/unixorn/awesome-zsh-plugins
-      plugins =
-        let
-          omz_plugins = [
-            "colorize" # command on-call
-            "command-not-found" # also works on NixOS
-            "common-aliases"
-            "dirhistory" # Alt+<ArrowKey> navigation on directories
-            "magic-enter"
-            # aliases / completion for specific apps (TODO conditional)
-            "git"
-            "man"
-            "nmap"
-            "systemd"
-            "tailscale"
-            "tmux"
-            "vscode"
-          ];
-          normal_plugins = [
-            # external sourced
-            (mkBefore "getantidote/use-omz") # recommended to resolve Oh-My-ZSH lib dependencies (required before OMZ plugins)
-            "djui/alias-tips"
-            "zpm-zsh/ls"
-            "aoyama-val/zsh-delete-prompt" # ($ cmd -> cmd)
-            "ianthehenry/zsh-autoquoter" # applied to last arg
-            "Zocker1999NET/zsh-gtr" # git tag release
-            # blocked until urgency can be configured or is !=critical
-            # (making Plasma to ignore auto timeout time)
-            # see https://github.com/MichaelAquilina/zsh-auto-notify/issues/26
-            # or https://github.com/MichaelAquilina/zsh-auto-notify/pull/24
-            # or https://github.com/MichaelAquilina/zsh-auto-notify/pull/49
-            #"MichaelAquilina/zsh-auto-notify" # notify on long tasks
-            "zpm-zsh/clipboard" # clipboard integration
-            "mtxr/zsh-change-case" # change case widget
-            "fundor333/bofh" # BOFH fortune quotes
-          ];
-        in
-        concatLists [
-          normal_plugins
-          (map (p: "${pkgs.oh-my-zsh}/share/oh-my-zsh path:plugins/${p}") omz_plugins)
-        ];
+      plugins = [
+        "djui/alias-tips"
+        "zpm-zsh/ls"
+        "aoyama-val/zsh-delete-prompt" # ($ cmd -> cmd)
+        "ianthehenry/zsh-autoquoter" # applied to last arg
+        "Zocker1999NET/zsh-gtr" # git tag release
+        # blocked until urgency can be configured or is !=critical
+        # (making Plasma to ignore auto timeout time)
+        # see https://github.com/MichaelAquilina/zsh-auto-notify/issues/26
+        # or https://github.com/MichaelAquilina/zsh-auto-notify/pull/24
+        # or https://github.com/MichaelAquilina/zsh-auto-notify/pull/49
+        #"MichaelAquilina/zsh-auto-notify" # notify on long tasks
+        "zpm-zsh/clipboard" # clipboard integration
+        "mtxr/zsh-change-case" # change case widget
+        "fundor333/bofh" # BOFH fortune quotes
+      ];
       useFriendlyNames = false; # for plugin cache dir
     };
     # order from https://home-manager-options.extranix.com/?query=programs.zsh.initContent&release=release-25.05
     initContent = mkMerge [
       # 500: early initialization
-      # for configuring plugins loaded by Antidote
-      (mkOrder 520 ''
-        MAGIC_ENTER_GIT_COMMAND='git status -u .'
-        MAGIC_ENTER_OTHER_COMMAND='ls -lh .'
-
-        if [[ -o login ]]; then
-          ZSH_TMUX_AUTOSTART=false
-        else
-          ZSH_TMUX_AUTOSTART=true
-          ZSH_TMUX_AUTOCONNECT=false
-          ZSH_TMUX_AUTOQUIT=true
-        fi
-
-        DISABLE_LS_COLORS="true" # To remove alias "ls=ls --color=tty" by oh-my-zsh for exa alias
-
-        # disable oh-my-zsh plugin updates (loaded directly from nixpkgs)
-        zstyle ':omz:update' mode disabled
-      '')
       # 550: before completion initialization
       # 1000: General configuration
       # for configuring everything else
       (mkOrder 1050 ''
-        ZSH_THEME="agnoster"
         functions[prompt_hg]=""
 
         # misc configs
@@ -645,6 +604,43 @@ in
       '')
       # 1500: Last to run configuration
     ];
+    oh-my-zsh = {
+      # only load directly when antidote does not load them
+      enable = !(with config.programs.zsh.antidote; enable && ohMyZsh.enable);
+      extraConfig = ''
+        MAGIC_ENTER_GIT_COMMAND='git status -u .'
+        MAGIC_ENTER_OTHER_COMMAND='ls -lh .'
+
+        if [[ -o login ]]; then
+          ZSH_TMUX_AUTOSTART=false
+        else
+          ZSH_TMUX_AUTOSTART=true
+          ZSH_TMUX_AUTOCONNECT=false
+          ZSH_TMUX_AUTOQUIT=true
+        fi
+
+        # To remove alias "ls=ls --color=tty" by oh-my-zsh for exa alias
+        DISABLE_LS_COLORS="true"
+        # disable oh-my-zsh plugin updates (loaded directly from nixpkgs)
+        zstyle ':omz:update' mode disabled
+      '';
+      plugins = [
+        "colorize" # command on-call
+        "command-not-found" # also works on NixOS
+        "common-aliases"
+        "dirhistory" # Alt+<ArrowKey> navigation on directories
+        "magic-enter"
+        # aliases / completion for specific apps (TODO conditional)
+        "git"
+        "man"
+        "nmap"
+        "systemd"
+        "tailscale"
+        "tmux"
+        "vscode"
+      ];
+      theme = "agnoster";
+    };
     shellAliases = mkMerge [
       {
         # shell meta helpers
