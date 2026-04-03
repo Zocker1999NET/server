@@ -12,6 +12,7 @@ let
   inherit (lib.meta) getExe;
   inherit (lib.modules)
     mkBefore
+    mkIf
     mkMerge
     mkOrder
     ;
@@ -662,6 +663,22 @@ in
         tsv = "tmux split -v";
         tsh = "tmux split -h";
       }
+      # replacements for ls aliases from oh-my-zsh plugin common-aliases
+      # (some of them do not apply one-to-one to eza)
+      # https://github.com/ohmyzsh/ohmyzsh/blob/9e2c1548c3dfeefd055e1c6606f66657093ae928/plugins/common-aliases/common-aliases.plugin.zsh
+      (mkIf config.programs.eza.enable {
+        l = "eza --long --classify=automatic --header";
+        la = "eza --long --almost-all --classify=automatic --header";
+        lr = "eza --long --recurse --sort=modified --classify=automatic --header";
+        lt = "eza --long --sort=modified --classify=automatic --header";
+        ll = "eza --long";
+        ldot = "eza --only-dirs --all";
+        lS = "eza --long --oneline --sort=size --classify=automatic --blocksize";
+        lart = "eza --oneline --classify=automatic --all --reverse --sort=modified";
+        lrt = "eza --oneline --classify=automatic --reverse --sort=modified";
+        lsr = "eza --long --all --recurse --classify=automatic --header";
+        lsn = "eza --oneline";
+      })
     ];
     shellGlobalAliases = {
       U = "|& up";
