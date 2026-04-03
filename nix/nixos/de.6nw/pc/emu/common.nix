@@ -173,10 +173,6 @@ in
       { config, pkgs, ... }:
       {
         environment.systemPackages = singleton pkgs.dolphin-emu;
-        home-manager = {
-          useGlobalPkgs = true;
-          useUserPackages = true;
-        };
         services.joycond.enable = false; # fuck you
         users.users.${gameUser} = {
           description = "Gamer User";
@@ -206,7 +202,6 @@ in
           ...
         }:
         {
-          home.stateVersion = osConfig.system.stateVersion;
           programs.retroarch = {
             enable = true;
             cores = {

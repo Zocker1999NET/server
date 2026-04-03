@@ -39,10 +39,7 @@ in
 {
 
   home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = true;
     users.${userName} = {
-      home.stateVersion = config.system.stateVersion;
       programs.gpg = {
         enable = true;
         mutableKeys = false;

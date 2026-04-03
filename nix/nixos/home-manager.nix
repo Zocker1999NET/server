@@ -10,6 +10,7 @@
 let
   selfReference = ./home-maanger.nix;
 
+  inherit (lib.lists) singleton;
   inherit (lib.modules) mkMerge;
 in
 {
@@ -26,6 +27,17 @@ in
         }
         flake.outputs.homeManagerModules.default
       ];
+    }
+
+    # integration with NixOS config
+    {
+      sharedModules = singleton {
+        _file = selfReference;
+        home.stateVersion = config.system.stateVersion;
+      };
+
+      useGlobalPkgs = true;
+      useUserPackages = true;
     }
 
   ];

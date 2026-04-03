@@ -85,12 +85,7 @@ in
     };
 
     home-manager = {
-
-      useGlobalPkgs = true;
-      useUserPackages = true;
-
       users."${cfg.username}" = import ./home.nix;
-
     };
 
     networking = {

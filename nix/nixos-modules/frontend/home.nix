@@ -26,8 +26,6 @@ in
     ./home-develop.nix
   ];
 
-  home.stateVersion = osConfig.system.stateVersion;
-
   home.file = {
 
     # TODO use generator for YAML
