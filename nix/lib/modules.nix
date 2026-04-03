@@ -1,7 +1,14 @@
 { inputs, lib, ... }@flakeArg:
 let
-  inherit (builtins) isPath isString;
-  inherit (lib.modules) importApply importsApplyIf mkOverride;
+  inherit (builtins)
+    isPath
+    isString
+    ;
+  inherit (lib.modules)
+    importApply
+    importsApplyIf
+    mkOverride
+    ;
 in
 {
 
