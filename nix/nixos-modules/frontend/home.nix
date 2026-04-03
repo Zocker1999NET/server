@@ -10,7 +10,11 @@ let
   inherit (builtins) concatLists concatStringsSep;
   inherit (config.lib.file) mkOutOfStoreSymlink;
   inherit (lib.meta) getExe;
-  inherit (lib.modules) mkBefore mkMerge mkOrder;
+  inherit (lib.modules)
+    mkBefore
+    mkMerge
+    mkOrder
+    ;
   inherit (lib.trivial) flip;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myOpts = osConfig.x-banananetwork;
@@ -642,21 +646,23 @@ in
       '')
       # 1500: Last to run configuration
     ];
-    shellAliases = {
-      # shell meta helpers
-      echo-args = "${getExe pkgs.python3} -c 'import sys; print(sys.argv[1:])'";
-      launch = "fork";
-      # file management
-      resolve = ''cd "$(pwd -P)"'';
-      tree = "eza --tree";
-      # OS mgmt
-      please = "sudo";
-      swapclear = "sudo swapoff -a && sudo swapon -a";
-      # tmux
-      tnw = "tmux new-window";
-      tsv = "tmux split -v";
-      tsh = "tmux split -h";
-    };
+    shellAliases = mkMerge [
+      {
+        # shell meta helpers
+        echo-args = "${getExe pkgs.python3} -c 'import sys; print(sys.argv[1:])'";
+        launch = "fork";
+        # file management
+        resolve = ''cd "$(pwd -P)"'';
+        tree = "eza --tree";
+        # OS mgmt
+        please = "sudo";
+        swapclear = "sudo swapoff -a && sudo swapon -a";
+        # tmux
+        tnw = "tmux new-window";
+        tsv = "tmux split -v";
+        tsh = "tmux split -h";
+      }
+    ];
     shellGlobalAliases = {
       U = "|& up";
     };
