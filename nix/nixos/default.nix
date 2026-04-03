@@ -22,19 +22,7 @@ let
         }
         outputs.nixosModules.myOptions
         outputs.nixosModules.withDepends
-        # configure home-manager
-        {
-          home-manager = {
-            sharedModules = [
-              {
-                _module.args = {
-                  inherit flake;
-                };
-              }
-              outputs.homeManagerModules.default
-            ];
-          };
-        }
+        ./home-manager.nix
       ]
       ++ modules;
       systemArgs = {
