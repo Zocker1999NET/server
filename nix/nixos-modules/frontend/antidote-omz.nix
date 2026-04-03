@@ -74,7 +74,8 @@ in
 
     # load Oh My ZSH according to getantidote/omz
     {
-      programs.zsh.antidote.plugins = singleton (mkBefore cfg.useOmzSource);
+      # outer mkOrder has higher rank than inner mkBefore
+      programs.zsh.antidote.plugins = mkBefore [ cfg.useOmzSource ];
     }
 
     # translate plugin list
