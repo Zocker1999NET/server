@@ -79,10 +79,7 @@ let
           #initialHashedPassword = lib.modules.mkTestOverride null;
         };
       };
-    in
-    pkgs.testers.runNixOSTest (
-      args
-      // {
+      shiftedArgs = args // {
         nodes = lib.flip builtins.mapAttrs nodes (
           name: node: {
             imports = [
@@ -91,8 +88,9 @@ let
             ];
           }
         );
-      }
-    );
+      };
+    in
+    pkgs.testers.runNixOSTest shiftedArgs;
   nixosIntegrationTest =
     tested: # from machines
     {
