@@ -37,6 +37,7 @@ for builder in "${selected[@]}"; do
 done
 
 exec "$cmd" build \
+    --option always-allow-substitutes true \
     --option builders-use-substitutes true \
     --builders "$builders" \
     "$@"
