@@ -90,7 +90,12 @@ let
         );
       };
     in
-    pkgs.testers.runNixOSTest shiftedArgs;
+    pkgs.testers.runNixOSTest {
+      _file = ./default.nix;
+      imports = [
+        shiftedArgs
+      ];
+    };
   nixosIntegrationTest =
     tested: # from machines
     {
