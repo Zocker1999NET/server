@@ -1,8 +1,8 @@
 {
   config,
+  flake,
   lib,
   modulesPath,
-  pkgs,
   ...
 }:
 
@@ -18,14 +18,35 @@ let
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib.strings) escapeShellArg optionalString;
 
+  inherit (flake.outputs.lib) mkFullAliasModule;
+
   esc = escapeShellArg;
 
   cfg = antidoteCfg.ohMyZsh;
   antidoteCfg = zshCfg.antidote;
   omzCfg = zshCfg.oh-my-zsh;
   zshCfg = config.programs.zsh;
+
+  pluginsOptName = modName: [
+    "programs"
+    "zsh"
+    modName
+    "plugins"
+  ];
+  myCond = antidoteCfg.enable && cfg.enable;
 in
 {
+
+  imports = [
+    # translate plugin list, preserving file source & order priorities
+    (mkFullAliasModule {
+      from = pluginsOptName "oh-my-zsh";
+      to = pluginsOptName "antidote";
+      apply = map (p: "${esc omzCfg.package}/share/oh-my-zsh path:plugins/${esc p}");
+      keepOverridePriority = false;
+      condition = myCond;
+    })
+  ];
 
   options.programs.zsh.antidote.ohMyZsh = {
 
@@ -42,6 +63,8 @@ in
       - {option}`programs.zsh.oh-my-zsh.extraConfig`
       - {option}`programs.zsh.oh-my-zsh.package`
       - {option}`programs.zsh.oh-my-zsh.plugins`
+        (order priorities are preserved,
+        but entries with order<=500 may not load correctly)
       - {option}`programs.zsh.oh-my-zsh.theme`
 
       Defaults to loading use-omz from GitHub.
@@ -62,7 +85,7 @@ in
 
   };
 
-  config = mkIf (antidoteCfg.enable && cfg.enable) (mkMerge [
+  config = mkIf myCond (mkMerge [
 
     # assertions
     {
@@ -78,12 +101,7 @@ in
       programs.zsh.antidote.plugins = mkBefore [ cfg.useOmzSource ];
     }
 
-    # translate plugin list
-    {
-      programs.zsh.antidote.plugins = map (
-        p: "${esc omzCfg.package}/share/oh-my-zsh path:plugins/${esc p}"
-      ) omzCfg.plugins;
-    }
+    # translate plugin list moved to imports
 
     # apply oh-my-zsh options like ./oh-my-zsh.nix
     # differences are:
