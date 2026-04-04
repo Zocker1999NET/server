@@ -3,11 +3,13 @@
   flake,
   lib,
   modulesPath,
+  options,
   ...
 }:
 
 let
   inherit (lib) types;
+  inherit (lib.attrsets) setAttrByPath;
   inherit (lib.lists) singleton;
   inherit (lib.modules)
     mkBefore
@@ -18,7 +20,7 @@ let
   inherit (lib.options) mkEnableOption mkOption;
   inherit (lib.strings) escapeShellArg optionalString;
 
-  inherit (flake.outputs.lib) mkFullAliasModule;
+  inherit (flake.outputs.lib.modules) mkFullAlias;
 
   esc = escapeShellArg;
 
@@ -36,17 +38,6 @@ let
   myCond = antidoteCfg.enable && cfg.enable;
 in
 {
-
-  imports = [
-    # translate plugin list, preserving file source & order priorities
-    (mkFullAliasModule {
-      from = pluginsOptName "oh-my-zsh";
-      to = pluginsOptName "antidote";
-      apply = map (p: "${esc omzCfg.package}/share/oh-my-zsh path:plugins/${esc p}");
-      keepOverridePriority = false;
-      condition = myCond;
-    })
-  ];
 
   options.programs.zsh.antidote.ohMyZsh = {
 
@@ -101,7 +92,14 @@ in
       programs.zsh.antidote.plugins = mkBefore [ cfg.useOmzSource ];
     }
 
-    # translate plugin list moved to imports
+    # translate plugin list, preserving file source & order priorities
+    (mkFullAlias {
+      loc = pluginsOptName "oh-my-zsh";
+      option = options.programs.zsh.oh-my-zsh.valueMeta.configuration.options.plugins;
+      apply = map (p: "${esc omzCfg.package}/share/oh-my-zsh path:plugins/${esc p}");
+      wrap = setAttrByPath (pluginsOptName "antidote");
+      keepOverridePriority = false;
+    })
 
     # apply oh-my-zsh options like ./oh-my-zsh.nix
     # differences are:
