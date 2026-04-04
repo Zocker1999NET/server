@@ -22,6 +22,8 @@ let
 in
 {
 
+  # TODO configure plasma via github:nix-community/plasma-manager
+
   imports = [
     ./antidote-omz.nix
     ./home-develop.nix
