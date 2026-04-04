@@ -94,6 +94,12 @@ let
       _file = ./default.nix;
       imports = [
         shiftedArgs
+        {
+          # allow individual nixpkgs (and so overlays) per node
+          # induces extra evaluation time as nixpkgs needs to be evaluated per node
+          # TODO rebuild test infrastructure to not rely on this
+          node.pkgsReadOnly = false;
+        }
       ];
     };
   nixosIntegrationTest =
@@ -174,6 +180,8 @@ in
   # (TODO in disko-install-menu, export test framework & use here)
   diskoOfflineInstall = pkgs.testers.runNixOSTest {
     name = "diskoOfflineInstall";
+    # similar as above: allow customizations with overlays
+    node.pkgsReadOnly = false;
     nodes.node.imports = [
       inputs.disko-install-menu.nixosModules.default
       {
