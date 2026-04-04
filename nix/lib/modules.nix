@@ -12,7 +12,7 @@ let
     optionalAttrs
     setAttrByPath
     ;
-  inherit (lib.lists) optional;
+  inherit (lib.lists) foldl optional;
   inherit (lib.modules)
     applyOnDefinition
     defaultOverridePriority
@@ -28,7 +28,7 @@ let
     mkOrder
     ;
   inherit (lib.options) mkOption showFiles showOption;
-  inherit (lib.trivial) id pipe;
+  inherit (lib.trivial) id;
 
   # internal helpers
   applyOnValue = apply: { value, ... }@attr: attr // { value = apply value; };
@@ -59,6 +59,8 @@ in
     }:
     let
       prio = option.highestPrio or defaultOverridePriority;
+      # lazy implementation, see https://github.com/NixOS/nix/issues/15625
+      pipe = foldl (x: f: f x);
     in
     pipe option [
       (opt: opt.definitionsWithLocations)
