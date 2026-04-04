@@ -14,12 +14,13 @@
           interval = "weekly";
         };
         nix.sshServe = {
+          # provides remote builder with user nix-ssh
           enable = true;
           keys = config.x-banananetwork.sshPublicKeys;
           protocol = "ssh";
+          trusted = true;
           write = true;
         };
-        nix.settings.trusted-users = [ "nix-ssh" ];
         # allow connection for remote building
         users.users.iehadmin.openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKko0tcHOmCxi/ilFbVJ9N+U+34B9r6RFdmGfrBaob6C root@x13yz.pc.6nw.de"
