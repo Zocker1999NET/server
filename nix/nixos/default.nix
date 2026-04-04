@@ -27,7 +27,6 @@ let
       ++ modules;
       systemArgs = {
         modules = modsExtended;
-        # be aware: specialArgs will break in my nixos integration tests
         inherit system;
       };
     in

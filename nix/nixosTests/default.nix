@@ -110,6 +110,7 @@ let
     nixosTest (
       {
         name = "${fqdn}_integration-test";
+        node.specialArgs = tested._banananetwork_systemArgs.specialArgs or { };
         nodes = nodes // {
           tested = {
             imports = tested._banananetwork_systemArgs.modules;
