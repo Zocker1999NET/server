@@ -16,6 +16,7 @@ let
   inherit (lib.modules)
     applyOnDefinition
     defaultOverridePriority
+    defaultOrderPriority
     dischargeValue
     importApply
     importsApplyIf
@@ -65,7 +66,12 @@ in
     pipe option [
       (opt: opt.definitionsWithLocations)
       (map (applyOnDefinition apply loc option.type))
-      (map (if keepOrderPriority then (def: mkOrder def.priority def.value) else (def: def.value)))
+      (map (
+        if keepOrderPriority then
+          (def: mkOrder (def.priority or defaultOrderPriority) def.value)
+        else
+          (def: def.value)
+      ))
       (if keepOverridePriority then map (mkOverride prio) else id)
       mkMerge
       wrap
