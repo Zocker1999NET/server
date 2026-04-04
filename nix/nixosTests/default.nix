@@ -35,6 +35,7 @@ let
       vlanNet = builtins.elemAt config.virtualisation.vlans netIdx;
     in
     "5054:ff:fe12:${zeroPad vlanNet}${zeroPad nodeNum}";
+  # TODO migrate customations to "NixOS test" modules
   nixosTest =
     {
       # can only accept attrs as nodes configs
@@ -79,7 +80,7 @@ let
         };
       };
     in
-    pkgs.testers.nixosTest (
+    pkgs.testers.runNixOSTest (
       args
       // {
         nodes = lib.flip builtins.mapAttrs nodes (
@@ -167,7 +168,7 @@ in
 
   # similar to disko-install-menu.checks.SYSTEM.offineBuilds-*
   # (TODO in disko-install-menu, export test framework & use here)
-  diskoOfflineInstall = pkgs.testers.nixosTest {
+  diskoOfflineInstall = pkgs.testers.runNixOSTest {
     name = "diskoOfflineInstall";
     nodes.node.imports = [
       inputs.disko-install-menu.nixosModules.default
