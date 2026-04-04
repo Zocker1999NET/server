@@ -43,7 +43,7 @@ in
 
   dischargeValue =
     loc: type: value:
-    mergeDefinitions loc type [ value ];
+    (mergeDefinitions loc type [ { inherit value; } ]).mergedValue;
 
   # TODO upstream
   importsApplyIf = staticArg: map (i: if isPath i || isString i then importApply i staticArg else i);
