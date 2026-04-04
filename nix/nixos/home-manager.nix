@@ -19,18 +19,16 @@ in
     # integration with flake
     {
       sharedModules = [
-        {
-          _file = selfReference;
-          _module.args = {
-            inherit flake;
-          };
-        }
         flake.outputs.homeManagerModules.default
       ];
     }
 
     # integration with NixOS config
     {
+      extraSpecialArgs = {
+        inherit flake;
+      };
+
       sharedModules = singleton {
         _file = selfReference;
         home.stateVersion = config.system.stateVersion;
