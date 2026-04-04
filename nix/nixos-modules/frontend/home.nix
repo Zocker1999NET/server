@@ -7,11 +7,11 @@
 }:
 
 let
-  inherit (builtins) concatLists concatStringsSep;
+  inherit (builtins) concatStringsSep;
   inherit (config.lib.file) mkOutOfStoreSymlink;
   inherit (lib.meta) getExe;
   inherit (lib.modules)
-    mkBefore
+    mkAfter
     mkIf
     mkMerge
     mkOrder
@@ -630,7 +630,6 @@ in
           "command-not-found" # also works on NixOS
           "common-aliases"
           "dirhistory" # Alt+<ArrowKey> navigation on directories
-          "magic-enter"
           # aliases / completion for specific apps (TODO conditional)
           "git"
           "man"
@@ -640,6 +639,8 @@ in
           "tmux"
           "vscode"
         ]
+        # stoped working when loaded before some antidote plugins
+        (mkAfter [ "magic-enter" ])
       ];
       theme = "agnoster";
     };
