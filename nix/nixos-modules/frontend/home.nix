@@ -624,20 +624,22 @@ in
         # disable oh-my-zsh plugin updates (loaded directly from nixpkgs)
         zstyle ':omz:update' mode disabled
       '';
-      plugins = [
-        "colorize" # command on-call
-        "command-not-found" # also works on NixOS
-        "common-aliases"
-        "dirhistory" # Alt+<ArrowKey> navigation on directories
-        "magic-enter"
-        # aliases / completion for specific apps (TODO conditional)
-        "git"
-        "man"
-        "nmap"
-        "systemd"
-        "tailscale"
-        "tmux"
-        "vscode"
+      plugins = mkMerge [
+        [
+          "colorize" # command on-call
+          "command-not-found" # also works on NixOS
+          "common-aliases"
+          "dirhistory" # Alt+<ArrowKey> navigation on directories
+          "magic-enter"
+          # aliases / completion for specific apps (TODO conditional)
+          "git"
+          "man"
+          "nmap"
+          "systemd"
+          "tailscale"
+          "tmux"
+          "vscode"
+        ]
       ];
       theme = "agnoster";
     };
