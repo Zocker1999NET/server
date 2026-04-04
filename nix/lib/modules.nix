@@ -21,13 +21,14 @@ let
     importsApplyIf
     mergeDefinitions
     mkAliasIfDef
+    mkFullAlias
     mkIf
     mkMerge
     mkOverride
     mkOrder
     ;
   inherit (lib.options) mkOption showFiles showOption;
-  inherit (lib.trivial) id flip pipe;
+  inherit (lib.trivial) id pipe;
 
   # internal helpers
   applyOnValue = apply: { value, ... }@attr: attr // { value = apply value; };
@@ -99,7 +100,6 @@ in
       msg_warning = "The option `${showOption from}' defined in ${showFiles fromOpt.files} has been migrated to `${showOption to}'.";
       fromDeclare = isAttrs declareFrom || (isBool declareFrom && declareFrom);
       fromOpt = loadOptFrom from options;
-      fromPrio = fromOpt.highestPrio or defaultOverridePriority;
       toOf = loadOptFrom to;
       toType =
         let
@@ -108,18 +108,6 @@ in
         opt.type or (types.submodule { });
     in
     {
-      imports = flip map fromOpt.definitionsWithLocations (def: {
-        _file = def.file;
-        config = pipe def.value [
-          (dischargeValue from fromOpt.type)
-          (if apply != null then apply else (_: def.value))
-          (if keepOrderPriority then (mkOrder def.priority) else id)
-          (if keepOverridePriority then (mkOverride fromPrio) else id)
-          (setAttrByPath to)
-          (mkAliasIfDef fromOpt)
-          (mkIf condition)
-        ];
-      });
       options = optionalAttrs fromDeclare (
         setAttrByPath from (
           mkOption {
@@ -132,9 +120,17 @@ in
           // optionalAttrs (isAttrs declareFrom) declareFrom
         )
       );
-      config = optionalAttrs (warn && options ? warnings) {
-        warnings = optional (condition && fromOpt.isDefined) msg_warning;
-      };
+      config = mkIf condition (mkMerge [
+        (optionalAttrs (options ? warnings) {
+          warnings = optional (warn && fromOpt.isDefined) msg_warning;
+        })
+        (mkFullAlias {
+          loc = from;
+          option = fromOpt;
+          wrap = setAttrByPath to;
+          inherit apply keepOverridePriority keepOrderPriority;
+        })
+      ]);
     };
 
   importApplyMod = path: importApply path flakeArg;
