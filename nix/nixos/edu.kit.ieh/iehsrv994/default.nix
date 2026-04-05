@@ -43,7 +43,7 @@ in
           };
           useRoutingFeatures = "both";
         };
-        secrix.services.tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key;
+        secrix.services.tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key.age;
       }
     )
 

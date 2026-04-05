@@ -65,7 +65,7 @@ in
             ];
           };
         };
-        secrix.services.tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key;
+        secrix.services.tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key.age;
         # workaround to work with FRITZ!Box which releases a broken NTP answer via DHCPv6
         systemd.network.networks."10-wan0".dhcpV6Config.UseNTP = false;
         systemd.services.systemd-networkd.environment.SYSTEMD_LOG_LEVEL = "debug";

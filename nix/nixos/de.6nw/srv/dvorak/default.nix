@@ -31,7 +31,7 @@ in
           };
         };
         secrix.services = {
-          tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key;
+          tailscaled-autoconnect.secrets.authKey.encrypted.file = ./tailscale-auth-key.age;
         };
       }
     )
