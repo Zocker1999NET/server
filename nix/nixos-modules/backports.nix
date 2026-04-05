@@ -20,7 +20,10 @@ let
         disabledModules = lib.singleton "${nix_stable}/${path}";
         imports = lib.singleton "${nix_unstable}/${path}";
       };
-  backportList = list: { imports = map backport list; };
 in
-backportList [
-]
+{
+
+  imports = map backport [
+  ];
+
+}
