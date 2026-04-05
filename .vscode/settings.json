@@ -19,5 +19,11 @@
         "files.trimTrailingWhitespace": false,
         "files.insertFinalNewline": false,
         "files.trimFinalNewlines": false
-    }
+    },
+
+    // AI agent config
+    "roo-cline.allowedCommands": [
+        "./llm_request.py "
+    ],
+    "roo-cline.deniedCommands": [ "curl" ]
 }
