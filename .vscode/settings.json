@@ -25,5 +25,4 @@
     "roo-cline.allowedCommands": [
         "./llm_request.py "
     ],
-    "roo-cline.deniedCommands": [ "curl" ]
 }
