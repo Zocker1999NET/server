@@ -9,6 +9,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   config = lib.mkIf cfg.enable (
     let
       nixI = config.programs.nix-index;

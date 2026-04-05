@@ -9,6 +9,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   config = lib.mkIf cfg.enable (
     let
       powertop = config.powerManagement.powertop;

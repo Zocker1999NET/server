@@ -11,6 +11,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = [
     ./nixos-convertable.nix
     ./nixos-develop.nix

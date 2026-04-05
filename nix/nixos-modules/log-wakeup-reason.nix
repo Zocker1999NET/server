@@ -13,6 +13,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.log-wakeup-reason = {
     enable = mkEnableOption "logging wake-up reason into journal";
     onTargets = mkOption {

@@ -8,6 +8,7 @@ let
   gitEn = config.programs.git.enable;
 in
 {
+  _class = "nixos";
   config = {
 
     assertions = [

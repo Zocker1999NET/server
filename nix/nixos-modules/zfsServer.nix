@@ -55,6 +55,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.x-banananetwork.zfsServer = {
     enable = mkEnableOption "banananet.work ZFS server config (including scrub & trim requiring timing)";
     warnOnDefaultTimings = mkEnableOption "warnings for default timings for ZFS scrub & trim" // {

@@ -7,6 +7,7 @@ let
   resolvedMDNS = cfgResolved.enable;
 in
 {
+  _class = "nixos";
   config = {
 
     assertions = [

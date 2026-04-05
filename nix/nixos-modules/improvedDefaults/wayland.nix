@@ -12,6 +12,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options = {
 
     services.wayland.enable = lib.mkEnableOption ''

@@ -11,6 +11,7 @@ let
   inherit (lib.modules) mkIf;
 in
 {
+  _class = "nixos";
   config = {
     services.dynamicIssue.implementations.sshHostKey = {
       description = "hashes of SSH host public keys";

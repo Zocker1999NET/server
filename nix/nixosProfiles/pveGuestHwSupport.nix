@@ -35,6 +35,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = [
     # from nixpkgs
     "${modulesPath}/profiles/qemu-guest.nix"

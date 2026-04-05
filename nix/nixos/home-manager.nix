@@ -14,6 +14,7 @@ let
   inherit (lib.modules) mkMerge;
 in
 {
+  _class = "nixos";
   config.home-manager = mkMerge [
 
     # integration with flake

@@ -5,6 +5,8 @@
 { lib, ... }:
 {
 
+  _class = "nixos";
+
   imports = [
     # from here
     ./common.nix

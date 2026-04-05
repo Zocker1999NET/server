@@ -38,6 +38,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   home-manager = {
     users.${userName} = {
       programs.gpg = {

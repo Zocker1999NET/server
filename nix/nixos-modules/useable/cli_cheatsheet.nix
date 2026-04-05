@@ -16,6 +16,7 @@ let
   };
 in
 {
+  _class = "nixos";
   config = lib.mkIf cfg.enable {
     environment.systemPackages =
       let

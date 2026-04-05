@@ -8,6 +8,9 @@
   ...
 }:
 {
+
+  _class = "nixos";
+
   imports = [
     # from nixpkgs
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" # includes allHardware configs
@@ -17,6 +20,7 @@
     ./common.nix
     ./pveGuestHwSupport.nix # also for guest agent, serial out, ...
   ];
+
   config = {
     isoImage = {
       squashfsCompression = "zstd"; # more efficient
@@ -25,4 +29,5 @@
     system.stateVersion = lib.versions.majorMinor config.system.nixos.version;
     # installer does not necessarily need working SSH access & an extra user for that
   };
+
 }

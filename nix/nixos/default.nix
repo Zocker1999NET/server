@@ -13,6 +13,7 @@ let
     let
       modsExtended = [
         {
+          _class = "nixos";
           system.configurationRevision = toString (
             flake.shortRev or flake.dirtyShortRev or flake.lastModified or "unknown"
           );

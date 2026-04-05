@@ -125,6 +125,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = importsApplyMods [
     # modules
     outputs.nixosModules.systemd-radv-fadeout

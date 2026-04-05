@@ -23,6 +23,8 @@ in
 # TODO upstream
 {
 
+  _class = "nixos";
+
   options.users.users = mkOption {
     type = types.attrsOf (
       types.submodule (

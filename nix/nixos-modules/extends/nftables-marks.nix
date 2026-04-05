@@ -135,6 +135,8 @@ in
 assert logUpper 2 markMaxVal == 32;
 {
 
+  _class = "nixos";
+
   options.networking.nftables.marks = {
     groups = mkOption {
       description = ''

@@ -18,6 +18,7 @@ in
 # TODO check cfg.grub.mirroredBoots as well
 # TODO enable disko checks (optional i.e. when disko options are available)
 {
+  _class = "nixos";
   config = lib.mkIf efiIndicator {
 
     assertions = [

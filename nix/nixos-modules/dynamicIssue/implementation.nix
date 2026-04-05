@@ -116,6 +116,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.dynamicIssue = {
 
     implementations = mkOption {

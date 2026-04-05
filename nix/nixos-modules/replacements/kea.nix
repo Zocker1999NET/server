@@ -32,6 +32,8 @@ let
   package = pkgs.kea;
 in
 {
+  _class = "nixos";
+
   disabledModules = lib.singleton "${modulesPath}/services/networking/kea.nix";
 
   options.services.kea = with types; {

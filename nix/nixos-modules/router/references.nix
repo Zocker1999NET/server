@@ -46,6 +46,9 @@ let
   ];
 in
 {
+
+  _class = "nixos";
+
   options.x-banananetwork.routerVM.references = {
 
     interfaceGroupsReal = mkOpt {

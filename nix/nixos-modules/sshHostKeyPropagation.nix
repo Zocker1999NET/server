@@ -45,6 +45,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.${moduleNamespace}.${moduleName} = {
 
     # "sender"

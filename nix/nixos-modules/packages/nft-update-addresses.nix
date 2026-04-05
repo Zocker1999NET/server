@@ -31,6 +31,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.${servName} = {
 
     enable = lib.mkEnableOption "${servName} service";

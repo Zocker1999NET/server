@@ -9,6 +9,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = [
     ./command-not-found.nix
     ./firefox.nix

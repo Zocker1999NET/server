@@ -21,6 +21,9 @@ let
   cfg = config.nixpkgs.permitInsecurePackagesUntil;
 in
 {
+
+  _class = "nixos";
+
   options.nixpkgs.permitInsecurePackagesUntil = mkOption {
     description = ''
       Permit insecure packages until a given NixOS major version.

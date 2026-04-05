@@ -4,6 +4,7 @@ let
   inherit (lib.lists) singleton;
 in
 {
+  _class = "nixos";
   config.x-banananetwork.routerVM.interfaces = {
 
     "wan0" = {

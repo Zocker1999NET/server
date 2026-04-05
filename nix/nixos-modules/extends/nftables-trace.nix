@@ -24,6 +24,8 @@ in
 # TODO upstream
 {
 
+  _class = "nixos";
+
   options.networking.nftables = {
     traceIPv4 = mkOption {
       description = ''

@@ -4,6 +4,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.printing = {
     enableAutoDiscovery = lib.mkEnableOption ''
       CUPS automatic discovery of printers.

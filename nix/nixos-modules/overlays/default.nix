@@ -21,6 +21,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   # TODO until https://github.com/systemd/systemd/issues/29651 is fixed
   systemd-radv-fadeout = withOverlay outputs.overlays.systemd-radv-fadeout (pkgs: {
     config.systemd.package = pkgs.systemd;

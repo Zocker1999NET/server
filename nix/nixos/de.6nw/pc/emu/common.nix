@@ -12,6 +12,7 @@ let
   gameUser = "gamer";
 in
 {
+  _class = "nixos";
   imports = [
     # Dolphin Networking
     (

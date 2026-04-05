@@ -26,6 +26,7 @@ let
   ];
 in
 {
+  _class = "nixos";
   config = {
 
     assertions = [

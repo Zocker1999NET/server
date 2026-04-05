@@ -9,6 +9,8 @@
 
 {
 
+  _class = "homeManager";
+
   home.packages = with pkgs; [
     # editors
     neovim

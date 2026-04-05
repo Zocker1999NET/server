@@ -3,6 +3,7 @@
 # TODO integrate into officially supported buildDependencies option supplied by disko-install-menu.nixosModules.support
 { pkgs, ... }:
 {
+  _class = "nixos";
   system.extraDependencies = with pkgs; [
     shellcheck
   ];

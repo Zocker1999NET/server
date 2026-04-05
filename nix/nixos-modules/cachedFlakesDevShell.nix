@@ -16,6 +16,9 @@ let
   cachedFlakes = config.x-banananetwork.cachedFlakesDevShell;
 in
 {
+
+  _class = "nixos";
+
   options.x-banananetwork = {
     cachedFlakesDevShell = mkOption {
       description = ''
@@ -38,4 +41,5 @@ in
   config = {
     system.extraDependencies = map (flake: flake.devShells.${system}.default) cachedFlakes;
   };
+
 }

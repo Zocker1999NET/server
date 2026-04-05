@@ -15,6 +15,9 @@ let
 in
 # TODO separate internet & router
 {
+
+  _class = "nixos";
+
   options.staticLeases = mkOption {
     description = "static leases + DNS records";
     type = types.attrsOf (
@@ -30,6 +33,7 @@ in
       )
     );
   };
+
   config = {
     boot.kernel.sysctl = {
       "net.ipv4.conf.default.forwarding" = true;
@@ -191,4 +195,5 @@ in
           };
         });
   };
+
 }

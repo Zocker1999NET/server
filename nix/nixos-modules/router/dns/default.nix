@@ -7,6 +7,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.x-banananetwork.routerVM.dns = {
 
     upstreams = lib.mkOption {

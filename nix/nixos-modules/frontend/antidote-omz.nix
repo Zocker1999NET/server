@@ -39,6 +39,8 @@ let
 in
 {
 
+  _class = "homeManager";
+
   options.programs.zsh.antidote.ohMyZsh = {
 
     enable = mkEnableOption ''

@@ -14,6 +14,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options = {
 
     hardware.cpu = {

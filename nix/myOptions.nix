@@ -26,6 +26,7 @@ let
   };
 in
 {
+  _class = "nixos";
   config = {
 
     # personal defaults across the board

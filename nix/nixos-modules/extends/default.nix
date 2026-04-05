@@ -1,4 +1,5 @@
 {
+  _class = "nixos";
   imports = [
     # files
     ./bind-dynamic.nix

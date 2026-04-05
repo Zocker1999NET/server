@@ -11,6 +11,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.x-banananetwork.frontend = {
     convertable = lib.mkEnableOption "convertable specific settings";
   };

@@ -13,6 +13,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   config = mkIf cfg.enable {
 
     # TODO reenable, taskwarrior:///d3d19597-a834-4030-9f42-4e8fac56daac

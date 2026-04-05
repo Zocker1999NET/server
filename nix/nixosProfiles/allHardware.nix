@@ -3,6 +3,8 @@
 { modulesPath, ... }:
 {
 
+  _class = "nixos";
+
   imports = [
     # from nixpkgs
     "${modulesPath}/profiles/all-hardware.nix" # all hardware, just so installers from USB / etc. can run

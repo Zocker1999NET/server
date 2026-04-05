@@ -35,6 +35,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   nix.settings.allowed-users = singleton userName;
 
   systemd.services.${userName} = {

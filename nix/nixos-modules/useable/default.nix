@@ -10,6 +10,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = [
     ./cli_cheatsheet.nix
   ];

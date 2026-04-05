@@ -6,6 +6,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   config = lib.mkIf cfg.enable {
     systemd.network.wait-online.enable = lib.mkIf nmEn (lib.mkDefault false);
 

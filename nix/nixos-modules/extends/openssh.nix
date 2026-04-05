@@ -8,6 +8,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.openssh = {
 
     authorizedKeysOnly = lib.mkEnableOption ''

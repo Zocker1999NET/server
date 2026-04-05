@@ -6,6 +6,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = importsApplyMods [
     # files
     ./tailscale.nix

@@ -15,6 +15,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options = {
     boot.blockedKernelModules = mkOption {
       description = ''

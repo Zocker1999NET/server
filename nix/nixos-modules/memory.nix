@@ -147,6 +147,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options = setAttrByPath locPath {
     enableWarnings =
       mkEnableOption ''

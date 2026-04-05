@@ -11,6 +11,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.tailscale = {
 
     setFlags = lib.mkOption {

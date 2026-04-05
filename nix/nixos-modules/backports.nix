@@ -23,6 +23,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   imports = map backport [
   ];
 

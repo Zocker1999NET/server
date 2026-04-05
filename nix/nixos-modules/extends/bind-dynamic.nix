@@ -126,6 +126,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.services.bind = {
     dynamicDataPath = mkOption {
       description = ''

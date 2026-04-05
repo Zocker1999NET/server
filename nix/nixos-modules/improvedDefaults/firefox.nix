@@ -10,6 +10,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   config = lib.mkIf (cfg.enable && fx.enable) {
 
     # TODO only on touchscreen / wayland

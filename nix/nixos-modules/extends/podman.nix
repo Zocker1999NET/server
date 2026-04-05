@@ -8,6 +8,7 @@ let
   cfg = config.virtualisation.podman;
 in
 {
+  _class = "nixos";
   options.virtualisation.podman = {
     compose.enable = lib.mkEnableOption "podman-compose";
   };

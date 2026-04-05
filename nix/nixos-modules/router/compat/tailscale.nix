@@ -34,6 +34,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   options.x-banananetwork.routerVM.compat.tailscale = {
     enable = mkDisableOption ''
       options ensuring compatibility with Tailscale.

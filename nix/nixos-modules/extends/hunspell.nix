@@ -13,6 +13,9 @@ let
   cfg = config.services.hunspell;
 in
 {
+
+  _class = "nixos";
+
   options.services.hunspell = {
     enable = mkEnableOption "hunspell dictionaries available to all applications";
 
@@ -47,4 +50,5 @@ in
       ];
     };
   };
+
 }

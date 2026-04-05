@@ -6,6 +6,7 @@ let
   testDiskDiscard = testDiskOption "discard";
 in
 {
+  _class = "nixos";
   config = {
 
     assertions = [

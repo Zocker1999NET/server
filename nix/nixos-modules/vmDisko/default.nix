@@ -10,6 +10,8 @@ let
 in
 {
 
+  _class = "nixos";
+
   # TODO upstream that to disko
 
   options.x-banananetwork.vmDisko = {

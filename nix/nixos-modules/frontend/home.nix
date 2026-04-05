@@ -22,6 +22,8 @@ let
 in
 {
 
+  _class = "homeManager";
+
   # TODO configure plasma via github:nix-community/plasma-manager
 
   imports = [

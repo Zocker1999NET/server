@@ -8,6 +8,8 @@
 }:
 {
 
+  _class = "nixos";
+
   imports = [
     # from here
     ./common.nix
