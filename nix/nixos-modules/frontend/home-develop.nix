@@ -6,7 +6,10 @@
   pkgs,
   ...
 }:
-
+let
+  inherit (builtins) concatLists;
+  inherit (lib.attrsets) mapAttrsToList;
+in
 {
 
   _class = "homeManager";
@@ -189,6 +192,29 @@
           "python.showStartPage" = false;
 
           "redhat.telemetry.enabled" = false;
+
+          # no commands -> everything per project
+          "roo-cline.allowedCommands" = [ ];
+          # fully reject only certain commands (& so that default "*" goes away)
+          # list must not not be fully populated, as otherwise manual approval
+          "roo-cline.deniedCommands" = concatLists [
+            [
+              # file access
+              "cat"
+              "head"
+              "tail"
+              "rm"
+              # publishing
+              "git push"
+              "npm publish"
+              # remoting
+              "mosh"
+              "scp"
+              "ssh"
+            ]
+            # privilege escalation
+            (mapAttrsToList (_: w: w.program) osConfig.security.wrappers)
+          ];
 
           "scm.alwaysShowProviders" = true;
 
