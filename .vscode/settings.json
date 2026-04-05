@@ -1,0 +1,23 @@
+{
+    "files.associations": {
+        "*.age": "code-text-binary"
+    },
+    "files.readonlyInclude": {
+        "**/*.age": true,
+        "**/*.diff": true,
+        "**/*.patch": true
+    },
+    "mypy.runUsingActiveInterpreter": false,
+
+    // language specific edits
+    "[code-text-binary]": {
+        "files.trimTrailingWhitespace": false,
+        "files.insertFinalNewline": false,
+        "files.trimFinalNewlines": false
+    },
+    "[diff]": {
+        "files.trimTrailingWhitespace": false,
+        "files.insertFinalNewline": false,
+        "files.trimFinalNewlines": false
+    }
+}
