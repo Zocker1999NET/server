@@ -1,7 +1,12 @@
 { lib, ... }@flakeArg:
 let
+  inherit (builtins) foldl';
   inherit (lib) systemSpecificVars;
   rawImport = path: import path flakeArg;
+  # TODO upstream
+  chainOverlays =
+    overlays: final: prev:
+    foldl' (acc: elem: acc // elem final acc) prev overlays;
   wrapOverlay =
     overlay: final: prev:
     overlay (systemSpecificVars prev.system) final prev;
@@ -11,7 +16,10 @@ in
 
   # TODO combine reasonable stuff into default
 
-  backports = importOverlay ./backports.nix;
+  backports = chainOverlays [
+    (importOverlay ./backports.nix)
+    (importOverlay ./backport-scopes-manually.nix)
+  ];
 
   customisations = importOverlay ./customisations.nix;
 
