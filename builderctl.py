@@ -51,16 +51,6 @@ def run_remote_command_follow(*cmd: str) -> subprocess.CompletedProcess[str]:
     return run_remote_command(*cmd, ssh_args=("-t",), check=True)
 
 
-def run_remote_command_follow_safe(*cmd: str) -> subprocess.CompletedProcess[str]:
-    """Execute a command on the remote server via SSH with pseudo-terminal, handling KeyboardInterrupt gracefully."""
-    try:
-        return run_remote_command_follow(*cmd)
-    except KeyboardInterrupt:
-        # Return a dummy result for KeyboardInterrupt
-        # Create a minimal CompletedProcess to satisfy return type
-        return subprocess.CompletedProcess(args=[], returncode=0, stdout="", stderr="")
-
-
 def get_service_status(*services: str) -> None:
     """Get and print the status of one or more systemd services on the remote server."""
     # Note: systemctl returns exit code 3 if any service is inactive, so we don't check exit code
