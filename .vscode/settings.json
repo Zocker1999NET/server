@@ -25,4 +25,5 @@
     "roo-cline.allowedCommands": [
         "./llm_request.py "
     ],
+    // do not override "roo-cline.deniedCommands" as this shadows global entries
 }
