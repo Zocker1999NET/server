@@ -68,10 +68,7 @@ in
       ];
       config = {
         nixpkgs.overlays = [
-          outputs.overlays.backports
-          outputs.overlays.fromFlake
-          outputs.overlays.taskwarrior3-customs
-          outputs.overlays.upgrades
+          outputs.overlays.default
         ];
       };
     };

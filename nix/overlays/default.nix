@@ -12,9 +12,16 @@ let
     overlay (systemSpecificVars prev.system) final prev;
   importOverlay = path: wrapOverlay (rawImport path);
 in
-{
+rec {
 
-  # TODO combine reasonable stuff into default
+  # combines overlays that are assigned by default to every NixOS configuration
+  # see nix/nixos-modules/default.nix
+  default = chainOverlays [
+    backports
+    fromFlake
+    taskwarrior3-customs
+    upgrades
+  ];
 
   backports = chainOverlays [
     (importOverlay ./backports.nix)
