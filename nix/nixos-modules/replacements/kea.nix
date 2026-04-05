@@ -303,7 +303,8 @@ in
               ExecStart = "${package}/bin/kea-ctrl-agent -c /etc/kea/ctrl-agent.conf ${lib.escapeShellArgs cfg.ctrl-agent.extraArgs}";
               KillMode = "process";
               Restart = "on-failure";
-            } // commonServiceConfig;
+            }
+            // commonServiceConfig;
           };
         })
 
@@ -349,7 +350,8 @@ in
                 "CAP_NET_BIND_SERVICE"
                 "CAP_NET_RAW"
               ];
-            } // commonServiceConfig;
+            }
+            // commonServiceConfig;
           };
         })
 
@@ -389,7 +391,8 @@ in
               # Kea does not request capabilities by itself
               AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
               CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
-            } // commonServiceConfig;
+            }
+            // commonServiceConfig;
           };
         })
 
@@ -428,7 +431,8 @@ in
               ExecStart = "${package}/bin/kea-dhcp-ddns -c /etc/kea/dhcp-ddns.conf ${lib.escapeShellArgs cfg.dhcp-ddns.extraArgs}";
               AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
               CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
-            } // commonServiceConfig;
+            }
+            // commonServiceConfig;
           };
         })
 

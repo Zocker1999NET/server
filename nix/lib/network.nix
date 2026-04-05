@@ -166,7 +166,7 @@ rec {
     # TODO add support for IPv4 mapped addresses
     ipStr:
     let
-      parsed = match ''^(([0-9a-f]{0,4}:){1,7}[0-9a-f]{0,4})(/([0-9]+))?$'' (toLower ipStr);
+      parsed = match "^(([0-9a-f]{0,4}:){1,7}[0-9a-f]{0,4})(/([0-9]+))?$" (toLower ipStr);
       rawGroups = pipe parsed [
         (flip elemAt 0)
         (splitString ":")
@@ -190,7 +190,7 @@ rec {
   parseIPv6IfId =
     ipStr:
     let
-      parsed = match ''^(([0-9a-f]{0,4}:){1,3}[0-9a-f]{0,4})$'' (toLower ipStr);
+      parsed = match "^(([0-9a-f]{0,4}:){1,3}[0-9a-f]{0,4})$" (toLower ipStr);
       rawGroups = pipe parsed [
         (flip elemAt 0)
         (splitString ":")

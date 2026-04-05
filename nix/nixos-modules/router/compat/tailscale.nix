@@ -73,7 +73,7 @@ in
       '';
       type = with types; nullOr (listOf ifName);
       default = cfg.interfaces.${ts.interfaceName}.routing.allowTo;
-      defaultText = ''config.x-banananetwork.routerVM.interfaces''${config.services.tailscale.interfaceName}.routing.allowTo'';
+      defaultText = "config.x-banananetwork.routerVM.interfaces\${config.services.tailscale.interfaceName}.routing.allowTo";
       example = [
         "lan0"
       ];

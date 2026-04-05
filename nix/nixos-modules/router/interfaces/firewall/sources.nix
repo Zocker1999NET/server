@@ -62,7 +62,7 @@ in
 
   options.firewall.sources = {
 
-    enable = lib.mkDisableOption ''filtering packets for having valid source IP addresses'';
+    enable = lib.mkDisableOption "filtering packets for having valid source IP addresses";
 
     ignoreIncomingRoutes = lib.mkOption {
       description = ''

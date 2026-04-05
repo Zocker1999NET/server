@@ -103,7 +103,7 @@ in
                 making using NAT optional'';
               allowICMPEcho = lib.mkEnableOption "forwarding of ICMP echos via IPv6 to the device" // {
                 default = dev.exposedPorts != [ ];
-                defaultText = literalExpression ''devCfg.exposedPorts != [ ]'';
+                defaultText = literalExpression "devCfg.exposedPorts != [ ]";
               };
               exposedPorts = mkOption {
                 description = ''
@@ -146,7 +146,7 @@ in
                 };
               };
               nftablesIPv4Dest = lib.mkOutputOption { default = dev.staticIPv4; };
-              nftablesIPv6Dest = lib.mkOutputOption { default = ''@${ifCfg.name}v6_${lib.formatMAC dev.mac}''; };
+              nftablesIPv6Dest = lib.mkOutputOption { default = "@${ifCfg.name}v6_${lib.formatMAC dev.mac}"; };
               nftablesForwardingRules = lib.mkOutputOption {
                 default =
                   if dev.fullyExposed then

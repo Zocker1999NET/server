@@ -1,4 +1,5 @@
-{ ... }@interface: {
+{ ... }@interface:
+{
 
   imports = [
     ./dhcp.nix
