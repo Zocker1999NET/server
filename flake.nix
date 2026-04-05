@@ -3,6 +3,11 @@
 
   inputs = {
 
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+
     # packages repositories
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs_unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -44,6 +49,7 @@
     disko-install-menu = {
       url = "github:Zocker1999NET/disko-install-menu";
       inputs.disko.follows = "disko";
+      inputs.flake-parts.follows = "flake-parts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
