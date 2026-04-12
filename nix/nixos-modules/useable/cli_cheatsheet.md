@@ -39,6 +39,7 @@ BEFORE editing this cheatsheet, you MUST check the rules for its generation in .
 | `pv` | Monitor progress of data through a pipeline |
 | `reptyr` | Reparent running program to new terminal |
 | `smem` | Memory usage reporting with shared memory calculations |
+| `sponge` | Soak up standard input and write to a file |
 | `speedtest-cli` | Command-line internet bandwidth testing |
 | `up` | Linux tool for writing and testing data pipelines |
 | `usbtop` | Display USB bus bandwidth usage |

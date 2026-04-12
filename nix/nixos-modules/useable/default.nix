@@ -87,6 +87,7 @@ in
         file
         manix
         massren
+        moreutils
         nethogs # better than bmon for process identification
         reptyr
         psitop

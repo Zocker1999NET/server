@@ -77,6 +77,12 @@ A C library that generates ICMP echo request packets (ping packets) and measures
 ### manix
 A fast command-line documentation searcher for Nix and NixOS that provides instant search results across all available man pages and option documentation. It queries local nixpkgs documentation and displays results with syntax highlighting and quick navigation.
 
+### moreutils
+A growing collection of Unix tools that extend the standard utility set. Originally started as a collection of useful utilities that nobody wrote when Unix was young, it provides several handy command-line tools for common tasks.
+
+**Tools provided:**
+- `sponge` - Soaks up all input before opening the output file, allowing pipelines that read from and write to the same file
+
 ### massren
 A command-line tool that makes it easy to rename multiple files using your preferred text editor. It opens all selected filenames in an editor, allowing for batch renaming through familiar editing commands, with undo support.
 
