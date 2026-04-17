@@ -76,6 +76,8 @@ in
           mkhl.direnv
           vscodevim.vim
           # AI assistant
+          github.copilot
+          github.copilot-chat
           saoudrizwan.claude-dev # Cline
           # IDE: LaTeX
           james-yu.latex-workshop
