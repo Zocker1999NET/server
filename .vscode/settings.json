@@ -7,6 +7,8 @@
         "**/*.diff": true,
         "**/*.patch": true
     },
+    // TODO temporary until not so many files are laying around here
+    "git.countBadge": "tracked",
     "mypy.runUsingActiveInterpreter": false,
 
     // language specific edits
