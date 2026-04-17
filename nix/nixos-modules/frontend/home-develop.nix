@@ -154,8 +154,19 @@ in
           "git.autofetch" = true;
           "git.blame.editorDecoration.enabled" = false; # annoying because displayed while editing
           "git.blame.statusBarItem.enabled" = true; # useful, displayed in the bottom right corner
+          "git.blame.statusBarItem.template" = "\${subject} (\${authorDateAgo} by \${authorName})";
           "git.confirmSync" = false;
+          "git.countBadge" = "all"; # good hint, "tracked" only for specific repos recommended
+          "git.defaultCloneDirectory" = "~/projects";
           "git.enableSmartCommit" = true;
+          "git.untrackedChanges" = "separate";
+          "git.smartCommitChanges" = "tracked";
+          "git.requireGitUserConfig" = true; # guessing will always be wrong
+          "git.terminalGitEditor" = false; # terminal vim is more natural for that
+          "git.verboseCommit" = true;
+
+          "github.gitAuthentication" = false; # prefer native SSH for that
+          "github.gitProtocol" = "ssh";
 
           "html.format.enable" = false;
 
