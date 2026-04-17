@@ -79,6 +79,9 @@ in
           github.copilot
           github.copilot-chat
           saoudrizwan.claude-dev # Cline
+          # forge integrations
+          github.vscode-github-actions
+          github.vscode-pull-request-github
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
