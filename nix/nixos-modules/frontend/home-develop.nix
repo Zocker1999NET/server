@@ -76,7 +76,7 @@ in
           mkhl.direnv
           vscodevim.vim
           # AI assistant
-          github.copilot
+          # github.copilot is the deprecated predecessor
           github.copilot-chat
           saoudrizwan.claude-dev # Cline
           # forge integrations
