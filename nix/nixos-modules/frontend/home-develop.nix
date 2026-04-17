@@ -76,7 +76,7 @@ in
           mkhl.direnv
           vscodevim.vim
           # AI assistant
-          rooveterinaryinc.roo-cline
+          saoudrizwan.claude-dev # Cline
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
@@ -192,29 +192,6 @@ in
           "python.showStartPage" = false;
 
           "redhat.telemetry.enabled" = false;
-
-          # no commands -> everything per project
-          "roo-cline.allowedCommands" = [ ];
-          # fully reject only certain commands (& so that default "*" goes away)
-          # list must not not be fully populated, as otherwise manual approval
-          "roo-cline.deniedCommands" = concatLists [
-            [
-              # file access
-              "cat"
-              "head"
-              "tail"
-              "rm"
-              # publishing
-              "git push"
-              "npm publish"
-              # remoting
-              "mosh"
-              "scp"
-              "ssh"
-            ]
-            # privilege escalation
-            (mapAttrsToList (_: w: w.program) osConfig.security.wrappers)
-          ];
 
           "scm.alwaysShowProviders" = true;
 
