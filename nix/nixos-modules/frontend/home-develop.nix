@@ -104,6 +104,8 @@ in
 
           "ansible.ansibleLint.path" = "${lib.getExe pkgs.ansible-lint}";
 
+          "black-formatter.path" = "${pkgs.black}/bin/black";
+
           "chat.disableAIFeatures" = false;
 
           "dev.containers.dockerComposePath" = "${lib.getExe pkgs.podman-compose}";
@@ -171,6 +173,7 @@ in
           "mypy-type-checker.importStrategy" = "fromEnvironment";
           "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
           "mypy.runUsingActiveInterpreter" = true;
+          "mypy.mypyExecutable" = "${pkgs.mypy}/bin/mypy";
 
           "notebook.cellToolbarLocation" = {
             default = "right";
