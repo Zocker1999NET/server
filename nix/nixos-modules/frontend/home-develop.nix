@@ -104,6 +104,8 @@ in
 
           "ansible.ansibleLint.path" = "${lib.getExe pkgs.ansible-lint}";
 
+          "chat.disableAIFeatures" = false;
+
           "dev.containers.dockerComposePath" = "${lib.getExe pkgs.podman-compose}";
           "dev.containers.dockerPath" = "${lib.getExe pkgs.podman}";
 
