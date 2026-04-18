@@ -33,17 +33,14 @@ in
 
   home.file = {
 
-    # TODO use generator for YAML
     # TODO sptlrx player detection broken because ".instanceXXXX" suffixes
     #   v1.2.2 fixes this, but its test requires network, making it hard to package for NixOS
-    ".config/sptlrx/config.yaml".text = ''
-      player: mpris
-      timerInterval: 200
-      updateInterval: 2000
-      mpris:
-        players:
-          - ncspot
-    '';
+    ".config/sptlrx/config.yaml".text = lib.generators.toYAML { } {
+      player = "mpris";
+      timerInterval = 200;
+      updateInterval = 2000;
+      mpris.players = [ "ncspot" ];
+    };
 
     ".ssh/connections/.keep".text = ''
       # created by home-manager (to create directory)
