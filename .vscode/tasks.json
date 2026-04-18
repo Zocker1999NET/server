@@ -1,0 +1,31 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run all tests",
+			"type": "shell",
+			"command": "./tests.sh",
+			"group": "test"
+		},
+		{
+			"label": "builderctl: Status All",
+			"type": "shell",
+			"command": "./builderctl.py status"
+		},
+		{
+			"label": "builderctl: Trigger autoPush",
+			"type": "shell",
+			"command": "./builderctl.py autoPush trigger"
+		},
+		{
+			"label": "builderctl: Follow autoPush Journal",
+			"type": "shell",
+			"command": "./builderctl.py autoPush journal --follow"
+		},
+		{
+			"label": "builderctl: Pull autoUpdate Into Staging",
+			"type": "shell",
+			"command": "./builderctl.py autoUpdate pull"
+		}
+	]
+}
