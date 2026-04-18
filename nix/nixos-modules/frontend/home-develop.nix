@@ -2,14 +2,9 @@
 {
   config,
   lib,
-  osConfig,
   pkgs,
   ...
 }:
-let
-  inherit (builtins) concatLists;
-  inherit (lib.attrsets) mapAttrsToList;
-in
 {
 
   _class = "homeManager";
