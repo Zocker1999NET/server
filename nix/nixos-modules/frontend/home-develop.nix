@@ -74,6 +74,7 @@
           # github.copilot is the deprecated predecessor
           github.copilot-chat
           saoudrizwan.claude-dev # Cline
+          ms-vscode.vscode-speech
           # forge integrations
           github.vscode-github-actions
           github.vscode-pull-request-github
