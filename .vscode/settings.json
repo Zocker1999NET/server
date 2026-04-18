@@ -22,10 +22,4 @@
         "files.insertFinalNewline": false,
         "files.trimFinalNewlines": false
     },
-
-    // AI agent config
-    "roo-cline.allowedCommands": [
-        "./llm_request.py "
-    ],
-    // do not override "roo-cline.deniedCommands" as this shadows global entries
 }
