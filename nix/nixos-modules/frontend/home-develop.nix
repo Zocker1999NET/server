@@ -78,6 +78,9 @@
           # forge integrations
           github.vscode-github-actions
           github.vscode-pull-request-github
+          # Spell checker
+          streetsidesoftware.code-spell-checker
+          streetsidesoftware.code-spell-checker-german
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
