@@ -15,7 +15,8 @@
 		{
 			"label": "builderctl: Trigger autoPush",
 			"type": "shell",
-			"command": "./builderctl.py autoPush trigger"
+			"command": "./builderctl.py autoPush trigger",
+			"group": { "kind": "build", "isDefault": true },
 		},
 		{
 			"label": "builderctl: Follow autoPush Journal",
