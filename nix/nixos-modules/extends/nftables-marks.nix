@@ -126,6 +126,7 @@ let
       };
     }
   );
+  invalidGroupNames = attrNames (markCommon { }).options;
   groups = filterAttrs (_: x: x != null) cfg.groups;
   values = attrValues cfg.values;
   # as supported by nftables / netfilter
@@ -152,9 +153,8 @@ assert logUpper 2 markMaxVal == 32;
         unintended side affects may happen.
 
         Some terms cannot be used as group member names due to implementation reasons,
-        as they are used to to provide group helpers in {option}`networking.nftables.marks.values`, these are: ${
-          toString (attrNames (markCommon { }).options)
-        }.
+        as they are used to to provide group helpers in {option}`networking.nftables.marks.values`,
+        these are: ${toString invalidGroupNames}.
       '';
       # If you need so, use one of the other options to avoid overlapping mark values (TODO introduce these options).
       type = with types; attrsOf (nullOr (listOf str));
@@ -172,7 +172,7 @@ assert logUpper 2 markMaxVal == 32;
     values = mkOption {
       readOnly = true;
       description = ''
-        Output option giving access to the values chosen for the given marks & matching helpers
+        Output option giving access to the values chosen for the given marks & matching helpers.
 
         TODO more docu on how to use
       '';
@@ -223,7 +223,15 @@ assert logUpper 2 markMaxVal == 32;
         }
       )
       # following are already prevented by the module system, but the error message might be not useful
-      # TODO (cosmetic) check for invalid group member names
+      (
+        let
+          invalids = filter (name: groups ? name) invalidGroupNames;
+        in
+        {
+          assertion = invalids == [ ];
+          message = "Some group names are reserved and cannot be used: " + toString invalids;
+        }
+      )
     ];
 
     networking.nftables.marks.values = pipe groups [
