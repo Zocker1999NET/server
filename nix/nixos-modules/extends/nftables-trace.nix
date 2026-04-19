@@ -38,6 +38,16 @@ in
       '';
       type = types.listOf types.str;
       default = [ ];
+      example = lib.literalExpression ''
+        [
+          # Trace TCP traffic from 192.0.2.1:12345 to 198.51.100.2:80
+          "192.0.2.1 . 198.51.100.2 . tcp . 12345 . 80"
+          # Trace UDP traffic from any source to 203.0.113.5:53
+          "0.0.0.0/0 . 203.0.113.5 . udp . 0/0 . 53"
+          # Wildcard all non-IP fields (match any protocol/port)
+          "10.0.0.1 . 10.0.0.2 . 0/0 . 0/0 . 0/0"
+        ]
+      '';
     };
     traceIPv6 = mkOption {
       description = ''
@@ -50,6 +60,16 @@ in
       '';
       type = types.listOf types.str;
       default = [ ];
+      example = lib.literalExpression ''
+        [
+          # Trace TCP traffic from [2001:db8::1]:12345 to [2001:db8::2]:80
+          "2001:db8::1 . 2001:db8::2 . tcp . 12345 . 80"
+          # Trace UDP traffic from any source to [2001:db8::5]:53
+          "::/0 . 2001:db8::5 . udp . 0/0 . 53"
+          # Wildcard all non-IP fields (match any protocol/port)
+          "2001:db8::a . 2001:db8::b . 0/0 . 0/0 . 0/0"
+        ]
+      '';
     };
     traceToJournal = mkEnableOption ''
       a service pushing nftrace logs to the systemd journal.
