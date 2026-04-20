@@ -59,6 +59,7 @@ in
   "dns.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/dns;
 
   "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
+  "paperless.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/paperless;
 
   "nix-builder.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/nix-builder;
 
