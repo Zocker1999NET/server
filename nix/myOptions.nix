@@ -60,6 +60,8 @@ in
 
       # options defined in nixos-modules/options.nix
 
+      localTimeZone = lib.mkDefault "Europe/Berlin";
+
       gpgSignatureKey = gpg_keys.myKey;
       gpgTrustedKeys = with gpg_keys; [
         myKey

@@ -54,6 +54,17 @@ in
 
     x-banananetwork = {
 
+      localTimeZone = mkOption {
+        description = ''
+          The local time zone for this system.
+
+          Used where a local time zone is expected (e.g., external interactions),
+          though configs generally prefer UTC.
+        '';
+        type = types.str;
+        example = "Europe/Berlin";
+      };
+
       gpgSignatureKey = mkOption {
         description = ''
           The GPG key used to sign the commits on my Nix config repo & most other Git repos.
