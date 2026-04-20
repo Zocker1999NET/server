@@ -106,11 +106,7 @@ in
         (import cfg.generationPath)
         {
           # avoid mixing VM disks
-          # hint: mkOverride required because
-          # - cfg.generations from above is already type-checked, hence priorities are discharged
-          # - assigment from above has default priority of 100
-          #disk.main.name = lib.mkOverride 99 cfg.mainDiskName;
-          disk.main.name = cfg.mainDiskName;
+          disk.main.name = lib.mkDefault cfg.mainDiskName;
         }
       ];
 
