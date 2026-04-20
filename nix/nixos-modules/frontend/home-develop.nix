@@ -227,6 +227,8 @@
 
           "telemetry.telemetryLevel" = "off";
 
+          "terminal.integrated.enableKittyKeyboardProtocol" = false; # https://github.com/microsoft/vscode/issues/308152#issuecomment-4281470710
+
           "typescript.updateImportsOnFileMove.enabled" = "always";
 
           "update.mode" = "none";
