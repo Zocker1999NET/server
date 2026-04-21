@@ -125,6 +125,7 @@ in
         main.name = "paperlessMain";
         data.name = "paperlessData";
       };
+      x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ7qfWfU66S7z8lnFsyX48NygxaM6ngsuIX/YHHnYFTA root@paperless.boreth.pve.6nw.de 2026-04-21";
     }
 
   ];
