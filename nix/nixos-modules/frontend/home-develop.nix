@@ -119,6 +119,16 @@
             "https://wiki.nixos.org" = true;
           };
 
+          "cSpell.allowCompoundWords" = false; # enforce camelCasing or snake_casing
+          "cSpell.language" = "en,de";
+          "cSpell.languageSettings" = [
+            {
+              "caseSensitive" = false; # because of package names
+              "languageId" = [ "nix" ];
+            }
+          ];
+          "cSpell.spellCheckDelayMs" = 5000; # increase delay to reduce CPU usage, especially for large files
+
           "dev.containers.dockerComposePath" = "${lib.getExe pkgs.podman-compose}";
           "dev.containers.dockerPath" = "${lib.getExe pkgs.podman}";
 
