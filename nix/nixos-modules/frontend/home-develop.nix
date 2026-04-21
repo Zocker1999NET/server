@@ -5,6 +5,16 @@
   pkgs,
   ...
 }:
+let
+  inherit (pkgs) runCommand;
+  # TODO upstream
+  # copies file into its own derivation
+  copyFile =
+    name: path:
+    runCommand name { } ''
+      cp -v ${path} "$out"
+    '';
+in
 {
 
   _class = "homeManager";
@@ -120,6 +130,29 @@
           };
 
           "cSpell.allowCompoundWords" = false; # enforce camelCasing or snake_casing
+          "cSpell.customDictionaries" =
+            let
+              createDict = name: path: {
+                inherit name;
+                path = copyFile "cSpell-dict-${name}" path;
+                scope = "user";
+                addWords = false;
+              };
+            in
+            {
+              bnet = createDict "bnet" ./cspell-dicts/bnet.txt;
+              inboxReadOnly = createDict "inboxReadOnly" ./cspell-dicts/inbox.txt;
+              nix = createDict "nix" ./cspell-dicts/nix.txt;
+              python = createDict "python" ./cspell-dicts/python.txt;
+              terms = createDict "terms" ./cspell-dicts/terms.txt;
+              # editable dict
+              inbox = {
+                name = "inbox";
+                path = "~/projects/server/nix/nixos-modules/frontend/cspell-dicts/inbox.txt";
+                scope = "user";
+                addWords = true;
+              };
+            };
           "cSpell.language" = "en,de";
           "cSpell.languageSettings" = [
             {

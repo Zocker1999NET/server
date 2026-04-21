@@ -1,0 +1,21 @@
+# cSpell:disable
+AdGuardHome
+DHCPv6
+DNSSEC
+Fira
+Nix
+NixOS
+SLAAC
+Safebrowsing
+Syncthing
+Taskwarrior
+WebUI
+Wireshark
+blackhole
+direnv
+networkd
+nftables
+nixpkgs
+xkcdpass
+Segoe
+autofetch

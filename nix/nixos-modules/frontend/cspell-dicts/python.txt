@@ -1,0 +1,6 @@
+# cSpell:disable
+dmypy
+ipynb
+isort
+mypy
+venv
