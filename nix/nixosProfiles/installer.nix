@@ -28,6 +28,9 @@
     networking.domain = lib.mkDefault "temp.6nw.de"; # acceptable here because temporary
     system.stateVersion = lib.versions.majorMinor config.system.nixos.version;
     # installer does not necessarily need working SSH access & an extra user for that
+
+    # TODO upstream
+    security.sudo-rs.wheelNeedsPassword = false;
   };
 
 }
