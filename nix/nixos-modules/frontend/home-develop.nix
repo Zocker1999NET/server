@@ -20,6 +20,7 @@ in
   _class = "homeManager";
 
   home.packages = with pkgs; [
+    # cSpell:disable
     # editors
     neovim
     # general tools
@@ -27,6 +28,7 @@ in
     just
     # nix dev
     nix-output-monitor
+    # cSpell:enable
   ];
 
   programs = {
@@ -39,7 +41,7 @@ in
           strict_env = true;
         };
       };
-      enableBashIntegration = false; # explictly disable for bash so bash can be a fallback for that
+      enableBashIntegration = false; # explicitly disable for bash so bash can be a fallback for that
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
@@ -64,7 +66,7 @@ in
           "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup"
           "workbench.action.previousEditor"
         ];
-        # disable overlappings from vim plugin
+        # disable overlapping with vim plugin
         "ctrl+p" = lib.singleton {
           command = "-extension.vim_ctrl+p";
           when = "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'";
@@ -76,6 +78,7 @@ in
         enableExtensionUpdateCheck = config.programs.vscode.mutableExtensionsDir;
         enableUpdateCheck = false;
         extensions = with pkgs.vscode-extensions; [
+          # cSpell:disable
           # general
           jbockle.jbockle-format-files
           mkhl.direnv
@@ -104,6 +107,7 @@ in
           ms-python.python
           # IDE: Svelte
           svelte.svelte-vscode
+          # cSpell:enable
         ];
         userSettings = {
 
@@ -190,6 +194,7 @@ in
           };
           "files.autoSave" = "onFocusChange";
           "files.exclude" = {
+            # cSpell:disable
             "**/.classpath" = true;
             "**/.factorypath" = true;
             "**/.mypy_cache" = true;
@@ -198,6 +203,7 @@ in
             "**/.settings" = true;
             "**/__pycache__" = true;
             "**/venv" = true;
+            # cSpell:enable
           };
           "files.insertFinalNewline" = true;
           "files.trimTrailingWhitespace" = true;
