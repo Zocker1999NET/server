@@ -63,7 +63,7 @@ in
             settings = {
               PAPERLESS_ENABLE_COMPRESSION = "false";
               # for now, TODO configure to public domain and use https
-              PAPERLESS_URL = mkForce "http://[fde3:b424:b5ce:1:be24:11ff:fe5a:58fc]";
+              PAPERLESS_URL = mkForce "http://[fde3:b424:b5ce:1:be24:11ff:fe9c:8f04]";
             };
           };
         };
