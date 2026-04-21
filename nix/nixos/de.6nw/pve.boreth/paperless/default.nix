@@ -48,6 +48,15 @@ in
     (
       { config, pkgs, ... }:
       {
+        networking.firewall = {
+          allowedTCPPorts = [
+            config.services.nginx.defaultHTTPListenPort
+            config.services.nginx.defaultSSLListenPort
+          ];
+          allowedUDPPorts = [
+            config.services.nginx.defaultSSLListenPort # QUIC
+          ];
+        };
         services = {
           nginx = {
             experimentalZstdSettings = true;
