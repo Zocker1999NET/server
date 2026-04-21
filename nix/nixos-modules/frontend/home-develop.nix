@@ -145,7 +145,6 @@ in
             in
             {
               bnet = createDict "bnet" ./cspell-dicts/bnet.txt;
-              inboxReadOnly = createDict "inboxReadOnly" ./cspell-dicts/inbox.txt;
               nix = createDict "nix" ./cspell-dicts/nix.txt;
               python = createDict "python" ./cspell-dicts/python.txt;
               terms = createDict "terms" ./cspell-dicts/terms.txt;
