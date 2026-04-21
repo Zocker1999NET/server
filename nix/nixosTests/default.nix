@@ -180,6 +180,25 @@ in
     '';
   };
 
+  mgmt-iso = nixosIntegrationTest machines.mgmt-iso {
+    testScript = ''
+      import time
+
+      tested.wait_for_unit("default.target")
+      time.sleep(2)
+
+      # as long as ZSH config is missing
+      tested.wait_until_tty_matches("1", "This is the Z Shell ", 10)
+      tested.send_chars("q")
+      tested.wait_until_tty_matches("1", "@mgmt-iso ~", 10)
+
+      # confirm that install environment can be started manually
+      # (which also confirms that sudo is working)
+      tested.send_chars("sudo disko-install-menu\n")
+      tested.wait_until_tty_matches("1", "install / repair NixOS", 10)
+    '';
+  };
+
   # similar to disko-install-menu.checks.SYSTEM.offineBuilds-*
   # (TODO in disko-install-menu, export test framework & use here)
   diskoOfflineInstall = pkgs.testers.runNixOSTest {
