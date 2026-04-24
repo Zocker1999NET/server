@@ -8,12 +8,42 @@ in
 
   modules = [
 
+    # temporary post consumption handling
+    (
+      { config, pkgs, ... }:
+      let
+        copyFile =
+          name: path:
+          pkgs.runCommand name { } ''
+            cp -v ${path} "$out"
+          '';
+        postConsume = pkgs.writeShellApplication {
+          name = "paperless-post-consume";
+          runtimeInputs = [
+            (pkgs.python3.withPackages (
+              ps: with ps; [
+                httpx
+              ]
+            ))
+          ];
+          text = ''
+            API_AUTH_TOKEN="$(cat /paperless-auth-token)"
+            export API_AUTH_TOKEN
+            python3 ${copyFile "paperless-post-consume-python" ./post_consumption.py} "$@"
+          '';
+        };
+      in
+      {
+        services.paperless.settings.PAPERLESS_POST_CONSUME_SCRIPT = lib.getExe postConsume;
+      }
+    )
+
     # Paperless: configure automatic consumption settings (TODO extend as needed)
     # - TODO: configure barcode settings (https://docs.paperless-ngx.com/configuration/#barcodes)
     {
       services.paperless = {
         settings = {
-          PAPERLESS_CONSUMER_DISABLE = "true"; # for now
+          PAPERLESS_CONSUMER_DISABLE = "false"; # for now
           PAPERLESS_CONSUMER_ENABLE_COLLATE_DOUBLE_SIDED = "false"; # I have an DADF
         };
       };
