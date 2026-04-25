@@ -26,6 +26,7 @@ in
         settings = {
           PAPERLESS_OCR_MODE = "skip"; # skip OCR if text is already present
           PAPERLESS_OCR_OUTPUT_TYPE = "pdfa";
+          PAPERLESS_TASK_WORKERS = 2;
         };
       };
     }
