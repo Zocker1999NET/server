@@ -8,6 +8,20 @@ in
 
   modules = [
 
+    # Paperless: QR code & barcode interpretation
+    {
+      services.paperless.settings = {
+        # page separation
+        PAPERLESS_CONSUMER_ENABLE_BARCODES = "true";
+        PAPERLESS_CONSUMER_BARCODE_STRING = "PATCHT";
+        # ASN assignment
+        PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE = "true";
+        PAPERLESS_CONSUMER_ASN_BARCODE_PREFIX = "ASN";
+        # required to that my small QR codes can be read
+        PAPERLESS_CONSUMER_BARCODE_SCANNER = "ZXING";
+      };
+    }
+
     # Paperless: configure automatic consumption settings (TODO extend as needed)
     # - TODO: configure barcode settings (https://docs.paperless-ngx.com/configuration/#barcodes)
     {
