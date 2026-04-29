@@ -1,6 +1,5 @@
 { lib, outputs, ... }@flakeArg:
 let
-  inherit (builtins) concatStringsSep;
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkForce;
 in
@@ -80,34 +79,12 @@ in
     )
 
     # share our stuff
+    outputs.nixosProfiles.sambaServer
     (
       { config, ... }:
       {
-        networking.firewall.allowedTCPPorts = singleton 445; # .openFirewall opens more than I require
         services.samba = {
-          enable = true;
-          nmbd.enable = false;
-          openFirewall = false; # opens more than I require
-          winbindd.enable = false;
           settings = {
-            global = {
-              workgroup = "WORKGROUP";
-              "server string" = config.networking.hostName;
-              "netbios name" = config.networking.hostName;
-              security = "user";
-              "guest account" = "nobody";
-              "map to guest" = "bad user"; # invalid user names -> guest account
-              "valid users" = concatStringsSep " " [
-                "nobody" # so list is non-empty -> effective
-                "+smb"
-              ];
-              "server min protocol" = "SMB3";
-              #"server smb encrypt" = "desired"; # even "desired" not supported by some Linux implementations
-              # disable default shenanigangs because Samba is optimized for Linux-Windows sharing
-              "map archive" = "no"; # https://stackoverflow.com/a/20966148
-              "nt acl support" = "no";
-            };
-            # for external services
             Games = {
               path = "/mnt/metis.zfs.6nw.de/Gaming/Games";
               browseable = "yes";
@@ -141,7 +118,6 @@ in
             extraGroups = singleton "users";
           };
         };
-        users.groups.smb = { };
         users.groups.zocker.gid = config.users.users.zocker.uid;
       }
     )
