@@ -8,6 +8,49 @@ in
 
   modules = [
 
+    # Consumption of documents via SMB share (e.g. for autonomous scanning)
+    outputs.nixosProfiles.sambaServer
+    # TODO use same general module as for nixnas (mind ! for diffs)
+    (
+      { config, ... }:
+      let
+        # constants
+        userService = "samba-user-config";
+        paperlessUser = config.services.paperless.user;
+        groupName = "smb"; # group smb required because printer requires access to builtin IPC$
+        # service vars
+        shareName = "paperless-scanner";
+        userName = shareName;
+        # derived constants
+        secretName = "smb_${userName}";
+      in
+      {
+        services.samba.settings = {
+          global = {
+            "server min protocol" = mkForce "SMB2_02";
+          };
+          ${shareName} = {
+            path = config.services.paperless.consumptionDir; # !
+            browseable = "yes";
+            "guest ok" = "no";
+            "read only" = "no";
+            "valid users" = userName;
+            "force user" = paperlessUser;
+            "force group" = paperlessUser;
+          };
+        };
+        # ! directory is managed by paperless module
+        users.users.${userName} = {
+          isSystemUser = true;
+          group = groupName;
+          # by default, users cannot login (i.e. "nologin" shell & password locked)
+          samba.passwordFile = config.secrix.services.${userService}.secrets.${secretName}.decrypted.path;
+        };
+        # pwgen -s 32 | secr encrypt paperless.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/paperless/smb_paperless-scanner.age
+        secrix.services.${userService}.secrets.${secretName}.encrypted.file = ./${secretName}.age;
+      }
+    )
+
     # Paperless: QR code & barcode interpretation
     {
       services.paperless.settings = {
