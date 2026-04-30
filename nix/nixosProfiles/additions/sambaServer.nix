@@ -75,5 +75,16 @@ in
       };
     }
 
+    # configure useful logging
+    {
+      services.samba.settings.global = {
+        # log everything to systemd
+        "logging" = "systemd";
+        "log level" = concatStringsSep " " [
+          "auth_audit:2" # log Authentication Failures
+        ];
+      };
+    }
+
   ];
 }
