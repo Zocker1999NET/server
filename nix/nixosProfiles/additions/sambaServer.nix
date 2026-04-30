@@ -53,10 +53,10 @@ in
         "read list" = concatStringsSep " " [
           guestAccount # by default guests may only read
         ];
-        # override this to further restrict valid user list
+        # override this to further restrict or expand to explicitly called users
         "valid users" = concatStringsSep " " [
-          guestAccount # so list is non-empty -> effective
-          "+${smbGroup}"
+          guestAccount # so list is always non-empty -> effective
+          "+${smbGroup}" # permit users in smbGroup by default
         ];
       };
       # create group
