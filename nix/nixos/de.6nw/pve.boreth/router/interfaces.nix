@@ -103,11 +103,6 @@ in
               wanPort = 22210;
               lanPort = 22;
             };
-            immich = {
-              sources = singleton "network";
-              wanPort = 3001;
-              lanPort = 3001;
-            };
           };
         };
         "paperless" = {
