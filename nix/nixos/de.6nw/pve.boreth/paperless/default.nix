@@ -56,7 +56,8 @@ in
       services.paperless.settings = {
         # page separation
         PAPERLESS_CONSUMER_ENABLE_BARCODES = "true";
-        PAPERLESS_CONSUMER_BARCODE_STRING = "PATCHT";
+        # https://github.com/baltpeter/scanprep/blob/master/separator-page.pdf
+        PAPERLESS_CONSUMER_BARCODE_STRING = "SCANPREP_SEP";
         # ASN assignment
         PAPERLESS_CONSUMER_ENABLE_ASN_BARCODE = "true";
         PAPERLESS_CONSUMER_ASN_BARCODE_PREFIX = "ASN";
