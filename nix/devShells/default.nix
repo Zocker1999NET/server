@@ -9,6 +9,7 @@ in
       (with pkgs; [
         curl
         mkpasswd
+        pwgen
         rsync
         xkcdpass
         # tooling for services
