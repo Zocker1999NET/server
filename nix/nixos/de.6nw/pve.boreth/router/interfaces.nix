@@ -53,11 +53,6 @@ in
               wanPort = 22111;
               lanPort = 22;
             };
-            smb = {
-              sources = singleton "network";
-              wanPort = 445;
-              lanPort = 445;
-            };
           };
         };
         "dns" = {
@@ -112,6 +107,17 @@ in
               sources = singleton "network";
               wanPort = 3001;
               lanPort = 3001;
+            };
+          };
+        };
+        "paperless" = {
+          mac = "BC:24:11:9C:8F:04";
+          staticIPv4 = "10.32.1.202";
+          forwardedPorts = {
+            smb = {
+              sources = singleton "network";
+              wanPort = 445;
+              lanPort = 445;
             };
           };
         };
