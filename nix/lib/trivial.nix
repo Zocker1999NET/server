@@ -8,5 +8,4 @@ in
 # backports
 // backportNixpkg "lib.trivial" [
   #
-  "fromHexString"
 ]
