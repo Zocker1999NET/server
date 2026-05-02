@@ -37,6 +37,13 @@ mapfile -t configs < <( nix eval --raw .#nixosConfigurations --apply 'a: with bu
 for config in "${configs[@]}"; do
     targets+=("nixosConfigurations.\"${config}\".config.system.build.toplevel")
 done
+
+# all devShells must succeed
+mapfile -t devshells < <( nix eval --raw ".#devShells.${architecture}" --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
+for devshell in "${devshells[@]}"; do
+    targets+=("devShells.${architecture}.${devshell}")
+done
+
 # last one to be available as result
 targets+=("nixosConfigurations.mgmt-iso.config.system.build.isoImage")
 
