@@ -223,12 +223,12 @@ in
         };
     }
     {
-      services.logind = {
-        suspendKey = "poweroff";
-        rebootKey = "reboot";
-        powerKey = "poweroff";
-        hibernateKey = "poweroff";
-        lidSwitch = "ignore";
+      services.logind.settings.Login = {
+        HandleSuspendKey = "poweroff";
+        HandleRebootKey = "reboot";
+        HandlePowerKey = "poweroff";
+        HandleHibernateKey = "poweroff";
+        HandleLidSwitch = "ignore";
       };
     }
     # UI setup
