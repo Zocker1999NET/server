@@ -11,23 +11,8 @@ architecture="x86_64-linux"
 # targets which are to be checked
 targets=()
 
-# tests which must succeed
-test_targets=(
-    "bind-dynamic"
-    "diskoOfflineInstall"
-    "docs_includeAllModules_banananetwork"
-    "docs_includeAllModules_disko"
-    "docs_includeAllModules_hm_banananetwork"
-    "docs_includeAllModules_home-manager"
-    "docs_includeAllModules_impermanence"
-    "docs_includeAllModules_nixpkgs"
-    "docs_includeAllModules_router"
-    "docs_includeAllModules_secrix"
-    "dynamicIssue-module-sshHostKey"
-    "empty"
-    "router"
-    "router-tailscale"
-)
+# all nixosTests must succeed
+mapfile -t test_targets < <( nix eval --raw ".#nixosTests.${architecture}" --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
 for test_target in "${test_targets[@]}"; do
     targets+=("nixosTests.${architecture}.${test_target}")
 done
