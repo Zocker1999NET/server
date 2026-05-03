@@ -1,7 +1,6 @@
 {
   lib,
   libBNet,
-  self,
   ...
 }@flakeArg:
 # TODO (improvement) check how much of this is obsolete, see nixpkgs#lib.network.ipv6
@@ -28,6 +27,7 @@ let
     ;
   # TODO (improvement) check if lib.trivial.toBaseDigits is more performant
   inherit (libBNet.math) binToInt intToBin;
+  inherit (libBNet.network) isParsedIP parseBinNet;
   inherit (lib.strings)
     commonPrefixLength
     hasInfix
@@ -100,7 +100,7 @@ let
           # TODO hexExploded
           # network
           binRawNet = substring 0 ip.cidrInt ip.binRaw;
-          network = self.parseBinNet ip.version ip.binRawNet;
+          network = parseBinNet ip.version ip.binRawNet;
           _cidr_max = ip._group_count * ip._group_bits;
           cidrInt = if ip._cidrGroup == null then ip._cidr_max else toIntBase10 ip._cidrGroup;
           cidrCompressed = "${ip.compressed}/${ip.cidrStr}";
@@ -109,10 +109,10 @@ let
           # helpers
           isCompatible =
             o:
-            assert self.isParsedIP o;
+            assert isParsedIP o;
             ip.type == o.type;
           __verifyCompat = fun: o: if ip.isCompatible o then fun o else false;
-          split = map (self.parseBinNet ip.version) [
+          split = map (parseBinNet ip.version) [
             "${ip.binRawNet}0"
             "${ip.binRawNet}1"
           ];

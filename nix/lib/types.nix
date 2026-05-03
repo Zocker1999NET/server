@@ -1,12 +1,12 @@
 {
-  inputs,
   lib,
-  self,
+  libBNet,
   ...
 }@flakeArg:
 # TODO upstream
 let
   inherit (builtins) concatLists concatStringsSep elem;
+  inherit (libBNet) types;
   inherit (lib.lists) toList;
   inherit (lib.trivial) flip pipe;
   concatRepeat =
@@ -115,7 +115,7 @@ in
         (map (
           flip pipe [
             extractOption
-            (x: (self.disectComposed x).value)
+            (x: (types.disectComposed x).value)
             extractModules
           ]
         ))
@@ -127,12 +127,12 @@ in
     opt:
     let
       type = if lib.isOption opt then opt.type else opt;
-      disected = self.disectComposed type;
+      disected = types.disectComposed type;
       sub = disected.value;
     in
     assert lib.types.isOptionType type;
     assert lib.types.isOptionType sub && sub.name == "submodule";
-    arg: disected.recreate (self.subCombined (sub.getSubModules ++ [ arg ]));
+    arg: disected.recreate (types.subCombined (sub.getSubModules ++ [ arg ]));
 
   eui48 = matchType {
     description = "EUI-48 (i.e. MAC address)";
@@ -149,11 +149,11 @@ in
     pattern = interfaceName;
   };
 
-  ipAddress = lib.types.either self.ipv4Address self.ipv6Address;
+  ipAddress = lib.types.either types.ipv4Address types.ipv6Address;
 
-  ipAddressPlain = lib.types.either self.ipv4AddressPlain self.ipv6AddressPlain;
+  ipAddressPlain = lib.types.either types.ipv4AddressPlain types.ipv6AddressPlain;
 
-  ipNetwork = lib.types.either self.ipv4Network self.ipv6Network;
+  ipNetwork = lib.types.either types.ipv4Network types.ipv6Network;
 
   ipv4Address = matchType {
     description = "IPv4 address (no CIDR, opt. interface identifier)";

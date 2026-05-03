@@ -1,4 +1,4 @@
-{ inputs, self, ... }@flakeArg:
+{ inputs, ... }@flakeArg:
 let
   inherit (inputs) nixpkgs nixpkgs_unstable;
   inherit (nixpkgs) lib; # prevent infinite recursion
@@ -17,9 +17,8 @@ let
     warn
     warnIf
     ;
-  inherit (self) backportByPath;
 in
-{
+rec {
 
   backportByPath =
     let

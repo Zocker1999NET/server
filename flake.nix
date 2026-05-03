@@ -116,31 +116,10 @@
 
         lib = outputs.libAnchors // importFlakeMod ./nix/lib;
 
-        libAnchors =
-          let
-            inherit (inputs.nixpkgs.lib.asserts) assertMsg;
-          in
-          rec {
-            # ({?} -> ?) -> {?} -> ?
-            # gives a function access to its own return value
-            # by adding it to its first argument (assuming that's an attrset)
-            reflect =
-              fun: attrs:
-              # TODO is there a more official way?
-              assert assertMsg (builtins.isAttrs attrs) ''
-                expected a set, got an ${builtins.typeOf attrs}
-              '';
-              assert assertMsg (!attrs ? "self") ''
-                reflect argument already contains a self attribute
-              '';
-              let
-                outputs = fun (attrs // { self = result; });
-                result = outputs;
-              in
-              result;
-            initFlakeMod = mod: reflect mod flakeArg;
-            importFlakeMod = path: initFlakeMod (import path);
-          };
+        libAnchors = rec {
+          initFlakeMod = mod: mod flakeArg;
+          importFlakeMod = path: initFlakeMod (import path);
+        };
 
         homeManagerModules = importFlakeMod ./nix/hmModules;
 

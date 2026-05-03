@@ -3,7 +3,6 @@
   libBNet,
   flake,
   outputs,
-  self,
   ...
 }@flakeArg:
 let

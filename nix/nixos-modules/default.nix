@@ -2,10 +2,10 @@
   inputs,
   libBNet,
   outputs,
-  self,
   ...
 }@flakeArg:
 let
+  self = outputs.nixosModules;
   inherit (libBNet.modules) importApplyMod;
   importModuleGroup = libBNet.importFlakeMod;
   importModule = path: { imports = libBNet.singleton path; };
