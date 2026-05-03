@@ -66,10 +66,13 @@
   };
 
   outputs =
-    { self, ... }@inputs:
+    inputs@{ flake-parts, self, ... }:
     let
       inherit (self) outputs;
       inherit (outputs) lib;
+      inherit (outputs.libAnchors) importFlakeMod;
+      inherit (lib) importFlakeModWithSystem;
+
       # every flake "submodule" gets this passed:
       flakeArg = {
         # Usage in submodule:
@@ -85,65 +88,65 @@
           inputs # evaluated inputs
           outputs # evaluated outputs
           ;
-        # self: the module’s result, via self-reflection
       };
-      inherit (outputs.libAnchors) importFlakeMod;
-      inherit (lib) importFlakeModWithSystem;
+
     in
-    {
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [ "x86_64-linux" ];
 
-      apps = importFlakeModWithSystem ./nix/apps;
+      flake = {
 
-      checks = outputs.nixosTests;
+        apps = importFlakeModWithSystem ./nix/apps;
 
-      devShells = importFlakeModWithSystem ./nix/devShells;
+        checks = outputs.nixosTests;
 
-      homeManagerModules = importFlakeMod ./nix/hmModules;
+        devShells = importFlakeModWithSystem ./nix/devShells;
 
-      lib = outputs.libAnchors // importFlakeMod ./nix/lib;
+        lib = outputs.libAnchors // importFlakeMod ./nix/lib;
 
-      # anchors required for importing modules
-      libAnchors =
-        let
-          lib = inputs.nixpkgs.lib;
-          inherit (lib.asserts) assertMsg;
-        in
-        rec {
-          # ({?} -> ?) -> {?} -> ?
-          # gives a function access to its own return value
-          # by adding it to its first argument (assuming that’s an attrset)
-          reflect =
-            fun: attrs:
-            # TODO is there a more official way?
-            assert assertMsg (builtins.isAttrs attrs) ''
-              expected a set, got an ${builtins.typeOf attrs}
-            '';
-            assert assertMsg (!attrs ? "self") ''
-              reflect argument already contains a self attribute
-            '';
-            let
-              outputs = fun (attrs // { self = result; });
-              result = outputs;
-            in
-            result;
-          initFlakeMod = mod: reflect mod flakeArg;
-          importFlakeMod = path: initFlakeMod (import path);
-        };
+        libAnchors =
+          let
+            inherit (inputs.nixpkgs.lib.asserts) assertMsg;
+          in
+          rec {
+            # ({?} -> ?) -> {?} -> ?
+            # gives a function access to its own return value
+            # by adding it to its first argument (assuming that's an attrset)
+            reflect =
+              fun: attrs:
+              # TODO is there a more official way?
+              assert assertMsg (builtins.isAttrs attrs) ''
+                expected a set, got an ${builtins.typeOf attrs}
+              '';
+              assert assertMsg (!attrs ? "self") ''
+                reflect argument already contains a self attribute
+              '';
+              let
+                outputs = fun (attrs // { self = result; });
+                result = outputs;
+              in
+              result;
+            initFlakeMod = mod: reflect mod flakeArg;
+            importFlakeMod = path: initFlakeMod (import path);
+          };
 
-      nixosConfigurations = importFlakeMod ./nix/nixos;
+        homeManagerModules = importFlakeMod ./nix/hmModules;
 
-      nixosModules = importFlakeMod ./nix/nixos-modules;
+        nixosConfigurations = importFlakeMod ./nix/nixos;
 
-      nixosProfiles = importFlakeMod ./nix/nixosProfiles;
+        nixosModules = importFlakeMod ./nix/nixos-modules;
 
-      nixosTests = importFlakeModWithSystem ./nix/nixosTests;
+        nixosProfiles = importFlakeMod ./nix/nixosProfiles;
 
-      overlays = importFlakeMod ./nix/overlays;
+        nixosTests = importFlakeModWithSystem ./nix/nixosTests;
 
-      packages = importFlakeModWithSystem ./nix/packages;
+        overlays = importFlakeMod ./nix/overlays;
 
-      # for auto update mechanism
-      inherit (importFlakeMod ./inputSorter.nix) orderedInputs;
+        packages = importFlakeModWithSystem ./nix/packages;
 
+        # for auto update mechanism
+        inherit (importFlakeMod ./inputSorter.nix) orderedInputs;
+
+      };
     };
 }
