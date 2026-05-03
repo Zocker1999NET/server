@@ -1,19 +1,21 @@
-{ libBNet, ... }@flakeArg:
-let
-  importProfile = path: import path;
-  importProfileMod = libBNet.importFlakeMod;
-in
 {
+  importApplyFlake,
+  ...
+}:
+{
+  _class = "flake";
+  flake.nixosProfiles = {
 
-  # "exclusive" profiles
-  allHardware = importProfile ./allHardware.nix;
-  blade = importProfile ./blade.nix;
-  common = importProfile ./common.nix;
-  installer = importProfileMod ./installer.nix;
-  pveGuest = importProfile ./pveGuest.nix;
-  pveGuestHwSupport = importProfile ./pveGuestHwSupport.nix;
+    # "exclusive" profiles
+    allHardware = ./allHardware.nix;
+    blade = ./blade.nix;
+    common = ./common.nix;
+    installer = importApplyFlake ./installer.nix;
+    pveGuest = ./pveGuest.nix;
+    pveGuestHwSupport = ./pveGuestHwSupport.nix;
 
-  # additions
-  sambaServer = importProfile ./additions/sambaServer.nix;
+    # additions
+    sambaServer = ./additions/sambaServer.nix;
 
+  };
 }

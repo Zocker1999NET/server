@@ -110,6 +110,7 @@
         ./nix/apps
         ./nix/devShells
         ./nix/flakeModules
+        ./nix/nixosProfiles
       ];
 
       systems = [ "x86_64-linux" ];
@@ -130,8 +131,6 @@
         nixosConfigurations = importFlakeMod ./nix/nixos;
 
         nixosModules = importFlakeMod ./nix/nixos-modules;
-
-        nixosProfiles = importFlakeMod ./nix/nixosProfiles;
 
         nixosTests = importFlakeModWithSystem ./nix/nixosTests;
 
