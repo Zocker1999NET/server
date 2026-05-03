@@ -92,11 +92,18 @@
 
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
+
+      _module.args = {
+        libBNet = lib;
+      };
+
+      imports = [
+        ./nix/apps
+      ];
+
       systems = [ "x86_64-linux" ];
 
       flake = {
-
-        apps = importFlakeModWithSystem ./nix/apps;
 
         checks = outputs.nixosTests;
 
