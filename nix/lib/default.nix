@@ -30,7 +30,10 @@ nixpkgs.lib
     upstream: name: obj:
     (upstream.${name} or { }) // (if isAttrs obj then obj else importFlakeMod obj);
 
-  supportedSystems = builtins.attrNames nixpkgs.legacyPackages;
+  # restricted to run nix flake show
+  supportedSystems = [
+    "x86_64-linux"
+  ];
 
   systemSpecificVars = system: {
     pkgs = import nixpkgs { inherit system; };
