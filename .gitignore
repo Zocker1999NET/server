@@ -25,7 +25,7 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
+# lib/  because I have a lib dir
 lib64/
 parts/
 sdist/
