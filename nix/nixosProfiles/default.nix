@@ -1,7 +1,7 @@
-{ lib, ... }@flakeArg:
+{ libBNet, ... }@flakeArg:
 let
   importProfile = path: import path;
-  importProfileMod = lib.importFlakeMod;
+  importProfileMod = libBNet.importFlakeMod;
 in
 {
 

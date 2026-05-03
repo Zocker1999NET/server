@@ -2,6 +2,7 @@
 
 {
   lib,
+  libBNet,
   flake,
   ...
 }@flakeArg:
@@ -10,7 +11,7 @@
   ...
 }:
 let
-  inherit (lib.lists) optionalNonNull;
+  inherit (libBNet.lists) optionalNonNull;
   myOpts = config.x-banananetwork;
 
   # GPG keys

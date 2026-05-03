@@ -1,6 +1,6 @@
 { globalArg, others, ... }@interface:
 let
-  inherit (globalArg) config lib;
+  inherit (globalArg) config lib libBNet;
   ifCfg = interface.config;
   routCfg = ifCfg.routing;
   #
@@ -12,7 +12,7 @@ let
     groupBy
     length
     ;
-  inherit (lib) types;
+  inherit (libBNet) types;
   inherit (lib.attrsets) filterAttrs genAttrs;
   inherit (lib.lists) singleton unique;
   inherit (lib.modules) mkMerge mkOrder;

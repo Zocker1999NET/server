@@ -1,13 +1,13 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   routCfg = ifCfg.routing;
   inherit (builtins) attrNames elem mapAttrs;
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) flatten singleton unique;
   inherit (lib.modules) mkDefault mkIf mkMerge;
-  inherit (lib.network) mergeIPv6IfId;
+  inherit (libBNet.network) mergeIPv6IfId;
   inherit (lib.trivial) pipe;
   mkMergeFlat = list: mkMerge (flatten list);
   # TODO upstream

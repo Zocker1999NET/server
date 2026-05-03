@@ -1,13 +1,13 @@
-{ lib, ... }@flakeArg:
+{ lib, libBNet, ... }@flakeArg:
 { config, ... }:
 let
   cfg = config.x-banananetwork.routerVM;
   compTsCfg = cfg.compat.tailscale;
   ts = config.services.tailscale;
   inherit (builtins) concatMap filter;
-  inherit (lib) types;
+  inherit (libBNet) types;
   inherit (lib.modules) mkIf;
-  inherit (lib.network) parseIP;
+  inherit (libBNet.network) parseIP;
   inherit (lib.options) mkOption;
   inherit (lib.trivial) pipe;
   mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };

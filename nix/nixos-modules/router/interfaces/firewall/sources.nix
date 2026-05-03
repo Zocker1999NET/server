@@ -1,6 +1,6 @@
 { globalArg, others, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   srcCfg = ifCfg.firewall.sources;
   inherit (builtins)
@@ -10,9 +10,11 @@ let
     isString
     ;
   inherit (lib) mapListJoin;
+  inherit (libBNet) types;
   inherit (lib.attrsets) genAttrs;
   inherit (lib.lists) flatten;
-  inherit (lib.strings) hasInfix conditionalString;
+  inherit (lib.strings) hasInfix;
+  inherit (libBNet.strings) conditionalString;
   inherit (lib.trivial) flip pipe;
   groupSources = flip pipe [
     (groupBy (
@@ -91,7 +93,7 @@ in
         if `blockOthersExpected` is enabled on the other interface overlapping,
         as this will lead into a DoS of that interface.
       '';
-      type = with lib.types; nullOr (listOf ipNetwork);
+      type = with types; nullOr (listOf ipNetwork);
       default = null;
       example = [
         "10.0.0.0/8"
@@ -108,7 +110,7 @@ in
         which is useful when IP subnet is chosen dynamically, e.g. via DHCPv6 prefix delegation,
         or already defined otherwise).
       '';
-      type = with lib.types; nullOr (listOf ipNetwork);
+      type = with types; nullOr (listOf ipNetwork);
       default = null;
       example = [
         "10.0.0.0/8"

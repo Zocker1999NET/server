@@ -1,6 +1,6 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   ifOpts = interface.options;
   inherit (builtins)
@@ -10,10 +10,10 @@ let
     listToAttrs
     mapAttrs
     ;
-  inherit (lib) types;
+  inherit (libBNet) types;
   inherit (lib.attrsets) filterAttrs nameValuePair;
   inherit (lib.modules) mkDefault;
-  inherit (lib.network) formatMAC;
+  inherit (libBNet.network) formatMAC;
   inherit (lib.options) literalExpression mkOption;
   inherit (lib.trivial) pipe;
   # values

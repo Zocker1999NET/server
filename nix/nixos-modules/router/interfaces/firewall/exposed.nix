@@ -1,6 +1,6 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   fwCfg = ifCfg.firewall;
   expCfg = fwCfg.exposed;
@@ -21,7 +21,7 @@ let
     genAttrs
     mapAttrsRecursive
     ;
-  inherit (lib.lists) groupByMult;
+  inherit (libBNet.lists) groupByMult;
   inherit (lib.modules) mkIf;
   inherit (lib.options) mkOption showOption;
   inherit (lib.trivial) flip pipe;

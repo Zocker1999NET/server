@@ -1,6 +1,6 @@
-{ lib, outputs, ... }@flakeArg:
+{ libBNet, outputs, ... }@flakeArg:
 let
-  inherit (lib.modules) importsApplyMods;
+  inherit (libBNet.modules) importsApplyMods;
 in
 {
   modules = importsApplyMods [

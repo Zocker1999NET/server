@@ -76,9 +76,11 @@
         # { ... }@flakeArg: { }
         # add "..." this so new ones can easily be added
         flake = self; # full flake reflection
+        # tools / shortcuts
+        inherit (inputs.nixpkgs) lib;
+        # custom lib (nixpkgs lib combined with mine)
+        libBNet = lib;
         inherit
-          # tools / shortcuts
-          lib # nixpkgs & my lib combined
           # flake refs
           inputs # evaluated inputs
           outputs # evaluated outputs

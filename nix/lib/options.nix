@@ -1,6 +1,6 @@
-{ lib, ... }@flakeArg:
+{ lib, libBNet, ... }@flakeArg:
 let
-  inherit (lib) types;
+  inherit (libBNet) types;
   inherit (lib.options) mkOption;
 in
 {

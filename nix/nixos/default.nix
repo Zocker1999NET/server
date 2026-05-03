@@ -1,6 +1,6 @@
 {
   inputs,
-  lib,
+  libBNet,
   flake,
   outputs,
   self,
@@ -36,7 +36,7 @@ let
       # expose module cleanly
       _banananetwork_systemArgs = systemArgs;
     };
-  inherit (lib) importFlakeMod;
+  inherit (libBNet) importFlakeMod;
   importSystem = path: nixosSystem (importFlakeMod path);
 in
 {

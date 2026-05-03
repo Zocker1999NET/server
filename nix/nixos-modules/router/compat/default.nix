@@ -1,8 +1,8 @@
 # a set of modules ensuring compatibility with other networking service modules, e.g. VPNs
-{ lib, ... }@flakeArg:
+{ libBNet, ... }@flakeArg:
 { ... }:
 let
-  inherit (lib.modules) importsApplyMods;
+  inherit (libBNet.modules) importsApplyMods;
 in
 {
 

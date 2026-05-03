@@ -1,5 +1,6 @@
 {
-  lib, # uses some of my library extensions
+  lib,
+  libBNet,
   outputs,
   ...
 }@flakeArg:
@@ -18,7 +19,7 @@ let
     mapAttrs
     ;
   inherit (lib.attrsets) filterAttrs;
-  inherit (lib.modules) importsApplyMods;
+  inherit (libBNet.modules) importsApplyMods;
   inherit (lib.trivial) flip pipe;
   # nft helpers
   escapeNftablesStr = arg: ''"${builtins.replaceStrings [ ''"'' ] [ ''\"'' ] (toString arg)}"'';
@@ -83,7 +84,7 @@ let
     list: embedFun:
     pipe list [
       (builtins.concatStringsSep ", ")
-      (x: lib.strings.conditionalString list (embedFun x))
+      (x: libBNet.strings.conditionalString list (embedFun x))
     ];
   setElemList = flip ruleFromList (set: "elements = { ${set} }");
   mkDisableOption = arg: (lib.mkEnableOption arg) // { default = true; };
@@ -205,7 +206,7 @@ in
             specialArgs.globalArg =
               let
                 extGlobalArg = globalArg // {
-                  inherit cfg;
+                  inherit cfg libBNet;
                   lib = lib // {
                     optionSets = import ./optionSets.nix extGlobalArg;
                     inherit

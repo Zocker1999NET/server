@@ -1,4 +1,4 @@
-{ lib, ... }@globalArg:
+{ lib, libBNet, ... }@globalArg:
 let
   # === helpers
   inherit (builtins)
@@ -19,8 +19,8 @@ let
     mapAttrsJoin
     nftablesReference
     protoType
-    types
     ;
+  inherit (libBNet) types;
   inherit (lib.attrsets) filterAttrs mergeAttrsList optionalAttrs;
   inherit (lib.lists) singleton toList;
   inherit (lib.modules)
@@ -29,7 +29,7 @@ let
     mkOverride
     setDefaultModuleLocation
     ;
-  inherit (lib.network) formatMAC;
+  inherit (libBNet.network) formatMAC;
   inherit (lib.options) isOption mkOption;
   inherit (lib.strings) hasPrefix;
   inherit (lib.trivial) flip pipe warn;

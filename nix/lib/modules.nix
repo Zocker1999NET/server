@@ -1,4 +1,9 @@
-{ inputs, lib, ... }@flakeArg:
+{
+  inputs,
+  lib,
+  libBNet,
+  ...
+}@flakeArg:
 let
   inherit (builtins)
     isAttrs
@@ -14,15 +19,11 @@ let
     ;
   inherit (lib.lists) foldl optional;
   inherit (lib.modules)
-    applyOnDefinition
     defaultOverridePriority
     defaultOrderPriority
-    dischargeValue
     importApply
-    importsApplyIf
     mergeDefinitions
     mkAliasIfDef
-    mkFullAlias
     mkIf
     mkMerge
     mkOverride
@@ -30,6 +31,12 @@ let
     ;
   inherit (lib.options) mkOption showFiles showOption;
   inherit (lib.trivial) id;
+  inherit (libBNet.modules)
+    applyOnDefinition
+    dischargeValue
+    importsApplyIf
+    mkFullAlias
+    ;
 
   # internal helpers
   applyOnValue = apply: { value, ... }@attr: attr // { value = apply value; };

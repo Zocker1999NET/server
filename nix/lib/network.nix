@@ -1,4 +1,9 @@
-{ lib, self, ... }@flakeArg:
+{
+  lib,
+  libBNet,
+  self,
+  ...
+}@flakeArg:
 # TODO (improvement) check how much of this is obsolete, see nixpkgs#lib.network.ipv6
 let
   inherit (builtins)
@@ -22,7 +27,7 @@ let
     sublist
     ;
   # TODO (improvement) check if lib.trivial.toBaseDigits is more performant
-  inherit (lib.math) binToInt intToBin;
+  inherit (libBNet.math) binToInt intToBin;
   inherit (lib.strings)
     commonPrefixLength
     hasInfix

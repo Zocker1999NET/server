@@ -1,14 +1,14 @@
 {
   inputs,
-  lib,
+  libBNet,
   outputs,
   self,
   ...
 }@flakeArg:
 let
-  inherit (lib.modules) importApplyMod;
-  importModuleGroup = lib.importFlakeMod;
-  importModule = path: { imports = lib.singleton path; };
+  inherit (libBNet.modules) importApplyMod;
+  importModuleGroup = libBNet.importFlakeMod;
+  importModule = path: { imports = libBNet.singleton path; };
 in
 {
 

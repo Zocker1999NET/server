@@ -1,6 +1,7 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
+  inherit (libBNet) types;
   ifCfg = interface.config;
   snatCfg = ifCfg.srcnat;
   inherit (builtins) elem;
@@ -19,7 +20,7 @@ let
           Outgoing interfaces for which
           ${ipVer} packets from this interface will be SNATed.
         '';
-        type = with lib.types; listOf ifName;
+        type = with types; listOf ifName;
         default = [ ];
       };
     };

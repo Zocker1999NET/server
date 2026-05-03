@@ -1,7 +1,7 @@
-{ lib, ... }@flakeArg:
+{ libBNet, ... }@flakeArg:
 let
   inherit (builtins) foldl';
-  inherit (lib) systemSpecificVars;
+  inherit (libBNet) systemSpecificVars;
   rawImport = path: import path flakeArg;
   # TODO upstream
   chainOverlays =

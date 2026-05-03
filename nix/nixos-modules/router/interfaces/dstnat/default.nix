@@ -1,6 +1,6 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   dnatCfg = ifCfg.dstnat;
   nftCfg = ifCfg.nftables;
@@ -33,7 +33,8 @@ let
     genAttrs
     mapAttrsRecursive
     ;
-  inherit (lib.lists) groupByMult sublist;
+  inherit (lib.lists) sublist;
+  inherit (libBNet.lists) groupByMult;
   inherit (lib.modules) mkOrder;
   inherit (lib.options) showOption;
   inherit (lib.trivial) flip pipe;

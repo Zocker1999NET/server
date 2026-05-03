@@ -1,6 +1,6 @@
 { globalArg, name, ... }@interface:
 let
-  inherit (globalArg) lib options;
+  inherit (globalArg) lib libBNet options;
   ifCfg = interface.config;
   ifOpts = interface.options;
 in
@@ -39,7 +39,7 @@ in
         Otherwise, the device must already be named like this,
         which is only sensible in case of 3rd-party services like VPNs.
       '';
-      type = lib.types.ifName;
+      type = libBNet.types.ifName;
       default = name;
     };
     description = lib.mkOption {

@@ -1,6 +1,6 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   ifOpts = interface.options;
   fwCfg = ifCfg.firewall;
@@ -9,7 +9,7 @@ let
   # helpers
   inherit (builtins) filter;
   inherit (lib.lists) singleton;
-  inherit (lib.options) mkSubmoduleListExtension;
+  inherit (libBNet.options) mkSubmoduleListExtension;
   inherit (lib.trivial) pipe;
 in
 {

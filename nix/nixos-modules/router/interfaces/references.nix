@@ -1,7 +1,7 @@
 { globalArg, ... }@interface:
 let
-  inherit (globalArg) lib;
-  inherit (lib) types;
+  inherit (globalArg) lib libBNet;
+  inherit (libBNet) types;
   inherit (lib.options) mkOption;
 in
 {

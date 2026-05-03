@@ -1,8 +1,20 @@
-{ inputs, lib, ... }@flakeArg:
+{
+  inputs,
+  lib,
+  libBNet,
+  ...
+}@flakeArg:
 let
   inherit (inputs) nixpkgs;
   inherit (builtins) isAttrs mapAttrs;
-  inherit (lib) autoExtend importFlakeMod;
+  inherit (lib.attrsets) genAttrs;
+  inherit (libBNet)
+    autoExtend
+    forAllSystems
+    importFlakeMod
+    supportedSystems
+    systemSpecificVars
+    ;
 in
 
 # be a drop-in replacement
@@ -41,10 +53,9 @@ nixpkgs.lib
     inherit system;
   };
 
-  forAllSystems =
-    gen: lib.genAttrs lib.supportedSystems (system: gen (lib.systemSpecificVars system));
+  forAllSystems = gen: genAttrs supportedSystems (system: gen (systemSpecificVars system));
 
-  importFlakeModWithSystem = path: lib.forAllSystems (lib.importFlakeMod path);
+  importFlakeModWithSystem = path: forAllSystems (importFlakeMod path);
 
   # TODO sort
 

@@ -1,6 +1,6 @@
 { globalArg, others, ... }@interface:
 let
-  inherit (globalArg) lib;
+  inherit (globalArg) lib libBNet;
   ifCfg = interface.config;
   ifOpts = interface.options;
   dnatCfg = ifCfg.dstnat;
@@ -13,7 +13,7 @@ let
     filter
     toString
     ;
-  inherit (lib) types;
+  inherit (libBNet) types;
   inherit (lib.lists) unique;
   inherit (lib.trivial) pipe;
 in
