@@ -104,8 +104,12 @@
         };
 
       imports = [
+        # extensions from inputs
+        inputs.flake-parts.flakeModules.flakeModules
+        # my modules
         ./nix/apps
         ./nix/devShells
+        ./nix/flakeModules
       ];
 
       systems = [ "x86_64-linux" ];
