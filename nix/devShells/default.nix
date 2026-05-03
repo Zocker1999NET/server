@@ -1,30 +1,41 @@
-{ outputs, ... }@flakeArg:
-{ pkgs_unstable, system, ... }@sysArg:
-let
-  pkgs = pkgs_unstable;
-in
 {
-  default = pkgs.mkShell {
-    packages =
-      (with pkgs; [
-        curl
-        mkpasswd
-        pwgen
-        rsync
-        xkcdpass
-        # tooling for services
-        bind # e.g. dnssec-keygen
-        wireguard-tools
-        # MCPs for AI
-        mcp-nixos
-      ])
-      ++ [
-        # flake stuff
-        outputs.packages.${system}.secrix-wrapper
-      ];
-    # TODO magic
-    shellHook = ''
-      export SECRIX_ID=~/".ssh/id_ed25519"
-    '';
-  };
+  _class = "flake";
+  perSystem =
+    {
+      pkgs_unstable,
+      self',
+      ...
+    }:
+    let
+      pkgs = pkgs_unstable;
+    in
+    {
+      devShells = {
+
+        default = pkgs.mkShell {
+          packages =
+            (with pkgs; [
+              curl
+              mkpasswd
+              pwgen
+              rsync
+              xkcdpass
+              # tooling for services
+              bind # e.g. dnssec-keygen
+              wireguard-tools
+              # MCPs for AI
+              mcp-nixos
+            ])
+            ++ [
+              # flake stuff
+              self'.packages.secrix-wrapper
+            ];
+          # TODO magic
+          shellHook = ''
+            export SECRIX_ID=~/".ssh/id_ed25519"
+          '';
+        };
+
+      };
+    };
 }

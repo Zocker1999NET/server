@@ -105,6 +105,7 @@
 
       imports = [
         ./nix/apps
+        ./nix/devShells
       ];
 
       systems = [ "x86_64-linux" ];
@@ -112,8 +113,6 @@
       flake = {
 
         checks = outputs.nixosTests;
-
-        devShells = importFlakeModWithSystem ./nix/devShells;
 
         lib = outputs.libAnchors // importFlakeMod ./nix/lib;
 
