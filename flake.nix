@@ -97,6 +97,12 @@
         libBNet = lib;
       };
 
+      perSystem =
+        { system, ... }:
+        {
+          _module.args.pkgs_unstable = inputs.nixpkgs_unstable.legacyPackages.${system};
+        };
+
       imports = [
         ./nix/apps
       ];
