@@ -151,7 +151,7 @@ in
               # editable dict
               inbox = {
                 name = "inbox";
-                path = "~/projects/server/nix/nixos-modules/frontend/cspell-dicts/inbox.txt";
+                path = "~/projects/server/nix/nixosModules/frontend/cspell-dicts/inbox.txt";
                 scope = "user";
                 addWords = true;
               };

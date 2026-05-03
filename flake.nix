@@ -130,7 +130,7 @@
 
         nixosConfigurations = importFlakeMod ./nix/nixos;
 
-        nixosModules = importFlakeMod ./nix/nixos-modules;
+        nixosModules = importFlakeMod ./nix/nixosModules;
 
         nixosTests = importFlakeModWithSystem ./nix/nixosTests;
 

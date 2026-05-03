@@ -22,7 +22,7 @@ All of these packages can easily be included by importing the output `overlays.f
 - **nft-update-addresses**:
     This service enables easy writing of nftables rules which automatically adapt to dynamically changing IP addresses & prefixes.
     Read more about it [here](./nix/packages/nft-update-addresses/default.nix) in `meta.longDescription`.
-    - NixOS module `services.nft-update-addresses` inclusive, see [here](./nix/nixos-modules/packages/nft-update-addresses.nix)
+    - NixOS module `services.nft-update-addresses` inclusive, see [here](./nix/nixosModules/packages/nft-update-addresses.nix)
 
 ### NixOS modules
 
@@ -50,7 +50,7 @@ Most of them are implemented as modules,
 but given their size & ambitious goals,
 I chose to classify those differently.
 
-- **router**: a Router framework for NixOS systems (read its own section [here](./nix/nixos-modules/router/README.md))
+- **router**: a Router framework for NixOS systems (read its own section [here](./nix/nixosModules/router/README.md))
 - **vmDisko**: defines reasonable default disko disk layouts, intended for VMs, with state option to allow updating layouts for future systems [*WIP = untested!*]
 
 

@@ -15,7 +15,7 @@ in
 rec {
 
   # combines overlays that are assigned by default to every NixOS configuration
-  # see nix/nixos-modules/default.nix
+  # see nix/nixosModules/default.nix
   default = chainOverlays [
     backports
     fromFlake

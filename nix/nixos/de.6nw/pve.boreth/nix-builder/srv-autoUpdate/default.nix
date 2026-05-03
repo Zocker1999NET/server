@@ -50,7 +50,7 @@ in
       Group = userName;
       User = userName;
     };
-    startAt = "Sat *-*-* 08:00"; # documented in nixos-modules/serverCommon.nix
+    startAt = "Sat *-*-* 08:00"; # documented in nixosModules/serverCommon.nix
   };
 
   users = {

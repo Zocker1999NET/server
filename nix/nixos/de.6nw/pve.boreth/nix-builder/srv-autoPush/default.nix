@@ -69,7 +69,7 @@ in
       Group = userName;
       User = userName;
     };
-    startAt = "*-*-* 23:00"; # documented in nixos-modules/serverCommon.nix
+    startAt = "*-*-* 23:00"; # documented in nixosModules/serverCommon.nix
   };
   secrix.services.${userName}.secrets.devKey.encrypted.file = ./devKey.age;
 

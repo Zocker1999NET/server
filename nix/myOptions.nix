@@ -59,7 +59,7 @@ in
 
     x-banananetwork = {
 
-      # options defined in nixos-modules/options.nix
+      # options defined in nixosModules/options.nix
 
       localTimeZone = lib.mkDefault "Europe/Berlin";
 

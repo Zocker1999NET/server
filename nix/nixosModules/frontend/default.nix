@@ -613,7 +613,7 @@ in
       autoUnfree = {
         enable = true;
         packages = with pkgs.mpvScripts; [
-          # TODO merge with nixos-modules/frontend/home.nix
+          # TODO merge with nixosModules/frontend/home.nix
           evafast
         ];
       };
