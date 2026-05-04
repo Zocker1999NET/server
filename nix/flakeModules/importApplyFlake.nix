@@ -1,5 +1,6 @@
 {
   importApplyFlake,
+  importWithFlake,
   lib,
   # for auto-detection reasons implemented in the module system,
   # this one needs to mention some args used by importApplyFlake consumers,
@@ -18,6 +19,9 @@ in
 
   _class = "flake";
 
+  # variant for non-modules / everything else
+  _module.args.importWithFlake = path: import path flakeArg;
+  # variant for module system modules
   _module.args.importApplyFlake = path: importApply path flakeArg;
 
   perSystem =
@@ -30,6 +34,9 @@ in
       systemArg = config.allModuleArgs;
     in
     {
+      # variant for non-modules / everything else
+      _module.args.importWithSystem = path: importWithFlake path systemArg;
+      # variant for module system modules
       _module.args.importApplySystem = path: importApplyFlake path systemArg;
     };
 
