@@ -10,7 +10,7 @@ let
     foldl' (acc: elem: acc // elem final acc) prev overlays;
   wrapOverlay =
     overlay: final: prev:
-    overlay (systemSpecificVars prev.system) final prev;
+    overlay (systemSpecificVars prev.stdenv.hostPlatform.system) final prev;
   importOverlay = path: wrapOverlay (rawImport path);
 in
 rec {
