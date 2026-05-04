@@ -5,7 +5,7 @@
 {
   inputs,
   lib,
-  outputs,
+  self,
   ...
 }@flakeArg:
 let
@@ -20,12 +20,13 @@ let
     );
 in
 {
+  _class = "flake";
+  flake.nixosModules = {
 
-  _class = "nixos";
+    # TODO until https://github.com/systemd/systemd/issues/29651 is fixed
+    systemd-radv-fadeout = withOverlay self.overlays.systemd-radv-fadeout (pkgs: {
+      config.systemd.package = pkgs.systemd;
+    });
 
-  # TODO until https://github.com/systemd/systemd/issues/29651 is fixed
-  systemd-radv-fadeout = withOverlay outputs.overlays.systemd-radv-fadeout (pkgs: {
-    config.systemd.package = pkgs.systemd;
-  });
-
+  };
 }

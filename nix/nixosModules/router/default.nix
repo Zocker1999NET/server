@@ -1,7 +1,7 @@
 {
   lib,
   libBNet,
-  outputs,
+  self,
   ...
 }@flakeArg:
 { config, options, ... }@globalArg:
@@ -130,7 +130,7 @@ in
 
   imports = importsApplyMods [
     # modules
-    outputs.nixosModules.systemd-radv-fadeout
+    self.nixosModules.systemd-radv-fadeout
     # directories
     ./compat
     ./dns

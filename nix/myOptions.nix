@@ -3,7 +3,7 @@
 {
   lib,
   libBNet,
-  flake,
+  self,
   ...
 }@flakeArg:
 {
@@ -90,7 +90,7 @@ in
       };
       sshHostKeyPropagation = {
         enable = true;
-        sourceFlake = flake;
+        sourceFlake = self;
         propagatedHostKeys = optionalNonNull myOpts.sshHostPublicKey;
       };
 

@@ -110,6 +110,7 @@
         ./nix/apps
         ./nix/devShells
         ./nix/flakeModules
+        ./nix/nixosModules
         ./nix/nixosProfiles
       ];
 
@@ -129,8 +130,6 @@
         homeManagerModules = importFlakeMod ./nix/hmModules;
 
         nixosConfigurations = importFlakeMod ./nix/nixos;
-
-        nixosModules = importFlakeMod ./nix/nixosModules;
 
         nixosTests = importFlakeModWithSystem ./nix/nixosTests;
 
