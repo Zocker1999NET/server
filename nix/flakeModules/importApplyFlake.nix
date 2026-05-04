@@ -1,4 +1,5 @@
 {
+  importApplyFlake,
   lib,
   # for auto-detection reasons implemented in the module system,
   # this one needs to mention some args used by importApplyFlake consumers,
@@ -11,10 +12,25 @@
 let
   inherit (lib.modules) importApply;
 in
+# not really complex functions which could be part of lib
+# but useful shortcuts hence made available via flakeArg / systemArg themselves
 {
+
   _class = "flake";
-  # not really a complex function which could be part of lib
-  # but a shortcut function
-  # hence made available via flakeArg itself
+
   _module.args.importApplyFlake = path: importApply path flakeArg;
+
+  perSystem =
+    {
+      config,
+      ...
+    }:
+    let
+      # flake-parts exposes this one for us
+      systemArg = config.allModuleArgs;
+    in
+    {
+      _module.args.importApplySystem = path: importApplyFlake path systemArg;
+    };
+
 }
