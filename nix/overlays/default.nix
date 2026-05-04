@@ -4,6 +4,7 @@ let
   inherit (libBNet) systemSpecificVars;
   rawImport = path: import path flakeArg;
   # TODO upstream
+  # https://github.com/NixOS/nixpkgs/issues/516604
   chainOverlays =
     overlays: final: prev:
     foldl' (acc: elem: acc // elem final acc) prev overlays;
