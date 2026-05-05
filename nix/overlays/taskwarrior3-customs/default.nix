@@ -1,4 +1,4 @@
-{ outputs, ... }@flakeArg:
+{ ... }@flakeArg:
 { ... }@systemArg:
 final: prev: {
   taskwarrior3 = prev.taskwarrior3.overrideAttrs (old: {

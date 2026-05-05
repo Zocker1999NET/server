@@ -112,6 +112,7 @@
         ./nix/flakeModules
         ./nix/nixosModules
         ./nix/nixosProfiles
+        ./nix/overlays
       ];
 
       systems = [ "x86_64-linux" ];
@@ -132,8 +133,6 @@
         nixosConfigurations = importFlakeMod ./nix/nixos;
 
         nixosTests = importFlakeModWithSystem ./nix/nixosTests;
-
-        overlays = importFlakeMod ./nix/overlays;
 
         packages = importFlakeModWithSystem ./nix/packages;
 

@@ -1,7 +1,7 @@
-{ outputs, ... }@flakeArg:
-{ ... }@systemArg:
+{ ... }@flakeArg:
+{ self', ... }@systemArg:
 final: prev: {
-  inherit (outputs.packages.${prev.system})
+  inherit (self'.packages)
     # list all universally compatible packages from ./../packages
     librespot-auth
     nft-update-addresses

@@ -1,4 +1,4 @@
-{ outputs, ... }@flakeArg:
+{ ... }@flakeArg:
 { ... }@systemArg:
 final: prev: {
   libretro = prev.libretro // {
