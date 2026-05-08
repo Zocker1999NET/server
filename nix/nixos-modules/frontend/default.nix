@@ -249,6 +249,10 @@ in
               "uBlock0@raymondhill.net" = {
                 default_area = "navbar";
               };
+              # Notefox: websites notes
+              "websitesnotes@saveriomorelli.com" = {
+                default_area = "navbar";
+              };
             };
           FirefoxHome = {
             Search = true;
