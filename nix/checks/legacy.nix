@@ -26,15 +26,10 @@ let
   nixosTest =
     args:
     pkgs.testers.runNixOSTest {
-      _file = ./legacy.nix;
-      imports = singleton args;
-      config = {
-        defaults.imports = singleton ./_shared/nodeCommon.nix;
-        # allow individual nixpkgs (and so overlays) per node
-        # induces extra evaluation time as nixpkgs needs to be evaluated per node
-        # TODO rebuild test infrastructure to not rely on this
-        node.pkgsReadOnly = false;
-      };
+      imports = [
+        ./_shared/testCommon.nix
+        args
+      ];
     };
   nixosIntegrationTest =
     tested: # from machines
