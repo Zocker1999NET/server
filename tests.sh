@@ -11,10 +11,10 @@ architecture="x86_64-linux"
 # targets which are to be checked
 targets=()
 
-# all nixosTests must succeed
-mapfile -t test_targets < <( nix eval --raw ".#nixosTests.${architecture}" --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
+# all checks must succeed
+mapfile -t test_targets < <( nix eval --raw ".#checks.${architecture}" --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
 for test_target in "${test_targets[@]}"; do
-    targets+=("nixosTests.${architecture}.${test_target}")
+    targets+=("checks.${architecture}.${test_target}")
 done
 
 # all configs must succeed (& are faster to be built remotely)
