@@ -160,6 +160,7 @@ let
         nodes.tested = {
           imports = modules;
           config = config // {
+            documentation.nixos.enable = lib.mkForce true;
             documentation.nixos.includeAllModules = true;
           };
         };
