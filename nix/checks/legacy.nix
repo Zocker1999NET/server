@@ -37,35 +37,17 @@ let
     "5054:ff:fe12:${zeroPad vlanNet}${zeroPad nodeNum}";
   # TODO migrate customations to "NixOS test" modules
   nixosTest =
-    {
-      # can only accept attrs as nodes configs
-      nodes ? { },
-      config ? { },
-      ...
-    }@args:
-    let
-      shiftedArgs = args // {
-        nodes = lib.flip builtins.mapAttrs nodes (
-          name: node: {
-            imports = [
-              node
-              ./_shared/nodeCommon.nix
-            ];
-          }
-        );
-      };
-    in
+    args:
     pkgs.testers.runNixOSTest {
       _file = ./legacy.nix;
-      imports = [
-        shiftedArgs
-        {
-          # allow individual nixpkgs (and so overlays) per node
-          # induces extra evaluation time as nixpkgs needs to be evaluated per node
-          # TODO rebuild test infrastructure to not rely on this
-          node.pkgsReadOnly = false;
-        }
-      ];
+      imports = singleton args;
+      config = {
+        defaults.imports = singleton ./_shared/nodeCommon.nix;
+        # allow individual nixpkgs (and so overlays) per node
+        # induces extra evaluation time as nixpkgs needs to be evaluated per node
+        # TODO rebuild test infrastructure to not rely on this
+        node.pkgsReadOnly = false;
+      };
     };
   nixosIntegrationTest =
     tested: # from machines
