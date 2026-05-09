@@ -1,32 +1,41 @@
 {
   inputs,
-  lib,
-  outputs,
   ...
 }@flakeArg:
-{ pkgs, system, ... }@sysArg:
-let
-  inherit (pkgs) callPackage;
-  craneLib = inputs.crane.mkLib pkgs;
-in
 {
+  _class = "flake";
+  perSystem =
+    {
+      inputs',
+      pkgs,
+      self',
+      ...
+    }@sysArg:
+    let
+      inherit (pkgs) callPackage;
+      craneLib = inputs.crane.mkLib pkgs;
+    in
+    {
+      packages = {
 
-  librespot-auth = callPackage ./librespot-auth { inherit craneLib; };
+        librespot-auth = callPackage ./librespot-auth { inherit craneLib; };
 
-  nft-update-addresses = callPackage ./nft-update-addresses { };
+        nft-update-addresses = callPackage ./nft-update-addresses { };
 
-  pdfpagecount = callPackage ./pdfpagecount { };
+        pdfpagecount = callPackage ./pdfpagecount { };
 
-  secrix-wrapper = callPackage ./secrix-wrapper {
-    secrixExe = outputs.apps.${system}.secrix.program;
-  };
+        secrix-wrapper = callPackage ./secrix-wrapper {
+          secrixExe = self'.apps.secrix.program;
+        };
 
-  taskcheck = callPackage ./taskcheck { };
+        taskcheck = callPackage ./taskcheck { };
 
-  zfs-tools = callPackage ./zfs-tools { };
+        zfs-tools = callPackage ./zfs-tools { };
 
-  # === packages inherited from flake inputs
+        # === packages inherited from flake inputs
 
-  inherit (inputs.pkgs_streamlined-client.packages."${system}") streamlined-client;
+        inherit (inputs'.pkgs_streamlined-client.packages) streamlined-client;
 
+      };
+    };
 }

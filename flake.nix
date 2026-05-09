@@ -115,6 +115,7 @@
         ./nix/nixosModules
         ./nix/nixosProfiles
         ./nix/overlays
+        ./nix/packages
       ];
 
       systems = [ "x86_64-linux" ];
@@ -133,8 +134,6 @@
         nixosConfigurations = importFlakeMod ./nix/nixos;
 
         nixosTests = importFlakeModWithSystem ./nix/nixosTests;
-
-        packages = importFlakeModWithSystem ./nix/packages;
 
         # for auto update mechanism
         inherit (importFlakeMod ./inputSorter.nix) orderedInputs;
