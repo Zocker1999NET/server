@@ -2,6 +2,7 @@
   importWithFlake,
   inputs,
   lib,
+  libBNet,
   self,
   ...
 }@flakeArg:
@@ -23,10 +24,13 @@ let
       vlanNet = builtins.elemAt config.virtualisation.vlans netIdx;
     in
     qemu-common.qemuNicMac vlanNet nodeNum;
-  # TODO migrate customations to "NixOS test" modules
   nixosTest =
     args:
     pkgs.testers.runNixOSTest {
+      _file = ./legacy.nix;
+      config._module.args = {
+        inherit libBNet;
+      };
       imports = [
         (importWithFlake ./_shared/testCommon.nix)
         args
@@ -34,40 +38,15 @@ let
     };
   nixosIntegrationTest =
     tested: # from machines
-    {
-      name ? "full",
-      testScript ? "",
-      # can only accept attrs as nodes configs
-      nodes ? { },
-      config ? { },
-      ...
-    }@args:
-    let
-      hostName = tested.config.networking.hostName;
-      fqdn = tested.config.networking.fqdn;
-    in
-    nixosTest (
-      {
-        name = "${fqdn}_integration-test";
-        node.specialArgs = lib.mkForce (tested._banananetwork_systemArgs.specialArgs or { });
-        nodes = nodes // {
-          tested.imports = tested._banananetwork_systemArgs.modules;
-        };
-        testScript = ''
-          # fix access as that name
-          tested = ${builtins.replaceStrings [ "-" ] [ "_" ] hostName}
-          # fast bootup
-          start_all()
-          ${testScript}
-        '';
-      }
-      // (builtins.removeAttrs args [
-        "name"
-        "nodes"
-        "testScript"
-        "config"
-      ])
-    );
+    args:
+    nixosTest {
+      _file = ./legacy.nix;
+      config.integrationTested = tested;
+      imports = [
+        ./_shared/testIntegration.nix
+        args
+      ];
+    };
 
   # TODO migrate docs test to a simpler documentation builder flake check (is not required to be a full blown NixOS test)
   nixosDocTest =
@@ -99,14 +78,10 @@ let
 in
 {
 
-  empty = nixosIntegrationTest machines.empty {
-    testScript = ''
-      tested.wait_for_unit("default.target")
-    '';
-  };
+  empty = nixosIntegrationTest machines.empty { };
 
   mgmt-iso = nixosIntegrationTest machines.mgmt-iso {
-    testScript = ''
+    testScriptExt = ''
       import time
 
       tested.wait_for_unit("default.target")
