@@ -6,6 +6,18 @@ if [[ ${CI_MODE:-} != "" ]]; then
     exec nix build "$@"
 fi
 
+if [[ ${1:-} == "--eval" ]]; then
+    shift 1
+    msg=$(nix eval "$@")
+    r="$?"
+    echo "$msg"
+    if ! <<<"$msg" grep --fixed-string "derivation /nix/store/" >/dev/null; then
+        echo "error from $0: eval failed to output derivation path" >&2
+        exit 1;
+    fi
+    exit "$r";
+fi
+
 cmd="nix"
 if command -v nom &>/dev/null; then
     cmd="nom"
