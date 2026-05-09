@@ -8,7 +8,7 @@
   ...
 }:
 let
-  selfReference = ./home-maanger.nix;
+  selfReference = ./home-manager.nix;
 
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkMerge;
