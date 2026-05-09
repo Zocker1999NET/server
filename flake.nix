@@ -135,9 +135,6 @@
 
         nixosTests = importFlakeModWithSystem ./nix/nixosTests;
 
-        # for auto update mechanism
-        inherit (importFlakeMod ./inputSorter.nix) orderedInputs;
-
       };
     };
 }

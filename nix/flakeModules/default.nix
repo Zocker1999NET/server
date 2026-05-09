@@ -6,6 +6,7 @@ let
     allModuleArgs = ./allModuleArgs.nix;
     importApplyFlake = ./importApplyFlake.nix;
     nixosProfiles = ./nixosProfiles.nix;
+    orderedInputs = ./orderedInputs.nix;
   };
 
   privateModules = [

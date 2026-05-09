@@ -1,7 +1,6 @@
-# TODO export as flake-parts module
 {
-  flake,
   lib,
+  self,
   ...
 }:
 let
@@ -18,10 +17,8 @@ let
   inherit (lib.attrsets) genAttrs;
   inherit (lib.lists) sort uniqueStrings;
   inherit (lib.trivial) flip pipe;
-in
-rec {
 
-  orderedInputs = pipe flake.inputs [
+  orderedInputs = pipe self.inputs [
     attrNames
     (sort (a: b: a < b))
     (sort sortHelper)
@@ -48,7 +45,7 @@ rec {
     ))
   ];
 
-  directFollowings = getAllFollowings flake;
+  directFollowings = getAllFollowings self;
 
   getAllFollowings = flip pipe [
     (flake: import "${flake}/flake.nix")
@@ -63,4 +60,12 @@ rec {
     (map (i: i.follows))
   ];
 
+in
+{
+  _class = "flake";
+  # TODO declare orderedInputs option
+  # TODO add input updating script as package
+  flake = {
+    inherit orderedInputs;
+  };
 }
