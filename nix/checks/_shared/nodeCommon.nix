@@ -13,6 +13,8 @@ in
 
     # personal test expectations
     {
+      # required for test driver to send correct chars to TTY
+      console.keyMap = mkForce "us";
       # packages for testing
       environment.systemPackages = with pkgs; [
         curl

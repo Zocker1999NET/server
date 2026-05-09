@@ -68,13 +68,7 @@ let
         name = "${fqdn}_integration-test";
         node.specialArgs = tested._banananetwork_systemArgs.specialArgs or { };
         nodes = nodes // {
-          tested = {
-            imports = tested._banananetwork_systemArgs.modules;
-            config = {
-              # required for test driver to send correct chars to TTY
-              console.keyMap = lib.mkForce "us";
-            };
-          };
+          tested.imports = tested._banananetwork_systemArgs.modules;
         };
         testScript = ''
           # fix access as that name
