@@ -91,7 +91,7 @@ let
       };
     in
     pkgs.testers.runNixOSTest {
-      _file = ./default.nix;
+      _file = ./legacy.nix;
       imports = [
         shiftedArgs
         {

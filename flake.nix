@@ -133,7 +133,7 @@
 
         nixosConfigurations = importFlakeMod ./nix/nixos;
 
-        nixosTests = importFlakeModWithSystem ./nix/nixosTests;
+        nixosTests = importFlakeModWithSystem ./nix/nixosTests/legacy.nix;
 
       };
     };
