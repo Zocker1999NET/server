@@ -44,47 +44,12 @@ let
       ...
     }@args:
     let
-      extConfig.config = {
-        # speeds up builds & prevents assertions to break
-        boot.loader.grub.enable = lib.mkForce false;
-        boot.loader.systemd-boot.enable = lib.mkForce false;
-        # packages for testing
-        environment.systemPackages = with pkgs; [
-          curl
-          dig
-          jq
-        ];
-        # disable all VM test network magic (TODO extract)
-        networking = {
-          interfaces = lib.mkForce { };
-          extraHosts = lib.mkForce "";
-          #hostName = lib.mkDefault name;
-          useNetworkd = lib.mkDefault true;
-        };
-        # disable test driver backdoor interface (hacky)
-        systemd.network = {
-          # esp. this is required to have no Internet in interactive tests
-          networks."20-backdoor" = {
-            matchConfig.Name = "eth0";
-            linkConfig.Unmanaged = true;
-          };
-          wait-online.ignoredInterfaces = lib.singleton "eth0";
-        };
-        # avoid warnings because of modified root password
-        users.users.root = {
-          # TODO which of those is set by the test driver?
-          #hashedPassword = lib.modules.mkTestOverride null;
-          #hashedPasswordFile = lib.modules.mkTestOverride null;
-          #initialPassword = lib.modules.mkTestOverride null;
-          #initialHashedPassword = lib.modules.mkTestOverride null;
-        };
-      };
       shiftedArgs = args // {
         nodes = lib.flip builtins.mapAttrs nodes (
           name: node: {
             imports = [
               node
-              extConfig
+              ./_shared/nodeCommon.nix
             ];
           }
         );
