@@ -6,7 +6,7 @@ if [[ ! -e flake.nix ]]; then
     echo "missing flake.nix !!!" >&2
 fi
 
-architecture="x86_64-linux"
+architecture="$( nix eval --impure --expr "builtins.currentSystem" )"
 
 # targets which are to be checked
 targets=()
