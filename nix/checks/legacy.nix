@@ -22,19 +22,6 @@ let
       vlanNet = builtins.elemAt config.virtualisation.vlans netIdx;
     in
     qemu-common.qemuNicMac vlanNet nodeNum;
-  # copied from qemu-common.nix
-  zeroPad =
-    n:
-    lib.optionalString (n < 16) "0"
-    + (if n > 255 then throw "Can't have more than 255 nets or nodes!" else lib.toHexString n);
-  # TODO upstream variant of that into qemu-common.nix
-  qemuSLAAC =
-    config: netIdx: # according to virtualisation.vlans
-    let
-      nodeNum = config.virtualisation.test.nodeNumber;
-      vlanNet = builtins.elemAt config.virtualisation.vlans netIdx;
-    in
-    "5054:ff:fe12:${zeroPad vlanNet}${zeroPad nodeNum}";
   # TODO migrate customations to "NixOS test" modules
   nixosTest =
     args:
