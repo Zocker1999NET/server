@@ -3,6 +3,7 @@ let
 
   # modules which are auto-imported to this flake
   publicModules = {
+    allModuleArgs = ./allModuleArgs.nix;
     nixosProfiles = ./nixosProfiles.nix;
   };
 
