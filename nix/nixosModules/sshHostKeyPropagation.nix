@@ -1,11 +1,11 @@
 {
   config,
+  flake,
   lib,
   pkgs,
   ...
 }:
 let
-
   # module constants
   moduleNamespace = "x-banananetwork";
   moduleName = "sshHostKeyPropagation";
@@ -25,19 +25,11 @@ let
   inherit (lib.options) literalExpression mkEnableOption mkOption;
   inherit (lib.trivial) pipe;
   inherit (pkgs.writers) writeText;
+  libBNet = flake.outputs.lib;
+  myTypes = libBNet.types;
 
   assertionToWarning = { assertion, message }: mkIf (!assertion) message;
   assertionsToWarnings = map assertionToWarning;
-
-  # custom types
-  configType = types.raw // {
-    description = "NixOS configuration";
-    check = a: a._type or null == "configuration";
-  };
-  flakeType = types.raw // {
-    description = "Nix flake";
-    check = a: a._type or null == "flake";
-  };
 
   # host config
   cfg = config.${moduleNamespace}.${moduleName};
@@ -113,7 +105,7 @@ in
         Flake users may want to use the helper option
         {option}`${optPrefix}.sourceFlake`.
       '';
-      type = with types; listOf configType;
+      type = with types; listOf myTypes.configuration;
       default = [ ];
     };
     sourceFlake = mkOption {
@@ -125,7 +117,7 @@ in
         This option automatically supplies
         {option}`${optPrefix}.sources`.
       '';
-      type = with types; nullOr flakeType;
+      type = with types; nullOr myTypes.flake;
       default = null;
       example = literalExpression "flake";
     };

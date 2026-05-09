@@ -9,6 +9,7 @@ let
   inherit (libBNet) types;
   inherit (lib.lists) toList;
   inherit (lib.trivial) flip pipe;
+  inherit (lib.types) isType mkOptionType;
   concatRepeat =
     sep: str: count:
     assert count >= 0;
@@ -65,6 +66,8 @@ let
 in
 # extensions to the nix option types library
 {
+
+  # helper functions
 
   disectComposed =
     typ:
@@ -133,6 +136,24 @@ in
     assert lib.types.isOptionType type;
     assert lib.types.isOptionType sub && sub.name == "submodule";
     arg: disected.recreate (types.subCombined (sub.getSubModules ++ [ arg ]));
+
+  # "attrset" types
+
+  configuration = mkOptionType {
+    name = "configuration";
+    description = "NixOS configuration";
+    descriptionClass = "noun";
+    check = x: isType "configuration" x && x.class or null == "nixos";
+  };
+
+  flake = mkOptionType {
+    name = "flake";
+    description = "Nix flake";
+    descriptionClass = "noun";
+    check = isType "flake";
+  };
+
+  # networking types
 
   eui48 = matchType {
     description = "EUI-48 (i.e. MAC address)";
