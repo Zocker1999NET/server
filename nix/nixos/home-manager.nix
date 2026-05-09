@@ -1,6 +1,6 @@
 # type: NixOS module
 # manages integration of home-manager with flake & NixOS config
-# TODO move into homeManagerModules
+# TODO move into homeModules
 {
   config,
   flake,
@@ -20,7 +20,7 @@ in
     # integration with flake
     {
       sharedModules = [
-        flake.outputs.homeManagerModules.default
+        flake.outputs.homeModules.default
       ];
     }
 

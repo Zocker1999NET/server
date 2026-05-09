@@ -1,15 +1,24 @@
-{ lib, ... }@flakeArg:
-rec {
+{ lib, self, ... }@flakeArg:
+let
+  selfMods = self.homeModules;
+in
+{
 
-  assertions.imports = lib.singleton ./assertions;
+  _class = "flake";
 
-  # combination of all my custom modules
-  # these should not change anything until you enable their custom options
-  default.imports = [
-    # standalone (exposed on their own as well)
-    assertions
-    # non-standalone (only exposed through this)
-    ./extends
-  ];
+  flake.homeModules = {
+
+    assertions = ./assertions;
+
+    # combination of all my custom modules
+    # these should not change anything until you enable their custom options
+    default.imports = [
+      # standalone (exposed on their own as well)
+      selfMods.assertions
+      # non-standalone (only exposed through this)
+      ./extends
+    ];
+
+  };
 
 }

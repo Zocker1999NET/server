@@ -106,10 +106,12 @@
       imports = [
         # extensions from inputs
         inputs.flake-parts.flakeModules.flakeModules
+        inputs.home-manager.flakeModules.home-manager
         # my modules
         ./nix/apps
         ./nix/devShells
         ./nix/flakeModules
+        ./nix/hmModules
         ./nix/nixosModules
         ./nix/nixosProfiles
         ./nix/overlays
@@ -127,8 +129,6 @@
           initFlakeMod = mod: mod flakeArg;
           importFlakeMod = path: initFlakeMod (import path);
         };
-
-        homeManagerModules = importFlakeMod ./nix/hmModules;
 
         nixosConfigurations = importFlakeMod ./nix/nixos;
 

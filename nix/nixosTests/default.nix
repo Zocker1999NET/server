@@ -292,7 +292,7 @@ in
     name = "docs_includeAllModules_hm_banananetwork";
     modules = [
       inputs.home-manager.nixosModules.home-manager
-      { home-manager.sharedModules = [ outputs.homeManagerModules.default ]; }
+      { home-manager.sharedModules = [ outputs.homeModules.default ]; }
     ];
   };
 
