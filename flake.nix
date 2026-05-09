@@ -122,7 +122,7 @@
 
       flake = {
 
-        checks = outputs.nixosTests;
+        checks = importFlakeModWithSystem ./nix/checks/legacy.nix;
 
         lib = outputs.libAnchors // importFlakeMod ./nix/lib;
 
@@ -132,8 +132,6 @@
         };
 
         nixosConfigurations = importFlakeMod ./nix/nixos;
-
-        nixosTests = importFlakeModWithSystem ./nix/checks/legacy.nix;
 
       };
     };
