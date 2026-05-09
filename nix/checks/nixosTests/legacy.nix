@@ -130,7 +130,7 @@ in
       {
         xdg.mime.enable = false;
       }
-      ./../offlineInstallDeps.nix
+      ./../../offlineInstallDeps.nix
     ];
     testScript = ''
       node.start()
