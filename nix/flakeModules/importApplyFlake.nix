@@ -1,17 +1,13 @@
 {
+  config,
   importApplyFlake,
   importWithFlake,
   lib,
-  # for auto-detection reasons implemented in the module system,
-  # this one needs to mention some args used by importApplyFlake consumers,
-  # hence here is a list of all (imaginable) dependencies:
-  inputs,
-  libBNet,
-  self,
   ...
-}@flakeArg:
+}:
 let
   inherit (lib.modules) importApply;
+  flakeArg = config.allModuleArgs;
 in
 # not really complex functions which could be part of lib
 # but useful shortcuts hence made available via flakeArg / systemArg themselves

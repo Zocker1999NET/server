@@ -4,11 +4,11 @@ let
   # modules which are auto-imported to this flake
   publicModules = {
     allModuleArgs = ./allModuleArgs.nix;
+    importApplyFlake = ./importApplyFlake.nix;
     nixosProfiles = ./nixosProfiles.nix;
   };
 
   privateModules = [
-    ./importApplyFlake.nix
   ];
 
 in
