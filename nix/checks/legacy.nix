@@ -1,7 +1,7 @@
 {
   inputs,
   lib,
-  outputs,
+  self,
   ...
 }@flakeArg:
 { pkgs, ... }@systemArg:
@@ -10,7 +10,7 @@ let
   inherit (lib.lists) singleton;
   # (end)
   libO = inputs.nixpkgs.lib;
-  machines = outputs.nixosConfigurations;
+  machines = self.nixosConfigurations;
   qemu-common = import "${inputs.nixpkgs}/nixos/lib/qemu-common.nix" {
     lib = libO;
     inherit pkgs;
@@ -213,12 +213,12 @@ in
           enable = true;
           offlineCapable = true;
           options = {
-            defaultFlake = "${flakeArg.flake}";
+            defaultFlake = "${self}";
             defaultHost = "empty";
           };
           listedFlakes.defaultFlake = {
             offlineHosts.empty = true;
-            offlineReference = flakeArg.flake;
+            offlineReference = self;
           };
         };
         virtualisation = {
@@ -282,8 +282,8 @@ in
   docs_includeAllModules_banananetwork = nixosDocTest {
     name = "docs_includeAllModules_banananetwork";
     modules = [
-      outputs.nixosModules.withDepends # bnet modules require their dependencies
-      outputs.nixosModules.myOptions
+      self.nixosModules.withDepends # bnet modules require their dependencies
+      self.nixosModules.myOptions
     ];
   };
 
@@ -292,15 +292,15 @@ in
     name = "docs_includeAllModules_hm_banananetwork";
     modules = [
       inputs.home-manager.nixosModules.home-manager
-      { home-manager.sharedModules = [ outputs.homeModules.default ]; }
+      { home-manager.sharedModules = [ self.homeModules.default ]; }
     ];
   };
 
   docs_includeAllModules_router = nixosDocTest {
     name = "docs_includeAllModules_router";
     modules = [
-      outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
-      outputs.nixosModules.router
+      self.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
+      self.nixosModules.router
     ];
   };
 
@@ -308,7 +308,7 @@ in
     name = "dynamicIssue-module-sshHostKey";
     nodes.node = {
       imports = [
-        outputs.nixosModules.withDepends
+        self.nixosModules.withDepends
       ];
       services.dynamicIssue.modules.sshHostKey.enable = true;
       # required for host keys to be generated and displayed
@@ -384,8 +384,8 @@ in
       {
         # TODO increase log-level of nft-update-addresses to info via config (not implemented yet) for easier debugging
         imports = [
-          outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
-          outputs.nixosModules.router
+          self.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
+          self.nixosModules.router
         ];
         environment.systemPackages = with pkgs; [
           curl
@@ -727,7 +727,7 @@ in
     name = "bind-dynamic";
     nodes.server = {
       imports = [
-        outputs.nixosModules.withDepends
+        self.nixosModules.withDepends
       ];
       config = {
         environment.systemPackages = with pkgs; [ dnsutils ];
@@ -880,8 +880,8 @@ in
           { config, nodes, ... }:
           {
             imports = [
-              outputs.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
-              outputs.nixosModules.router
+              self.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
+              self.nixosModules.router
               peer
             ];
             services.tailscale.extraSetFlags = [

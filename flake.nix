@@ -109,6 +109,7 @@
         inputs.home-manager.flakeModules.home-manager
         # my modules
         ./nix/apps
+        ./nix/checks
         ./nix/devShells
         ./nix/flakeModules
         ./nix/hmModules
@@ -121,8 +122,6 @@
       systems = [ "x86_64-linux" ];
 
       flake = {
-
-        checks = importFlakeModWithSystem ./nix/checks/legacy.nix;
 
         lib = outputs.libAnchors // importFlakeMod ./nix/lib;
 
