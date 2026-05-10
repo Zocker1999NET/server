@@ -1,4 +1,5 @@
 {
+  importWithFlake,
   inputs,
   lib,
   self,
@@ -27,7 +28,7 @@ let
     args:
     pkgs.testers.runNixOSTest {
       imports = [
-        ./_shared/testCommon.nix
+        (importWithFlake ./_shared/testCommon.nix)
         args
       ];
     };
@@ -48,7 +49,7 @@ let
     nixosTest (
       {
         name = "${fqdn}_integration-test";
-        node.specialArgs = tested._banananetwork_systemArgs.specialArgs or { };
+        node.specialArgs = lib.mkForce (tested._banananetwork_systemArgs.specialArgs or { });
         nodes = nodes // {
           tested.imports = tested._banananetwork_systemArgs.modules;
         };

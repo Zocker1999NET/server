@@ -24,6 +24,7 @@ let
       ++ modules;
       systemArgs = {
         modules = modsExtended;
+        # TODO auto sync with nixosTests & home-manager
         specialArgs = {
           inherit flake;
         };
