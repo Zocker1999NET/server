@@ -12,6 +12,7 @@ let
 
   privateModules = [
     ./_ciTargets.nix
+    ./_configuration.nix
   ];
 
 in

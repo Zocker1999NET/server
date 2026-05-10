@@ -121,8 +121,6 @@
         ./nix/packages
       ];
 
-      systems = [ "x86_64-linux" ];
-
       flake = {
 
         lib = outputs.libAnchors // importFlakeMod ./nix/lib;
