@@ -1,7 +1,7 @@
 {
   config,
-  flake,
   lib,
+  libBNet,
   pkgs,
   ...
 }:
@@ -25,7 +25,6 @@ let
   inherit (lib.options) literalExpression mkEnableOption mkOption;
   inherit (lib.trivial) pipe;
   inherit (pkgs.writers) writeText;
-  libBNet = flake.outputs.lib;
   myTypes = libBNet.types;
 
   assertionToWarning = { assertion, message }: mkIf (!assertion) message;
