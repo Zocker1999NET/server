@@ -93,14 +93,16 @@
     in
     flake-parts.lib.mkFlake { inherit inputs; } {
 
+      # args for flake-parts modules
       _module.args = {
         libBNet = lib;
       };
-
       perSystem =
-        { system, ... }:
+        { inputs', ... }:
         {
-          _module.args.pkgs_unstable = inputs.nixpkgs_unstable.legacyPackages.${system};
+          _module.args = {
+            pkgs_unstable = inputs'.nixpkgs_unstable.legacyPackages;
+          };
         };
 
       imports = [
