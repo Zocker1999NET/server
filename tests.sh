@@ -6,16 +6,30 @@ if [[ ! -e flake.nix ]]; then
     echo "missing flake.nix !!!" >&2
 fi
 
+GREP_FILTER=""
+if [[ ${1:-} == "--grep" ]]; then
+    GREP_FILTER="$2"
+    shift 2
+fi
+
+filter() {
+    if [[ -n "$GREP_FILTER" ]]; then
+        grep "$GREP_FILTER"
+    else
+        cat
+    fi
+}
+
 architecture="$( nix eval --impure --expr "builtins.currentSystem" )"
 targetAttr=".#x-banananetwork_ci-targets.${architecture}"
 
 # targets which are to be checked
 targets=()
 
-mapfile -t test_targets < <( nix eval --raw "${targetAttr}.testTargetsText" )
+mapfile -t test_targets < <( nix eval --raw "${targetAttr}.testTargetsText" | filter )
 targets+=("${test_targets[@]}")
 
-mapfile -t build_targets < <( nix eval --raw "${targetAttr}.buildTargetsText" )
+mapfile -t build_targets < <( nix eval --raw "${targetAttr}.buildTargetsText" | filter )
 targets+=("${build_targets[@]}")
 
 if [[ "${1:-}" == "--print-out" ]]; then
