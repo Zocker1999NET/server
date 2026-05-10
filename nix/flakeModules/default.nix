@@ -10,6 +10,7 @@ let
   };
 
   privateModules = [
+    ./_ciTargets.nix
   ];
 
 in

@@ -7,30 +7,16 @@ if [[ ! -e flake.nix ]]; then
 fi
 
 architecture="$( nix eval --impure --expr "builtins.currentSystem" )"
+targetAttr=".#x-banananetwork_ci-targets.${architecture}"
 
 # targets which are to be checked
 targets=()
 
-# all checks must succeed
-mapfile -t test_targets < <( nix eval --raw ".#checks.${architecture}" --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
-for test_target in "${test_targets[@]}"; do
-    targets+=("checks.${architecture}.${test_target}")
-done
+mapfile -t test_targets < <( nix eval --raw "${targetAttr}.testTargetsText" )
+targets+=("${test_targets[@]}")
 
-# all configs must succeed (& are faster to be built remotely)
-mapfile -t configs < <( nix eval --raw .#nixosConfigurations --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
-for config in "${configs[@]}"; do
-    targets+=("nixosConfigurations.\"${config}\".config.system.build.toplevel")
-done
-
-# all devShells must succeed
-mapfile -t devshells < <( nix eval --raw ".#devShells.${architecture}" --apply 'a: with builtins; concatStringsSep "\n" (attrNames a)' )
-for devshell in "${devshells[@]}"; do
-    targets+=("devShells.${architecture}.${devshell}")
-done
-
-# last one to be available as result
-targets+=("nixosConfigurations.mgmt-iso.config.system.build.isoImage")
+mapfile -t build_targets < <( nix eval --raw "${targetAttr}.buildTargetsText" )
+targets+=("${build_targets[@]}")
 
 rememberGC() {
     if [[ ${CI_GCROOT:-} == "" ]]; then
