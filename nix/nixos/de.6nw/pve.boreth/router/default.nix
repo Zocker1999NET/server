@@ -1,4 +1,4 @@
-{ libBNet, outputs, ... }@flakeArg:
+{ libBNet, self, ... }@flakeArg:
 let
   inherit (libBNet.modules) importsApplyMods;
 in
@@ -6,7 +6,7 @@ in
   modules = importsApplyMods [
 
     # config
-    outputs.nixosModules.router
+    self.outputs.nixosModules.router
     (
       { config, ... }:
       let
@@ -101,7 +101,7 @@ in
     (import ./interfaces.nix flakeArg)
 
     # hardware
-    outputs.nixosProfiles.pveGuest
+    self.outputs.nixosProfiles.pveGuest
     {
       x-banananetwork.routerVM = {
         interfaces = {

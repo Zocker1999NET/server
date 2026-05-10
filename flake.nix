@@ -115,6 +115,7 @@
         ./nix/devShells
         ./nix/flakeModules
         ./nix/hmModules
+        ./nix/nixos
         ./nix/nixosModules
         ./nix/nixosProfiles
         ./nix/overlays
@@ -129,8 +130,6 @@
           initFlakeMod = mod: mod flakeArg;
           importFlakeMod = path: initFlakeMod (import path);
         };
-
-        nixosConfigurations = importFlakeMod ./nix/nixos;
 
       };
     };

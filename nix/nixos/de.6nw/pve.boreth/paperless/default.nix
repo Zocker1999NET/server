@@ -1,4 +1,4 @@
-{ lib, outputs, ... }:
+{ lib, self, ... }:
 let
   inherit (lib.modules) mkForce;
 in
@@ -9,7 +9,7 @@ in
   modules = [
 
     # Consumption of documents via SMB share (e.g. for autonomous scanning)
-    outputs.nixosProfiles.sambaServer
+    self.outputs.nixosProfiles.sambaServer
     # TODO use same general module as for nixnas (mind ! for diffs)
     (
       { config, ... }:
@@ -181,7 +181,7 @@ in
     )
 
     # hardware
-    outputs.nixosProfiles.pveGuest
+    self.outputs.nixosProfiles.pveGuest
 
     # installation state
     {

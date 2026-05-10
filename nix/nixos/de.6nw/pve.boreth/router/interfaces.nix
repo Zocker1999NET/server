@@ -1,4 +1,4 @@
-{ lib, outputs, ... }@flakeArg:
+{ lib, self, ... }@flakeArg:
 { config, options, ... }:
 let
   inherit (lib.lists) singleton;

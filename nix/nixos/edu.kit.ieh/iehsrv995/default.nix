@@ -1,5 +1,5 @@
 {
-  outputs,
+  self,
   ...
 }@flakeArg:
 {
@@ -38,7 +38,7 @@
     }
 
     # hardware
-    outputs.nixosProfiles.pveGuest
+    self.outputs.nixosProfiles.pveGuest
 
     # installation state
     (

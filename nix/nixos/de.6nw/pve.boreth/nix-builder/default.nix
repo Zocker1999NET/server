@@ -1,4 +1,4 @@
-{ lib, outputs, ... }@flakeArg:
+{ lib, self, ... }@flakeArg:
 let
   inherit (builtins) concatLists;
   inherit (lib.lists) singleton;
@@ -71,7 +71,7 @@ in
     )
 
     # hardware
-    outputs.nixosProfiles.pveGuest
+    self.outputs.nixosProfiles.pveGuest
 
     # installation state
     {

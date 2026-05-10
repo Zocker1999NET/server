@@ -1,6 +1,6 @@
 {
   inputs,
-  outputs,
+  self,
   ...
 }@flakeArg:
 {
@@ -52,7 +52,7 @@
     )
 
     # hardware
-    outputs.nixosProfiles.allHardware
+    self.outputs.nixosProfiles.allHardware
 
     # "installation" state
     (

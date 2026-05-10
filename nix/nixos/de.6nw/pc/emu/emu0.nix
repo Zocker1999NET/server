@@ -1,11 +1,11 @@
-{ lib, outputs, ... }@flakeArg:
+{ lib, self, ... }@flakeArg:
 let
   inherit (lib.lists) singleton;
 in
 {
   modules = [
     { systemd.network.links."10-ethernet".matchConfig.PermanentMACAddress = "00:22:4d:80:87:d2"; }
-    { nixpkgs.overlays = singleton outputs.overlays.libretro-dolphin-bba; }
+    { nixpkgs.overlays = singleton self.outputs.overlays.libretro-dolphin-bba; }
     ./common.nix
     # host config
     {
@@ -13,7 +13,7 @@ in
       networking.domain = "pc.6nw.de";
     }
     # hardware
-    outputs.nixosProfiles.blade
+    self.outputs.nixosProfiles.blade
     {
       hardware = {
         cpu.type = "intel";

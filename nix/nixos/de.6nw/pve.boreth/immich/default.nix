@@ -1,4 +1,4 @@
-{ lib, outputs, ... }@flakeArg:
+{ lib, self, ... }@flakeArg:
 let
   inherit (lib.lists) singleton;
 in
@@ -27,7 +27,7 @@ in
     )
 
     # hardware
-    outputs.nixosProfiles.pveGuest
+    self.outputs.nixosProfiles.pveGuest
 
     # installation state
     {

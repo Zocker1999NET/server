@@ -1,7 +1,6 @@
 {
-  flake,
   lib,
-  outputs,
+  self,
   ...
 }@flakeArg:
 {
@@ -25,7 +24,7 @@
               offlineHosts = {
                 "empty" = true;
               };
-              offlineReference = flake;
+              offlineReference = self;
             };
             offlineCapable = true;
             options = {
@@ -44,7 +43,7 @@
     ./../../../../offlineInstallDeps.nix
 
     # hardware & "state"
-    outputs.nixosProfiles.installer
+    self.outputs.nixosProfiles.installer
 
   ];
   system = "x86_64-linux";

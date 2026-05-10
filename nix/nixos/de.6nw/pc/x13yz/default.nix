@@ -1,6 +1,6 @@
 {
   inputs,
-  outputs,
+  self,
   ...
 }@flakeArg:
 {
@@ -65,7 +65,7 @@
         ];
       };
     }
-    outputs.nixosProfiles.blade
+    self.outputs.nixosProfiles.blade
     inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x13-yoga
     {
       hardware.cpu.type = "intel";

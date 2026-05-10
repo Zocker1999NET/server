@@ -1,4 +1,4 @@
-{ lib, outputs, ... }@flakeArg:
+{ lib, self, ... }@flakeArg:
 let
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkForce;
@@ -107,7 +107,7 @@ in
     }
 
     # hardware
-    outputs.nixosProfiles.blade
+    self.outputs.nixosProfiles.blade
     {
       # main disk is a SSD
       disko.devices.disk.main.content.partitions.luks.content.settings = {

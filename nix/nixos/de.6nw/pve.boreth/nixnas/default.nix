@@ -1,4 +1,4 @@
-{ lib, outputs, ... }@flakeArg:
+{ lib, self, ... }@flakeArg:
 let
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkForce;
@@ -79,7 +79,7 @@ in
     )
 
     # share our stuff
-    outputs.nixosProfiles.sambaServer
+    self.outputs.nixosProfiles.sambaServer
     (
       { config, ... }:
       {
@@ -164,7 +164,7 @@ in
     }
 
     # hardware
-    outputs.nixosProfiles.pveGuest
+    self.outputs.nixosProfiles.pveGuest
     {
       # required to make my HBA working (with PCIe passthrough)
       # Broadcom / LSI SAS2308 PCI-Express Fusion-MPT SAS-2 [1000:0087] (rev 05)

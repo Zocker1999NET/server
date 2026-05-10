@@ -1,4 +1,4 @@
-{ lib, outputs, ... }:
+{ lib, self, ... }:
 let
   inherit (lib.lists) singleton;
 in
@@ -212,7 +212,7 @@ in
     }
 
     # hardware (Microsoft Surface 3)
-    outputs.nixosProfiles.blade
+    self.outputs.nixosProfiles.blade
     {
       # to find boot drive
       boot.initrd.availableKernelModules = [
