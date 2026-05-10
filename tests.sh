@@ -18,6 +18,14 @@ targets+=("${test_targets[@]}")
 mapfile -t build_targets < <( nix eval --raw "${targetAttr}.buildTargetsText" )
 targets+=("${build_targets[@]}")
 
+if [[ "${1:-}" == "--print-out" ]]; then
+    echo "would build following targets:"
+    for target in "${targets[@]}"; do
+        echo "  - $target"
+    done
+    exit 0
+fi
+
 rememberGC() {
     if [[ ${CI_GCROOT:-} == "" ]]; then
         return 0
