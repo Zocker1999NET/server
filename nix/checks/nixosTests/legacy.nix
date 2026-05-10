@@ -48,32 +48,45 @@ let
       ];
     };
 
-  # TODO migrate docs test to a simpler documentation builder flake check (is not required to be a full blown NixOS test)
   nixosDocTest =
     {
-      # local options (blacklisted below)
-      modules,
-      config ? { },
-      # (required) passthrough options
       name,
-      ...
-    }@args:
-    nixosTest (
-      {
-        nodes.tested = {
-          imports = modules;
-          config = config // {
-            documentation.nixos.enable = lib.mkForce true;
-            documentation.nixos.includeAllModules = true;
-          };
-        };
-        testScript = ""; # VM execution not required, build is sufficient
-      }
-      // (builtins.removeAttrs args [
-        "config"
-        "modules"
-      ])
-    );
+      modules,
+      buildDocsInSandbox ? true,
+    }:
+    let
+      fullName = "nixos-manual_${name}";
+    in
+    (nixosTest {
+      name = fullName;
+      nodes.tested.imports = [
+        (
+          { lib, ... }:
+          {
+            documentation = lib.mkForce {
+              enable = true;
+              nixos.enable = true;
+            };
+          }
+        )
+        (
+          if buildDocsInSandbox then
+            {
+              documentation.nixos.extraModules = modules;
+            }
+          else
+            {
+              imports = modules;
+              documentation.nixos.includeAllModules = true;
+            }
+        )
+      ];
+    }).config.nodes.tested.system.build.manual.manual.overrideAttrs
+      (
+        _: _: {
+          name = fullName;
+        }
+      );
 
 in
 {
@@ -160,6 +173,7 @@ in
   docs_includeAllModules_disko = nixosDocTest {
     name = "docs_includeAllModules_disko";
     modules = singleton inputs.disko.nixosModules.disko;
+    buildDocsInSandbox = false;
   };
   docs_includeAllModules_home-manager = nixosDocTest {
     name = "docs_includeAllModules_home-manager";
@@ -184,6 +198,7 @@ in
       self.nixosModules.withDepends # bnet modules require their dependencies
       self.nixosModules.myOptions
     ];
+    buildDocsInSandbox = false;
   };
 
   # own home-manager module doc test
@@ -201,6 +216,7 @@ in
       self.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
       self.nixosModules.router
     ];
+    buildDocsInSandbox = false;
   };
 
   dynamicIssue-module-sshHostKey = nixosTest {
