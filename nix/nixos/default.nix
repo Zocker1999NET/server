@@ -1,4 +1,5 @@
 {
+  config,
   importWithFlake,
   inputs,
   self,
@@ -23,10 +24,7 @@ let
       ++ modules;
       systemArgs = {
         modules = modsExtended;
-        # TODO auto sync with nixosTests & home-manager
-        specialArgs = {
-          flake = self;
-        };
+        specialArgs = config.flakeSpecialArgs;
         inherit system;
       };
     in
