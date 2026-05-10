@@ -165,26 +165,26 @@ in
   # (maybe upstream someday)
 
   # most basic, verifies my own testing method as already upstreamed
-  docs_includeAllModules_nixpkgs = nixosDocTest {
-    name = "docs_includeAllModules_nixpkgs";
+  docs_nixpkgs = nixosDocTest {
+    name = "nixpkgs";
     modules = [ ]; # nixpkgs already included
   };
   # input-specific doc tests
-  docs_includeAllModules_disko = nixosDocTest {
-    name = "docs_includeAllModules_disko";
+  docs_disko = nixosDocTest {
+    name = "disko";
     modules = singleton inputs.disko.nixosModules.disko;
     buildDocsInSandbox = false;
   };
-  docs_includeAllModules_home-manager = nixosDocTest {
-    name = "docs_includeAllModules_home-manager";
+  docs_home-manager = nixosDocTest {
+    name = "home-manager";
     modules = singleton inputs.home-manager.nixosModules.home-manager;
   };
-  docs_includeAllModules_impermanence = nixosDocTest {
-    name = "docs_includeAllModules_impermanence";
+  docs_impermanence = nixosDocTest {
+    name = "impermanence";
     modules = singleton inputs.impermanence.nixosModules.impermanence;
   };
-  docs_includeAllModules_secrix = nixosDocTest {
-    name = "docs_includeAllModules_secrix";
+  docs_secrix = nixosDocTest {
+    name = "secrix";
     modules = singleton inputs.secrix.nixosModules.secrix;
   };
 
@@ -192,8 +192,8 @@ in
 
   # all module doc test
   # - indicates missing dependency-specific test or failure in banananetwork module
-  docs_includeAllModules_banananetwork = nixosDocTest {
-    name = "docs_includeAllModules_banananetwork";
+  docs_banananetwork = nixosDocTest {
+    name = "banananetwork";
     modules = [
       self.nixosModules.withDepends # bnet modules require their dependencies
       self.nixosModules.myOptions
@@ -202,16 +202,16 @@ in
   };
 
   # own home-manager module doc test
-  docs_includeAllModules_hm_banananetwork = nixosDocTest {
-    name = "docs_includeAllModules_hm_banananetwork";
+  docs_hm_banananetwork = nixosDocTest {
+    name = "hm_banananetwork";
     modules = [
       inputs.home-manager.nixosModules.home-manager
       { home-manager.sharedModules = [ self.homeModules.default ]; }
     ];
   };
 
-  docs_includeAllModules_router = nixosDocTest {
-    name = "docs_includeAllModules_router";
+  docs_router = nixosDocTest {
+    name = "router";
     modules = [
       self.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
       self.nixosModules.router
