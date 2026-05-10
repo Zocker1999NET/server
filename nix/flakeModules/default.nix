@@ -5,6 +5,7 @@ let
   publicModules = {
     allModuleArgs = ./allModuleArgs.nix;
     checkBuildable = ./checkBuildable.nix;
+    flakeSpecialArgs = ./flakeSpecialArgs.nix;
     importApplyFlake = ./importApplyFlake.nix;
     nixosProfiles = ./nixosProfiles.nix;
     orderedInputs = ./orderedInputs.nix;
