@@ -4,6 +4,7 @@
 {
   config,
   flake,
+  flakeArg,
   lib,
   ...
 }:
@@ -26,9 +27,7 @@ in
 
     # integration with NixOS config
     {
-      extraSpecialArgs = {
-        inherit flake;
-      };
+      extraSpecialArgs = flakeArg.config.flakeSpecialArgs;
 
       sharedModules = singleton {
         _file = selfReference;
