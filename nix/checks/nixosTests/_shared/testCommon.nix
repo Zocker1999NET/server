@@ -1,9 +1,8 @@
-{ self, ... }:
+{ config, ... }:
 {
   ...
 }:
 {
-  _class = "nixosTest";
   config = {
 
     defaults = ./nodeCommon.nix;
@@ -13,9 +12,7 @@
       # induces extra evaluation time as nixpkgs needs to be evaluated per node
       # TODO rebuild test infrastructure to not rely on this
       pkgsReadOnly = false;
-      specialArgs = {
-        flake = self;
-      };
+      specialArgs = config.flakeSpecialArgs;
     };
 
   };
