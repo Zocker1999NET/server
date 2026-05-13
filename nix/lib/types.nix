@@ -64,155 +64,158 @@ let
   # === references
   ipv6Ref = "RFC 4291 Section 2.2";
 in
-# extensions to the nix option types library
 {
+  _class = "flake";
+  # extensions to the nix option types library
+  flake.lib.types = {
 
-  # helper functions
+    # helper functions
 
-  disectComposed =
-    typ:
-    let
-      disectable = [
-        "attrsOf"
-        "lazyAttrsOf"
-        "listOf"
-      ];
-    in
-    if lib.types.isOptionType typ then
-      if elem typ.name disectable then
-        {
-          type = typ.name;
-          recreate = lib.types.${typ.name};
-          value = typ.nestedTypes.elemType;
-        }
+    disectComposed =
+      typ:
+      let
+        disectable = [
+          "attrsOf"
+          "lazyAttrsOf"
+          "listOf"
+        ];
+      in
+      if lib.types.isOptionType typ then
+        if elem typ.name disectable then
+          {
+            type = typ.name;
+            recreate = lib.types.${typ.name};
+            value = typ.nestedTypes.elemType;
+          }
+        else
+          {
+            type = "direct";
+            recreate = (x: x);
+            value = typ;
+          }
       else
         {
-          type = "direct";
-          recreate = (x: x);
+          type = "unknown";
+          recreate = throw "unknown type to extract submodule from, hence no recreate";
           value = typ;
-        }
-    else
-      {
-        type = "unknown";
-        recreate = throw "unknown type to extract submodule from, hence no recreate";
-        value = typ;
+        };
+
+    subCombined =
+      # TODO reuse submodule typeMerge
+      # TODO replace .getSubModules everywhere somehow with this
+      subMods:
+      let
+        extractOption = subM: if lib.options.isOption subM then subM.type else subM;
+        extractModules =
+          subM:
+          if lib.types.isOptionType subM then
+            assert subM.name == "submodule";
+            subM.getSubModules
+          else
+            lib.lists.singleton subM;
+      in
+      lib.types.submodule {
+        imports = pipe subMods [
+          toList
+          (map (
+            flip pipe [
+              extractOption
+              (x: (types.disectComposed x).value)
+              extractModules
+            ]
+          ))
+          concatLists
+        ];
       };
 
-  subCombined =
-    # TODO reuse submodule typeMerge
-    # TODO replace .getSubModules everywhere somehow with this
-    subMods:
-    let
-      extractOption = subM: if lib.options.isOption subM then subM.type else subM;
-      extractModules =
-        subM:
-        if lib.types.isOptionType subM then
-          assert subM.name == "submodule";
-          subM.getSubModules
-        else
-          lib.lists.singleton subM;
-    in
-    lib.types.submodule {
-      imports = pipe subMods [
-        toList
-        (map (
-          flip pipe [
-            extractOption
-            (x: (types.disectComposed x).value)
-            extractModules
-          ]
-        ))
-        concatLists
+    extendsSubmodule =
+      opt:
+      let
+        type = if lib.isOption opt then opt.type else opt;
+        disected = types.disectComposed type;
+        sub = disected.value;
+      in
+      assert lib.types.isOptionType type;
+      assert lib.types.isOptionType sub && sub.name == "submodule";
+      arg: disected.recreate (types.subCombined (sub.getSubModules ++ [ arg ]));
+
+    # "attrset" types
+
+    configuration = mkOptionType {
+      name = "configuration";
+      description = "NixOS configuration";
+      descriptionClass = "noun";
+      check = x: isType "configuration" x && x.class or null == "nixos";
+    };
+
+    flake = mkOptionType {
+      name = "flake";
+      description = "Nix flake";
+      descriptionClass = "noun";
+      check = isType "flake";
+    };
+
+    # networking types
+
+    eui48 = matchType {
+      description = "EUI-48 (i.e. MAC address)";
+      pattern = eui48;
+    };
+
+    eui64 = matchType {
+      description = "EUI-64";
+      pattern = eui64;
+    };
+
+    ifName = matchType {
+      description = "UNIX interface name";
+      pattern = interfaceName;
+    };
+
+    ipAddress = lib.types.either types.ipv4Address types.ipv6Address;
+
+    ipAddressPlain = lib.types.either types.ipv4AddressPlain types.ipv6AddressPlain;
+
+    ipNetwork = lib.types.either types.ipv4Network types.ipv6Network;
+
+    ipv4Address = matchType {
+      description = "IPv4 address (no CIDR, opt. interface identifier)";
+      pattern = ipv4Addr + interfaceId;
+    };
+
+    ipv4AddressPlain = matchType {
+      description = "IPv4 address (no CIDR, no interface identifier)";
+      pattern = ipv4Addr;
+    };
+
+    ipv4Network = matchType {
+      description = "IPv4 address/network with CIDR";
+      pattern = ipv4Addr + v4CIDR;
+    };
+
+    ipv6IfId = matchType {
+      description = "IPv6 interface identifier (64-bit hex suffix)";
+      # TODO maybe allow IPv4 suffix
+      pattern = concatGroup [
+        (concatRepeat ":" ipv6Block 4)
+        (":${repeatOptional ":" ipv6Block 3}")
       ];
     };
 
-  extendsSubmodule =
-    opt:
-    let
-      type = if lib.isOption opt then opt.type else opt;
-      disected = types.disectComposed type;
-      sub = disected.value;
-    in
-    assert lib.types.isOptionType type;
-    assert lib.types.isOptionType sub && sub.name == "submodule";
-    arg: disected.recreate (types.subCombined (sub.getSubModules ++ [ arg ]));
+    ipv6Address = matchType {
+      description = "IPv6 address (${ipv6Ref}, no CIDR, opt. interface identifier)";
+      pattern = ipv6Addr + interfaceId;
+    };
 
-  # "attrset" types
+    ipv6AddressPlain = matchType {
+      description = "IPv6 address (${ipv6Ref}, no CIDR, no interface identifier)";
+      pattern = ipv6Addr;
+    };
 
-  configuration = mkOptionType {
-    name = "configuration";
-    description = "NixOS configuration";
-    descriptionClass = "noun";
-    check = x: isType "configuration" x && x.class or null == "nixos";
+    ipv6Network = matchType {
+      description = "IPv6 address/network with CIDR (${ipv6Ref})";
+      pattern = ipv6Addr + v6CIDR;
+    };
+
   };
-
-  flake = mkOptionType {
-    name = "flake";
-    description = "Nix flake";
-    descriptionClass = "noun";
-    check = isType "flake";
-  };
-
-  # networking types
-
-  eui48 = matchType {
-    description = "EUI-48 (i.e. MAC address)";
-    pattern = eui48;
-  };
-
-  eui64 = matchType {
-    description = "EUI-64";
-    pattern = eui64;
-  };
-
-  ifName = matchType {
-    description = "UNIX interface name";
-    pattern = interfaceName;
-  };
-
-  ipAddress = lib.types.either types.ipv4Address types.ipv6Address;
-
-  ipAddressPlain = lib.types.either types.ipv4AddressPlain types.ipv6AddressPlain;
-
-  ipNetwork = lib.types.either types.ipv4Network types.ipv6Network;
-
-  ipv4Address = matchType {
-    description = "IPv4 address (no CIDR, opt. interface identifier)";
-    pattern = ipv4Addr + interfaceId;
-  };
-
-  ipv4AddressPlain = matchType {
-    description = "IPv4 address (no CIDR, no interface identifier)";
-    pattern = ipv4Addr;
-  };
-
-  ipv4Network = matchType {
-    description = "IPv4 address/network with CIDR";
-    pattern = ipv4Addr + v4CIDR;
-  };
-
-  ipv6IfId = matchType {
-    description = "IPv6 interface identifier (64-bit hex suffix)";
-    # TODO maybe allow IPv4 suffix
-    pattern = concatGroup [
-      (concatRepeat ":" ipv6Block 4)
-      (":${repeatOptional ":" ipv6Block 3}")
-    ];
-  };
-
-  ipv6Address = matchType {
-    description = "IPv6 address (${ipv6Ref}, no CIDR, opt. interface identifier)";
-    pattern = ipv6Addr + interfaceId;
-  };
-
-  ipv6AddressPlain = matchType {
-    description = "IPv6 address (${ipv6Ref}, no CIDR, no interface identifier)";
-    pattern = ipv6Addr;
-  };
-
-  ipv6Network = matchType {
-    description = "IPv6 address/network with CIDR (${ipv6Ref})";
-    pattern = ipv6Addr + v6CIDR;
-  };
-
 }

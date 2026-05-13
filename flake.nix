@@ -70,8 +70,6 @@
     let
       inherit (self) outputs;
       inherit (outputs) lib;
-      inherit (outputs.libAnchors) importFlakeMod;
-      inherit (lib) importFlakeModWithSystem;
 
       # every flake "submodule" gets this passed:
       flakeArg = {
@@ -115,6 +113,7 @@
         ./nix/devShells
         ./nix/flakeModules
         ./nix/hmModules
+        ./nix/lib
         ./nix/nixos
         ./nix/nixosModules
         ./nix/nixosProfiles
@@ -124,7 +123,7 @@
 
       flake = {
 
-        lib = outputs.libAnchors // importFlakeMod ./nix/lib;
+        lib = outputs.libAnchors;
 
         libAnchors = rec {
           initFlakeMod = mod: mod flakeArg;

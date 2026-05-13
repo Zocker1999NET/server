@@ -6,57 +6,62 @@
 }@flakeArg:
 let
   inherit (inputs) nixpkgs;
-  inherit (builtins) isAttrs mapAttrs;
+  inherit (builtins) isAttrs;
   inherit (lib.attrsets) genAttrs;
+  inherit (lib.modules) mkMerge;
   inherit (libBNet)
-    autoExtend
     forAllSystems
     importFlakeMod
     supportedSystems
     systemSpecificVars
     ;
 in
+{
 
-# be a drop-in replacement
-nixpkgs.lib
+  _class = "flake";
 
-# groups
-// mapAttrs (autoExtend nixpkgs.lib) {
-  attrsets = ./attrsets.nix;
-  backport = ./backport.nix;
-  lists = ./lists.nix;
-  math = ./math.nix;
-  modules = ./modules.nix;
-  network = ./network.nix;
-  options = ./options.nix;
-  strings = ./strings.nix;
-  trivial = ./trivial.nix;
-  types = ./types.nix;
-  x-banananetwork-unused = ./unused.nix;
-}
-
-# functions
-// {
-
-  autoExtend =
-    upstream: name: obj:
-    (upstream.${name} or { }) // (if isAttrs obj then obj else importFlakeMod obj);
-
-  # restricted to run nix flake show
-  supportedSystems = [
-    "x86_64-linux"
+  imports = [
+    ./attrsets.nix
+    ./backport.nix
+    ./lists.nix
+    ./math.nix
+    ./modules.nix
+    ./network.nix
+    ./options.nix
+    ./strings.nix
+    ./trivial.nix
+    ./types.nix
+    ./unused.nix
   ];
 
-  systemSpecificVars = system: {
-    pkgs = import nixpkgs { inherit system; };
-    pkgs_unstable = import inputs.nixpkgs_unstable { inherit system; };
-    inherit system;
-  };
+  flake.lib = mkMerge [
 
-  forAllSystems = gen: genAttrs supportedSystems (system: gen (systemSpecificVars system));
+    # be a drop-in replacement
+    nixpkgs.lib
 
-  importFlakeModWithSystem = path: forAllSystems (importFlakeMod path);
+    {
 
-  # TODO sort
+      autoExtend =
+        upstream: name: obj:
+        (upstream.${name} or { }) // (if isAttrs obj then obj else importFlakeMod obj);
+
+      forAllSystems = gen: genAttrs supportedSystems (system: gen (systemSpecificVars system));
+
+      importFlakeModWithSystem = path: forAllSystems (importFlakeMod path);
+
+      # restricted to run nix flake show
+      supportedSystems = [
+        "x86_64-linux"
+      ];
+
+      systemSpecificVars = system: {
+        pkgs = import nixpkgs { inherit system; };
+        pkgs_unstable = import inputs.nixpkgs_unstable { inherit system; };
+        inherit system;
+      };
+
+    }
+
+  ];
 
 }

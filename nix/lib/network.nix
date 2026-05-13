@@ -129,133 +129,136 @@ let
     assert ip.cidrInt <= ip._cidr_max;
     ip;
 in
-rec {
+{
+  _class = "flake";
+  flake.lib.network = rec {
 
-  formatMAC =
-    let
-      badChars = [
-        "."
-        ":"
-        "_"
-        "-"
+    formatMAC =
+      let
+        badChars = [
+          "."
+          ":"
+          "_"
+          "-"
+        ];
+        goodChars = map (x: "") badChars;
+      in
+      mac:
+      pipe mac [
+        (replaceStrings badChars goodChars)
+        toLower
       ];
-      goodChars = map (x: "") badChars;
-    in
-    mac:
-    pipe mac [
-      (replaceStrings badChars goodChars)
-      toLower
-    ];
 
-  isParsedIP = x: isAttrs x && x.type or null == "ipAddress";
-  isParsedIPv4 = x: isParsedIP x && x.version == "ipv4";
-  isParsedIPv6 = x: isParsedIP x && x.version == "ipv6";
+    isParsedIP = x: isAttrs x && x.type or null == "ipAddress";
+    isParsedIPv4 = x: isParsedIP x && x.version == "ipv4";
+    isParsedIPv6 = x: isParsedIP x && x.version == "ipv6";
 
-  parseIP = ip: if hasInfix ":" ip then parseIPv6 ip else parseIPv4 ip;
+    parseIP = ip: if hasInfix ":" ip then parseIPv6 ip else parseIPv4 ip;
 
-  parseIPv4 =
-    ipStr:
-    let
-      parsed = match ''^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)(/([0-9]+))?$'' ipStr;
-      ip = toIpClass {
-        version = "ipv4";
-        _input = ipStr;
-        _cidrGroup = last parsed;
-        _groups = sublist 0 4 parsed;
-      };
-    in
-    assert parsed != null; # TODO improve
-    ip;
+    parseIPv4 =
+      ipStr:
+      let
+        parsed = match ''^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)(/([0-9]+))?$'' ipStr;
+        ip = toIpClass {
+          version = "ipv4";
+          _input = ipStr;
+          _cidrGroup = last parsed;
+          _groups = sublist 0 4 parsed;
+        };
+      in
+      assert parsed != null; # TODO improve
+      ip;
 
-  parseIPv6 =
-    # TODO add support for IPv4 mapped addresses
-    ipStr:
-    let
-      parsed = match "^(([0-9a-f]{0,4}:){1,7}[0-9a-f]{0,4})(/([0-9]+))?$" (toLower ipStr);
-      rawGroups = pipe parsed [
-        (flip elemAt 0)
-        (splitString ":")
-        # first & last zeros might be omitted as well, but are not a compression artifact
-        (imap1 (i: x: if (i == 1 || i == length rawGroups) && x == "" then "0" else x))
-      ];
-      groups = flip concatMap rawGroups (
-        x: if x == "" then genList (_: "0") (9 - length rawGroups) else singleton x
-      );
-      ip = toIpClass {
-        version = "ipv6";
-        _input = ipStr;
-        _cidrGroup = last parsed;
-        _groups = groups;
-      };
-    in
-    assert parsed != null;
-    assert count (g: g == "") rawGroups <= 1;
-    ip;
+    parseIPv6 =
+      # TODO add support for IPv4 mapped addresses
+      ipStr:
+      let
+        parsed = match "^(([0-9a-f]{0,4}:){1,7}[0-9a-f]{0,4})(/([0-9]+))?$" (toLower ipStr);
+        rawGroups = pipe parsed [
+          (flip elemAt 0)
+          (splitString ":")
+          # first & last zeros might be omitted as well, but are not a compression artifact
+          (imap1 (i: x: if (i == 1 || i == length rawGroups) && x == "" then "0" else x))
+        ];
+        groups = flip concatMap rawGroups (
+          x: if x == "" then genList (_: "0") (9 - length rawGroups) else singleton x
+        );
+        ip = toIpClass {
+          version = "ipv6";
+          _input = ipStr;
+          _cidrGroup = last parsed;
+          _groups = groups;
+        };
+      in
+      assert parsed != null;
+      assert count (g: g == "") rawGroups <= 1;
+      ip;
 
-  parseIPv6IfId =
-    ipStr:
-    let
-      parsed = match "^(([0-9a-f]{0,4}:){1,3}[0-9a-f]{0,4})$" (toLower ipStr);
-      rawGroups = pipe parsed [
-        (flip elemAt 0)
-        (splitString ":")
-        # first & last zeros might be omitted as well, but are not a compression artifact
-        (imap1 (i: x: if (i == 1 || i == length rawGroups) && x == "" then "0" else x))
-      ];
-      groups = flip concatMap rawGroups (
-        x: if x == "" then genList (_: "0") (5 - length rawGroups) else singleton x
-      );
-      ip = toIpClass {
-        type = "ipInterfaceIdentifier";
-        version = "ipv6";
-        _group_count = 4;
-        _input = ipStr;
-        _cidrGroup = null;
-        _groups = groups;
-      };
-    in
-    assert parsed != null;
-    assert count (g: g == "") rawGroups <= 1;
-    ip;
+    parseIPv6IfId =
+      ipStr:
+      let
+        parsed = match "^(([0-9a-f]{0,4}:){1,3}[0-9a-f]{0,4})$" (toLower ipStr);
+        rawGroups = pipe parsed [
+          (flip elemAt 0)
+          (splitString ":")
+          # first & last zeros might be omitted as well, but are not a compression artifact
+          (imap1 (i: x: if (i == 1 || i == length rawGroups) && x == "" then "0" else x))
+        ];
+        groups = flip concatMap rawGroups (
+          x: if x == "" then genList (_: "0") (5 - length rawGroups) else singleton x
+        );
+        ip = toIpClass {
+          type = "ipInterfaceIdentifier";
+          version = "ipv6";
+          _group_count = 4;
+          _input = ipStr;
+          _cidrGroup = null;
+          _groups = groups;
+        };
+      in
+      assert parsed != null;
+      assert count (g: g == "") rawGroups <= 1;
+      ip;
 
-  parseBinNet =
-    ipV: binStr:
-    let
-      _group_count = ipClassStatics.${ipV}._group_count;
-      ip = toIpClass {
-        version = ipV;
-        _input = binStr;
-        # special overwrites - TODO integrate into toIpClass
-        cidrInt = stringLength binStr;
-        binRaw = fixedWidthStrSuffix ip._cidr_max "0" binStr;
-        binGroups = genList (i: substring (ip._group_bits * i) ip._group_bits ip.binRaw) ip._group_count;
-        decGroups = map binToInt ip.binGroups;
-        # decoy for asserts
-        _groups = genList (i: throw "_groups values not available for parseBinNet") _group_count;
-        # shortcuts
-        binRawNet = binStr;
-      };
-    in
-    ip;
+    parseBinNet =
+      ipV: binStr:
+      let
+        _group_count = ipClassStatics.${ipV}._group_count;
+        ip = toIpClass {
+          version = ipV;
+          _input = binStr;
+          # special overwrites - TODO integrate into toIpClass
+          cidrInt = stringLength binStr;
+          binRaw = fixedWidthStrSuffix ip._cidr_max "0" binStr;
+          binGroups = genList (i: substring (ip._group_bits * i) ip._group_bits ip.binRaw) ip._group_count;
+          decGroups = map binToInt ip.binGroups;
+          # decoy for asserts
+          _groups = genList (i: throw "_groups values not available for parseBinNet") _group_count;
+          # shortcuts
+          binRawNet = binStr;
+        };
+      in
+      ip;
 
-  mergeIPv6IfId =
-    prefix: suffix:
-    let
-      pref = parseIPv6 prefix;
-      suff = parseIPv6IfId suffix;
-    in
-    assert pref.cidrInt <= 64;
-    "${concatStringsSep ":" (sublist 0 4 pref.hexGroups ++ suff.hexGroups)}/64";
+    mergeIPv6IfId =
+      prefix: suffix:
+      let
+        pref = parseIPv6 prefix;
+        suff = parseIPv6IfId suffix;
+      in
+      assert pref.cidrInt <= 64;
+      "${concatStringsSep ":" (sublist 0 4 pref.hexGroups ++ suff.hexGroups)}/64";
 
-  netMinus =
-    excl: net:
-    if net.sameNetwork excl then
-      [ ]
-    else if !net.contains excl then
-      singleton net
-    else
-      net.split;
+    netMinus =
+      excl: net:
+      if net.sameNetwork excl then
+        [ ]
+      else if !net.contains excl then
+        singleton net
+      else
+        net.split;
 
-  netListMinus = excl: concatMap (netMinus excl);
+    netListMinus = excl: concatMap (netMinus excl);
 
+  };
 }
