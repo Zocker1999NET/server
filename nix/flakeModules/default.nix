@@ -7,6 +7,7 @@ let
     checkBuildable = ./checkBuildable.nix;
     flakeSpecialArgs = ./flakeSpecialArgs.nix;
     importApplyFlake = ./importApplyFlake.nix;
+    lib = ./lib.nix;
     nixosProfiles = ./nixosProfiles.nix;
     orderedInputs = ./orderedInputs.nix;
   };
