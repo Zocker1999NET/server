@@ -3,6 +3,7 @@
   ...
 }:
 {
+  _class = "nixosTest";
   config = {
 
     defaults = ./nodeCommon.nix;
