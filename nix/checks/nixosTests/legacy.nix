@@ -38,7 +38,7 @@ let
       _file = ./legacy.nix;
       config.integrationTested = tested;
       imports = [
-        ./_shared/testIntegration.nix
+        self.modules.nixosTest.integrationTest
         args
       ];
     };

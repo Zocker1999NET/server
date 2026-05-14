@@ -24,6 +24,7 @@
     # public modules
 
     bootloaderDisableAll = ./bootloaderDisableAll.nix;
+    integrationTest = ./integrationTest.nix;
     keepTestAssumptions = ./keepTestAssumptions.nix;
     networkingDisableMagic = ./networkingDisableMagic.nix;
     networkingPreventLeaks = ./networkingPreventLeaks.nix;
