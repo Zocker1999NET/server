@@ -93,6 +93,7 @@
         ./nix/flakeModules
         ./nix/hmModules
         ./nix/lib
+        ./nix/modules
         ./nix/nixos
         ./nix/nixosModules
         ./nix/nixosProfiles
