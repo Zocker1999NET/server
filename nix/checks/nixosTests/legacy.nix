@@ -28,9 +28,7 @@ let
     args:
     pkgs.testers.runNixOSTest {
       _file = ./legacy.nix;
-      config._module.args = {
-        inherit libBNet;
-      };
+      config._module.args = flakeArg.config.flakeSpecialArgs;
       imports = [
         (importWithFlake ./_shared/testCommon.nix)
         args
