@@ -11,6 +11,7 @@
 }:
 let
   inherit (lib) types;
+  inherit (lib.attrsets) mapAttrs' nameValuePair;
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkOption;
@@ -26,6 +27,7 @@ in
     let
       inherit (config.networking) useNetworkd;
       inherit (config.testing) backdoorInterface;
+      prefixAttrs = prefix: mapAttrs' (name: val: nameValuePair "${prefix}${name}" val);
     in
     {
 
@@ -42,8 +44,17 @@ in
 
         # classical networking
         (mkIf (!useNetworkd) {
-          warnings = singleton "nixosTest module networkingPreventLeaks not yet implemented to support classical networking!";
-          # TODO implement
+          warnings = singleton "nixosTest module networkingPreventLeaks for classical networking not yet tested!";
+          boot.kernel.sysctl = prefixAttrs "net.ipv6.conf.${backdoorInterface}." {
+            # disabling accept_ra can be fatal because some parameters in a RA are important, e.g. MTU
+            accept_ra_defrtr = false; # ignore default router
+            accept_ra_pinfo = false; # ignore prefix info
+            addr_gen_mode = 1; # do not generate link-local address
+            autoconf = false; # do not configure IPs
+          };
+          networking.interfaces.${backdoorInterface} = {
+            useDHCP = false;
+          };
         })
 
         # systemd-networkd
