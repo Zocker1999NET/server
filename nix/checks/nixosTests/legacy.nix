@@ -28,7 +28,6 @@ let
     pkgs.testers.runNixOSTest {
       imports = [
         self.modules.nixosTest._default
-        ./_shared/testCommon.nix
         args
       ];
     };

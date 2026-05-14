@@ -1,12 +1,28 @@
+# miscellaneous collection of some stuff I expect
 {
   flakeArg,
+  lib,
   ...
 }:
+let
+  inherit (lib.modules) mkDefault;
+in
 {
   _class = "nixosTest";
   config = {
 
-    defaults = ./nodeCommon.nix;
+    defaults =
+      { pkgs, ... }:
+      {
+        # packages for testing
+        environment.systemPackages = with pkgs; [
+          curl
+          dig
+          jq
+        ];
+        # prefer networkd
+        networking.useNetworkd = mkDefault true;
+      };
 
     node = {
       # allow individual nixpkgs (and so overlays) per node
