@@ -52,8 +52,9 @@ let
     let
       fullName = "nixos-manual_${name}";
     in
-    (nixosTest {
+    (pkgs.testers.runNixOSTest {
       name = fullName;
+      imports = singleton self.modules.nixosTest._default;
       nodes.tested.imports = [
         (
           { lib, ... }:
