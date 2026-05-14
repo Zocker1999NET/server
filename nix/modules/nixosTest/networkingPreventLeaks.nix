@@ -11,8 +11,8 @@
 }:
 let
   inherit (lib) types;
-  inherit (lib.modules) mkMerge;
   inherit (lib.lists) singleton;
+  inherit (lib.modules) mkIf mkMerge;
   inherit (lib.options) mkOption;
 in
 {
@@ -24,6 +24,7 @@ in
       ...
     }:
     let
+      inherit (config.networking) useNetworkd;
       inherit (config.testing) backdoorInterface;
     in
     {
@@ -37,14 +38,15 @@ in
         };
       };
 
-      # we disable the backdoor interface for both classical & networkd, just in case
       config = mkMerge [
+
         # classical networking
-        {
+        (mkIf (!useNetworkd) {
           # TODO implement
-        }
+        })
+
         # systemd-networkd
-        {
+        (mkIf useNetworkd {
           systemd.network = {
             networks."00-20-disable-backdoor-interface" = {
               matchConfig.Name = backdoorInterface;
@@ -52,7 +54,7 @@ in
             };
             wait-online.ignoredInterfaces = singleton backdoorInterface;
           };
-        }
+        })
       ];
 
     };
