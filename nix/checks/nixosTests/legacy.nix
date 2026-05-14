@@ -26,9 +26,8 @@ let
   nixosTest =
     args:
     pkgs.testers.runNixOSTest {
-      _file = ./legacy.nix;
-      config._module.args = flakeArg.config.flakeSpecialArgs;
       imports = [
+        self.modules.generic._injectSpecialArgs
         ./_shared/testCommon.nix
         args
       ];
