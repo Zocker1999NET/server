@@ -27,7 +27,7 @@ let
     args:
     pkgs.testers.runNixOSTest {
       imports = [
-        self.modules.generic._injectSpecialArgs
+        self.modules.nixosTest._default
         ./_shared/testCommon.nix
         args
       ];
