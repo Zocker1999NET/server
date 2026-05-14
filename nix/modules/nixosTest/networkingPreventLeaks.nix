@@ -42,6 +42,7 @@ in
 
         # classical networking
         (mkIf (!useNetworkd) {
+          warnings = singleton "nixosTest module networkingPreventLeaks not yet implemented to support classical networking!";
           # TODO implement
         })
 
