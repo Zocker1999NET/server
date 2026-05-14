@@ -1,20 +1,9 @@
 {
   inputs,
-  lib,
-  libBNet,
   ...
 }@flakeArg:
 let
   inherit (inputs) nixpkgs;
-  inherit (builtins) isAttrs;
-  inherit (lib.attrsets) genAttrs;
-  inherit (lib.modules) mkMerge;
-  inherit (libBNet)
-    forAllSystems
-    importFlakeMod
-    supportedSystems
-    systemSpecificVars
-    ;
 in
 {
 
@@ -34,34 +23,7 @@ in
     ./unused.nix
   ];
 
-  flake.lib = mkMerge [
-
-    # be a drop-in replacement
-    nixpkgs.lib
-
-    {
-
-      autoExtend =
-        upstream: name: obj:
-        (upstream.${name} or { }) // (if isAttrs obj then obj else importFlakeMod obj);
-
-      forAllSystems = gen: genAttrs supportedSystems (system: gen (systemSpecificVars system));
-
-      importFlakeModWithSystem = path: forAllSystems (importFlakeMod path);
-
-      # restricted to run nix flake show
-      supportedSystems = [
-        "x86_64-linux"
-      ];
-
-      systemSpecificVars = system: {
-        pkgs = import nixpkgs { inherit system; };
-        pkgs_unstable = import inputs.nixpkgs_unstable { inherit system; };
-        inherit system;
-      };
-
-    }
-
-  ];
+  # be a drop-in replacement
+  flake.lib = nixpkgs.lib;
 
 }

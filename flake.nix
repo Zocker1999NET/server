@@ -67,33 +67,11 @@
 
   outputs =
     inputs@{ flake-parts, self, ... }:
-    let
-      inherit (self) outputs;
-      inherit (outputs) lib;
-
-      # every flake "submodule" gets this passed:
-      flakeArg = {
-        # Usage in submodule:
-        # { ... }@flakeArg: { }
-        # add "..." this so new ones can easily be added
-        flake = self; # full flake reflection
-        # tools / shortcuts
-        inherit (inputs.nixpkgs) lib;
-        # custom lib (nixpkgs lib combined with mine)
-        libBNet = lib;
-        inherit
-          # flake refs
-          inputs # evaluated inputs
-          outputs # evaluated outputs
-          ;
-      };
-
-    in
     flake-parts.lib.mkFlake { inherit inputs; } {
 
       # args for flake-parts modules
       _module.args = {
-        libBNet = lib;
+        libBNet = self.outputs.lib;
       };
       perSystem =
         { inputs', ... }:
@@ -120,16 +98,5 @@
         ./nix/overlays
         ./nix/packages
       ];
-
-      flake = {
-
-        lib = outputs.libAnchors;
-
-        libAnchors = rec {
-          initFlakeMod = mod: mod flakeArg;
-          importFlakeMod = path: initFlakeMod (import path);
-        };
-
-      };
     };
 }
