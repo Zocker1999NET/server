@@ -84,6 +84,7 @@
       imports = [
         # extensions from inputs
         inputs.flake-parts.flakeModules.flakeModules
+        inputs.flake-parts.flakeModules.modules
         inputs.home-manager.flakeModules.home-manager
         # my modules
         ./nix/apps
