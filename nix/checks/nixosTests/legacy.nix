@@ -7,9 +7,6 @@
 }@flakeArg:
 { pkgs, ... }@systemArg:
 let
-  # import only simple flake lib functions (favorize machine specific lib for more realistic testing)
-  inherit (lib.lists) singleton;
-  # (end)
   libO = inputs.nixpkgs.lib;
   machines = self.nixosConfigurations;
   qemu-common = import "${inputs.nixpkgs}/nixos/lib/qemu-common.nix" {
@@ -42,47 +39,6 @@ let
         args
       ];
     };
-
-  nixosDocTest =
-    {
-      name,
-      modules,
-      buildDocsInSandbox ? true,
-    }:
-    let
-      fullName = "nixos-manual_${name}";
-    in
-    (pkgs.testers.runNixOSTest {
-      name = fullName;
-      imports = singleton self.modules.nixosTest._default;
-      nodes.tested.imports = [
-        (
-          { lib, ... }:
-          {
-            documentation = lib.mkForce {
-              enable = true;
-              nixos.enable = true;
-            };
-          }
-        )
-        (
-          if buildDocsInSandbox then
-            {
-              documentation.nixos.extraModules = modules;
-            }
-          else
-            {
-              imports = modules;
-              documentation.nixos.includeAllModules = true;
-            }
-        )
-      ];
-    }).config.nodes.tested.system.build.manual.manual.overrideAttrs
-      (
-        _: _: {
-          name = fullName;
-        }
-      );
 
 in
 {
@@ -155,64 +111,6 @@ in
       # execute build
       node.succeed("disko-install-menu --debug-test-build")
     '';
-  };
-
-  # === flake input extended/integration tests
-  # (maybe upstream someday)
-
-  # most basic, verifies my own testing method as already upstreamed
-  docs_nixpkgs = nixosDocTest {
-    name = "nixpkgs";
-    modules = [ ]; # nixpkgs already included
-  };
-  # input-specific doc tests
-  docs_disko = nixosDocTest {
-    name = "disko";
-    modules = singleton inputs.disko.nixosModules.disko;
-    buildDocsInSandbox = false;
-  };
-  docs_home-manager = nixosDocTest {
-    name = "home-manager";
-    modules = singleton inputs.home-manager.nixosModules.home-manager;
-  };
-  docs_impermanence = nixosDocTest {
-    name = "impermanence";
-    modules = singleton inputs.impermanence.nixosModules.impermanence;
-  };
-  docs_secrix = nixosDocTest {
-    name = "secrix";
-    modules = singleton inputs.secrix.nixosModules.secrix;
-  };
-
-  # == own module tests
-
-  # all module doc test
-  # - indicates missing dependency-specific test or failure in banananetwork module
-  docs_banananetwork = nixosDocTest {
-    name = "banananetwork";
-    modules = [
-      self.nixosModules.withDepends # bnet modules require their dependencies
-      self.nixosModules.myOptions
-    ];
-    buildDocsInSandbox = false;
-  };
-
-  # own home-manager module doc test
-  docs_hm_banananetwork = nixosDocTest {
-    name = "hm_banananetwork";
-    modules = [
-      inputs.home-manager.nixosModules.home-manager
-      { home-manager.sharedModules = [ self.homeModules.default ]; }
-    ];
-  };
-
-  docs_router = nixosDocTest {
-    name = "router";
-    modules = [
-      self.nixosModules.withDepends # router module requires that (TODO upstream those dependencies)
-      self.nixosModules.router
-    ];
-    buildDocsInSandbox = false;
   };
 
   dynamicIssue-module-sshHostKey = nixosTest {

@@ -8,6 +8,7 @@ let
     flakeSpecialArgs = ./flakeSpecialArgs.nix;
     importApplyFlake = ./importApplyFlake.nix;
     lib = ./lib.nix;
+    nixosDocTests = ./nixosDocTests.nix;
     nixosProfiles = ./nixosProfiles.nix;
     orderedInputs = ./orderedInputs.nix;
   };
