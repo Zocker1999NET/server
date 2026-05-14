@@ -13,6 +13,21 @@ This section tries to highlight packages, scripts, modules & so on
 which could be highly interesting to many NixOS users,
 even if they do not just want to replicate my server & client setup 1:1.
 
+### Hint on flake outputs
+
+For recent outputs, use `nix flake show` (or a compatible tool) to inspect them.
+
+- **Private Outputs**:
+    Items prefixed with `_` (e.g., `_default`) or `x-banananetwork_`,
+    plus everything in `checks`, `devShells`, and `nixosConfigurations`,
+    are for my personal use only.
+    They are tailored to my setup, may break unexpectedly,
+    and are not guaranteed to work for you.
+- **Public Outputs**:
+    Items without an underscore prefix might be useful to others.
+    However, if undocumented, please read the code before using them.
+    Note that some public outputs may occasionally lack the underscore prefix due to specific constraints.
+
 ### Packages
 
 These packages should be useable & practable on their own or in fairly common setups,
