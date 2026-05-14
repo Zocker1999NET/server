@@ -1,5 +1,4 @@
 {
-  importWithFlake,
   inputs,
   lib,
   libBNet,
@@ -30,7 +29,7 @@ let
       _file = ./legacy.nix;
       config._module.args = flakeArg.config.flakeSpecialArgs;
       imports = [
-        (importWithFlake ./_shared/testCommon.nix)
+        ./_shared/testCommon.nix
         args
       ];
     };
