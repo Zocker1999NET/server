@@ -2,6 +2,11 @@
   self,
   ...
 }:
+let
+  inherit (builtins) concatLists;
+
+  mods = self.modules;
+in
 {
 
   _class = "flake";
@@ -13,14 +18,18 @@
   flake.modules.nixosTest = rec {
 
     # collection of modules I expect to be always enabled
-    _default.imports = [
-      self.modules.generic._injectSpecialArgs
-      # from here
-      _common
-      bootloaderDisableAll
-      keepTestAssumptions
-      networkingDisableMagic
-      networkingPreventLeaks
+    _default.imports = concatLists [
+      (with mods.generic; [
+        _injectSpecialArgs
+      ])
+      # from here via rec (more performant)
+      [
+        _common
+        bootloaderDisableAll
+        keepTestAssumptions
+        networkingDisableMagic
+        networkingPreventLeaks
+      ]
     ];
 
     # private modules
