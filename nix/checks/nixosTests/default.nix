@@ -5,6 +5,10 @@
 
   _class = "flake";
 
+  imports = [
+    ./diskoInstallMenu.nix
+  ];
+
   perSystem =
     { importWithSystem, ... }@systemArg:
     {
