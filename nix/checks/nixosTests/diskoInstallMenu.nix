@@ -1,8 +1,29 @@
 {
   inputs,
+  lib,
   self,
   ...
 }:
+let
+  inherit (builtins) mapAttrs;
+  inherit (lib.trivial) flip;
+
+  # overwrite nixosConfigurations
+  modifiedConfigs = flip mapAttrs self.nixosConfigurations (
+    _: cfg:
+    cfg.extendModules {
+      modules = [
+        self.modules.nixos.flakeSuppressRevision # avoid rebuilds after unrelated changes
+      ];
+    }
+  );
+  modifiedSelf = self // {
+    nixosConfigurations = modifiedConfigs;
+    outputs = self.outputs // {
+      nixosConfigurations = modifiedConfigs;
+    };
+  };
+in
 {
   _class = "flake";
   perSystem =
@@ -12,6 +33,7 @@
 
         # similar to disko-install-menu.checks.SYSTEM.offineBuilds-*
         # (TODO in disko-install-menu, export test framework & use here)
+        # TODO still rebuilds on unsignificant changes, fix that
         diskoOfflineInstall = pkgs.testers.runNixOSTest {
           name = "diskoOfflineInstall";
           # similar as above: allow customizations with overlays
@@ -23,12 +45,14 @@
                 enable = true;
                 offlineCapable = true;
                 options = {
-                  defaultFlake = "${self}";
+                  # should not be used on --debug-test-build
+                  # & fixed to avoid rebuilds after unrelated changes
+                  defaultFlake = "/non-existing/path_to/flake";
                   defaultHost = "empty";
                 };
                 listedFlakes.defaultFlake = {
                   offlineHosts.empty = true;
-                  offlineReference = self;
+                  offlineReference = modifiedSelf;
                 };
               };
               virtualisation = {
