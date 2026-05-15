@@ -3,7 +3,13 @@
   ...
 }:
 {
+
   _class = "flake";
+
+  imports = [
+    ./_fromNixos.nix
+  ];
+
   flake.modules.nixosTest = rec {
 
     # collection of modules I expect to be always enabled
@@ -30,4 +36,5 @@
     networkingPreventLeaks = ./networkingPreventLeaks.nix;
 
   };
+
 }
