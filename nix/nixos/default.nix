@@ -11,12 +11,7 @@ let
     { modules, system }:
     let
       modsExtended = [
-        {
-          _class = "nixos";
-          system.configurationRevision = toString (
-            self.shortRev or self.dirtyShortRev or self.lastModified or "unknown"
-          );
-        }
+        self.modules.nixos.flakeReflectRevision
         self.outputs.nixosModules.myOptions
         self.nixosModules.withDepends
         ./home-manager.nix
