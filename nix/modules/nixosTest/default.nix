@@ -22,6 +22,9 @@ in
       (with mods.generic; [
         _injectSpecialArgs
       ])
+      (with mods.nixosTest; [
+        flakeSuppressRevision
+      ])
       # from here via rec (more performant)
       [
         _common
