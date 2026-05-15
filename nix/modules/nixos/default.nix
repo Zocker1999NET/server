@@ -6,6 +6,7 @@
     # public modules
 
     flakeReflectRevision = ./flakeReflectRevision.nix;
+    flakeSuppressRevision = ./flakeSuppressRevision.nix;
 
   };
 }
