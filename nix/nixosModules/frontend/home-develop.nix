@@ -93,6 +93,8 @@ in
           # Spell checker
           streetsidesoftware.code-spell-checker
           streetsidesoftware.code-spell-checker-german
+          # IDE: Ansible
+          redhat.ansible
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
