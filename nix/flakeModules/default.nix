@@ -10,6 +10,7 @@ let
     lib = ./lib.nix;
     nixosDocTests = ./nixosDocTests.nix;
     nixosProfiles = ./nixosProfiles.nix;
+    nixosTests = ./nixosTests.nix;
     orderedInputs = ./orderedInputs.nix;
   };
 
