@@ -569,7 +569,8 @@ in
         # zsh-autoquoter: auto-quote arguments to certain commands
         ZAQ_PREFIXES=(
           'git commit( [^ ]##)# -[^ -]#m'
-          'ssh( -[^ ]##)# [^ -][^ ]#'
+          # do not match ssh, is more bad than good
+          #'ssh( -[^ ]##)# [^ -][^ ]#'
         )
         # add to syntaxHighlighting, which should enabled in system config (progams.zsh.syntaxHighlightning)
         ZSH_HIGHLIGHT_HIGHLIGHTERS+=(zaq)
