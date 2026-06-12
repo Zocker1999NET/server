@@ -7,6 +7,7 @@
 let
   self_reference = ./nixosTests.nix;
 
+  inherit (builtins) mapAttrs;
   inherit (lib) types;
   inherit (lib.attrsets) mapAttrs' nameValuePair;
   inherit (lib.modules) mkDefault;
