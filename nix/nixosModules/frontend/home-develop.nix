@@ -323,7 +323,6 @@ in
 
           "typescript.updateImportsOnFileMove.enabled" = "always";
 
-          "update.mode" = "none";
           "update.showReleaseNotes" = false;
 
           "vscode-neovim.neovimPath" = lib.getExe pkgs.neovim;
