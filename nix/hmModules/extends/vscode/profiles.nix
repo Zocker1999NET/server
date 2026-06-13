@@ -46,7 +46,7 @@ let
 in
 {
 
-  options.keybindingsNext = mkOption {
+  options.keybindingsByKey = mkOption {
     description = ''
       More expressive and ordered way to set {option}`programs.vscode.keybindings`.
       Both options can be used simultaneously.
@@ -88,7 +88,7 @@ in
           ]
         );
     in
-    pipe config.keybindingsNext [
+    pipe config.keybindingsByKey [
       (mapAttrsToList transformKeyAttr)
       concatLists
     ];

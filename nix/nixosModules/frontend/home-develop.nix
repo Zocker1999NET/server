@@ -87,7 +87,7 @@ in
           svelte.svelte-vscode
           # cSpell:enable
         ];
-        keybindingsNext = {
+        keybindingsByKey = {
           # tabbing in *visually visible* order
           "ctrl+tab" = [
             {
