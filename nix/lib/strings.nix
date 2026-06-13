@@ -6,9 +6,10 @@ let
     isList
     isNull
     isString
+    match
     typeOf
     ;
-  inherit (lib.strings) optionalString;
+  inherit (lib.strings) optionalString replaceString;
 in
 {
   _class = "flake";
@@ -30,6 +31,16 @@ in
         else
           throw "unexpected type of condition ${typeOf cond}"
       );
+
+    escapeCSSFontFamily =
+      arg:
+      let
+        string = toString arg;
+      in
+      if match "-?[_A-Za-z0-9][_A-Za-z0-9-]*" string == null then
+        "'${replaceString "'" "'\\''" string}'"
+      else
+        string;
 
   };
 }
