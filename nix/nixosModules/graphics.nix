@@ -85,7 +85,7 @@ in
         };
       };
       services.xserver.videoDrivers = lib.singleton "nvidia";
-      x-banananetwork.autoUnfree.names = [
+      x-banananetwork.autoUnfree.names = lib.mkIf (!cfg.nvidia.open) [
         "nvidia-kernel-modules"
         "nvidia-persistenced"
         "nvidia-settings"
