@@ -49,7 +49,7 @@ in
   options.keybindingsByKey = mkOption {
     description = ''
       More expressive and ordered way to set {option}`programs.vscode.keybindings`.
-      Both options can be used simultaneously.
+      Both options can be used simultaneously if `keybindings` is not a path.
 
       - key bindings are grouped by their key combination
       - you can shortcut commands without further options (see example)
