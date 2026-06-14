@@ -42,7 +42,7 @@ in
       man = {
 
         enable = lib.mkDefault true;
-        generateCaches = true;
+        cache.enable = true;
 
         man-db.enable = lib.mkDefault false; # see mandoc
 
