@@ -86,6 +86,7 @@ in
       };
       services.xserver.videoDrivers = lib.singleton "nvidia";
       x-banananetwork.autoUnfree.names = [
+        "nvidia-kernel-modules"
         "nvidia-persistenced"
         "nvidia-settings"
         "nvidia-x11"
