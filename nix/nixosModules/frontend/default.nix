@@ -63,6 +63,8 @@ in
 
     hardware = {
 
+      acpilight.enable = true;
+
       bluetooth = {
         enable = true;
         powerOnBoot = true;
@@ -358,8 +360,6 @@ in
         enable = true;
       };
 
-      light.enable = true;
-
       mosh = {
         # requires testing & so on
         enable = true;
@@ -588,7 +588,7 @@ in
             (optional config.services.printing.enable "lpadmin")
             (optional config.networking.networkmanager.enable "networkmanger")
             (optional config.hardware.sane.enable "scanner")
-            (optional config.programs.light.enable "video")
+            (optional config.hardware.acpilight.enable "video")
             "wheel"
           ];
         isNormalUser = true;

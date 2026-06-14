@@ -180,7 +180,7 @@ in
           extraGroups = flatten [
             (optional config.programs.gamemode.enable "gamemode")
             (optional config.networking.networkmanager.enable "networkmanger")
-            (optional config.programs.light.enable "video")
+            (optional config.hardware.acpilight.enable "video")
           ];
           isNormalUser = true;
         };
@@ -246,6 +246,7 @@ in
           ];
         };
         hardware = {
+          acpilight.enable = true;
           bluetooth.enable = true;
           graphics.required = true;
           #steam-hardware.enable = true;
@@ -266,7 +267,6 @@ in
               };
             };
           };
-          light.enable = true;
         };
         security.rtkit.enable = true;
         services = {
