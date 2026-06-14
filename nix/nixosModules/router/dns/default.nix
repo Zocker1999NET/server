@@ -1,9 +1,9 @@
-{ lib, ... }@flakeArg:
+{ lib, libBNet, ... }@flakeArg:
 { config, ... }:
 let
   routerCfg = config.x-banananetwork.routerVM;
   cfg = routerCfg.dns;
-  inherit (lib) types;
+  inherit (libBNet) types;
 in
 {
 
