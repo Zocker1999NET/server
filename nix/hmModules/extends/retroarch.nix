@@ -3,6 +3,7 @@
   ...
 }:
 {
+  _class = "homeManager";
   config = {
     programs.retroarch = {
 

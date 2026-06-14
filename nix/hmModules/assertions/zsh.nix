@@ -8,6 +8,7 @@ let
   cfg = config.programs.zsh;
 in
 {
+  _class = "homeManager";
   config = lib.mkIf cfg.enable {
 
     assertions = lib.mkIf (!builtins.isNull osConfig) [

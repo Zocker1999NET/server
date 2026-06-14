@@ -10,6 +10,7 @@ let
   scDaemon = cfg.enable && cfg.enableScDaemon;
 in
 {
+  _class = "homeManager";
   config = lib.mkIf (!builtins.isNull osConfig) {
 
     assertions = [

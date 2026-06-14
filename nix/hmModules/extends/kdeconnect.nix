@@ -20,6 +20,8 @@ let
 in
 {
 
+  _class = "homeManager";
+
   options.services.kdeconnect = {
 
     enableSettings = lib.mkEnableOption ''

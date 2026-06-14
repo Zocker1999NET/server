@@ -1,4 +1,5 @@
 {
+  _class = "homeManager";
   imports = [
     # dirs
     ./vscode

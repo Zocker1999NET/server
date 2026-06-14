@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  osConfig, # is a Home-Manager module
   pkgs,
   ...
 }:
@@ -21,6 +20,7 @@ let
   };
 in
 {
+  _class = "homeManager";
   config = mkIf zshCfg.enable {
     home.packages = pipe pluginDeps [
       (mapAttrsToList (plugin: mkIf (elem plugin selectedPlugins)))
