@@ -44,7 +44,10 @@
     crane.url = "github:ipetkov/crane";
 
     # required for configs
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     disko-install-menu = {
       url = "github:Zocker1999NET/disko-install-menu";
