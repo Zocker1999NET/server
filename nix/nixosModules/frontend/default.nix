@@ -121,6 +121,9 @@ in
         bindInterface = true;
       };
 
+      # TODO attempt to migrate to home-manager configuration, has following advantages:
+      # - per-profile extensions & settings
+      # - using nixpkgs packages for extensions
       firefox = {
         enable = true;
         languagePacks = [
