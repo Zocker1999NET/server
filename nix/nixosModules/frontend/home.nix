@@ -337,7 +337,7 @@ in
         evafast # VHC rewind effect
         modernx-zydezu # modern OSC
         mpris
-        mpv-cheatsheet # see all keybindings, use ?
+        mpv-cheatsheet-ng # see all keybindings, use ?
         quack # fade volume on seek
         quality-menu # select quality on yt-dlp streaming
         reload # reload on connection-loss
