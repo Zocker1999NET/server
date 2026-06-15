@@ -7,14 +7,20 @@ if [[ ! -e flake.nix ]]; then
 fi
 
 GREP_FILTER=""
+RANDOM_ORDER=""  # useful for quicker mass-bug-detecting on release upgrades
 if [[ ${1:-} == "--grep" ]]; then
     GREP_FILTER="$2"
     shift 2
+elif [[ ${1:-} == "--random-order" ]]; then
+    RANDOM_ORDER="y"
+    shift 1
 fi
 
 filter() {
     if [[ -n "$GREP_FILTER" ]]; then
         grep "$GREP_FILTER"
+    elif [[ -n "$RANDOM_ORDER" ]]; then
+        shuf
     else
         cat
     fi
