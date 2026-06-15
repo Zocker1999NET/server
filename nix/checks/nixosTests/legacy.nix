@@ -11,7 +11,7 @@ let
   machines = self.nixosConfigurations;
   qemu-common = import "${inputs.nixpkgs}/nixos/lib/qemu-common.nix" {
     lib = libO;
-    inherit pkgs;
+    inherit (pkgs) stdenv;
   };
   qemuNicMac =
     config: netIdx: # according to virtualisation.vlans
