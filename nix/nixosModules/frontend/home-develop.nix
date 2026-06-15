@@ -299,7 +299,7 @@ in
           "nix.serverPath" = "${lib.getExe pkgs.nil}";
           "nix.serverSettings" = {
             nil = {
-              formatting.command = [ (lib.getExe pkgs.nixfmt-rfc-style) ];
+              formatting.command = [ (lib.getExe pkgs.nixfmt) ];
             };
           };
 
