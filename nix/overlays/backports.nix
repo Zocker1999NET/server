@@ -4,7 +4,6 @@ let
   infinite = "999.99";
 in
 libBNet.backport.backportingOverlay pkgs_unstable {
-  ncspot = "25.11"; # or https://github.com/NixOS/nixpkgs/pull/438048
   # backport all VSCode stuff as dev tools to prevent issues with online services
   vscode = infinite;
   vscode-fhs = infinite;
