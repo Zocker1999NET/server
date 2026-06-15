@@ -7,11 +7,9 @@
 }@flakeArg:
 { pkgs, ... }@systemArg:
 let
-  libO = inputs.nixpkgs.lib;
   machines = self.nixosConfigurations;
   qemu-common = import "${inputs.nixpkgs}/nixos/lib/qemu-common.nix" {
-    lib = libO;
-    inherit (pkgs) stdenv;
+    inherit (pkgs) lib stdenv;
   };
   qemuNicMac =
     config: netIdx: # according to virtualisation.vlans
