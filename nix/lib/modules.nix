@@ -23,7 +23,6 @@ let
     defaultOrderPriority
     importApply
     mergeDefinitions
-    mkAliasIfDef
     mkIf
     mkMerge
     mkOverride
@@ -84,7 +83,7 @@ in
         (if keepOverridePriority then map (mkOverride prio) else id)
         mkMerge
         wrap
-        (mkAliasIfDef option)
+        (mkIf option.isDefined)
       ];
 
     # TODO upstream
