@@ -37,8 +37,6 @@ in
 
     fromFlake = importOverlay ./fromFlake.nix;
 
-    libretro-dolphin-bba = importOverlay ./libretro-dolphin-bba;
-
     systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;
 
     taskwarrior3-customs = importOverlay ./taskwarrior3-customs;

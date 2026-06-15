@@ -5,7 +5,6 @@ in
 {
   modules = [
     { systemd.network.links."10-ethernet".matchConfig.PermanentMACAddress = "00:22:4d:80:87:d2"; }
-    { nixpkgs.overlays = singleton self.outputs.overlays.libretro-dolphin-bba; }
     ./common.nix
     # host config
     {
