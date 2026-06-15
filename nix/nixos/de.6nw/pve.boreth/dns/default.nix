@@ -25,7 +25,7 @@ in
           # TODO extract secrets (we can include external files)
           extraConfig =
             let
-              secret = name: config.secrix.services."bind".secrets.${name}.decrypted.path;
+              secret = name: ''"${config.secrix.services."bind".secrets.${name}.decrypted.path}"'';
             in
             ''
               include ${secret "tsig_router.boreth.pve.6nw.de."};
