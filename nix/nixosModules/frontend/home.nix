@@ -17,6 +17,8 @@ let
     mkOrder
     ;
   inherit (lib.trivial) flip;
+  # homeManager lib
+  inherit (lib.hm) dag;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myOpts = osConfig.x-banananetwork;
 in
@@ -395,19 +397,19 @@ in
     ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks = {
+      settings = {
         "*" = {
-          controlMaster = "auto";
-          controlPath = "~/.ssh/connections/%r@%h:%p";
-          controlPersist = "10m";
-          forwardAgent = false;
-          hashKnownHosts = false;
-          serverAliveInterval = 0;
-          serverAliveCountMax = 3;
+          ControlMaster = "auto";
+          ControlPath = "~/.ssh/connections/%r@%h:%p";
+          ControlPersist = "10m";
+          ForwardAgent = false;
+          HashKnownHosts = false;
+          ServerAliveInterval = 0;
+          ServerAliveCountMax = 3;
         };
-        "*git*" = {
-          controlMaster = "no";
-          controlPersist = "no";
+        "*git*" = dag.entryBefore [ "*" ] {
+          ControlMaster = "no";
+          ControlPersist = "no";
         };
       };
     };
