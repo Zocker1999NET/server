@@ -51,10 +51,9 @@ in
       nix-direnv.enable = true;
     };
 
-    vscode = {
+    vscodium = {
       enable = true;
       mutableExtensionsDir = false;
-      package = pkgs.vscodium;
       profiles.default = {
         enableExtensionUpdateCheck = config.programs.vscode.mutableExtensionsDir;
         enableUpdateCheck = false;
