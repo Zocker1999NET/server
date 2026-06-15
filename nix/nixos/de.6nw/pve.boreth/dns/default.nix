@@ -22,6 +22,8 @@ in
         };
         services.bind = {
           enable = true;
+          # TODO disabled because including runtime files fails check at buildtime
+          checkConfig = false;
           # TODO extract secrets (we can include external files)
           extraConfig =
             let
