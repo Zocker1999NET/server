@@ -7,6 +7,7 @@
 let
   bindCfg = config.services.bind;
   inherit (builtins)
+    any
     attrValues
     concatStringsSep
     filter
@@ -123,6 +124,8 @@ let
         })
       ];
     };
+  # decides whether this module does need to prepare for dynamic zones
+  anyDynamicZones = any (ext: ext.dynamic) (attrValues bindCfg.zonesExt);
 in
 {
 
@@ -162,7 +165,7 @@ in
         ]
       );
     };
-    systemd.services.bind = {
+    systemd.services.bind = mkIf anyDynamicZones {
       preStart = ''
         set -x
 
