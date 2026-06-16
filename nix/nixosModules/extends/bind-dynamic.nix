@@ -104,7 +104,7 @@ let
           ];
         };
         # output to upstream module
-        additionalConfig = mkOption {
+        extraConfig = mkOption {
           description = "integrated into `.extraConfig` of zone";
           type = types.lines;
           default = "";
@@ -115,7 +115,7 @@ let
         { dynamic = mkIf (config.update-policy != [ ]) true; }
         # for special cases
         (mkIf config.dynamic {
-          additionalConfig = mkIf (config.update-policy != [ ]) ''
+          extraConfig = mkIf (config.update-policy != [ ]) ''
             update-policy {
               ${concatStringsSep "\n" (map (x: "${x};") config.update-policy)}
             };
@@ -158,7 +158,7 @@ in
             master = true;
             file = "${ext.dynamicDataPath}/zone.db";
           })
-          { extraConfig = ext.additionalConfig; }
+          { inherit (ext) extraConfig; }
         ]
       );
     };
