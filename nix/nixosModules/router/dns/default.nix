@@ -153,6 +153,10 @@ in
         log.file = "syslog"; # journal
       };
     };
+    # TODO remove after https://github.com/NixOS/nixpkgs/pull/532141
+    systemd.services.adguardhome.serviceConfig.RestrictAddressFamilies = lib.optional (
+      config.services.adguardhome.settings.log.file or "" == "syslog"
+    ) "AF_UNIX";
 
   };
 
