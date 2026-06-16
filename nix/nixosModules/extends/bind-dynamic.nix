@@ -137,7 +137,7 @@ in
         Directory where dynamic data for bind should be stored.
 
         If the default is selected,
-        it will be automaticall created & managed by systemd as `StateDirectory=`,
+        it will be automatically created & managed by systemd as `StateDirectory=`,
         otherwise you need to create this yourself
         & make sure it is accessible by bind.
       '';
