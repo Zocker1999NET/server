@@ -154,6 +154,8 @@ in
 
   config = mkIf bindCfg.enable {
     services.bind = {
+      # TODO checkConfig not compatible with dynamic files missing during check execution
+      checkConfig = mkIf anyDynamicZones false;
       zones = flip mapAttrs bindCfg.zonesExt (
         _: ext:
         mkMerge [
