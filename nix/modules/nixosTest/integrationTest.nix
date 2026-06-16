@@ -47,12 +47,7 @@ in
     node.specialArgs = mkForce sysArgs.specialArgs or { };
     nodes.${exportedName}.imports = sysArgs.modules;
 
-    testScript = ''
-      # allow accessing machine under exported name
-      tested = ${builtins.replaceStrings [ "-" ] [ "_" ] cfg.networking.hostName}
-
-      ${config.testScriptExt}
-    '';
+    testScript = config.testScriptExt;
   };
 
 }
