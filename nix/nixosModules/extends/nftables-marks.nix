@@ -24,12 +24,13 @@ let
     ;
   inherit (lib.lists)
     findFirstIndex
+    forEach
     imap1
     singleton
     range
     ;
   inherit (lib.options) mkOption;
-  inherit (lib.trivial) flip pipe;
+  inherit (lib.trivial) pipe;
   mkHelper =
     args:
     mkOption (
@@ -184,7 +185,7 @@ assert logUpper 2 markMaxVal == 32;
     assertions = [
       (
         let
-          groupDescs = flip map values (g: "  - group ${g.name}: ${toString g.bitmaskSize} bits");
+          groupDescs = forEach values (g: "  - group ${g.name}: ${toString g.bitmaskSize} bits");
           sum = foldl' (a: g: a + g.bitmaskSize) 0 (attrValues cfg.values);
         in
         {

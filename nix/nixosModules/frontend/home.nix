@@ -9,6 +9,7 @@
 let
   inherit (builtins) concatStringsSep;
   inherit (config.lib.file) mkOutOfStoreSymlink;
+  inherit (lib.lists) forEach;
   inherit (lib.meta) getExe;
   inherit (lib.modules)
     mkAfter
@@ -16,7 +17,6 @@ let
     mkMerge
     mkOrder
     ;
-  inherit (lib.trivial) flip;
   # homeManager lib
   inherit (lib.hm) dag;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
@@ -226,7 +226,7 @@ in
       enable = true;
       mutableKeys = false;
       mutableTrust = false;
-      publicKeys = flip map myOpts.gpgTrustedKeys (key: {
+      publicKeys = forEach myOpts.gpgTrustedKeys (key: {
         source = key.output;
         trust = 5;
       });

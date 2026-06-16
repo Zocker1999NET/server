@@ -5,9 +5,10 @@ let
   nuaOpts = interface.options.nft-update-addresses;
   inherit (builtins) concatMap filter;
   inherit (lib) types;
+  inherit (lib.lists) forEach;
   inherit (lib.modules) mkMerge;
   inherit (lib.options) mkOption;
-  inherit (lib.trivial) flip pipe;
+  inherit (lib.trivial) pipe;
 in
 {
 
@@ -27,7 +28,7 @@ in
   config = {
     # TODO assert (attrNames for) all exist
     nft-update-addresses.config = pipe others [
-      (concatMap (i: flip map ifCfg.effectiveGroups (g: i.nft-update-addresses.for.${g} or { })))
+      (concatMap (i: forEach ifCfg.effectiveGroups (g: i.nft-update-addresses.for.${g} or { })))
       (filter (x: x != { }))
       mkMerge
     ];

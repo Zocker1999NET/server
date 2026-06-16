@@ -19,6 +19,7 @@ let
     mapAttrs
     ;
   inherit (lib.attrsets) filterAttrs;
+  inherit (lib.lists) forEach;
   inherit (libBNet.modules) importsApplyMods;
   inherit (lib.trivial) flip pipe;
   # nft helpers
@@ -426,13 +427,13 @@ in
           set srcnat-ipv4 {
             type ifname . ifname;
             ${setElemList (
-              flip concatMap ifConfigs (s: flip map s.srcnat.ipv4.enableFor (d: "${s.name} . ${d}"))
+              flip concatMap ifConfigs (s: forEach s.srcnat.ipv4.enableFor (d: "${s.name} . ${d}"))
             )}
           }
           set srcnat-ipv6 {
             type ifname . ifname;
             ${setElemList (
-              flip concatMap ifConfigs (s: flip map s.srcnat.ipv6.enableFor (d: "${s.name} . ${d}"))
+              flip concatMap ifConfigs (s: forEach s.srcnat.ipv6.enableFor (d: "${s.name} . ${d}"))
             )}
           }
         '';

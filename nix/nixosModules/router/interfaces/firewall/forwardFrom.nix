@@ -16,7 +16,7 @@ let
     ;
   inherit (lib) types;
   inherit (lib.attrsets) filterAttrs mapAttrsToList;
-  inherit (lib.lists) last;
+  inherit (lib.lists) forEach last;
   inherit (lib.modules) dischargeProperties mkMerge mkOrder;
   inherit (lib.options) mkOption;
   inherit (lib.trivial) flip pipe;
@@ -75,7 +75,7 @@ in
         value = i.ifOptions.firewall.forwardFromRules.definitionsWithLocations;
       }))
       # separate definitions, preserving location
-      (concatMap (ref: flip map ref.value (def: ref // { inherit (def) file value; })))
+      (concatMap (ref: forEach ref.value (def: ref // { inherit (def) file value; })))
       # assertion to prevent unexpected bug that definitions are not already discharged
       (map (
         { value, ... }@def:

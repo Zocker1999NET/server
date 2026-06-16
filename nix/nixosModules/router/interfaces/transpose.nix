@@ -13,6 +13,7 @@ let
     recursiveUpdate
     setAttrByPath
     ;
+  inherit (lib.lists) forEach;
   inherit (lib.modules) mkMerge;
   inherit (lib.options) isOption mkOption showOption;
   inherit (lib.strings) splitString;
@@ -59,7 +60,7 @@ assert lib.asserts.assertMsg "transpose is WIP!" false;
       # TODO (minor) clone override prioritites
       # TODO (minor) clone order priorities
       default = pipe others [
-        (concatMap (i: flip map ifCfg.effectiveGroups (g: i.transposeTo.${g} or { })))
+        (concatMap (i: forEach ifCfg.effectiveGroups (g: i.transposeTo.${g} or { })))
         mkMerge
       ];
     };

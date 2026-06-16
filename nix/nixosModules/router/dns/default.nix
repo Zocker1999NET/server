@@ -3,6 +3,7 @@
 let
   routerCfg = config.x-banananetwork.routerVM;
   cfg = routerCfg.dns;
+  inherit (lib.lists) forEach;
   inherit (libBNet) types;
 in
 {
@@ -142,7 +143,7 @@ in
           enabled = true;
           interval = "${toString (7 * 24)}h";
         };
-        filters = lib.trivial.flip map cfg.filterlists (url: {
+        filters = forEach cfg.filterlists (url: {
           enabled = true;
           inherit url;
           name = url;
