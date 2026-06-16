@@ -103,9 +103,9 @@ let
             "grant * selfsub ."
           ];
         };
-        # TODO until extraConfig is mergeable (https://github.com/NixOS/nixpkgs/pull/346424)
+        # output to upstream module
         additionalConfig = mkOption {
-          description = "the same as `.extraConfig` but mergeable";
+          description = "integrated into `.extraConfig` of zone";
           type = types.lines;
           default = "";
         };
@@ -158,7 +158,6 @@ in
             master = true;
             file = "${ext.dynamicDataPath}/zone.db";
           })
-          # TODO until extraConfig is mergable (see above)
           { extraConfig = ext.additionalConfig; }
         ]
       );
