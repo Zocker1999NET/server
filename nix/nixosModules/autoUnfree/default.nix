@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 let
@@ -15,6 +14,10 @@ in
 {
 
   _class = "nixos";
+
+  imports = [
+    ./definitions.nix
+  ];
 
   options = {
 
@@ -94,22 +97,6 @@ in
     };
 
     # TODO add alternative for allowUnfreePredicate for users
-
-    x-banananetwork.autoUnfree.packages =
-      let
-        inherit (lib.lists) flatten optional optionals;
-        # supported (ordered by long option name)
-        steam = config.programs.steam;
-      in
-      flatten [
-        # programs
-        (optional steam.enable steam.package)
-        # TODO improve pulling in dependencies more accurate
-        (optionals steam.enable ([
-          pkgs.steam-run
-          pkgs.steam-unwrapped
-        ]))
-      ];
 
   };
 
