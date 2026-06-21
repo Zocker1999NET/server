@@ -264,6 +264,8 @@ in
 
           "html.format.enable" = false;
 
+          "inlineChat.askInChat" = false;
+
           "json.format.enable" = true;
           "json.format.keepLines" = true;
 
