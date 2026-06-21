@@ -30,6 +30,7 @@ in
       # flake
       selfMods.assertions
       # directories
+      ./autoUnfree
       ./dynamicIssue
       ./extends
       ./frontend
@@ -38,7 +39,6 @@ in
       ./useable
       ./vmDisko
       # files
-      ./autoUnfree.nix
       (importApplyFlake ./backports.nix)
       ./cachedFlakesDevShell.nix
       ./debugMinimal.nix
