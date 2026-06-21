@@ -6,6 +6,11 @@
 }:
 let
   cfg = config.x-banananetwork.autoUnfree;
+  inherit (builtins) elem;
+  inherit (lib) types;
+  inherit (lib.modules) mkIf;
+  inherit (lib.options) literalExpression mkEnableOption mkOption;
+  inherit (lib.strings) getName;
 in
 {
 
@@ -15,7 +20,7 @@ in
 
     x-banananetwork.autoUnfree = {
 
-      enable = lib.mkEnableOption ''
+      enable = mkEnableOption ''
         automatically allowing unfree packages
         based on other NixOS module’s options.
 
@@ -34,7 +39,7 @@ in
         by using the option{x-banananetwork.autoUnfree.packages} option.
       '';
 
-      names = lib.mkOption {
+      names = mkOption {
         description = ''
           Lists all package names which should be allowed to be installed
           despite of them being unfree.
@@ -45,11 +50,11 @@ in
 
           Users may also use this additionally allow packages on their own.
         '';
-        type = lib.types.listOf lib.types.str;
+        type = with types; listOf str;
         default = [ ];
       };
 
-      packages = lib.mkOption {
+      packages = mkOption {
         description = ''
           Lists all packages which should be allowed to be installed
           despite of them being unfree.
@@ -60,9 +65,9 @@ in
 
           Users may also use this additionally allow packages on their own.
         '';
-        type = lib.types.listOf lib.types.package;
+        type = with types; listOf package;
         default = [ ];
-        example = lib.literalExpression ''
+        example = literalExpression ''
           with pkgs; [
             vscode
           ] ++ with lib.lists; flatten [
@@ -76,15 +81,15 @@ in
 
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
 
     nixpkgs.config = {
 
       allowUnfreePredicate =
         let
-          names = cfg.names ++ (map lib.getName cfg.packages);
+          names = cfg.names ++ (map getName cfg.packages);
         in
-        pkg: builtins.elem (lib.getName pkg) names;
+        pkg: elem (getName pkg) names;
 
     };
 
