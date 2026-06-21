@@ -66,7 +66,6 @@ in
           # AI assistant
           # github.copilot is the deprecated predecessor
           github.copilot-chat
-          saoudrizwan.claude-dev # Cline
           # forge integrations
           github.vscode-github-actions
           github.vscode-pull-request-github
