@@ -86,15 +86,11 @@ in
 
   config = mkIf cfg.enable {
 
-    nixpkgs.config = {
-
-      allowUnfreePredicate =
-        let
-          names = cfg.names ++ (map getName cfg.packages);
-        in
-        pkg: elem (getName pkg) names;
-
-    };
+    nixpkgs.config.allowUnfreePredicate =
+      let
+        names = cfg.names ++ (map getName cfg.packages);
+      in
+      pkg: elem (getName pkg) names;
 
     # TODO add alternative for allowUnfreePredicate for users
 
