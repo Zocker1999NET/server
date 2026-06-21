@@ -66,5 +66,17 @@ in
       in
       mapAttrs backportOne packageVersionMap;
 
+    # reinitializes given nixpkgs input with the config of the original nixpkgs input
+    # to easily preserve custom user configurations
+    backportingConfigOverlay =
+      nixpkgsInput: packageVersionMap: final: prev:
+      let
+        backportPkgs = import nixpkgsInput {
+          inherit (prev) config;
+          inherit (prev.stdenv.hostPlatform) system;
+        };
+      in
+      backportingOverlay backportPkgs packageVersionMap final prev;
+
   };
 }

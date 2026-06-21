@@ -1,9 +1,9 @@
-{ libBNet, ... }@flakeArg:
-{ pkgs_unstable, ... }@systemArg:
+{ inputs, libBNet, ... }@flakeArg:
+{ ... }@systemArg:
 let
   infinite = "999.99";
 in
-libBNet.backport.backportingOverlay pkgs_unstable {
+libBNet.backport.backportingConfigOverlay inputs.nixpkgs_unstable {
   # backport all VSCode stuff as dev tools to prevent issues with online services
   vscode = infinite;
   vscode-fhs = infinite;
