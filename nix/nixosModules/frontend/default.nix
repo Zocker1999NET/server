@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.x-banananetwork.frontend;
-  inherit (builtins) concatStringsSep;
+  inherit (builtins) concatLists concatStringsSep;
   inherit (lib.modules) mkIf;
 in
 {
@@ -615,9 +615,14 @@ in
 
       autoUnfree = {
         enable = true;
-        packages = with pkgs.mpvScripts; [
+        packages = concatLists [
           # TODO merge with nixosModules/frontend/home.nix
-          evafast
+          (with pkgs; [
+            vscode
+          ])
+          (with pkgs.mpvScripts; [
+            evafast
+          ])
         ];
       };
 

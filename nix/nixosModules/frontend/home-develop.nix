@@ -51,7 +51,8 @@ in
       nix-direnv.enable = true;
     };
 
-    vscodium = {
+    # VSCode cause faster updates compared to VSCodium
+    vscode = {
       enable = true;
       mutableExtensionsDir = false;
       profiles.default = {
