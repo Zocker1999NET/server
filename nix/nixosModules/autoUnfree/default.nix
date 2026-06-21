@@ -67,6 +67,9 @@ in
           to add support for this on their own.
 
           Users may also use this additionally allow packages on their own.
+
+          The package names are automatically extracted from the given packages
+          and added to option{x-banananetwork.autoUnfree.names}.
         '';
         type = with types; listOf package;
         default = [ ];
@@ -86,11 +89,9 @@ in
 
   config = mkIf cfg.enable {
 
-    nixpkgs.config.allowUnfreePredicate =
-      let
-        names = cfg.names ++ (map getName cfg.packages);
-      in
-      pkg: elem (getName pkg) names;
+    nixpkgs.config.allowUnfreePredicate = pkg: elem (getName pkg) cfg.names;
+
+    x-banananetwork.autoUnfree.names = map getName cfg.packages;
 
     # TODO add alternative for allowUnfreePredicate for users
 
