@@ -324,6 +324,14 @@ in
 
           "update.showReleaseNotes" = false;
 
+          "vim.handleKeys" = {
+            "<C-d>" = true; # was default
+            "<C-s>" = false; # conflicts with save
+            "<C-z>" = false; # conflicts with undo
+            "<C-i>" = false; # conflicts with inline chat
+          };
+          "vim.smartRelativeLine" = true;
+
           "vscode-neovim.neovimPath" = lib.getExe pkgs.neovim;
 
           "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
