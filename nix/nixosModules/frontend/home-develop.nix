@@ -330,7 +330,7 @@ in
           "window.menuBarVisibility" = "toggle";
           "window.titleBarStyle" = "native";
 
-          "workbench.colorTheme" = "Default Dark Modern";
+          "workbench.colorTheme" = "Dark Modern";
           "workbench.editorAssociations" = {
             "*.ipynb" = "jupyter-notebook";
           };
