@@ -74,7 +74,8 @@ in
           streetsidesoftware.code-spell-checker
           streetsidesoftware.code-spell-checker-german
           # IDE: Ansible
-          redhat.ansible
+          redhat.ansible # requires: ms-python.vscode-python-envs, redhat.vscode-yaml
+          redhat.vscode-yaml
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
@@ -82,6 +83,7 @@ in
           # IDE: Python
           ms-python.black-formatter
           ms-python.debugpy
+          ms-python.vscode-python-envs # only wanted for redhat.ansible
           matangover.mypy
           # TODO (feature) maybe add isort, https://github.com/microsoft/vscode-isort, in nixpkgs
           # pylance does not work with VSCodium due to MSFT
