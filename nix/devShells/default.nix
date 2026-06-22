@@ -27,6 +27,13 @@ in
               pwgen
               rsync
               xkcdpass
+              # Ansible tools
+              (python3.withPackages (
+                ps: with ps; [
+                  ansible-core
+                ]
+              ))
+              ansible-lint
               # tooling for services
               bind # e.g. dnssec-keygen
               wireguard-tools
