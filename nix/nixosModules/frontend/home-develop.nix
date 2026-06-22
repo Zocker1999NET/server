@@ -73,6 +73,8 @@ in
           # Spell checker
           streetsidesoftware.code-spell-checker
           streetsidesoftware.code-spell-checker-german
+          # design
+          vscode-icons-team.vscode-icons
           # IDE: Ansible
           redhat.ansible # requires: ms-python.vscode-python-envs, redhat.vscode-yaml
           redhat.vscode-yaml
