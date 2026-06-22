@@ -1,4 +1,11 @@
 {
+  lib,
+  ...
+}:
+let
+  inherit (lib.lists) concatLists;
+in
+{
   _class = "flake";
   perSystem =
     {
@@ -13,7 +20,7 @@
       devShells = {
 
         default = pkgs.mkShell {
-          packages =
+          packages = concatLists [
             (with pkgs; [
               curl
               mkpasswd
@@ -26,10 +33,11 @@
               # MCPs for AI
               mcp-nixos
             ])
-            ++ [
-              # flake stuff
-              self'.packages.secrix-wrapper
-            ];
+            # flake stuff
+            (with self'.packages; [
+              secrix-wrapper
+            ])
+          ];
           # TODO magic
           shellHook = ''
             export SECRIX_ID=~/".ssh/id_ed25519"
