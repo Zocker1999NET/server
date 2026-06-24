@@ -122,6 +122,14 @@ in
     # Gaming
     sc-controller # userspace driver (manual start/stop)
 
+    # Wine for e.g. Starcraft 2
+    # https://wiki.nixos.org/wiki/Battle.net
+    (wineWowPackages.full.override {
+      wineRelease = "staging";
+      mingwSupport = true;
+    })
+    winetricks
+
     # fonts (require fonts.fontconfig.enable)
     fira
     nerd-fonts.fira-code
