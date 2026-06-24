@@ -31,6 +31,9 @@ in
               (python3.withPackages (
                 ps: with ps; [
                   ansible-core
+                  # community.proxmox
+                  proxmoxer
+                  requests
                 ]
               ))
               ansible-lint
