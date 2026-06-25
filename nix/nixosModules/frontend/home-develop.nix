@@ -150,6 +150,7 @@ in
           };
           "chat.utilityModel" = "customendpoint/kit.gpt-oss-120b";
           "chat.utilitySmallModel" = "customendpoint/kit.gpt-oss-120b";
+          "chat.viewSessions.orientation" = "stacked";
 
           "cSpell.allowCompoundWords" = false; # enforce camelCasing or snake_casing
           "cSpell.customDictionaries" =
