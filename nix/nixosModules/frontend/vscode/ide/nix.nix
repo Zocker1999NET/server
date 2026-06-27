@@ -3,6 +3,10 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib.lists) singleton;
+  inherit (lib.meta) getExe;
+in
 {
 
   # _class = "homeManager.vscodeProfile";
@@ -17,10 +21,10 @@
     };
 
     "nix.enableLanguageServer" = true;
-    "nix.serverPath" = "${lib.getExe pkgs.nil}";
+    "nix.serverPath" = getExe pkgs.nil;
     "nix.serverSettings" = {
       nil = {
-        formatting.command = [ (lib.getExe pkgs.nixfmt) ];
+        formatting.command = singleton (getExe pkgs.nixfmt);
       };
     };
   };
