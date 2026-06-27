@@ -35,7 +35,6 @@ in
     jbockle.jbockle-format-files
     mktPlc.vscode-marketplace-release.mjmorales.generic-lsp-proxy
     mkhl.direnv
-    vscodevim.vim
     # AI assistant
     # github.copilot is the deprecated predecessor
     github.copilot-chat
@@ -87,11 +86,6 @@ in
       "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup"
       "workbench.action.previousEditor"
     ];
-    # disable overlapping with vim plugin
-    "ctrl+p" = lib.singleton {
-      command = "-extension.vim_ctrl+p";
-      when = "editorTextFocus && vim.active && vim.use<C-p> && !inDebugRepl || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'CommandlineInProgress' || vim.active && vim.use<C-p> && !inDebugRepl && vim.mode == 'SearchInProgressMode'";
-    };
   };
   userSettings = {
 
@@ -312,16 +306,6 @@ in
     "typescript.updateImportsOnFileMove.enabled" = "always";
 
     "update.showReleaseNotes" = false;
-
-    "vim.handleKeys" = {
-      "<C-d>" = true; # was default
-      "<C-s>" = false; # conflicts with save
-      "<C-z>" = false; # conflicts with undo
-      "<C-i>" = false; # conflicts with inline chat
-    };
-    "vim.smartRelativeLine" = true;
-
-    "vscode-neovim.neovimPath" = lib.getExe pkgs.neovim;
 
     "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
 
