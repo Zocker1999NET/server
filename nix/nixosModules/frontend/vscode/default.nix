@@ -19,8 +19,10 @@ in
 
     profiles = {
       default = imports [
-        ./p_default.nix
+        ./devContainers.nix
+        ./direnv.nix
         ./disableTelemetry.nix
+        ./genericLspSetup.nix
         ./design.nix
         ./files.nix
         ./forge_github.nix
