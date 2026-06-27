@@ -78,6 +78,8 @@ in
           # IDE: Ansible
           redhat.ansible # requires: ms-python.vscode-python-envs, redhat.vscode-yaml
           redhat.vscode-yaml
+          # IDE: Kotlin
+          mathiasfrohlich.kotlin
           # IDE: LaTeX
           james-yu.latex-workshop
           # IDE: Nix
