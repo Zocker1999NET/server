@@ -1,8 +1,11 @@
 {
+  config,
   lib,
   ...
 }:
 let
+  cfg = config.programs.vscode;
+
   inherit (lib.lists) toList;
   imports = i: _: { imports = toList i; };
 in
@@ -21,6 +24,7 @@ in
         ./forge_github.nix
         ./keybindings.nix
         ./llm-agent.nix
+        ./preferences.nix
         ./spellcheck.nix
         ./vimEmulation.nix
         # IDEs
@@ -30,6 +34,11 @@ in
         ./ide/nix.nix
         ./ide/python.nix
         ./ide/svelte.nix
+        # only configurable in default profile
+        {
+          enableExtensionUpdateCheck = cfg.mutableExtensionsDir;
+          enableUpdateCheck = false;
+        }
       ];
     };
 
