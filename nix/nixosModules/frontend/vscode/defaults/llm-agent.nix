@@ -11,6 +11,8 @@
     github.copilot-chat
   ];
 
+  # userMcp configured in specific modules
+
   userSettings = {
 
     "chat.disableAIFeatures" = false;

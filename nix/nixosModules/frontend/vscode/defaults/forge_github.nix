@@ -11,6 +11,11 @@
     github.vscode-pull-request-github
   ];
 
+  userMcp.servers.github = {
+    type = "http";
+    url = "https://api.githubcopilot.com/mcp/";
+  };
+
   userSettings = {
 
     "github.gitAuthentication" = false; # prefer native SSH for that

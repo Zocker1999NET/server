@@ -15,6 +15,11 @@ in
     jnoortheen.nix-ide
   ];
 
+  userMcp.servers.mcp-nixos = {
+    type = "stdio";
+    command = getExe pkgs.mcp-nixos;
+  };
+
   userSettings = {
     "[nix]" = {
       "editor.tabSize" = 2;
