@@ -24,6 +24,7 @@ in
         ./design.nix
         ./files.nix
         ./forge_github.nix
+        ./formatAllFiles.nix
         ./keybindings.nix
         ./llm-agent.nix
         ./preferences.nix

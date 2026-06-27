@@ -12,7 +12,6 @@ in
 
   extensions = with pkgs.vscode-extensions; [
     # cSpell:disable
-    jbockle.jbockle-format-files
     mktPlc.vscode-marketplace-release.mjmorales.generic-lsp-proxy
     mkhl.direnv
     # cSpell:enable
