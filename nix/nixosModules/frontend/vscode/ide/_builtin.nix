@@ -1,4 +1,5 @@
 # reserved for settings of builtin language supports
+# HINT: cross-imported by ../defaults/default.nix
 {
   # _class = "homeManager.vscodeProfile";
   userSettings = {

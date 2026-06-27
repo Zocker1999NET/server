@@ -19,21 +19,9 @@ in
 
     profiles = {
       default = imports [
-        ./devContainers.nix
-        ./direnv.nix
-        ./disableTelemetry.nix
-        ./genericLspSetup.nix
-        ./design.nix
-        ./files.nix
-        ./forge_github.nix
-        ./formatAllFiles.nix
-        ./keybindings.nix
-        ./llm-agent.nix
-        ./preferences.nix
-        ./spellcheck.nix
-        ./vimEmulation.nix
+        ./defaults
+        ./requisites/genericLspSetup.nix
         # IDEs
-        ./ide/_builtin.nix
         ./ide/ansible.nix
         ./ide/kotlin.nix
         ./ide/latex.nix

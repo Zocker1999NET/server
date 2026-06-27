@@ -33,10 +33,10 @@ in
         };
       in
       {
-        bnet = createDict "bnet" ../cspell-dicts/bnet.txt;
-        nix = createDict "nix" ../cspell-dicts/nix.txt;
-        python = createDict "python" ../cspell-dicts/python.txt;
-        terms = createDict "terms" ../cspell-dicts/terms.txt;
+        bnet = createDict "bnet" ../../cspell-dicts/bnet.txt;
+        nix = createDict "nix" ../../cspell-dicts/nix.txt;
+        python = createDict "python" ../../cspell-dicts/python.txt;
+        terms = createDict "terms" ../../cspell-dicts/terms.txt;
         # editable dict
         inbox = {
           name = "inbox";
