@@ -17,6 +17,7 @@ in
     profiles = {
       default = imports [
         ./p_default.nix
+        ./keybindings.nix
         ./vimEmulation.nix
       ];
     };

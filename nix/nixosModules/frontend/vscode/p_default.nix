@@ -68,25 +68,6 @@ in
     svelte.svelte-vscode
     # cSpell:enable
   ];
-  keybindingsByKey = {
-    # tabbing in *visually visible* order
-    "ctrl+tab" = [
-      {
-        command = "-workbench.action.quickOpenNavigateNextInEditorPicker";
-        when = "inEditorsPicker && inQuickOpen";
-      }
-      "-workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup"
-      "workbench.action.nextEditor"
-    ];
-    "ctrl+shift+tab" = [
-      {
-        command = "-workbench.action.quickOpenNavigatePreviousInEditorPicker";
-        when = "inEditorsPicker && inQuickOpen";
-      }
-      "-workbench.action.quickOpenLeastRecentlyUsedEditorInGroup"
-      "workbench.action.previousEditor"
-    ];
-  };
   userSettings = {
 
     "[nix]" = {
@@ -249,8 +230,6 @@ in
 
     "json.format.enable" = true;
     "json.format.keepLines" = true;
-
-    "keyboard.dispatch" = "keyCode";
 
     "latex-workshop.message.update.show" = false;
     "latex-workshop.view.pdf.viewer" = "tab";
