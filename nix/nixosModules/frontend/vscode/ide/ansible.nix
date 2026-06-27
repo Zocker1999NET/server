@@ -6,6 +6,10 @@
 
   # _class = "homeManager.vscodeProfile";
 
+  imports = [
+    ./python.nix
+  ];
+
   extensions = with pkgs.vscode-extensions; [
     redhat.ansible # requires: ms-python.vscode-python-envs, redhat.vscode-yaml
     redhat.vscode-yaml
