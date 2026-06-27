@@ -28,8 +28,8 @@
       "<C-z>" = false; # conflicts with undo
       "<C-i>" = false; # conflicts with inline chat
     };
+    "vim.neovimPath" = lib.getExe pkgs.neovim;
     "vim.smartRelativeLine" = true;
-    "vscode-neovim.neovimPath" = lib.getExe pkgs.neovim;
   };
 
 }

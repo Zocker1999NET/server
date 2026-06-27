@@ -11,7 +11,6 @@
   ];
 
   userSettings = {
-    "latex-workshop.message.update.show" = false;
     "latex-workshop.view.pdf.viewer" = "tab";
   };
 

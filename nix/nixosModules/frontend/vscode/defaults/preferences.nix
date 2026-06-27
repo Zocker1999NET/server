@@ -45,13 +45,9 @@
 
     "npm.fetchOnlinePackageInfo" = false;
 
-    "scm.alwaysShowProviders" = true;
-
     "security.workspace.trust.banner" = "never";
 
     "update.showReleaseNotes" = false;
-
-    "vsintellicode.modify.editor.suggestSelection" = "automaticallyOverrodeDefaultValue";
 
     "window.menuBarVisibility" = "toggle";
     "window.titleBarStyle" = "native";

@@ -6,10 +6,10 @@
 
     "html.format.enable" = false;
 
+    "js/ts.updateImportsOnFileMove.enabled" = "always";
+
     "json.format.enable" = true;
     "json.format.keepLines" = true;
-
-    "typescript.updateImportsOnFileMove.enabled" = "always";
 
   };
 }
