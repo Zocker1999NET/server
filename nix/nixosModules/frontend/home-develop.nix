@@ -19,6 +19,8 @@ let
     '';
 
   listOfCSSFontFamilies = families: concatStringsSep ", " (map escapeCSSFontFamily families);
+
+  mktPlc = pkgs.nix-vscode-extensions;
 in
 {
 
@@ -62,6 +64,7 @@ in
           # cSpell:disable
           # general
           jbockle.jbockle-format-files
+          mktPlc.vscode-marketplace-release.mjmorales.generic-lsp-proxy
           mkhl.direnv
           vscodevim.vim
           # AI assistant
