@@ -36,6 +36,10 @@ in
 
     customisations = importOverlay ./customisations.nix;
 
+    # pkgs from external flakes (& restricted packages)
+    flakeInputs = importOverlay ./flakeInputs.nix;
+
+    # pkgs from this flake
     fromFlake = importOverlay ./fromFlake.nix;
 
     systemd-radv-fadeout = importOverlay ./systemd-radv-fadeout;

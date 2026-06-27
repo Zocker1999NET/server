@@ -73,6 +73,7 @@ in
         ];
         config.nixpkgs.overlays = with self.overlays; [
           default
+          flakeInputs
         ];
       };
 
