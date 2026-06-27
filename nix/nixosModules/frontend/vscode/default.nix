@@ -31,6 +31,7 @@ in
         ./spellcheck.nix
         ./vimEmulation.nix
         # IDEs
+        ./ide/_builtin.nix
         ./ide/ansible.nix
         ./ide/kotlin.nix
         ./ide/latex.nix

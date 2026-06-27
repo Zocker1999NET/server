@@ -21,12 +21,5 @@ in
     "dev.containers.dockerComposePath" = "${lib.getExe pkgs.podman-compose}";
     "dev.containers.dockerPath" = "${lib.getExe pkgs.podman}";
 
-    "html.format.enable" = false;
-
-    "json.format.enable" = true;
-    "json.format.keepLines" = true;
-
-    "typescript.updateImportsOnFileMove.enabled" = "always";
-
   };
 }
