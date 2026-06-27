@@ -20,7 +20,6 @@ in
     profiles = {
       default = imports [
         ./defaults
-        ./requisites/genericLspSetup.nix
         # IDEs
         ./ide/ansible.nix
         ./ide/kotlin.nix
