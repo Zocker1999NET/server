@@ -19,8 +19,9 @@ in
   _class = "flake";
   flake.overlays = rec {
 
-    # combines overlays that are assigned by default to every NixOS configuration
-    # see nix/nixosModules/default.nix
+    # combines overlays that I assign by default to every of NixOS configuration of mine
+    #   (does not include overlays from flake inputs)
+    #   see nix/nixosModules/default.nix
     default = chainOverlays [
       backports
       fromFlake
