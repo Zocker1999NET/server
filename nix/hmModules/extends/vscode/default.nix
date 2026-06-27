@@ -1,5 +1,8 @@
 {
+  config,
   lib,
+  libBNet,
+  osConfig,
   pkgs,
   ...
 }:
@@ -28,7 +31,8 @@ in
           ./keybindingsByKey.nix
         ];
         config._module.args = {
-          inherit pkgs;
+          inherit libBNet osConfig pkgs;
+          hmConfig = config;
         };
       });
     };
