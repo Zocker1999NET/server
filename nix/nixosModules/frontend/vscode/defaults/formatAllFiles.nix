@@ -12,4 +12,10 @@
     # cSpell:enable
   ];
 
+  userSettings = {
+    "formatFiles.inheritWorkspaceExcludedFiles" = true;
+    "formatFiles.runOrganizeImports" = true;
+    "formatFiles.useGitIgnore" = true;
+  };
+
 }
