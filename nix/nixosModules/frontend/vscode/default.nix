@@ -18,6 +18,8 @@ in
     mutableExtensionsDir = false;
 
     profiles = {
+
+      # TODO remove IDE specific modules (kept to avoid breaking change)
       default = imports [
         ./defaults
         # IDEs
@@ -33,6 +35,45 @@ in
           enableUpdateCheck = false;
         }
       ];
+
+      ansible = imports [
+        ./defaults
+        ./ide/ansible.nix
+      ];
+
+      kotlin = imports [
+        ./defaults
+        ./ide/kotlin.nix
+      ];
+
+      latex = imports [
+        ./defaults
+        ./ide/latex.nix
+      ];
+
+      nix = imports [
+        ./defaults
+        ./ide/nix.nix
+      ];
+
+      python = imports [
+        ./defaults
+        ./ide/python.nix
+      ];
+
+      svelte = imports [
+        ./defaults
+        ./ide/svelte.nix
+      ];
+
+      # esp. for my repos
+      sysadmin = imports [
+        ./defaults
+        ./ide/ansible.nix
+        ./ide/python.nix
+        ./ide/nix.nix
+      ];
+
     };
 
   };
