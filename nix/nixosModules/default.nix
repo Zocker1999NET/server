@@ -71,11 +71,9 @@ in
           inputs.secrix.nixosModules.secrix
           selfMods.banananetwork
         ];
-        config = {
-          nixpkgs.overlays = [
-            self.overlays.default
-          ];
-        };
+        config.nixpkgs.overlays = with self.overlays; [
+          default
+        ];
       };
 
     # my router module
