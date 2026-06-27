@@ -22,25 +22,6 @@ in
     "dev.containers.dockerComposePath" = "${lib.getExe pkgs.podman-compose}";
     "dev.containers.dockerPath" = "${lib.getExe pkgs.podman}";
 
-    "files.associations" = {
-      "*.makefile" = "makefile";
-    };
-    "files.exclude" = {
-      # cSpell:disable
-      "**/.classpath" = true;
-      "**/.factorypath" = true;
-      "**/.mypy_cache" = true;
-      "**/.project" = true;
-      "**/.pytest_cache" = true;
-      "**/.settings" = true;
-      "**/__pycache__" = true;
-      "**/venv" = true;
-      # cSpell:enable
-    };
-    "files.watcherExclude" = {
-      "**/venv" = true;
-    };
-
     "html.format.enable" = false;
 
     "json.format.enable" = true;

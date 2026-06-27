@@ -22,6 +22,7 @@ in
         ./p_default.nix
         ./disableTelemetry.nix
         ./design.nix
+        ./files.nix
         ./forge_github.nix
         ./keybindings.nix
         ./llm-agent.nix
