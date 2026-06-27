@@ -20,6 +20,7 @@ in
     profiles = {
       default = imports [
         ./p_default.nix
+        ./disableTelemetry.nix
         ./design.nix
         ./forge_github.nix
         ./keybindings.nix

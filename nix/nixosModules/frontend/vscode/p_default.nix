@@ -46,11 +46,6 @@ in
     "json.format.enable" = true;
     "json.format.keepLines" = true;
 
-    # here just in case
-    "redhat.telemetry.enabled" = false;
-
-    "telemetry.telemetryLevel" = "off";
-
     "typescript.updateImportsOnFileMove.enabled" = "always";
 
   };
