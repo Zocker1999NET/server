@@ -1,7 +1,11 @@
 {
+  lib,
   pkgs,
   ...
 }:
+let
+  inherit (lib.meta) getExe;
+in
 {
 
   # _class = "homeManager.vscodeProfile";
@@ -10,8 +14,13 @@
     ../requisites/genericLspSetup.nix
   ];
 
-  extensions = with pkgs.vscode-extensions; [
-    mathiasfrohlich.kotlin
-  ];
+  genericLspProxy = {
+    languageId = "kotlin";
+    command = getExe pkgs.kotlin-language-server;
+    fileExtensions = [
+      ".kt"
+      ".kts"
+    ];
+  };
 
 }
