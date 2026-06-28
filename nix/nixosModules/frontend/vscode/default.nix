@@ -24,7 +24,6 @@ in
         ./defaults
         # IDEs
         ./ide/ansible.nix
-        ./ide/kotlin.nix
         ./ide/latex.nix
         ./ide/nix.nix
         ./ide/python.nix
