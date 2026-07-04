@@ -47,6 +47,8 @@
 
     "security.workspace.trust.banner" = "never";
 
+    "terminal.integrated.stickyScroll.enabled" = false; # annoying because it covers the prompt and the command output
+
     "update.showReleaseNotes" = false;
 
     "window.menuBarVisibility" = "toggle";
