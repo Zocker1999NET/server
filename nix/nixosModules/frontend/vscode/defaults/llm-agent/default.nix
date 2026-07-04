@@ -26,6 +26,7 @@ in
 
     "chat.disableAIFeatures" = false;
     "chat.planAgent.defaultModel" = codingModelName;
+    "chat.tools.terminal.blockDetectedFileWrites" = "outsideWorkspace";
     "chat.utilityModel" = utilityModelId;
     "chat.utilitySmallModel" = utilityModelId;
     "chat.viewSessions.orientation" = "stacked";
