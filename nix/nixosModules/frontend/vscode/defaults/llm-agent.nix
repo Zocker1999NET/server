@@ -4,6 +4,7 @@
 }:
 let
   # need to be updated when upstream model change
+  codingModelName = "MiniMax M2.7 229B (customendpoint)";
   utilityModelId = "customendpoint/kit.gpt-oss-120b";
 in
 {
@@ -20,6 +21,7 @@ in
   userSettings = {
 
     "chat.disableAIFeatures" = false;
+    "chat.planAgent.defaultModel" = codingModelName;
     "chat.tools.urls.autoApprove" = {
       # sorted alphabetically by reversed domain
       "https://github.com/microsoft/vscode/wiki/*" = true;
@@ -33,6 +35,7 @@ in
     "chat.viewSessions.orientation" = "stacked";
 
     "inlineChat.askInChat" = false;
+    "inlineChat.defaultModel" = codingModelName;
 
   };
 
