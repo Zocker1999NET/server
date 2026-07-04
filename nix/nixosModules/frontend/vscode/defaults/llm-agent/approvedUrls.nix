@@ -4,6 +4,8 @@
 
     # sorted alphabetically by reversed domain
 
+    "https://developer.android.com" = true;
+
     "https://github.com/microsoft/vscode/wiki/*" = true;
     "https://docs.github.com" = true;
 
