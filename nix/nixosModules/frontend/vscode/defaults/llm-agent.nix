@@ -2,6 +2,10 @@
   pkgs,
   ...
 }:
+let
+  # need to be updated when upstream model change
+  utilityModelId = "customendpoint/kit.gpt-oss-120b";
+in
 {
 
   # _class = "homeManager.vscodeProfile";
@@ -24,8 +28,8 @@
       "https://nixos.org/manual" = true;
       "https://wiki.nixos.org" = true;
     };
-    "chat.utilityModel" = "customendpoint/kit.gpt-oss-120b";
-    "chat.utilitySmallModel" = "customendpoint/kit.gpt-oss-120b";
+    "chat.utilityModel" = utilityModelId;
+    "chat.utilitySmallModel" = utilityModelId;
     "chat.viewSessions.orientation" = "stacked";
 
     "inlineChat.askInChat" = false;
