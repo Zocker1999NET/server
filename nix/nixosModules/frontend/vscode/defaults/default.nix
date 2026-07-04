@@ -1,6 +1,9 @@
 {
   # _class = "homeManager.vscodeProfile";
   imports = [
+    # directories
+    ./llm-agent
+    # files
     ./design.nix
     ./devContainers.nix
     ./direnv.nix
@@ -9,7 +12,6 @@
     ./forge_github.nix
     ./formatAllFiles.nix
     ./keybindings.nix
-    ./llm-agent.nix
     ./preferences.nix
     ./spellcheck.nix
     ./vimEmulation.nix
