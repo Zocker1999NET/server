@@ -12,6 +12,7 @@ in
   # _class = "homeManager.vscodeProfile";
 
   imports = [
+    ./approvedEdits.nix
     ./approvedUrls.nix
   ];
 
