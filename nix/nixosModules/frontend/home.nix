@@ -122,14 +122,13 @@ in
     # Gaming
     sc-controller # userspace driver (manual start/stop)
 
-    # TODO reenable, disabled because of too long compile time (over 1 hour)
-    # # Wine for e.g. Starcraft 2
-    # # https://wiki.nixos.org/wiki/Battle.net
-    # (wineWowPackages.full.override {
-    #   wineRelease = "staging";
-    #   mingwSupport = true;
-    # })
-    # winetricks
+    # Wine for e.g. Starcraft 2
+    # https://wiki.nixos.org/wiki/Battle.net
+    # deriving that wineWow64Packages.stagingFull is equivalent or "better" to what the wiki suggests
+    # while being built by Hydra and thus being cached by cache.nixos.org
+    # see https://github.com/NixOS/nixpkgs/blob/74cc63f702f7d60a557e152a57b40fb1fd0f72ac/pkgs/top-level/wine-packages.nix#L41
+    wineWow64Packages.stagingFull
+    winetricks
 
     # fonts (require fonts.fontconfig.enable)
     fira
