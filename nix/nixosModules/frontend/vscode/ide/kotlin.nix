@@ -67,8 +67,9 @@ in
 
   # _class = "homeManager.vscodeProfile";
 
-  extensions = [
+  extensions = with pkgs.nix-vscode-extensions.vscode-marketplace-release; [
     # cSpell:disable
+    vscjava.vscode-gradle # JDK not added to PATH by this extension, because that is project specific
     patchedKotlinServer
     # cSpell:enable
   ];
