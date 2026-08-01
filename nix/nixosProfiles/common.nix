@@ -137,7 +137,7 @@ in
           "CFCA EV ROOT"
           # Chunghwa Telecom Co., Ltd. (TW)
           "HiPKI Root CA - G1"
-          "ePKI Root Certification Authority"
+          # ("ePKI Root Certification Authority", removed because otherwise error is thrown)
           # GUANG DONG CERTIFICATE AUTHORITY CO.,LTD. (CN)
           "GDCA TrustAUTH R5 ROOT"
           # Hongkong Post (HK)
