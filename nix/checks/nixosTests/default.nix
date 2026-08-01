@@ -7,6 +7,7 @@
 
   imports = [
     ./diskoInstallMenu.nix
+    ./firefox-render.nix
   ];
 
   perSystem =
