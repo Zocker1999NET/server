@@ -18,8 +18,6 @@
     "explorer.compactFolders" = true;
     "explorer.confirmDelete" = false;
 
-    "extensions.ignoreRecommendations" = true;
-
     "files.autoSave" = "onFocusChange";
     "files.insertFinalNewline" = true;
     "files.trimTrailingWhitespace" = true;
@@ -42,8 +40,6 @@
       default = "right";
       jupyter-notebook = "left";
     };
-
-    "npm.fetchOnlinePackageInfo" = false;
 
     "security.workspace.trust.banner" = "never";
 

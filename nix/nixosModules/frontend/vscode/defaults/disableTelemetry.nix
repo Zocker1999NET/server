@@ -5,9 +5,15 @@
   # _class = "homeManager.vscodeProfile";
   userSettings = {
 
+    "extensions.ignoreRecommendations" = true;
+
+    "npm.fetchOnlinePackageInfo" = false;
+
     "redhat.telemetry.enabled" = false;
 
     "telemetry.telemetryLevel" = "off";
+
+    "vsicons.dontShowNewVersionMessage" = true;
 
   };
 }

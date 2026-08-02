@@ -41,7 +41,6 @@ in
     ];
 
     "vsicons.dontShowConfigManuallyChangedMessage" = true;
-    "vsicons.dontShowNewVersionMessage" = true;
     "vsicons.projectDetection.autoReload" = true;
 
     "workbench.colorTheme" = "Dark Modern";
