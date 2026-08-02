@@ -56,6 +56,7 @@
 
     "workbench.editor.useModal" = "off"; # disables annoying Settings popup instead of the normal editor
     "workbench.enableExperiments" = false;
+    "workbench.settings.alwaysShowAdvancedSettings" = true;
     "workbench.settings.enableNaturalLanguageSearch" = false;
 
     # === workarounds (with link to upstream issue / explanation)
