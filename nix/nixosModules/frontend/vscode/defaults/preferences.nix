@@ -54,6 +54,7 @@
     "window.menuBarVisibility" = "toggle";
     "window.titleBarStyle" = "native";
 
+    "workbench.editor.useModal" = "off"; # disables annoying Settings popup instead of the normal editor
     "workbench.enableExperiments" = false;
     "workbench.settings.enableNaturalLanguageSearch" = false;
 
