@@ -3,6 +3,9 @@
   pkgs,
   ...
 }:
+let
+  inherit (lib.lists) singleton;
+in
 {
 
   # _class = "homeManager.vscodeProfile";
@@ -23,7 +26,7 @@
       "editor.defaultFormatter" = "ms-python.black-formatter";
     };
 
-    "black-formatter.path" = "${pkgs.black}/bin/black";
+    "black-formatter.path" = singleton "${pkgs.black}/bin/black";
 
     "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
     "mypy.runUsingActiveInterpreter" = true;
