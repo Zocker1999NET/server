@@ -24,6 +24,16 @@
     "ansible.mcpServer.enabled" = true;
     # (paths for Ansible tooling not configured, use devShell)
 
+    "yaml.disableSchemaDetection" = [
+      # cSpell:disable
+      "**/.github/workflows/*.yml"
+      "**/.github/workflows/*.yaml"
+      "**/.gitea/workflows/*.yml"
+      "**/.gitea/workflows/*.yaml"
+      "**/.forgejo/workflows/*.yml"
+      "**/.forgejo/workflows/*.yaml"
+      # cSpell:enable
+    ];
     "yaml.format.enable" = false;
   };
 
