@@ -34,6 +34,8 @@ in
                   # community.proxmox
                   proxmoxer
                   requests
+                  # IDE related
+                  jedi-language-server # required for Pyright
                 ]
               ))
               ansible-lint
