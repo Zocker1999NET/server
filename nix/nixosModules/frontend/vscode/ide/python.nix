@@ -3,9 +3,6 @@
   pkgs,
   ...
 }:
-let
-  inherit (lib.lists) singleton;
-in
 {
 
   # _class = "homeManager.vscodeProfile";
