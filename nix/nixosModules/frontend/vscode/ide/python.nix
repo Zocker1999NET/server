@@ -58,14 +58,19 @@ in
       ms-python.python
     ];
 
+    python.extraPackages =
+      ps: with ps; [
+        mypy # required for matangover.mypy
+      ];
+
     userSettings = {
       "[python]" = {
         "editor.defaultFormatter" = "charliermarsh.ruff";
       };
 
-      "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
-      "mypy.runUsingActiveInterpreter" = false; # use mypy/dmypy from nixpkgs (otherwise mypy is needed to be installed in the used venv)
-      "mypy.mypyExecutable" = "${pkgs.mypy}/bin/mypy";
+      "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy"; # kept just in case
+      "mypy.runUsingActiveInterpreter" = true; # default supplied via environment
+      "mypy.mypyExecutable" = "${pkgs.mypy}/bin/mypy"; # kept just in case
 
       "python.analysis.autoImportCompletions" = true;
       "python.analysis.stubPath" = "./typings/";
