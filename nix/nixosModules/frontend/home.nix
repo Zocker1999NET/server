@@ -244,6 +244,11 @@ in
       };
     };
 
+    mergiraf = {
+      enable = true;
+      enableGitIntegration = true;
+    };
+
     mpv = {
       enable = true;
       bindings = {
