@@ -15,6 +15,11 @@
     redhat.vscode-yaml
   ];
 
+  python.extraPackages =
+    ps: with ps; [
+      ansible-core
+    ];
+
   userSettings = {
     # fuck you RedHat for prompting sign in to an optional feature
     # until you find a non-obviously setting to disable it!
