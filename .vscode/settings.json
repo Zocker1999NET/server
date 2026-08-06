@@ -22,4 +22,7 @@
         "files.insertFinalNewline": false,
         "files.trimFinalNewlines": false
     },
+    "cSpell.words": [
+        "noqa"
+    ],
 }
