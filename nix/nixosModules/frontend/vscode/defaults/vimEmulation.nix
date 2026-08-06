@@ -24,6 +24,7 @@
   userSettings = {
     "vim.handleKeys" = {
       "<C-d>" = true; # was default
+      "<C-k>" = false; # conflicts with vscode CTRL+k keybindings
       "<C-s>" = false; # conflicts with save
       "<C-z>" = false; # conflicts with undo
       "<C-i>" = false; # conflicts with inline chat
