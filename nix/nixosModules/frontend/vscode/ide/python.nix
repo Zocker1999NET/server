@@ -11,7 +11,7 @@ in
   # _class = "homeManager.vscodeProfile";
 
   extensions = with pkgs.vscode-extensions; [
-    ms-python.black-formatter
+    charliermarsh.ruff
     ms-python.debugpy
     ms-python.vscode-python-envs # only wanted for redhat.ansible
     matangover.mypy
@@ -23,10 +23,8 @@ in
 
   userSettings = {
     "[python]" = {
-      "editor.defaultFormatter" = "ms-python.black-formatter";
+      "editor.defaultFormatter" = "charliermarsh.ruff";
     };
-
-    "black-formatter.path" = singleton "${pkgs.black}/bin/black";
 
     "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
     "mypy.runUsingActiveInterpreter" = true;
