@@ -17,6 +17,7 @@ let
     mkMerge
     mkOrder
     ;
+  inherit (lib.strings) getName;
   # homeManager lib
   inherit (lib.hm) dag;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
@@ -78,9 +79,9 @@ in
         python3
       ];
       meta = pkgs.taskwarrior3.meta;
-      text = ''exec ${lib.getExe taskwarrior3} "$@"'';
+      text = ''exec ${getExe taskwarrior3} "$@"'';
     })
-    (lib.mkIf osConfig.services.wayland.enable wl-clipboard)
+    (mkIf osConfig.services.wayland.enable wl-clipboard)
 
     ## calculators
     ipv6calc # IPv4/IPv6 swiss kit
@@ -211,13 +212,13 @@ in
         in
         {
           diff = {
-            tool = lib.mkIf vscode.enable "vscode";
+            tool = mkIf vscode.enable "vscode";
           };
           difftool = {
             prompt = false;
           };
-          "difftool \"vscode\"" = lib.mkIf vscode.enable {
-            cmd = "${lib.getExe vscode.package} --wait --diff $LOCAL $REMOTE";
+          "difftool \"vscode\"" = mkIf vscode.enable {
+            cmd = "${getExe vscode.package} --wait --diff $LOCAL $REMOTE";
           };
           user = {
             email = "felix.stupp@banananet.work";
@@ -239,7 +240,7 @@ in
         trust = 5;
       });
       scdaemonSettings = {
-        disable-ccid = lib.mkIf osConfig.services.pcscd.enable true;
+        disable-ccid = mkIf osConfig.services.pcscd.enable true;
       };
     };
 
@@ -356,8 +357,8 @@ in
       ];
       scriptOpts =
         let
-          scriptNames = map (p: lib.getName p) config.programs.mpv.scripts;
-          mkIfScript = name: lib.mkIf (builtins.elem name scriptNames);
+          scriptNames = map (p: getName p) config.programs.mpv.scripts;
+          mkIfScript = name: mkIf (builtins.elem name scriptNames);
         in
         {
           modernx = {
@@ -382,7 +383,7 @@ in
             fast_forward = false;
             # Lua pattern: https://www.lua.org/pil/20.2.html
             # TL;DR: '%' = '\', rest is as normal
-            local_pattern = (lib.mkIf config.programs.yt-dlp.enable "[%s_-]%[([%w-_]+)%]%.[mw][kpe][v4b]m?$"); # tuned for yt-dlp default
+            local_pattern = (mkIf config.programs.yt-dlp.enable "[%s_-]%[([%w-_]+)%]%.[mw][kpe][v4b]m?$"); # tuned for yt-dlp default
           };
         };
     };
