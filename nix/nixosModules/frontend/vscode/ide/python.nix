@@ -1,11 +1,49 @@
 {
+  config,
   lib,
   pkgs,
   ...
 }:
+let
+  inherit (lib) types;
+  inherit (lib.meta) getExe;
+  inherit (lib.options) literalExpression mkOption mkPackageOption;
+  cfg = config.python;
+in
 {
 
   # _class = "homeManager.vscodeProfile";
+
+  options.python = {
+
+    package = mkPackageOption pkgs "python3" { };
+
+    extraPackages = mkOption {
+      description = "Additional python packages to be installed in the default python environment for VSCode.";
+      type = with types; functionTo (listOf package);
+      default = _: [ ];
+      example = literalExpression ''
+        ps: with ps; [
+          ansible-core
+          proxmoxer
+          requests
+        ];
+      '';
+    };
+
+    finalPackage = mkOption {
+      description = ''
+        The full python environment to be used by VSCode by default.
+
+        Including {option}`python.extraPackages`.
+      '';
+      type = types.package;
+      default = cfg.package.withPackages cfg.extraPackages;
+      internal = true;
+      readOnly = true;
+    };
+
+  };
 
   config = {
 
@@ -31,7 +69,7 @@
 
       "python.analysis.autoImportCompletions" = true;
       "python.analysis.stubPath" = "./typings/";
-      "python.defaultInterpreterPath" = lib.getExe pkgs.python3;
+      "python.defaultInterpreterPath" = getExe cfg.finalPackage;
 
       "workbench.editorAssociations" = {
         "*.ipynb" = "jupyter-notebook";
