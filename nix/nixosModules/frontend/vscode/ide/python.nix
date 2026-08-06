@@ -27,7 +27,7 @@ in
     };
 
     "mypy.dmypyExecutable" = "${pkgs.mypy}/bin/dmypy";
-    "mypy.runUsingActiveInterpreter" = true;
+    "mypy.runUsingActiveInterpreter" = false; # use mypy/dmypy from nixpkgs (otherwise mypy is needed to be installed in the used venv)
     "mypy.mypyExecutable" = "${pkgs.mypy}/bin/mypy";
 
     "python.analysis.autoImportCompletions" = true;
