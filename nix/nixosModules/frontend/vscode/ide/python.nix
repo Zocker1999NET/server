@@ -60,6 +60,7 @@ in
 
     python.extraPackages =
       ps: with ps; [
+        jedi-language-server # required for ms-pyright.pyright
         mypy # required for matangover.mypy
       ];
 
