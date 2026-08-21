@@ -711,6 +711,11 @@ in
         lsr = "eza --long --all --recurse --classify=automatic --header";
         lsn = "eza --oneline";
       })
+      # extending git aliases from oh-my-zsh plugin git
+      (mkIf config.programs.git.enable {
+        grbas = "git rebase --autosquash";
+        grbias = "git rebase --interactive --autosquash";
+      })
     ];
     shellGlobalAliases = {
       U = "|& up";
