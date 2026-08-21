@@ -231,6 +231,23 @@ in
       };
     };
 
+    # GitHub CLI
+    gh = {
+      enable = true;
+      extensions = with pkgs; [
+        gh-f # ultimate fzf (search) integration
+        gh-poi # for purging branches assigned to closed PRs
+        gh-review-conductor # for applying review comments & suggestions locally
+        gh-stack # for using stacked PRs
+      ];
+      gitCredentialHelper.enable = false; # prefer SSH
+      hosts."github.com".user = "Zocker1999NET";
+      settings = {
+        git_protocol = "ssh";
+        telemetry = "disabled";
+      };
+    };
+
     gpg = {
       enable = true;
       mutableKeys = false;
