@@ -8,6 +8,7 @@
   perSystem =
     { pkgs, ... }:
     let
+      inherit (lib.meta) getExe;
       inherit (lib.strings) escapeNixString;
       inherit (pkgs.testers) runNixOSTest;
 
@@ -35,6 +36,16 @@
             pkgs,
             ...
           }:
+          let
+            script = pkgs.writeShellApplication {
+              name = "firefox-render-test";
+              text = ''
+                # ensure resolution is large enough so all required text is visible
+                ${getExe pkgs.wlr-randr} --output Virtual-1 --mode 1360x768 --scale 1.3
+                /usr/bin/env firefox file:///etc/${pageFileName}
+              '';
+            };
+          in
           {
             imports = [
               "${modulesPath}/../tests/common/wayland-cage.nix"
@@ -42,7 +53,7 @@
 
             programs.firefox.enable = true;
 
-            services.cage.program = "/usr/bin/env firefox file:///etc/${pageFileName}";
+            services.cage.program = getExe script;
 
             # pageTitle must not appear in the body (for 3.)
             environment.etc.${pageFileName}.source = pkgs.writeText pageFileName ''
