@@ -1,0 +1,74 @@
+---
+
+- name: Gather facts about Proxmox VMs
+  ansible.builtin.import_tasks: _gather-vm-facts.yml
+
+# because we want the "error" to be visible in the output, but not fail the playbook:
+- name: Warn on VMs that have the vm_shutdown_tag currently set # noqa ignore-errors
+  ansible.builtin.fail:
+    msg: "VM {{ item.desc_name }} has shutdown tag from former run set."
+  loop: "{{ stopped_vms }}"
+  loop_control:
+    label: "{{ item.desc_name }}"
+  when: stopped_vms | length > 0
+  ignore_errors: true # warnings
+
+- name: Display VMs to be shut down
+  ansible.builtin.debug:
+    msg: >-
+      Found {{ shutdown_order | length }} running VMs to shut down (in that order):
+      {{ shutdown_order | map(attribute='vmid') | join(', ') }}
+
+- name: Mark VMs with shutdown tag before shutting down
+  community.proxmox.proxmox_kvm:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+    node: "{{ item.node }}"
+    tags: "{{ item.tags + [vm_shutdown_tag] }}"
+    state: present
+    update: true
+  check_mode: false # not destructive
+  delegate_to: localhost
+  loop: "{{ shutdown_order }}"
+  loop_control:
+    label: "{{ item.desc_name }}"
+
+- name: Shutdown VMs in reversed dependency order
+  community.proxmox.proxmox_kvm:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+    state: stopped
+    timeout: 120
+    force: true
+  delegate_to: localhost
+  loop: "{{ shutdown_order }}"
+  loop_control:
+    label: "{{ item.desc_name }}"
+
+- name: Wait for VMs to be stopped
+  ansible.builtin.pause:
+    seconds: 20
+
+- name: Verify VMs are stopped
+  community.proxmox.proxmox_vm_info:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+  delegate_to: localhost
+  register: vm_status
+  loop: "{{ shutdown_order }}"
+  loop_control:
+    label: "{{ item.desc_name }}"
+  when: not ansible_check_mode # shouldn’t fail in check mode where no VM is shutdown
+  failed_when: vm_status.proxmox_vms[0].status != 'stopped'

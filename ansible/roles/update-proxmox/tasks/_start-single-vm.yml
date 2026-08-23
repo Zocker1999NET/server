@@ -1,0 +1,45 @@
+---
+
+- name: "Start VM {{ item.desc_name }}"
+  community.proxmox.proxmox_kvm:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+    state: started
+  delegate_to: localhost
+
+- name: "Wait for VM to fully start: {{ item.desc_name }}"
+  community.proxmox.proxmox_vm_info:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+    node: "{{ item.node }}"
+    config: "current" # required for network
+    network: true
+  delegate_to: localhost
+  register: vm_agent_probe
+  failed_when: false
+  until: >-
+    not vm_agent_probe.failed
+    and vm_agent_probe.proxmox_vms | default([]) | length > 0
+    and vm_agent_probe.proxmox_vms[0].network | default([]) | length > 0
+  retries: 12
+  delay: 5
+
+- name: "Debug VM agent probe result: {{ item.desc_name }}"
+  ansible.builtin.debug:
+    var: vm_agent_probe
+
+- name: "Fail if VM did not fully start: {{ item.desc_name }}"
+  ansible.builtin.fail:
+    msg: "VM {{ item.desc_name }} did not fully start (guest agent not responding)."
+  when: >-
+    vm_agent_probe.failed
+    or vm_agent_probe.proxmox_vms | default([]) | length == 0
+    or vm_agent_probe.proxmox_vms[0].network | default([]) | length == 0

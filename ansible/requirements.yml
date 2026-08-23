@@ -1,0 +1,9 @@
+---
+
+collections:
+  # TODO until https://github.com/ansible-collections/community.proxmox/pull/504 is released
+# - name: community.proxmox
+#   version: ">=2.0.0"
+  - name: https://github.com/ansible-collections/community.proxmox
+    type: git
+    version: b4bf991d77c7cf8290c32429993c38da94f5783c

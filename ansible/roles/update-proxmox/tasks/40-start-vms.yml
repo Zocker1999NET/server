@@ -1,0 +1,55 @@
+---
+
+- name: Gather facts about Proxmox VMs
+  ansible.builtin.import_tasks: _gather-vm-facts.yml
+
+- name: Fail if no VMs are found to be started
+  ansible.builtin.fail:
+    msg: "No VMs with shutdown tag found to start."
+  when: start_order | length == 0
+
+- name: Display VMs to be started
+  ansible.builtin.debug:
+    msg: >-
+      Found {{ start_order | length }} VMs with shutdown tag to start (in that order):
+      {{ start_order | map(attribute='vmid') | join(', ') }}
+
+- name: Start VMs in dependency order
+  ansible.builtin.include_tasks: _start-single-vm.yml
+  loop: "{{ start_order }}"
+  loop_control:
+    label: "{{ item.desc_name }}"
+
+- name: Verify VMs are started
+  community.proxmox.proxmox_vm_info:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+    node: "{{ item.node }}"
+  delegate_to: localhost
+  register: vm_status
+  loop: "{{ start_order }}"
+  loop_control:
+    label: "{{ item.desc_name }}"
+  failed_when: vm_status.proxmox_vms[0].status != 'running'
+
+- name: Remove shutdown tag from VMs
+  community.proxmox.proxmox_kvm:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    vmid: "{{ item.vmid }}"
+    node: "{{ item.node }}"
+    tags: "{{ item.tags | difference([vm_shutdown_tag]) }}"
+    update: true
+    state: present
+  check_mode: false # not destructive
+  delegate_to: localhost
+  loop: "{{ start_order }}"
+  loop_control:
+    label: "{{ item.desc_name }}"

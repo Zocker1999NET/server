@@ -1,0 +1,38 @@
+---
+
+# Proxmox Connection Settings
+proxmox_host: "{{ ansible_host }}"
+proxmox_user: "root@pam"
+# proxmox_password: "{{ lookup('env', 'ANSIBLE_PROXMOX_TOKEN_PW') }}"
+proxmox_token_id: "ansible-test"
+# proxmox_token_id_full: "{{ proxmox_user }}!{{ proxmox_token_id }}"
+proxmox_token_secret: "{{ lookup('env', 'ANSIBLE_PROXMOX_TOKEN_PW') }}"
+proxmox_validate_certs: false
+
+# Usage for PW only:
+#   api_host: "{{ proxmox_host }}"
+#   api_user: "{{ proxmox_user }}"
+#   api_password: "{{ proxmox_password }}"
+# Usage for Token only:
+#   api_host: "{{ proxmox_host }}"
+#   api_user: "{{ proxmox_user }}"
+#   api_token_id: "{{ proxmox_token_id }}"
+#   api_token_secret: "{{ proxmox_token_secret }}"
+
+# VM Dependency Order - fill in your VM IDs in the order they should be started
+# VMs listed here will be started in this order (first = starts last, shutdown first)
+# Example:
+#   vm_dependency_order:
+#     - 100  # VM 100 starts first (depends on nothing)
+#     - 101  # VM 101 starts second (depends on 100)
+#     - 102  # VM 102 starts last (depends on 101)
+vm_dependency_order:
+  - 100 # router
+  - 111 # nixnas
+  - 120 # pbs
+  - 210 # immich
+  - 212 # paperless
+  - 804 # nix-builder
+
+# Tag used to mark VMs that were shut down by this playbook
+vm_shutdown_tag: "ansible_shutdown_pending"

@@ -1,0 +1,14 @@
+---
+
+- name: Run apt update && upgrade
+  ansible.builtin.apt:
+    autoremove: true
+    update_cache: true
+    upgrade: full
+    cache_valid_time: 3600
+  become: true
+
+- name: Reboot Proxmox
+  ansible.builtin.reboot:
+    reboot_timeout: 600
+  become: true

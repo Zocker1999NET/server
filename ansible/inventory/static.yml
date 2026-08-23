@@ -1,0 +1,7 @@
+---
+
+all:
+  hosts:
+    boreth.pve.6nw.de:
+      ansible_host: "10.11.11.69"
+      ansible_user: "root"

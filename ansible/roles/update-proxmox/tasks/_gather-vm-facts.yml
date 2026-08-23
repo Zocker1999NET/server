@@ -1,0 +1,53 @@
+---
+
+- name: Gather VM information from Proxmox
+  community.proxmox.proxmox_vm_info:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ proxmox_token_secret }}"
+    validate_certs: "{{ proxmox_validate_certs }}"
+    config: "current"
+  delegate_to: localhost
+  register: vm_info
+
+- name: Set fact with all VMs
+  ansible.builtin.set_fact:
+    all_vms: "{{ vm_info.proxmox_vms | normalize_proxmox_vms }}"
+
+- name: Filter VMs by status and tags
+  ansible.builtin.set_fact:
+    vms_by_id: "{{ dict(all_vms | map(attribute='vmid') | zip(all_vms)) }}"
+    running_vms: >-
+      {{
+        all_vms
+        | selectattr('status', 'eq', 'running')
+        | list
+      }}
+    stopped_vms: >-
+      {{
+        (
+          all_vms
+          if ansible_check_mode
+          else (all_vms | selectattr('status', 'eq', 'stopped'))
+        )
+        | selectattr('tags', 'contains', vm_shutdown_tag)
+        | list
+      }}
+
+- name: Check if all VMs which will be affected are declared in dependency list
+  ansible.builtin.set_fact:
+    undeclared_vms: "{{ (running_vms + stopped_vms) | map(attribute='vmid') | difference(vm_dependency_order) | unique | sort }}"
+
+- name: Fail if there are undeclared VMs
+  ansible.builtin.fail:
+    msg: >
+      The following VMs are not declared in vm_dependency_order: {{ undeclared_vms }}.
+      All VMs must be declared before shutting down them.
+  when: undeclared_vms | length > 0
+
+# we do calculate both orders independently, because this helper task can be used for just shutdown or just startup
+- name: Build start order
+  ansible.builtin.set_fact:
+    shutdown_order: "{{ vm_dependency_order | reverse | ordered_intersect(running_vms | map(attribute='vmid')) | map('extract', vms_by_id) }}"
+    start_order: "{{ vm_dependency_order | ordered_intersect(stopped_vms | map(attribute='vmid')) | map('extract', vms_by_id) }}"

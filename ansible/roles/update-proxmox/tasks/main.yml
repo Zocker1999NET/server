@@ -1,0 +1,19 @@
+---
+
+- name: Import shutdown-vms tasks
+  ansible.builtin.import_tasks: 20-shutdown-vms.yml
+  tags:
+    - update-proxmox
+    - update-proxmox_shutdown
+
+- name: Import update-proxmox tasks
+  ansible.builtin.import_tasks: 30-update-proxmox.yml
+  tags:
+    - update-proxmox
+    - update-proxmox_update
+
+- name: Import start-vms tasks
+  ansible.builtin.import_tasks: 40-start-vms.yml
+  tags:
+    - update-proxmox
+    - update-proxmox_start
