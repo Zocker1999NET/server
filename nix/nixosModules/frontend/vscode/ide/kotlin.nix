@@ -40,7 +40,7 @@ let
     # until https://github.com/Kotlin/kotlin-lsp/issues/226 is patched
     postPatch = ''
       substituteInPlace out/dist/extension.js \
-        --replace-fail '&&(0,d.chmodSync)(n,493)' ""
+        --replace-fail '&&(0,external_fs_.chmodSync)(e,493)' ""
     '';
     # make embedded kotlin-lsp binary executable on NixOS
     nativeBuildInputs = [
