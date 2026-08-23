@@ -64,7 +64,9 @@
 
           machine.wait_for_unit("graphical.target")
 
-          firefox_running.wait()
+          with subtest("0. Firefox is launched & running"):
+            firefox_running.wait()
+
           with firefox_running:
             with subtest("1. Firefox renders the page body"):
               # give cage & Firefox some time to fully open
