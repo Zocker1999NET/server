@@ -7,7 +7,8 @@
 
   imports = [
     ./diskoInstallMenu.nix
-    ./firefox-render.nix
+    # TODO test is broken, re-enable or replace with https://github.com/NixOS/nixpkgs/pull/548283 later
+    #./firefox-render.nix
   ];
 
   perSystem =
