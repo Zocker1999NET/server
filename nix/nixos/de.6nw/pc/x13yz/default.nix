@@ -25,6 +25,9 @@
               })
             ];
             # needs manual configuration, see `man tpm2-totp` for details (from NixOS manual)
+            # used: sudo tpm2-totp generate -P "$(cat)" -p 0,1,2,4,5,6,7,8,9,10,11,12,13,14
+            # (any PCRs except including peripheral HW (3) & LUKS key (15))
+            # TODO needs also manual reseal after each upgrade, put into service & upstream
             tpm2-totp.enable = true;
           };
           # enable "silent boot"
