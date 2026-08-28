@@ -24,6 +24,8 @@
                 selected_themes = [ "hexagon_red" ];
               })
             ];
+            # needs manual configuration, see `man tpm2-totp` for details (from NixOS manual)
+            tpm2-totp.enable = true;
           };
           # enable "silent boot"
           consoleLogLevel = 3;
