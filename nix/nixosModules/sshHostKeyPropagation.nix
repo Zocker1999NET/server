@@ -2,7 +2,6 @@
   config,
   lib,
   libBNet,
-  pkgs,
   ...
 }:
 let
@@ -17,6 +16,7 @@ let
     concatLists
     concatStringsSep
     filter
+    toFile
     ;
   inherit (lib) types;
   inherit (lib.attrsets) mapCartesianProduct;
@@ -24,7 +24,6 @@ let
   inherit (lib.modules) mkIf;
   inherit (lib.options) literalExpression mkEnableOption mkOption;
   inherit (lib.trivial) pipe;
-  inherit (pkgs.writers) writeText;
   myTypes = libBNet.types;
 
   assertionToWarning = { assertion, message }: mkIf (!assertion) message;
@@ -140,7 +139,9 @@ in
       ))
       concatLists
       (concatStringsSep "\n")
-      (writeText "sshHostKeyPropagation.keys")
+      # toFile instead writeText, possible because does not refer to any derivation output
+      # -> prevents possible IFDs, so allows cross-platform evaluation
+      (toFile "sshHostKeyPropagation.keys")
       singleton
     ];
 
