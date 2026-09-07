@@ -4,6 +4,8 @@ let
   infinite = "999.99";
 in
 libBNet.backport.backportingConfigOverlay inputs.nixpkgs_unstable {
+  # gain Git backend support early, see https://github.com/GothenburgBitFactory/taskwarrior/pull/4111
+  taskwarrior3 = "26.11";
   # because of https://github.com/NixOS/nixpkgs/issues/546491, increases DB version, so cannot remove backport until 26.11 is released
   trilium-desktop = "26.11";
   # backport all VSCode stuff as dev tools to prevent issues with online services
