@@ -43,6 +43,9 @@ in
       )
     ];
 
+    # TODO enable once all environment.* values are POSIX-compatible
+    # environment.enableStrictShellChecks = true;
+
     nix = {
 
       channel.enable = false;
