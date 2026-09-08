@@ -45,6 +45,7 @@ cd "$repoLocal"
 git remote set-url "$repoOrigin" "$repoRemote"
 git fetch "$repoOrigin"
 git reset --hard  # ignore any pending changes from former (failed) runs
+git bisect reset  # ignore any pending bisect from former (failed) runs
 git switch "$repoSrcBranch"
 git reset --hard "$repoOrigin/$repoSrcBranch"
 
@@ -78,7 +79,7 @@ mkdir --parent "$gcrootsWIP"
 export CI_MODE=1 # build locally, not on remotes
 export CI_GCROOT="$gcrootsWIP"
 
-if ./tests.sh; then
+if ./tests.sh --auto-bisect "$repoOrigin/$repoDestBranch"; then
     # when successfully finished
     if [[ -e "$gcrootsSuccess" ]]; then
         rm --recursive "$gcrootsSuccess"

@@ -6,11 +6,16 @@ if [[ ! -e flake.nix ]]; then
     echo "missing flake.nix !!!" >&2
 fi
 
+AUTO_BISECT_GOOD=""  # good commit for git bisect on failure
 GREP_FILTER=""
 RANDOM_ORDER=""  # useful for quicker mass-bug-detecting on release upgrades
 PRINT_OUT=""
 while [[ $# -gt 0 ]]; do
     case "$1" in
+        --auto-bisect)
+            AUTO_BISECT_GOOD="$2"
+            shift 2
+            ;;
         --grep)
             GREP_FILTER="$2"
             shift 2
@@ -69,6 +74,22 @@ rememberGC() {
     nix-store --add-root "$new_loc" --realise "$new_loc"
 }
 
+# git bisect the failure of a single target to its first failing commit.
+# Suppresses the output of all bisect actions except `git bisect run`,
+# prints the found hash, and resets the bisect as the last command.
+bisect_failure() {
+    local target="$1"
+    local test_runner="./build_remote.sh .#\"$target\" >/dev/null"
+    echo "attempt bisecting error" >&2
+    git bisect reset >/dev/null
+    git bisect start >/dev/null
+    git bisect bad HEAD >/dev/null
+    git bisect good "$AUTO_BISECT_GOOD" >/dev/null
+    git bisect run bash -c "$test_runner"
+    echo "auto-bisect: first failing commit: $(git rev-parse --short HEAD)"
+    git bisect reset >/dev/null
+}
+
 set -x
 
 for target in "${targets[@]}"; do
@@ -78,6 +99,9 @@ for target in "${targets[@]}"; do
             break  # continue outside
         elif [[ $i == "last" ]]; then
             echo "last attempt failed, forward error" >&2
+            if [[ -n "$AUTO_BISECT_GOOD" ]]; then
+                bisect_failure "$target"
+            fi
             exit 1
         else
             echo "attempt no. $i failed, retry" >&2
