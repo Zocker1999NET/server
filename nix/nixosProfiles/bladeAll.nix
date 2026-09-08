@@ -1,4 +1,5 @@
 # applicable to all systems running on bare hardware
+# (for any hardware, like Raspberry Pi)
 
 {
   config,
@@ -16,17 +17,6 @@
   ];
 
   config = {
-
-    # EFI by default
-    boot.loader = {
-      efi.canTouchEfiVariables = lib.mkDefault true;
-      grub.memtest86.enable = lib.mkDefault true;
-      systemd-boot = {
-        enable = lib.mkDefault true;
-        editor = lib.mkDefault true;
-        memtest86.enable = lib.mkDefault true;
-      };
-    };
 
     environment.systemPackages = with pkgs; [
       lm_sensors
