@@ -2,6 +2,9 @@
   self,
   ...
 }@flakeArg:
+let
+  inherit (builtins) concatLists;
+in
 {
   modules = [
 
@@ -16,15 +19,17 @@
         nix.sshServe = {
           # provides remote builder with user nix-ssh
           enable = true;
-          keys = config.x-banananetwork.sshPublicKeys;
+          keys = concatLists [
+            config.x-banananetwork.sshPublicKeys
+            # allow connection for remote building
+            [
+              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKko0tcHOmCxi/ilFbVJ9N+U+34B9r6RFdmGfrBaob6C root@x13yz.pc.6nw.de"
+            ]
+          ];
           protocol = "ssh";
           trusted = true;
           write = true;
         };
-        # allow connection for remote building
-        users.users.iehadmin.openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKko0tcHOmCxi/ilFbVJ9N+U+34B9r6RFdmGfrBaob6C root@x13yz.pc.6nw.de"
-        ];
       }
     )
 
