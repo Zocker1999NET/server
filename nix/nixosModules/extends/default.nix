@@ -6,6 +6,7 @@
     ./cpu.nix
     ./hunspell.nix
     ./kernel.nix
+    ./kodi.nix
     ./nftables-marks.nix
     ./nftables-trace.nix
     ./openssh.nix
