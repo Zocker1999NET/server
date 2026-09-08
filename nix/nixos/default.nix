@@ -36,6 +36,7 @@ in
 
     "x13yz" = importSystem ./de.6nw/pc/x13yz;
 
+    "kokoro.pc.6nw.de" = importSystem ./de.6nw/pc/kokoro;
     "nyxlite.pc.6nw.de" = importSystem ./de.6nw/pc/nyxlite;
 
     "emu0.pc.6nw.de" = importSystem ./de.6nw/pc/emu/emu0.nix;
