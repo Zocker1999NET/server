@@ -51,6 +51,9 @@
       x-banananetwork.frontend.enable = true;
     }
 
+    # enable building for foreign architectures (needed for other NixOS configurations in this flake)
+    self.outputs.nixosProfiles.nixCrossArchEmulation
+
     # hardware
     {
       # TODO check if required & hide into modules

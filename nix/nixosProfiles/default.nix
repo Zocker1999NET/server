@@ -19,6 +19,7 @@
     pveGuestHwSupport = ./pveGuestHwSupport.nix;
 
     # additions
+    nixCrossArchEmulation = ./additions/nixCrossArchEmulation.nix;
     nixSshBuilder = ./additions/nixSshBuilder.nix;
     sambaServer = ./additions/sambaServer.nix;
 
