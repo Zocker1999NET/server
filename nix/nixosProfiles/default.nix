@@ -19,6 +19,7 @@
     pveGuestHwSupport = ./pveGuestHwSupport.nix;
 
     # additions
+    nixSshBuilder = ./additions/nixSshBuilder.nix;
     sambaServer = ./additions/sambaServer.nix;
 
   };

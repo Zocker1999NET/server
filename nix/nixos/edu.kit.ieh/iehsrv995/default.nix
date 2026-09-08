@@ -1,10 +1,7 @@
 {
   self,
   ...
-}@flakeArg:
-let
-  inherit (builtins) concatLists;
-in
+}:
 {
   modules = [
 
@@ -16,22 +13,11 @@ in
           enable = true;
           interval = "weekly";
         };
-        nix.sshServe = {
-          # provides remote builder with user nix-ssh
-          enable = true;
-          keys = concatLists [
-            config.x-banananetwork.sshPublicKeys
-            # allow connection for remote building
-            [
-              "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKko0tcHOmCxi/ilFbVJ9N+U+34B9r6RFdmGfrBaob6C root@x13yz.pc.6nw.de"
-            ]
-          ];
-          protocol = "ssh-ng";
-          trusted = true;
-          write = true;
-        };
       }
     )
+
+    # provides remote builder with user nix-ssh
+    self.outputs.nixosProfiles.nixSshBuilder
 
     # host config
     {
