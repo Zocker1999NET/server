@@ -8,13 +8,27 @@ fi
 
 GREP_FILTER=""
 RANDOM_ORDER=""  # useful for quicker mass-bug-detecting on release upgrades
-if [[ ${1:-} == "--grep" ]]; then
-    GREP_FILTER="$2"
-    shift 2
-elif [[ ${1:-} == "--random-order" ]]; then
-    RANDOM_ORDER="y"
-    shift 1
-fi
+PRINT_OUT=""
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --grep)
+            GREP_FILTER="$2"
+            shift 2
+            ;;
+        --print-out)
+            PRINT_OUT="y"
+            shift 1
+            ;;
+        --random-order)
+            RANDOM_ORDER="y"
+            shift 1
+            ;;
+        *)
+            echo "unknown argument: $1" >&2
+            exit 2
+            ;;
+    esac
+done
 
 filter() {
     if [[ -n "$GREP_FILTER" ]]; then
@@ -38,7 +52,7 @@ targets+=("${test_targets[@]}")
 mapfile -t build_targets < <( nix eval --raw "${targetAttr}.buildTargetsText" | filter )
 targets+=("${build_targets[@]}")
 
-if [[ "${1:-}" == "--print-out" ]]; then
+if [[ -n "$PRINT_OUT" ]]; then
     echo "would build following targets:"
     for target in "${targets[@]}"; do
         echo "  - $target"
