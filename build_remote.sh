@@ -26,7 +26,7 @@ fi
 # Associative array: name -> builder config
 declare -A builder_configs
 builder_configs["nix-builder"]="ssh-ng://nix-ssh@fde3:b424:b5ce:1:be24:11ff:feb5:580c x86_64-linux,i686-linux /root/.ssh/id_ed25519 8 100 kvm,big-parallel,nixos-test"
-builder_configs["iehsrv995"]="ssh://nix-ssh@iehsrv995.ieh.kit.edu x86_64-linux,i686-linux /root/.ssh/id_ed25519 32 100 kvm,big-parallel,nixos-test"
+builder_configs["iehsrv995"]="ssh-ng://nix-ssh@iehsrv995.ieh.kit.edu x86_64-linux,i686-linux /root/.ssh/id_ed25519 32 100 kvm,big-parallel,nixos-test"
 
 # Build the builders string based on --only-builders filter (must be first argument)
 if [[ "${1:-}" == "--only-builders" ]]; then

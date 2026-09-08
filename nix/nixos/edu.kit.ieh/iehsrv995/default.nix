@@ -26,7 +26,7 @@ in
               "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKko0tcHOmCxi/ilFbVJ9N+U+34B9r6RFdmGfrBaob6C root@x13yz.pc.6nw.de"
             ]
           ];
-          protocol = "ssh";
+          protocol = "ssh-ng";
           trusted = true;
           write = true;
         };
