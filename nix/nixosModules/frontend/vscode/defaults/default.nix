@@ -10,6 +10,7 @@
     ./disableTelemetry.nix
     ./files.nix
     ./forge_github.nix
+    ./forge_gitlab.nix
     ./formatAllFiles.nix
     ./keybindings.nix
     ./preferences.nix
