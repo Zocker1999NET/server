@@ -3,7 +3,17 @@
 set -euo pipefail
 
 if [[ ${CI_MODE:-} != "" ]]; then
-    exec nix build "$@"
+    if nix build "$@"; then
+        exit 0
+    else
+        rc=$?
+        # detect missing target attribute
+        if ( set +o pipefail; nix eval --raw "$@" 2>&1 | grep -q "does not provide attribute" ); then
+            # skip commit for git bisect
+            exit 125
+        fi
+        exit $rc
+    fi
 fi
 
 if [[ ${1:-} == "--eval" ]]; then
