@@ -62,9 +62,9 @@ if ./update.sh && ./tests.sh --auto-bisect "$repoOrigin/$repoDestBranch"; then
         rm --recursive "$gcrootsSuccess"
     fi
     mv "$gcrootsWIP" "$gcrootsSuccess"
-    find "$gcrootsSuccess" -type l | while read -r l; do
-        nix-store --add-root "$l" --realise "$l"
-    done
+    # make nix remember GC roots at new locations, so they are not deleted by the next GC
+    find "$gcrootsSuccess" -type l -print0 \
+        | xargs --null --no-run-if-empty --replace={} nix-store --add-root {} --realise {}
     git branch --force "$repoDestBranch"
 fi
 
