@@ -65,11 +65,37 @@ if [[ -n "$PRINT_OUT" ]]; then
     exit 0
 fi
 
+# - checks.* often have empty outputs or at least small ones
+#   - checks are e.g. NixOS tests
+# -> holding a GC root for them indefinitely is cheap
+# -> prevents rebuilding the same check target in the future
+#   - e.g. on a git bisect, where historic commits are rechecked
+# - other builds are separated s.t. only their latest build is kept, to save space
+#   - other builds are e.g. devShells.*, nixosConfigurations.*, packages.*, …
+is_test_target() {
+    case "$1" in
+        checks.*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
 rememberGC() {
     if [[ ${CI_GCROOT:-} == "" ]]; then
         return 0
     fi
-    new_loc="$CI_GCROOT/$1"
+    local target="$1"
+    local commit
+    if ! commit="$(git rev-parse --short HEAD 2>/dev/null)"; then
+        echo "rememberGC: cannot determine commit hash (not in a git repo?)" >&2
+        return 1
+    fi
+    local new_loc
+    if is_test_target "$target"; then
+        new_loc="$CI_GCROOT/checks/$commit/$target"
+    else
+        new_loc="$CI_GCROOT/builds/$commit/$target"
+    fi
+    mkdir -p "$(dirname "$new_loc")"
     mv ./result "$new_loc"
     nix-store --add-root "$new_loc" --realise "$new_loc"
 }

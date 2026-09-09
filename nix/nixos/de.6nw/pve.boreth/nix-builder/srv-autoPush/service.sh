@@ -69,6 +69,7 @@ done
 # shellcheck disable=SC2154
 gcrootsDir="$CFG_gcrootsDir"
 gcrootsSuccess="$gcrootsDir/success"
+gcrootsBuilds="$gcrootsSuccess/builds"
 gcrootsWIP="$gcrootsDir/working"
 if [[ -e "$gcrootsWIP" ]]; then
     rm --recursive "$gcrootsWIP"
@@ -81,10 +82,21 @@ export CI_GCROOT="$gcrootsWIP"
 
 if ./tests.sh --auto-bisect "$repoOrigin/$repoDestBranch"; then
     # when successfully finished
-    if [[ -e "$gcrootsSuccess" ]]; then
-        rm --recursive "$gcrootsSuccess"
+    mkdir --parent "$gcrootsSuccess"
+    # merge the whole working dir into the persistent store
+    cp --recursive --no-clobber "$gcrootsWIP/." "$gcrootsSuccess/"
+    # working dir is fully consumed -> ensure it gets removed
+    rm --recursive "$gcrootsWIP"
+    # only prune builds: keep only newest commit, drop all older ones
+    # (see ./tests.sh for exact reasoning)
+    if [[ -d "$gcrootsBuilds" ]]; then
+        # sort by creation date and delete all but the newest
+        find "$gcrootsBuilds" -mindepth 1 -maxdepth 1 -type d -printf '%W@\t%p\0' \
+            | sort --zero-terminated --numeric-sort \
+            | head --zero-terminated --lines=-1 \
+            | cut --zero-terminated --fields=2- \
+            | xargs --null --no-run-if-empty rm --recursive
     fi
-    mv "$gcrootsWIP" "$gcrootsSuccess"
     # make nix remember GC roots at new locations, so they are not deleted by the next GC
     find "$gcrootsSuccess" -type l -print0 \
         | xargs --null --no-run-if-empty --replace={} nix-store --add-root {} --realise {}
