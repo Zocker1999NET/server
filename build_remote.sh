@@ -33,9 +33,12 @@ if command -v nom &>/dev/null; then
     cmd="nom"
 fi
 
+# used to always get the builders configs from this flake, even if run from different cwd or with different flake's build target
+script_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+
 get_supported_systems() {
     local config_name="$1"
-    nix eval --raw ".#nixosConfigurations.\"$config_name\".config.nix.supportedBuildSystemsConcat"
+    nix eval --raw "$script_dir#nixosConfigurations.\"$config_name\".config.nix.supportedBuildSystemsConcat"
 }
 
 # Associative array: name -> builder config
