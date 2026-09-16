@@ -82,10 +82,6 @@
       x-banananetwork.frontend.convertable = true;
     }
     {
-      # replace suspend with hybrid-sleep, contering wake up issues
-      systemd.services.systemd-hybrid-sleep.aliases = [ "systemd-suspend.service" ];
-    }
-    {
       services.log-wakeup-reason.enable = true;
     }
 
