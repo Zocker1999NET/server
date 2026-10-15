@@ -56,7 +56,8 @@ mkdir --parent "$gcrootsWIP"
 export CI_MODE=1 # build locally, not on remotes
 export CI_GCROOT="$gcrootsWIP"
 
-if ./update.sh && ./tests.sh --auto-bisect "$repoOrigin/$repoDestBranch"; then
+# update.sh commits -> known good is origin/main, where update.sh commits on
+if ./update.sh && ./tests.sh --auto-bisect "$repoOrigin/$repoSrcBranch"; then
     # when successfully finished
     if [[ -e "$gcrootsSuccess" ]]; then
         rm --recursive "$gcrootsSuccess"

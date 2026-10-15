@@ -80,6 +80,7 @@ mkdir --parent "$gcrootsWIP"
 export CI_MODE=1 # build locally, not on remotes
 export CI_GCROOT="$gcrootsWIP"
 
+# we would push torwards -> known good is origin/main as our destination
 if ./tests.sh --auto-bisect "$repoOrigin/$repoDestBranch"; then
     # when successfully finished
     mkdir --parent "$gcrootsSuccess"
