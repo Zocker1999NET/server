@@ -55,6 +55,7 @@
         "disko": [
           "disko"
         ],
+        "disko-install-menu-target": "disko-install-menu-target",
         "flake-parts": [
           "flake-parts"
         ],
@@ -63,16 +64,45 @@
         ]
       },
       "locked": {
-        "lastModified": 1778318878,
-        "narHash": "sha256-XDrBkggNg4NA6WOAXDR/GQn/kjvgC8PV7yXhev85dTQ=",
+        "lastModified": 1791672239,
+        "narHash": "sha256-wDikfElJLm+VTMUSznKj68e2q/Hq9e9Jo3FSy/Q55sk=",
         "owner": "Zocker1999NET",
         "repo": "disko-install-menu",
-        "rev": "d098beca78ff134fdff1c2c54d3e7b3ab89ea3ec",
+        "rev": "dbef7132bdf1ed52b02e7100dda90d1e15a1e252",
         "type": "github"
       },
       "original": {
         "owner": "Zocker1999NET",
         "repo": "disko-install-menu",
+        "type": "github"
+      }
+    },
+    "disko-install-menu-target": {
+      "inputs": {
+        "disko": [
+          "disko-install-menu",
+          "disko"
+        ],
+        "flake-parts": [
+          "disko-install-menu",
+          "flake-parts"
+        ],
+        "nixpkgs": [
+          "disko-install-menu",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789301291,
+        "narHash": "sha256-UJZplv5k98gAN4YLT6PiXvG8zEABbwRRM8bz0Fug8gc=",
+        "owner": "zocker-nix-projects",
+        "repo": "disko-install-menu-target",
+        "rev": "75d0c57c6489d62475836daf49cac8016457965c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zocker-nix-projects",
+        "repo": "disko-install-menu-target",
         "type": "github"
       }
     },

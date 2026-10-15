@@ -44,13 +44,11 @@ in
               programs.disko-install-menu = {
                 enable = true;
                 offlineCapable = true;
-                options = {
-                  # should not be used on --debug-test-build
-                  # & fixed to avoid rebuilds after unrelated changes
-                  defaultFlake = "/non-existing/path_to/flake";
-                  defaultHost = "empty";
-                };
                 listedFlakes.defaultFlake = {
+                  # should not be used on --debug-test-build
+                  # offline-only build avoids rebuilds after unrelated changes
+                  isDefaultFlake = true;
+                  defaultHost = "empty";
                   offlineHosts.empty = true;
                   offlineReference = modifiedSelf;
                 };

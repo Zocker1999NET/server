@@ -21,6 +21,9 @@
           programs.disko-install-menu = {
             enable = true;
             listedFlakes.defaultFlake = {
+              reference = "github:Zocker1999NET/server"; # ===SYNC:general/meta/repo/url
+              isDefaultFlake = true;
+              defaultHost = "empty";
               offlineHosts = {
                 "empty" = true;
               };
@@ -29,8 +32,6 @@
             offlineCapable = true;
             options = {
               # TODO autostart
-              defaultFlake = "github:Zocker1999NET/server"; # ===SYNC:general/meta/repo/url
-              defaultHost = "empty";
             };
           };
           users.users.root.openssh.authorizedKeys.keys = config.x-banananetwork.sshPublicKeys;
