@@ -58,6 +58,9 @@ A utility for querying and controlling network driver and hardware settings for 
 ### fzf
 A general-purpose command-line fuzzy finder written in Go that allows for interactive filtering and selection of items from any list. It features fuzzy matching algorithm, preview window support, and can be integrated with various command-line tools for enhanced searching capabilities.
 
+### glow
+A terminal-based Markdown renderer that displays Markdown documents with beautiful styling and syntax highlighting for code blocks. It features tables, images, and code highlighting, along with a pager mode for navigating long documents easily.
+
 ### intel-gpu-tools
 A collection of tools for development, testing, and debugging of the Intel DRM (Direct Rendering Manager) driver and GPU hardware. It includes utilities for performance analysis, hardware state inspection, and debugging graphics issues on Intel integrated and discrete GPUs.
 

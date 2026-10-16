@@ -22,6 +22,7 @@ BEFORE editing this cheatsheet, you MUST check the rules for its generation in .
 | `ethtool` | Query and control network driver and hardware settings |
 | `fzf` | Command-line fuzzy finder for interactive filtering |
 | `fuser` | Identify processes using files or sockets |
+| `glow` | Render Markdown on the CLI with syntax highlighting |
 | `intel-gpu-tools` | Tools for Intel DRM driver development and debugging |
 | `iotop` | Display I/O usage by processes |
 | `jq` | Lightweight JSON processor for parsing and transforming data |

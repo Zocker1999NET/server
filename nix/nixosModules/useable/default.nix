@@ -85,6 +85,7 @@ in
         bmon # better than nethogs for graphs
         csvkit
         file
+        glow # markdown viewer
         manix
         massren
         moreutils
