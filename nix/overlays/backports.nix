@@ -4,6 +4,8 @@ let
   infinite = "999.99";
 in
 libBNet.backport.backportingConfigOverlay inputs.nixpkgs_unstable {
+  # due to security issues in Immich v2.x.x of NixOS 26.05
+  immich = "26.11";
   # gain Git backend support early, see https://github.com/GothenburgBitFactory/taskwarrior/pull/4111
   taskwarrior3 = "26.11";
   # because of https://github.com/NixOS/nixpkgs/issues/546491, increases DB version, so cannot remove backport until 26.11 is released
