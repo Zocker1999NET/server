@@ -4,8 +4,8 @@
 }:
 let
   # need to be updated when upstream model change
-  codingModelName = "MiniMax M2.7 229B (customendpoint)";
-  utilityModelId = "customendpoint/kit.gpt-oss-120b";
+  codingModelName = "Alias: Medium Model (Local) (customendpoint)";
+  utilityModelId = "customendpoint/alias.simple-local";
 in
 {
 
