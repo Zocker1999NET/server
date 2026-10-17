@@ -25,6 +25,7 @@ in
 
   userSettings = {
 
+    "chat.byokUtilityModelDefault" = "mainAgent";
     "chat.disableAIFeatures" = false;
     "chat.planAgent.defaultModel" = codingModelName;
     "chat.tools.terminal.blockDetectedFileWrites" = "outsideWorkspace";
