@@ -38,9 +38,13 @@ let
   patchedKotlinServer = extendingAttrs kotlin-server {
     # fixes "EROFS: read-only file system"
     # until https://github.com/Kotlin/kotlin-lsp/issues/226 is patched
+    # quick manual for maintaining this patch:
+    #   1. run: nix build .#nixosConfigurations.x13yz.pkgs.nix-vscode-extensions.vscode-marketplace-release.jetbrains.kotlin-server
+    #   2. open file: vim result/share/vscode/extensions/jetbrains.kotlin-server/out/dist/extension.js
+    #   3. search for `493` to find what call needs to be patched out & update substitution below
     postPatch = ''
       substituteInPlace out/dist/extension.js \
-        --replace-fail '&&(0,external_fs_.chmodSync)(e,493)' ""
+        --replace-fail '&&(0,external_fs_.chmodSync)(t,493)' ""
     '';
     # make embedded kotlin-lsp binary executable on NixOS
     nativeBuildInputs = [
