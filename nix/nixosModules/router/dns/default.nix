@@ -96,7 +96,7 @@ in
       port = cfg.webui.port;
       settings = {
         http = {
-          session_ttl = "5:00";
+          session_ttl = "5h";
         };
         users = lib.singleton {
           name = cfg.webui.username;
