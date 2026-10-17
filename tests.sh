@@ -105,7 +105,13 @@ rememberGC() {
 # prints the found hash, and resets the bisect as the last command.
 bisect_failure() {
     local target="$1"
-    local test_runner="./build_remote.sh .#\"$target\" >/dev/null"
+    # avoid duplicated error logging
+    # last lines should be "For full logs, run: nix log …"
+    local test_runner='
+        set -euo pipefail
+        ./build_remote.sh .#'"${target@Q}"' 2>&1 | \
+        tail --lines=2
+    '
     echo "attempt bisecting error" >&2
     git bisect reset >/dev/null
     git bisect start >/dev/null
