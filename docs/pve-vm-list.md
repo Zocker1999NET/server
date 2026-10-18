@@ -15,6 +15,7 @@ No entry shall ever be removed.
 - 111: `nixnas.boreth.pve.6nw.de`
 - 120: `pbs.boreth.pve.6nw.de`
 - 210: `immich.boreth.pve.6nw.de`
+- 212: `paperless.boreth.pve.6nw.de`
 - 800: `vSMD`
 - 801: `workspace`
 - 802: `sdn-cockpit`
