@@ -21,7 +21,14 @@ in
     github.copilot-chat
   ];
 
-  # userMcp configured in specific modules
+  # userMcp also configured in specific modules
+  userMcp.servers = {
+    # TODO make dependent on osConfig trilium enabled
+    trilium-notes = {
+      type = "http";
+      url = "http://127.0.0.1:37840/mcp";
+    };
+  };
 
   userSettings = {
 
