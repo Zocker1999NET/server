@@ -200,16 +200,15 @@ in
           ExtensionSettings =
             let
               # TODO upstream
-              addon = id: opts: {
-                name = id;
-                value = {
+              addon =
+                id: opts:
+                {
                   default_area = "menupanel";
                   installation_mode = "force_installed";
                   install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
                 }
                 // opts;
-              };
-              enrichAddons = id: opts: if id == "*" then opts else (addon id opts).value;
+              enrichAddons = id: opts: if id == "*" then opts else addon id opts;
             in
             builtins.mapAttrs enrichAddons {
               "*" = {
