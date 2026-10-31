@@ -63,8 +63,7 @@ in
         generation = "ext4-1";
         mainDiskName = "main";
       };
-      # TODO set after first boot:
-      # x-banananetwork.sshHostPublicKey = "ssh-ed25519 ...";
+      x-banananetwork.sshHostPublicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM7LKu14jQiBFwiFM1rfRdXYW3YG5qCtytmDoSA579D0 root@silverstone.pc.6nw.de 2026-10-31";
     }
   ];
   system = "x86_64-linux";
