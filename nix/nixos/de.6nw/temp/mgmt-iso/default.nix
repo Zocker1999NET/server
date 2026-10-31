@@ -24,14 +24,16 @@
           networking.hostName = "mgmt-iso";
           programs.disko-install-menu = {
             enable = true;
-            listedFlakes.defaultFlake = {
-              reference = "github:Zocker1999NET/server"; # ===SYNC:general/meta/repo/url
-              isDefaultFlake = true;
-              defaultHost = "empty";
-              offlineHosts = {
-                "empty" = true;
+            listedFlakes = {
+              defaultFlake = {
+                reference = "github:Zocker1999NET/server"; # ===SYNC:general/meta/repo/url
+                isDefaultFlake = true;
+                defaultHost = "empty";
+                offlineHosts = {
+                  "empty" = true;
+                };
+                offlineReference = self;
               };
-              offlineReference = self;
             };
             offlineCapable = true;
             options = {
