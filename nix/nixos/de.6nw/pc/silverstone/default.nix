@@ -40,6 +40,10 @@ in
         user = cageUser;
         program = "${getExe pkgs.firefox} --kiosk ${webservice}";
       };
+      users.users.${cageUser} = {
+        isNormalUser = true;
+        description = "Cage user for browser kiosk";
+      };
     })
 
     # hardware
