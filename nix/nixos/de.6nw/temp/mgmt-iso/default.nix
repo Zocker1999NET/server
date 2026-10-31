@@ -12,6 +12,10 @@
       { config, pkgs, ... }:
       {
         config = {
+          # make easier to debug
+          boot.kernel.sysctl = {
+            "kernel.sysrq" = 511;
+          };
           documentation.info.enable = lib.mkForce false;
           environment.systemPackages = with pkgs; [
             nwipe # make wiping disks easier
