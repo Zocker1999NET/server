@@ -36,24 +36,23 @@
             pkgs,
             ...
           }:
-          let
-            script = pkgs.writeShellApplication {
-              name = "firefox-render-test";
-              text = ''
-                # ensure resolution is large enough so all required text is visible
-                ${getExe pkgs.wlr-randr} --output Virtual-1 --mode 1360x768 --scale 1.3
-                /usr/bin/env firefox file:///etc/${pageFileName}
-              '';
-            };
-          in
           {
             imports = [
               "${modulesPath}/../tests/common/wayland-cage.nix"
+              # for `services.cage.wlr-randr` & `services.cage.commands`
+              self.nixosModules.withDepends
             ];
 
             programs.firefox.enable = true;
 
-            services.cage.program = getExe script;
+            services.cage = {
+              commands = "${getExe pkgs.firefox} file:///etc/${pageFileName}";
+              # ensure resolution is large enough so all required text is visible
+              wlr-randr.Virtual-1 = {
+                mode = "1360x768@60Hz";
+                scale = "1.3";
+              };
+            };
 
             # pageTitle must not appear in the body (for 3.)
             environment.etc.${pageFileName}.source = pkgs.writeText pageFileName ''

@@ -3,6 +3,7 @@
   imports = [
     # files
     ./bind-dynamic.nix
+    ./cage.nix
     ./cpu.nix
     ./hunspell.nix
     ./kernel.nix
