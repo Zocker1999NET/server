@@ -128,6 +128,56 @@ in
       # - using nixpkgs packages for extensions
       firefox = {
         enable = true;
+        addonDefaults = {
+          blocked_install_message = "Please add add-ons by changing your NixOS configuration.";
+          installation_mode = "blocked";
+        };
+        addonListedDefaults = {
+          default_area = "menupanel";
+          installation_mode = "force_installed";
+        };
+        addons = {
+          # Cast Kodi
+          "castkodi@regseb.github.io" = { };
+          # DeArrow
+          "deArrow@ajay.app" = { };
+          # KeePassXC-Browser
+          "keepassxc-browser@keepassxc.org" = {
+            default_area = "navbar";
+          };
+          # LibRedirect
+          "7esoorv3@alefvanoon.anonaddy.me" = { };
+          # Link Gopher
+          "linkgopher@oooninja.com" = { };
+          # ProtonDB for Steam
+          "{30280527-c46c-4e03-bb16-2e3ed94fa57c}" = { };
+          # Refined GitHub
+          "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = { };
+          # Request Control
+          # TODO alternative taskwarrior:///31217b57-efa9-44b5-874b-6ee597e95c9a
+          "{1b1e6108-2d88-4f0f-a338-01f9dbcccd6f}" = {
+            default_area = "navbar";
+          };
+          # SponsorBlock
+          "sponsorBlocker@ajay.app" = { };
+          # SteamDB
+          "firefox-extension@steamdb.info" = { };
+          # Tab Stash
+          # TODO replace, taskwarrior:///544aa57e-584d-4ea5-b55d-a78dab0df7be
+          "tab-stash@condordes.net" = {
+            default_area = "navbar";
+          };
+          # Tabliss
+          "extension@tabliss.io" = { };
+          # uBlock Origin
+          "uBlock0@raymondhill.net" = {
+            default_area = "navbar";
+          };
+          # Notefox: websites notes
+          "websitesnotes@saveriomorelli.com" = {
+            default_area = "navbar";
+          };
+        };
         languagePacks = [
           # not "de", as Firefox itself in English is good enough
           "en-US"
@@ -197,67 +247,6 @@ in
           EncryptedMediaExtensions = {
             Enabled = true;
           };
-          ExtensionSettings =
-            let
-              # TODO upstream
-              addon =
-                id: opts:
-                {
-                  default_area = "menupanel";
-                  installation_mode = "force_installed";
-                  install_url = "https://addons.mozilla.org/firefox/downloads/latest/${id}/latest.xpi";
-                }
-                // opts;
-              enrichAddons = id: opts: if id == "*" then opts else addon id opts;
-            in
-            builtins.mapAttrs enrichAddons {
-              "*" = {
-                blocked_install_message = ''
-                  Please add add-ons by changing your NixOS configuration.
-                '';
-                installation_mode = "blocked";
-              };
-              # Cast Kodi
-              "castkodi@regseb.github.io" = { };
-              # DeArrow
-              "deArrow@ajay.app" = { };
-              # KeePassXC-Browser
-              "keepassxc-browser@keepassxc.org" = {
-                default_area = "navbar";
-              };
-              # LibRedirect
-              "7esoorv3@alefvanoon.anonaddy.me" = { };
-              # Link Gopher
-              "linkgopher@oooninja.com" = { };
-              # ProtonDB for Steam
-              "{30280527-c46c-4e03-bb16-2e3ed94fa57c}" = { };
-              # Refined GitHub
-              "{a4c4eda4-fb84-4a84-b4a1-f7c1cbf2a1ad}" = { };
-              # Request Control
-              # TODO alternative taskwarrior:///31217b57-efa9-44b5-874b-6ee597e95c9a
-              "{1b1e6108-2d88-4f0f-a338-01f9dbcccd6f}" = {
-                default_area = "navbar";
-              };
-              # SponsorBlock
-              "sponsorBlocker@ajay.app" = { };
-              # SteamDB
-              "firefox-extension@steamdb.info" = { };
-              # Tab Stash
-              # TODO replace, taskwarrior:///544aa57e-584d-4ea5-b55d-a78dab0df7be
-              "tab-stash@condordes.net" = {
-                default_area = "navbar";
-              };
-              # Tabliss
-              "extension@tabliss.io" = { };
-              # uBlock Origin
-              "uBlock0@raymondhill.net" = {
-                default_area = "navbar";
-              };
-              # Notefox: websites notes
-              "websitesnotes@saveriomorelli.com" = {
-                default_area = "navbar";
-              };
-            };
           FirefoxHome = {
             Search = true;
             TopSites = true;
