@@ -5,6 +5,7 @@
   ...
 }:
 let
+  cageCfg = config.services.cage;
   cfg = config.services.cage.audio;
   pipewirePkg = config.services.pipewire.package;
 
@@ -57,7 +58,7 @@ in
 
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf (cageCfg.enable && cfg.enable) {
 
     # pipewire uses rtkit to gain realtime priority for low-latency audio
     security.rtkit.enable = mkDefault true;
