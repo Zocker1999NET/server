@@ -5,6 +5,7 @@
     ./bind-dynamic.nix
     ./cage.nix
     ./cpu.nix
+    ./firefox.nix
     ./hunspell.nix
     ./kernel.nix
     ./kodi.nix
