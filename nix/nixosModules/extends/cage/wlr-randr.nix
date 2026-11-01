@@ -13,15 +13,19 @@ let
   inherit (lib.cli) toGNUCommandLine;
   inherit (lib.meta) getExe;
   inherit (lib.modules) mkBefore mkIf mkMerge;
-  inherit (lib.options) mkOption;
+  inherit (lib.options) mkEnableOption mkOption;
   inherit (lib.strings) escapeShellArgs;
   inherit (lib.trivial) pipe;
+
+  displayReport = "~/cage-wlr-randr-properties.log";
 in
 {
 
   _class = "nixos";
 
   options.services.cage = {
+
+    debugDisplayReport = mkEnableOption "writing a report containing a list of all connected displays and their properties into ${displayReport}";
 
     wlr-randr = mkOption {
       description = ''
@@ -46,6 +50,8 @@ in
   config.services.cage = {
 
     commands = mkMerge [
+
+      (mkIf cfg.debugDisplayReport (mkBefore "${getExe pkgs.wlr-randr} > ${displayReport}"))
 
       (pipe cfg.wlr-randr [
         (mapAttrsToList (
