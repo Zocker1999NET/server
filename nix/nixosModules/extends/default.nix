@@ -1,9 +1,10 @@
 {
   _class = "nixos";
   imports = [
+    # directories
+    ./cage
     # files
     ./bind-dynamic.nix
-    ./cage.nix
     ./cpu.nix
     ./firefox.nix
     ./hunspell.nix

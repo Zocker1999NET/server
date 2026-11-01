@@ -6,6 +6,7 @@
 }:
 let
   cfg = config.services.cage;
+
   inherit (builtins) concatLists;
   inherit (lib) types;
   inherit (lib.attrsets) mapAttrsToList;
@@ -21,16 +22,6 @@ in
   _class = "nixos";
 
   options.services.cage = {
-
-    commands = mkOption {
-      description = ''
-        Shell commands which are run within cage,
-        overriding {option}`services.cage.program`.
-      '';
-      type = with types; nullOr lines;
-      default = null;
-      example = "firefox --kiosk https://example.com";
-    };
 
     wlr-randr = mkOption {
       description = ''
@@ -53,21 +44,6 @@ in
   };
 
   config.services.cage = {
-
-    program = mkIf (cfg.commands != null) (
-      getExe (
-        pkgs.writeShellApplication {
-          name = "cage-commands";
-          bashOptions = [
-            "errexit"
-            "nounset"
-            "pipefail"
-            "xtrace"
-          ];
-          text = cfg.commands;
-        }
-      )
-    );
 
     commands = pipe cfg.wlr-randr [
       (mapAttrsToList (
