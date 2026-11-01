@@ -26,6 +26,7 @@ in
     };
 
     "nix.enableLanguageServer" = true;
+    # hide errors which appear during normal coding
     # see https://github.com/nix-community/vscode-nix-ide/issues/387
     "nix.hiddenLanguageServerErrors" = [
       "textDocument/definition"
