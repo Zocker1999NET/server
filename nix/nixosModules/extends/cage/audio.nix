@@ -42,7 +42,7 @@ in
         and filling all channels with that average value.
       '';
       type = with types; listOf (numbers.between 0.0 1.0);
-      example = [ 1.0 ];
+      default = [ 1.0 ];
     };
 
     defaultSinkMatcher = mkOption {
