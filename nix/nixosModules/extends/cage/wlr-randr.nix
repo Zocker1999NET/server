@@ -12,7 +12,7 @@ let
   inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.cli) toGNUCommandLine;
   inherit (lib.meta) getExe;
-  inherit (lib.modules) mkBefore mkIf;
+  inherit (lib.modules) mkBefore mkIf mkMerge;
   inherit (lib.options) mkOption;
   inherit (lib.strings) escapeShellArgs;
   inherit (lib.trivial) pipe;
@@ -45,20 +45,24 @@ in
 
   config.services.cage = {
 
-    commands = pipe cfg.wlr-randr [
-      (mapAttrsToList (
-        output: opts:
-        [
-          "--output"
-          output
-        ]
-        ++ (toGNUCommandLine { } opts)
-      ))
-      concatLists
-      escapeShellArgs
-      (s: "${getExe pkgs.wlr-randr} ${s} || true")
-      mkBefore
-      (mkIf (cfg.wlr-randr != null))
+    commands = mkMerge [
+
+      (pipe cfg.wlr-randr [
+        (mapAttrsToList (
+          output: opts:
+          [
+            "--output"
+            output
+          ]
+          ++ (toGNUCommandLine { } opts)
+        ))
+        concatLists
+        escapeShellArgs
+        (s: "${getExe pkgs.wlr-randr} ${s} || true")
+        mkBefore
+        (mkIf (cfg.wlr-randr != null))
+      ])
+
     ];
 
   };
