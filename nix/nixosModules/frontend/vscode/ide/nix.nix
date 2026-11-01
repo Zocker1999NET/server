@@ -26,6 +26,12 @@ in
     };
 
     "nix.enableLanguageServer" = true;
+    # see https://github.com/nix-community/vscode-nix-ide/issues/387
+    "nix.hiddenLanguageServerErrors" = [
+      "textDocument/definition"
+      "textDocument/documentSymbol"
+      "textDocument/formatting"
+    ];
     "nix.serverPath" = getExe pkgs.nil;
     "nix.serverSettings" = {
       nil = {
