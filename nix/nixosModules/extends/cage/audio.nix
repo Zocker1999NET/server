@@ -28,23 +28,6 @@ in
 
     debugReport = mkEnableOption "writing a report containing a list of all audio devices and their properties into ${debugReportFull} and ${debugReportConcise}";
 
-    channelVolumes = mkOption {
-      description = ''
-        Channel volumes for the default audio sink.
-
-        The channel volumes are a list of floats between 0.0 and 1.0,
-        where each float represents the volume for a channel in the default sink.
-
-        Corresponds to the `node.param.Props` attribute `channelVolumes` in WirePlumber.
-
-        When the list length != number of channels,
-        WirePlumber normalizes the list by averaging all values
-        and filling all channels with that average value.
-      '';
-      type = with types; listOf (numbers.between 0.0 1.0);
-      default = [ 1.0 ];
-    };
-
     defaultSinkMatcher = mkOption {
       description = ''
         Matcher for the default audio sink to use for cage.
@@ -54,6 +37,19 @@ in
       '';
       type = with types; attrsOf str;
       example."node.name" = "alsa_output.pci-0000_00_03.0.hdmi-stereo";
+    };
+
+    volume = mkOption {
+      description = ''
+        Volume to configure for the default audio sink.
+        This is applied to all channels.
+
+        Corresponds to the `device.routes.default-sink-volume` attribute in WirePlumber.
+
+        **Note**: To keep options simpler, this is configured for all devices, not just the default sink's device.
+      '';
+      type = with types; numbers.between 0.0 1.0;
+      default = 1.0;
     };
 
   };
@@ -105,14 +101,14 @@ in
           "50-audio-config" = {
             "monitor.alsa.rules" = singleton {
               matches = singleton cfg.defaultSinkMatcher;
-              actions.update-props = {
-                "node.param.Props" = {
-                  inherit (cfg) channelVolumes;
-                  mute = false;
-                };
-                "priority.session" = 10000;
-              };
+              actions.update-props."priority.session" = 10000;
             };
+            # we either set this global here,
+            # or a per-sink property which gets overridden by a device default property on first use
+            # (see https://gitlab.freedesktop.org/pipewire/wireplumber/-/commit/eef9baee611672f5086b9bc3bf58a4380baf0739),
+            # or a per-device property which requires module users to specify an additional device matcher
+            # -> most setups should only have one audio device in use, so this is the simplest option
+            "wireplumber.settings"."device.routes.default-sink-volume" = cfg.volume;
           };
 
         };
