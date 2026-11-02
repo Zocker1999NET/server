@@ -112,6 +112,7 @@ in
     })
 
     {
+      console.useXkbConfig = true;
       services.xserver.xkb = {
         layout = "de";
       };
