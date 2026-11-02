@@ -12,39 +12,119 @@
   ...
 }:
 let
-  inherit (lib.meta) getExe;
   nixosHW = inputs.nixos-hardware;
+
+  inherit (builtins) attrNames mapAttrs removeAttrs;
+  inherit (lib) types;
+  inherit (lib.attrsets) mapAttrsToList;
+  inherit (lib.lists) flatten;
+  inherit (lib.modules) mkAfter mkIf mkMerge;
+  inherit (lib.options) mkOption;
+  inherit (lib.trivial) flip pipe;
+
   cageUser = "cage";
-  webservice = "https://www.crunchyroll.com/discover";
 in
 {
   modules = [
 
-    # TODO make selectable on runtime (Kodi vs. Cage)
-    # Kodi Media Center
-    # ({ config, ... }: {
-    #   services.kodi = {
-    #     enable = true;
-    #     openFirewall = true; # web interface & event server
-    #     addons = with config.services.kodi.package.packages; [
-    #       invidious
-    #       mediacccde
-    #       sendtokodi
-    #       sponsorblock
-    #     ];
-    #   };
-    # })
-    ({ pkgs, ... }: {
+    (
+      { config, pkgs, ... }:
+      let
+        modes = {
+
+          crunchyroll = {
+            services.cage = {
+              enable = true;
+              webbrowser = {
+                enableDRM = true;
+                rememberCookies = true;
+                url = "https://www.crunchyroll.com/discover";
+              };
+            };
+          };
+
+          kodi = {
+            services.kodi = {
+              enable = true;
+              openFirewall = true; # web interface & event server
+              addons = with config.services.kodi.package.packages; [
+                invidious
+                mediacccde
+                sendtokodi
+                sponsorblock
+              ];
+            };
+          };
+
+          moonlight = {
+            services.cage = {
+              enable = true;
+              commands = "${pkgs.moonlight-qt}/bin/moonlight";
+              options.allowVTSwitching = true;
+            };
+          };
+
+        };
+      in
+      {
+        options.x-banananetwork.mode = mkOption {
+          description = "mode of operation for this device";
+          type = types.enum (attrNames modes);
+          default = "crunchyroll";
+        };
+        config = mkMerge (flatten [
+          (flip mapAttrsToList modes (name: module: mkIf (config.x-banananetwork.mode == name) module))
+          {
+            specialisation = pipe modes [
+              (mapAttrs (name: _: { configuration.x-banananetwork.mode = name; }))
+              # filter out default value, because it is already applied by default
+              (flip removeAttrs [ config.x-banananetwork.mode ])
+            ];
+          }
+        ]);
+      }
+    )
+
+    ({ config, ... }: {
       services.cage = {
-        enable = true;
+        audio = {
+          enable = true;
+          defaultSinkMatcher."node.name" = "alsa_output.pci-0000_00_03.0.hdmi-stereo";
+        };
+        commands = mkAfter "systemctl poweroff";
         user = cageUser;
-        program = "${getExe pkgs.firefox} --kiosk ${webservice}";
+        wlr-randr.HDMI-A-2 = {
+          # for Samsung TV, otherwise defaults to 4080x2160, which is defacto not supported by TV
+          mode = "3840x2160@30Hz";
+          # for readability
+          scale = "3";
+        };
       };
-      users.users.${cageUser} = {
+      services.xserver.xkb = {
+        layout = "de";
+      };
+      users.users.${cageUser} = mkIf (config.services.cage.enable) {
         isNormalUser = true;
-        description = "Cage user for browser kiosk";
+        extraGroups = [
+          "audio"
+          "input"
+          "video"
+        ];
+        description = "Cage user for kiosk mode";
       };
     })
+
+    {
+      networking = {
+        nftables.enable = true;
+        # TODO fix, networkd is broken for some reason
+        #useNetworkd = true;
+      };
+      x-banananetwork.privacy = {
+        enable = true;
+        ipv6IncreasedPrivacy = true;
+      };
+    }
 
     # hardware
     self.outputs.nixosProfiles.blade
