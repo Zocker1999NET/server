@@ -100,9 +100,6 @@ in
           scale = "3";
         };
       };
-      services.xserver.xkb = {
-        layout = "de";
-      };
       users.users.${cageUser} = mkIf (config.services.cage.enable) {
         isNormalUser = true;
         extraGroups = [
@@ -113,6 +110,12 @@ in
         description = "Cage user for kiosk mode";
       };
     })
+
+    {
+      services.xserver.xkb = {
+        layout = "de";
+      };
+    }
 
     {
       networking = {
