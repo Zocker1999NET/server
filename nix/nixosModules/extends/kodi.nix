@@ -97,6 +97,9 @@ in
       services.pulseaudio.enable = false;
       services.pipewire.enable = false;
 
+      # useful for kodi
+      services.avahi.enable = true;
+
       # the user to run Kodi as
       users.users.${cfg.username} = {
         description = "Kodi Media Center User";
@@ -121,6 +124,9 @@ in
 
     # Kodi network services
     (mkIf cfg.openFirewall {
+      # let Kodi announce its services via mDNS
+      services.avahi.openFirewall = true;
+
       networking.firewall = {
         allowedTCPPorts = [
           8080 # Kodi web interface
