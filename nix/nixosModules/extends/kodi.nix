@@ -129,7 +129,8 @@ in
 
       networking.firewall = {
         allowedTCPPorts = [
-          8080 # Kodi web interface
+          8080 # Kodi web interface / HTTP JSON-RPC (Kore: HTTP transport)
+          9090 # Kodi TCP JSON-RPC server (Kore's default transport)
         ];
         allowedUDPPorts = [
           9777 # Kodi event server (kodi-send)
