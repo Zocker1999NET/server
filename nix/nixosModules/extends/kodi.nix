@@ -115,13 +115,21 @@ in
     }
 
     # auto-login & launch kodi on tty1 (LibreELEC-style appliance)
+    # following https://wiki.nixos.org/wiki/Kodi#Autostart_kodi-gbm,_with_HDMI_audio_passthrough
     (mkIf cfg.autoLogin {
       services.getty.autologinUser = cfg.username;
-      environment.loginShellInit = ''
-        if [ "$(tty)" = "/dev/tty1" ] && [ "$USER" = ${escapeShellArg cfg.username} ]; then
-          exec ${cfg.finalPackage}/bin/kodi-standalone
-        fi
-      '';
+      services.greetd = {
+        enable = true;
+        settings = {
+          initial_session = {
+            command = "${cfg.finalPackage}/bin/kodi-standalone";
+            user = cfg.username;
+          };
+          default_session = {
+            command = "${pkgs.greetd.greetd}/bin/agreety";
+          };
+        };
+      };
     })
 
     # Kodi network services
