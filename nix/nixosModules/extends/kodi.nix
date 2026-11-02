@@ -109,6 +109,8 @@ in
           "audio" # ALSA access
         ];
         isNormalUser = true;
+        # reset to NixOS default shell to avoid conflicts with zsh-newuser-install
+        shell = "/bin/sh";
       };
     }
 
