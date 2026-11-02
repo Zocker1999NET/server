@@ -15,7 +15,6 @@ let
     mkOption
     mkPackageOption
     ;
-  inherit (lib.strings) escapeShellArg;
   cfg = config.services.kodi;
 in
 {
