@@ -102,14 +102,16 @@ in
             };
           };
 
-          "50-audio-config"."monitor.alsa.rules" = singleton {
-            matches = singleton cfg.defaultSinkMatcher;
-            actions.update-props = {
-              "node.param.Props" = {
-                inherit (cfg) channelVolumes;
-                mute = false;
+          "50-audio-config" = {
+            "monitor.alsa.rules" = singleton {
+              matches = singleton cfg.defaultSinkMatcher;
+              actions.update-props = {
+                "node.param.Props" = {
+                  inherit (cfg) channelVolumes;
+                  mute = false;
+                };
+                "priority.session" = 10000;
               };
-              "priority.session" = 10000;
             };
           };
 
