@@ -22,6 +22,17 @@ let
   inherit (lib.hm) dag;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myOpts = osConfig.x-banananetwork;
+  taskWrapper = pkgs.writeShellApplication {
+    # TODO extract as helper function/derivation
+    # (I do not use module, as I see its config as user-data)
+    name = "task";
+    runtimeInputs = [
+      # required by my plugins
+      pkgs.python3
+    ];
+    meta = pkgs.taskwarrior3.meta;
+    text = ''exec ${getExe pkgs.taskwarrior3} "$@"'';
+  };
 in
 {
 
@@ -70,17 +81,7 @@ in
     libnotify # for zsh-auto-notify
     pdfgrep # for scansystem
     pdfpagecount
-    (writeShellApplication {
-      # TODO extract as helper function/derivation
-      # (I do not use module, as I see its config as user-data)
-      name = "task";
-      runtimeInputs = [
-        # required by my plugins
-        python3
-      ];
-      meta = pkgs.taskwarrior3.meta;
-      text = ''exec ${getExe taskwarrior3} "$@"'';
-    })
+    taskWrapper
     (mkIf osConfig.services.wayland.enable wl-clipboard)
 
     ## calculators
