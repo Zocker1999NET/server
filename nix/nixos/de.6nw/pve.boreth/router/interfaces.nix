@@ -97,13 +97,6 @@ in
         "immich" = {
           mac = "BC:24:11:5A:58:FC";
           staticIPv4 = "10.32.1.210";
-          forwardedPorts = {
-            ssh = {
-              sources = singleton "network";
-              wanPort = 22210;
-              lanPort = 22;
-            };
-          };
         };
         "paperless" = {
           mac = "BC:24:11:9C:8F:04";
