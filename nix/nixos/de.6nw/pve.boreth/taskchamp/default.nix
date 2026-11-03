@@ -8,7 +8,8 @@
         # I do not want to reveal my client ID here
         # TODO allow all IDs until module supports --no-create-clients
         allowClientIds = [ ];
-        host = ""; # on all interfaces
+        # "" is unsupported by server for dual-stack -> IPv6-only chosen
+        host = "::";
         openFirewall = true;
         port = 10222; # module default
       };
