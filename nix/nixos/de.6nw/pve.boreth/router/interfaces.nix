@@ -109,6 +109,10 @@ in
             };
           };
         };
+        "taskchamp" = {
+          mac = "BC:24:11:D4:5F:8A";
+          staticIPv4 = "10.32.1.214";
+        };
         "debian-deploy" = {
           mac = "BC:24:11:50:0C:F1";
           exposedPorts.ssh = {

@@ -55,6 +55,7 @@ in
 
     "immich.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/immich;
     "paperless.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/paperless;
+    "taskchamp.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/taskchamp;
 
     "nix-builder.boreth.pve.6nw.de" = importSystem ./de.6nw/pve.boreth/nix-builder;
 
