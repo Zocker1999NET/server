@@ -557,6 +557,25 @@ in
   # TODO improve fix permanently
   systemd.user.services.syncthingtray.Service.ExecStartPre = "sleep 10";
 
+  systemd.user = {
+    services.task-sync = {
+      Unit.Description = "Sync Taskwarrior tasks";
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${getExe taskWrapper} sync";
+      };
+    };
+    timers.task-sync = {
+      Unit.Description = "Run Taskwarrior sync repeatedly";
+      Timer = {
+        OnBootSec = "5min";
+        OnUnitActiveSec = "10min";
+        Persistent = true;
+      };
+      Install.WantedBy = [ "timers.target" ];
+    };
+  };
+
   # TODO accounts.email.accounts (current: manual config)
 
   # ======================================
