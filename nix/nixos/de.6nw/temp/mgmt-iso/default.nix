@@ -34,6 +34,9 @@
                 };
                 offlineReference = self;
               };
+              "default staging" = {
+                reference = "${config.programs.disko-install-menu.listedFlakes.defaultFlake.reference}/staging";
+              };
             };
             offlineCapable = true;
             options = {
