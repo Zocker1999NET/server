@@ -28,6 +28,7 @@ let
       config.nix.package
       bash
       findutils
+      gawk
       git
     ];
     text = readFile ./service.sh;

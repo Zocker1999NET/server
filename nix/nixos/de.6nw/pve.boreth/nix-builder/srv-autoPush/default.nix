@@ -29,6 +29,7 @@ let
       config.nix.package
       bash
       findutils
+      gawk
       git
       gnupg
       openssh # required manually because of defining GIT_SSH_COMMAND
