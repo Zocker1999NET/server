@@ -169,6 +169,8 @@ in
           };
           # Tabliss
           "extension@tabliss.io" = { };
+          # Trilium Web Clipper
+          "web-clipper@triliumnotes.org" = { };
           # uBlock Origin
           "uBlock0@raymondhill.net" = {
             default_area = "navbar";
