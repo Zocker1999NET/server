@@ -9,6 +9,7 @@
     flakeSuppressRevision = ./flakeSuppressRevision.nix;
 
     # usage classes
+    appliance = ./appliance.nix;
     interactiveAppliance = ./interactiveAppliance.nix;
     interactiveClient = ./interactiveClient.nix;
     interactiveDevice = ./interactiveDevice.nix;

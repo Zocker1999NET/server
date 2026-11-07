@@ -9,7 +9,7 @@
   ...
 }:
 let
-  inherit (lib.modules) mkIf;
+  inherit (lib.modules) mkForce mkIf;
 
   sysAutoUp = config.system.autoUpgrade;
 in
@@ -18,6 +18,7 @@ in
   _class = "nixos";
 
   imports = [
+    ./appliance.nix
     ./interactiveDevice.nix
   ];
 
@@ -30,12 +31,9 @@ in
         message = "system.autoUpgrade.rebootWindow must be set for interactive appliances, because allowing reboots without a time window is not friendly";
       }
     ];
-    warnings = [
-      # (should be set where other settings like timings are configured)
-      (mkIf (
-        !sysAutoUp.enable
-      ) "system.autoUpgrade.enable recommended for interactive appliances to not forget to upgrade them")
-    ];
+
+    # TODO remove tie breaker when no longer needed
+    system.autoUpgrade.operation = mkForce "boot";
 
   };
 

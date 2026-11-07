@@ -146,15 +146,8 @@ in
         domain = "pc.6nw.de";
         hostName = "silverstone";
       };
-      # server configs provide useful settings for appliances
-      # TODO extract into separate appliance module
-      x-banananetwork.serverCommon.enable = true;
     }
     self.outputs.modules.nixos.interactiveAppliance
-    # TODO remove tie breaker when no longer needed
-    {
-      system.autoUpgrade.operation = mkForce "boot";
-    }
 
     # state
     {
