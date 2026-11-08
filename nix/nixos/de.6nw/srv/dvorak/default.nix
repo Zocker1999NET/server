@@ -78,7 +78,7 @@ in
       };
     }
     # LUKS sealed against: with reasonings:
-    # --tpm2-pcrs=0+2+3+7+8+10+12+14+15:sha1=0000000000000000000000000000000000000000
+    # --tpm2-pcrs=0+2+3+7+8+12+14+15:sha1=0000000000000000000000000000000000000000
     # (hw only supports sha1)
     # 0: for UEFI firmware upgrades/downgrades
     # (1: changes on every boot, for unknown reason)
@@ -90,7 +90,7 @@ in
     # 7: secure boot state
     # 8: GRUB unused on this system
     # (9: changes between generations because of initrd)
-    # 10: Linux IMA unused on this system
+    # (10: Linux IMA, seems to be enabled by default, i.e. changes sometimes between generations)
     # (11: changes between generations because of initrd)
     # 12: protect against externally inserted kernel / systemd arguments
     # (13: unused, potentially changes between generations)
