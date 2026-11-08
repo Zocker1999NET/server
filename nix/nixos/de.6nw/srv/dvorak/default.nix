@@ -77,6 +77,7 @@ in
         };
       };
     }
+    # re-seal cmd: systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=… --wipe-slot=tpm2 /dev/sda2
     # LUKS sealed against: with reasonings:
     # --tpm2-pcrs=0+2+3+7+8+12+14+15:sha1=0000000000000000000000000000000000000000
     # (hw only supports sha1)
