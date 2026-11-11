@@ -52,12 +52,14 @@ in
     # reference: https://docs.gitlab.com/editor_extensions/visual_studio_code/settings/#extension-settings
     userSettings = {
 
-      # disable all Duo features on outside projects (preferring VSCode Copilot)
+      # disable all Duo features at all
+      # (inline suggestions conflict with GitHub Copilot Inline Suggestions)
+      # (chat features already provided by GitHub Copilot Chat, which also supports BYOK)
       "gitlab.duo.enabledWithoutGitlabProject" = false;
-
-      # disable Duo code suggestions, have no subscription
-      # and prevent conflict with GitHub Copilot Inline Suggestions
+      "gitlab.duoAgentPlatform.enabled" = false;
+      "gitlab.duoChat.enabled" = false;
       "gitlab.duoCodeSuggestions.enabled" = false;
+      "gitlab.duoCodeSuggestions.openTabsContext" = false;
 
       # disable hints for GitLab Duo
       "gitlab.keybindingHints.enabled" = false;
