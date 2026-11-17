@@ -62,6 +62,7 @@ in
       systemPackages = with pkgs; [
         kdePackages.kio-fuse # for dolphin to mount remote filesystems via FUSE
         kdePackages.kio-extras # extra protocols support (sftp, fish and more)
+        keepassxc # for quick unlock via Polkit
       ];
 
     };

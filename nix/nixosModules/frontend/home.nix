@@ -110,7 +110,7 @@ in
     kdePackages.filelight
     kdePackages.kleopatra
     kdePackages.yakuake
-    keepassxc
+    keepassxc # also installed system-wide for quick unlock via Polkit
     (mkIf osConfig.services.tailscale.enable ktailctl) # Tailscale GUI client
     krita
     libreoffice-qt6-fresh # "qt6" for KDE Plasma; "fresh" to get newer features
