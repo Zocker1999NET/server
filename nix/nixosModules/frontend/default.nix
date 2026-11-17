@@ -39,6 +39,11 @@ in
 
     # TODO copy modem-manager overlay (for now)
 
+    boot.kernel.sysctl = {
+      # TODO until https://github.com/TriliumNext/Trilium/issues/5298 is fixed, or Trilium might not start
+      "net.ipv4.ip_local_reserved_ports" = "37840";
+    };
+
     console = {
       useXkbConfig = true;
     };
