@@ -3,6 +3,7 @@
 # from nix* build commands
 /.nixos-test-history
 result
+result-*
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
