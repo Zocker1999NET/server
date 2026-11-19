@@ -20,6 +20,8 @@
 
         librespot-auth = callPackage ./librespot-auth { inherit craneLib; };
 
+        dns-dynamic-primary-reflector = callPackage ./dns-dynamic-primary-reflector { };
+
         nft-update-addresses = callPackage ./nft-update-addresses { };
 
         pdfpagecount = callPackage ./pdfpagecount { };

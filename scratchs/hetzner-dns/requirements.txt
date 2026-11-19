@@ -1,0 +1,7 @@
+dnspython
+hcloud
+requests
+
+# debug
+mypy
+types-requests
