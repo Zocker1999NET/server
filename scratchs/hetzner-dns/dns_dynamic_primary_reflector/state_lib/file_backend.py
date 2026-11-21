@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
 import json
+from collections.abc import Sequence
 from pathlib import Path
 
 from .abstractions import (
@@ -63,7 +63,7 @@ class FileStateManager(StateManagerImpl[K, V]):
         with path.open("r") as fh:
             data = json.load(fh)
         if not isinstance(data, dict):
-            raise ValueError(
+            raise TypeError(
                 f"while reading {path} as JSON, expected dict, got {type(data).__name__}"
             )
         for key, state in data.items():

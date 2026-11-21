@@ -9,6 +9,12 @@ from typing import (
     TypeVar,
 )
 
+from ..state_lib import (
+    SingleManager,
+)
+from ..type_lib import (
+    InfoVal,
+)
 from .abs import (
     Action,
     SimpleSource,
@@ -17,13 +23,6 @@ from .abs import (
 from .state import (
     StateSupervisor,
 )
-from ..state_lib import (
-    SingleManager,
-)
-from ..type_lib import (
-    InfoVal,
-)
-
 
 V = TypeVar("V", bound=InfoVal)
 

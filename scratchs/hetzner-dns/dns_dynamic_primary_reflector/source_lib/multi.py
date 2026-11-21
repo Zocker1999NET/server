@@ -1,7 +1,7 @@
-#!/usr/bin/env python3
-
 from __future__ import annotations
 
+import random
+import traceback
 from collections import defaultdict
 from collections.abc import (
     Hashable,
@@ -11,20 +11,16 @@ from collections.abc import (
 from dataclasses import (
     dataclass,
 )
-import random
-import traceback
 from typing import (
     Generic,
     TypeVar,
 )
-
 
 from .abstractions import (
     InfoSource,
     NonInfo,
     SourceReturn,
 )
-
 
 V = TypeVar("V", bound=Hashable)
 
@@ -94,7 +90,7 @@ class MultiSource(InfoSource[V], Generic[V]):
             return SourceReturn(
                 source_name=source.source_name,
                 info=NonInfo.NO_RESULT,
-                error=f"[exception] {"".join(traceback.format_exception(err))}",
+                error=f"[exception] {''.join(traceback.format_exception(err))}",
             )
 
     def _sources_list(self) -> Iterable[InfoSource[V]]:

@@ -1,16 +1,15 @@
 from __future__ import annotations
 
+import json
 from collections.abc import (
+    Callable,
     Iterable,
-    Mapping,
 )
 from dataclasses import (
     dataclass,
 )
-import json
 from typing import (
     Any,
-    Callable,
 )
 
 from ..action_lib import (
@@ -27,11 +26,16 @@ from ..source_lib import (
     NotNoneSource,
     SourceUnpacker,
 )
+from .types import (
+    Config,
+    IpSourceEntry,
+    IpSourceSpec,
+)
 
 
-def build_ip_sources(config: Any) -> SimpleSource[list[str]]:
+def build_ip_sources(config: Config) -> SimpleSource[list[str]]:
     "builds the layered, consensus-based IP discovery pipeline from config"
-    src_cfg = config["ip_sources"]
+    src_cfg = config.ip_sources
 
     def gen_multi_source(
         class_name: str,
@@ -66,34 +70,36 @@ class IPSourceIter:
 
     def gen_level_sources(
         self,
-        src_cfg: Iterable[Iterable[Any]],
+        src_cfg: Iterable[Iterable[IpSourceEntry]],
     ) -> list[list[InfoSource[str | None]]]:
         "builds the sources of every configured layer"
         return list(map(self.list_ip_sources, src_cfg))
 
-    def list_ip_sources(self, src_list: Iterable[Any]) -> list[InfoSource[str | None]]:
+    def list_ip_sources(
+        self,
+        src_list: Iterable[IpSourceEntry],
+    ) -> list[InfoSource[str | None]]:
         "builds the sources of one layer, dropping non-matching ones"
         return [s for s in map(self.gen_ip_source, src_list) if s is not None]
 
-    def gen_ip_source(self, definition: Any) -> InfoSource[str | None] | None:
+    def gen_ip_source(self, definition: IpSourceEntry) -> InfoSource[str | None] | None:
         "builds one source, None if its class does not match"
-        return self.__gen_ip_source(self.__fill_definition(definition))
+        spec = (
+            definition
+            if isinstance(definition, IpSourceSpec)
+            else IpSourceSpec(url=definition)
+        )
+        return self.__gen_ip_source(spec)
 
     def __gen_ip_source(
         self,
-        definition: Mapping[str, Any],
+        spec: IpSourceSpec,
     ) -> InfoSource[str | None] | None:
-        "constructs the source from its filled definition"
-        if definition.get("class", self.class_name) != self.class_name:
+        "constructs the source from its specification"
+        if not (spec.ip_class is None or spec.ip_class == self.class_name):
             return None
-        args = {
-            "url": definition["url"],
-        }
-        if "json_attr" in definition:
-            json_attr = definition["json_attr"]
-            args["ret_filter"] = lambda data: json.loads(data)[json_attr]
-        return self.src_gen(**args)
-
-    def __fill_definition(self, definition: Any) -> Mapping[str, Any]:
-        "normalizes a plain URL definition into a full dict"
-        return definition if isinstance(definition, dict) else {"url": definition}
+        ret_filter: Callable[[Any], Any] | None = None
+        if spec.json_attr is not None:
+            json_attr = spec.json_attr
+            ret_filter = lambda data: json.loads(data)[json_attr]
+        return self.src_gen(url=spec.url, ret_filter=ret_filter)

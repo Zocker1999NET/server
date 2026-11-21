@@ -7,15 +7,15 @@ from typing import (
     TypeVar,
 )
 
-from .abs import (
-    Action,
-    UpdateSupervisor,
-)
 from ..state_lib import (
     SingleManager,
 )
 from ..type_lib import (
     InfoVal,
+)
+from .abs import (
+    Action,
+    UpdateSupervisor,
 )
 
 V = TypeVar("V", bound=InfoVal)

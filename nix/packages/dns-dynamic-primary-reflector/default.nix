@@ -27,6 +27,8 @@ python3Packages.buildPythonPackage {
   build-system = lib.singleton python3Packages.setuptools;
 
   dependencies = with python3Packages; [
+    attrs
+    cattrs
     dnspython
     hcloud
     requests

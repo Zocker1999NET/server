@@ -1,23 +1,21 @@
-#!/usr/bin/env python3
-
 from __future__ import annotations
 
+import traceback
 from abc import ABC, abstractmethod
 from dataclasses import (
     dataclass,
     field,
 )
-import traceback
 
+from ..action_lib import (
+    SimpleSource,
+    SourceError,
+)
 from .abstractions import (
     InfoSource,
     NonInfo,
     SourceReturn,
-    V,
-)
-from ..action_lib import (
-    SimpleSource,
-    SourceError,
+    V_co,
 )
 
 
@@ -28,13 +26,13 @@ from ..action_lib import (
     order=False,
     slots=True,
 )
-class InfoSourceImpl(ABC, InfoSource[V]):
+class InfoSourceImpl(ABC, InfoSource[V_co]):
     "base class packing _retrieve results and SourceErrors into SourceReturns"
 
     __warnings: list[str] = field(init=False, default_factory=list)
     "warnings collected over the lifetime of this source"
 
-    def retrieve_info(self) -> SourceReturn[V]:
+    def retrieve_info(self) -> SourceReturn[V_co]:
         try:
             return SourceReturn(
                 source_name=self.source_name,
@@ -53,7 +51,7 @@ class InfoSourceImpl(ABC, InfoSource[V]):
             )
 
     @abstractmethod
-    def _retrieve(self) -> V:
+    def _retrieve(self) -> V_co:
         """implements method on how to retrieve info
 
         If an error occurs,
@@ -80,13 +78,13 @@ class InfoSourceImpl(ABC, InfoSource[V]):
     order=False,
     slots=True,
 )
-class StaticSource(InfoSource[V]):
+class StaticSource(InfoSource[V_co]):
     "always returns one fixed SourceReturn, e.g. for testing"
 
-    return_val: SourceReturn[V]
+    return_val: SourceReturn[V_co]
     "the constant result to return"
 
-    def retrieve_info(self) -> SourceReturn[V]:
+    def retrieve_info(self) -> SourceReturn[V_co]:
         return self.return_val
 
 
@@ -95,14 +93,14 @@ class StaticSource(InfoSource[V]):
     order=False,
     slots=True,
 )
-class SourceUnpacker(SimpleSource[V]):
+class SourceUnpacker(SimpleSource[V_co]):
     "adapts a SourceReturn-based InfoSource to the raise-based SimpleSource"
 
-    source: InfoSource[V]
+    source: InfoSource[V_co]
     "the wrapped source"
 
     @property
-    def current_value(self) -> V:
+    def current_value(self) -> V_co:
         return self.source.retrieve_info().unpack()
 
 
@@ -111,14 +109,14 @@ class SourceUnpacker(SimpleSource[V]):
     order=False,
     slots=True,
 )
-class NotNoneSource(SimpleSource[V]):
+class NotNoneSource(SimpleSource[V_co]):
     "converts a nullable source into one that raises on None"
 
-    source: SimpleSource[V | None]
+    source: SimpleSource[V_co | None]
     "the wrapped source"
 
     @property
-    def current_value(self) -> V:
+    def current_value(self) -> V_co:
         val = self.source.current_value
         if val is None:
             raise ValueError("source is required to return something but returned None")

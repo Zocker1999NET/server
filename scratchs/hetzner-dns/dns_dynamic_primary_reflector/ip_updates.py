@@ -5,9 +5,6 @@ from __future__ import annotations
 import argparse
 import logging
 from pathlib import Path
-from typing import (
-    Any,
-)
 
 from .action_lib import (
     StateSyncer,
@@ -16,6 +13,9 @@ from .config import (
     build_actions,
     build_ip_sources,
     read_config,
+)
+from .config.types import (
+    LoggingConfig,
 )
 from .extras.ntfy_log import (
     NtfyHandler,
@@ -47,7 +47,7 @@ def main() -> None:
     args = __parse_args()
     logger.info("read config")
     config = read_config(args.config)
-    configure_logging(config.get("logging", {}))
+    configure_logging(config.logging)
     logger.info("plug together pipeline from config")
     state_mgr = FileStateManager[str, list[str]](
         paths=(Path(args.state_dir),),
@@ -104,13 +104,13 @@ def __parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def configure_logging(config: Any) -> None:
+def configure_logging(config: LoggingConfig) -> None:
     "adds a remote ntfy logging handler if configured"
     # configure remote logging
-    if "ntfy" in config:
-        url = config["ntfy"]["url"]
-        logger.info(f"setup ntfy remote logger for {url}")
-        ntfy_handler = NtfyHandler(url)
+    ntfy_config = config.ntfy
+    if ntfy_config is not None:
+        logger.info("setup ntfy remote logger for %s", ntfy_config.url)
+        ntfy_handler = NtfyHandler(ntfy_config.url)
         ntfy_handler.setLevel(logging.WARNING)
         logger.addHandler(ntfy_handler)
 

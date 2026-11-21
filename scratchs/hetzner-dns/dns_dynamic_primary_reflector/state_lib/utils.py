@@ -1,19 +1,22 @@
 from __future__ import annotations
 
+import traceback
 from abc import (
     ABC,
 )
 from collections.abc import Iterable
 from datetime import (
-    datetime,
     UTC,
+    datetime,
 )
-import traceback
 from typing import (
     Generic,
     cast,
 )
 
+from ..type_lib import (
+    JsonVal,
+)
 from .abstractions import (
     K,
     SingleManager,
@@ -21,19 +24,16 @@ from .abstractions import (
     StateManager,
     V,
 )
-from ..type_lib import (
-    JsonVal,
-)
 
 
-class StateManagerSingleImpl(StateManager[K, V], Generic[K, V], ABC):
+class StateManagerSingleImpl(StateManager[K, V], ABC, Generic[K, V]):
     "provides SingleManager views on top of a StateManager"
 
     def for_key(self, key: K) -> SingleManager[V]:
         return SingleManagerImpl(self, key)
 
 
-class StateManagerBackendImpl(StateManager[K, V], Generic[K, V], ABC):
+class StateManagerBackendImpl(StateManager[K, V], ABC, Generic[K, V]):
     "holds states in memory and persists them on every change"
 
     __states: dict[K, State[V]]
@@ -53,7 +53,7 @@ class StateManagerBackendImpl(StateManager[K, V], Generic[K, V], ABC):
 
     def _reset(self) -> None:
         "discards all in-memory states"
-        self.__states = dict()
+        self.__states = {}
 
     def _get_stored_keys(self) -> Iterable[K]:
         "yields all keys currently held in memory"
@@ -63,12 +63,10 @@ class StateManagerBackendImpl(StateManager[K, V], Generic[K, V], ABC):
 class StateManagerImpl(
     StateManagerSingleImpl[K, V],
     StateManagerBackendImpl[K, V],
-    Generic[K, V],
     ABC,
+    Generic[K, V],
 ):
     "base class combining SingleManager views with a memory backend"
-
-    ...
 
 
 class SingleManagerImpl(SingleManager[V], Generic[K, V]):
@@ -124,7 +122,7 @@ class StateSerializer(Generic[V]):
     def deserialize(self, data: JsonVal) -> State[V]:
         "decodes a JSON-compatible value back into a state"
         if not isinstance(data, dict):
-            raise ValueError(f"expected dict, got {type(data).__name__}")
+            raise TypeError(f"expected dict, got {type(data).__name__}")
         return State(
             value=cast(V | None, data.get("value")),
             value_date=self.__deserialize_date(data.get("value_date")),
@@ -143,7 +141,7 @@ class StateSerializer(Generic[V]):
         if d is None:
             return None
         if not isinstance(d, str):
-            raise ValueError(f"expected datetime.isoformat str, got {type(d).__name__}")
+            raise TypeError(f"expected datetime.isoformat str, got {type(d).__name__}")
         return datetime.fromisoformat(d)
 
     @staticmethod
@@ -159,5 +157,5 @@ class StateSerializer(Generic[V]):
         if d is None:
             return None
         if not isinstance(d, str):
-            raise ValueError(f"expected error str, got {type(d).__name__}")
+            raise TypeError(f"expected error str, got {type(d).__name__}")
         return d

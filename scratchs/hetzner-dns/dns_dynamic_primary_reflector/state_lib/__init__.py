@@ -17,11 +17,11 @@ from .utils import (
 )
 
 __all__ = [
+    "CachedSource",
+    "FileStateManager",
     "SingleManager",
     "State",
     "StateManager",
-    "CachedSource",
-    "FileStateManager",
     "StateManagerBackendImpl",
     "StateManagerImpl",
     "StateManagerSingleImpl",

@@ -8,7 +8,6 @@ from typing import (
     TypeVar,
 )
 
-
 V = TypeVar("V")
 V_co = TypeVar("V_co", covariant=True)
 V_contra = TypeVar("V_contra", contravariant=True)

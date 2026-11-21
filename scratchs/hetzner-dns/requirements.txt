@@ -1,3 +1,5 @@
+attrs
+cattrs
 dnspython
 hcloud
 requests

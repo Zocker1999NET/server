@@ -13,19 +13,19 @@ from .multi import (
 from .utils import (
     InfoSourceImpl,
     NotNoneSource,
-    StaticSource,
     SourceUnpacker,
+    StaticSource,
 )
 
 __all__ = [
-    "InfoSource",
-    "NonInfo",
-    "SourceReturn",
     "IPv4Source",
     "IPv6Source",
-    "MultiSource",
+    "InfoSource",
     "InfoSourceImpl",
+    "MultiSource",
+    "NonInfo",
     "NotNoneSource",
-    "StaticSource",
+    "SourceReturn",
     "SourceUnpacker",
+    "StaticSource",
 ]

@@ -1,14 +1,13 @@
 import bisect
+import logging
 from collections.abc import (
     Mapping,
 )
-import logging
 from functools import (
     cache,
 )
 
 import requests
-
 
 PYTHON_DEFAULT_PRIORITY = logging.INFO
 

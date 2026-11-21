@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from ipaddress import ip_address
 
-from ..action_lib import Action
 from hcloud import Client
 from hcloud.zones import (
     ZonePrimaryNameserver,
     ZonesClient,
 )
+
+from ..action_lib import Action
 
 
 class HetznerPrimaryAction(Action[list[str]]):

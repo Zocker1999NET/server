@@ -16,11 +16,9 @@ from ..action_lib import (
 from ..type_lib import (
     InfoVal,
 )
-
 from .abstractions import (
     SingleManager,
 )
-
 
 V = TypeVar("V", bound=InfoVal)
 

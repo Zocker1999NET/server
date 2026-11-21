@@ -23,7 +23,6 @@ from urllib.parse import urlparse
 from ..action_lib import (
     SourceError,
 )
-
 from .utils import (
     InfoSourceImpl,
 )

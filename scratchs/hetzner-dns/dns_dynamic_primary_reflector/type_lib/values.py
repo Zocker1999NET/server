@@ -8,7 +8,6 @@ from typing import (
     TypeAlias,
 )
 
-
 InfoVal: TypeAlias = (
     str | int | float | bool | Sequence["JsonVal"] | Mapping[str, "JsonVal"]
 )
