@@ -28,17 +28,6 @@ in
       };
       # TODO migrate lanEmitRejections = true;
       devices = {
-        "truenas" = {
-          mac = "BC:24:11:41:8F:D8";
-          staticIPv4 = "10.32.1.110";
-          forwardedPorts = {
-            "webui" = {
-              sources = singleton "network";
-              wanPort = 8888;
-              lanPort = 443;
-            };
-          };
-        };
         "nixnas" = {
           mac = "BC:24:11:1D:8E:2E";
           staticIPv4 = "10.32.1.111";
