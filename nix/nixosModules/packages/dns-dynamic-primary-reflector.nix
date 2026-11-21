@@ -7,9 +7,9 @@
 let
   inherit (builtins) toJSON;
   inherit (lib) types;
+  inherit (lib.modules) mkIf;
   inherit (lib.options)
     mkEnableOption
-    mkIf
     mkOption
     mkPackageOption
     ;
