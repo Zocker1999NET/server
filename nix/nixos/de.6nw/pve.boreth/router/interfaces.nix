@@ -37,33 +37,16 @@ in
               wanPort = 8888;
               lanPort = 443;
             };
-            "ssh" = {
-              sources = singleton "network";
-              wanPort = 2222;
-              lanPort = 22;
-            };
           };
         };
         "nixnas" = {
           mac = "BC:24:11:1D:8E:2E";
           staticIPv4 = "10.32.1.111";
-          forwardedPorts = {
-            ssh = {
-              sources = singleton "network";
-              wanPort = 22111;
-              lanPort = 22;
-            };
-          };
         };
         "dns" = {
           mac = "BC:24:11:04:C7:A0";
           staticIPv4 = "10.32.1.112";
           forwardedPorts = {
-            ssh = {
-              sources = singleton "network";
-              wanPort = 22112;
-              lanPort = 22;
-            };
             dns-tcp = {
               sources = singleton "network";
               protocol = "tcp";
@@ -82,11 +65,6 @@ in
           mac = "BC:24:11:A5:69:63";
           staticIPv4 = "10.32.1.120";
           forwardedPorts = {
-            ssh = {
-              sources = singleton "network";
-              wanPort = 22120;
-              lanPort = 22;
-            };
             pbs = {
               sources = singleton "network";
               wanPort = 8007;
@@ -115,19 +93,9 @@ in
         };
         "debian-deploy" = {
           mac = "BC:24:11:50:0C:F1";
-          exposedPorts.ssh = {
-            sources = singleton "network";
-            port = 22;
-          };
         };
         "nix-builder" = {
           mac = "BC:24:11:B5:58:0C";
-          exposedPorts = {
-            ssh = {
-              sources = singleton "network";
-              port = 22;
-            };
-          };
         };
       };
     };
