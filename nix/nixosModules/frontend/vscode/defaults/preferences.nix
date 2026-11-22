@@ -54,7 +54,8 @@
     "workbench.enableExperiments" = false;
     "workbench.settings.alwaysShowAdvancedSettings" = true;
     "workbench.settings.enableNaturalLanguageSearch" = false;
-    "workbench.settings.useSplitJSON" = true; # side-by-side view of settings.json and default settings with comments
+    # side-by-side view of settings.json and default settings with comments
+    "workbench.settings.useSplitJSON" = false; # useful, but forced split too annoying
 
     # === workarounds (with link to upstream issue / explanation)
 
