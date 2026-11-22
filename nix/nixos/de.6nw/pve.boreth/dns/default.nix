@@ -113,8 +113,8 @@ in
     (
       { config, pkgs, ... }:
       {
-        environment.systemPackages = with pkgs; [
-          #
+        environment.systemPackages = [
+          config.services.bind.package # for nsupdate & rndc
         ];
         networking = {
           hostName = "dns";
