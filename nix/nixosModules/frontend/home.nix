@@ -11,6 +11,7 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   inherit (lib.lists) forEach;
   inherit (lib.meta) getExe;
+  inherit (lib.strings) makeBinPath;
   inherit (lib.modules)
     mkAfter
     mkIf
@@ -22,16 +23,25 @@ let
   inherit (lib.hm) dag;
   mkHomeDirSymlink = path: mkOutOfStoreSymlink "${config.home.homeDirectory}/${path}";
   myOpts = osConfig.x-banananetwork;
-  taskWrapper = pkgs.writeShellApplication {
+  taskWrapper = pkgs.symlinkJoin {
+    # wraps taskwarrior3 by shadowing its binary, keeping all other files
+    # (man pages, completions, vim plugin, rc dir) from the real package
     # TODO extract as helper function/derivation
     # (I do not use module, as I see its config as user-data)
     name = "task";
-    runtimeInputs = [
-      # required by my plugins
-      pkgs.python3
-    ];
     meta = pkgs.taskwarrior3.meta;
-    text = ''exec ${getExe pkgs.taskwarrior3} "$@"'';
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    paths = [ pkgs.taskwarrior3 ];
+    postBuild = ''
+      rm $out/bin/task
+      makeWrapper ${getExe pkgs.taskwarrior3} $out/bin/task \
+        --prefix PATH : ${
+          makeBinPath [
+            # required by my plugins
+            pkgs.python3
+          ]
+        }
+    '';
   };
 in
 {
