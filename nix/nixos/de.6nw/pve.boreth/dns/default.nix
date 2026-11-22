@@ -152,7 +152,7 @@ in
               initialContent = ''
                 $ORIGIN allglorytojesus.de.
                 $TTL 3600
-                @ IN SOA ns1.first-ns.de. hostmaster.allglorytojesus.de. 1000 24h 2h 6w 1h
+                @ IN SOA dns.boreth.pve.6nw.de. hostmaster.allglorytojesus.de. 1000 24h 2h 6w 1h
                 ${concatMapped "\n" (attrNames hetznerSecondaryServers) (name: ''
                   @ IN NS ${name}
                 '')}
