@@ -39,7 +39,7 @@ class MultiSource(InfoSource[V], Generic[V]):
     random_order: bool = True
     "shuffle the sources within each layer on every retrieval"
     minimum: int = 1
-    "number of uniform answers required before the consensus is accepted"
+    "number of uniform & successful answers required for consensus to be acceptable"
     max_uniform: int | None = None
     "given this number of uniform answers, accept immediately"
     warn_non_uniform: bool = True
