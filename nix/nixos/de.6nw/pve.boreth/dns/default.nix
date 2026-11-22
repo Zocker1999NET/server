@@ -47,6 +47,7 @@ in
             {
               inherit class url;
             };
+        inherit (config.secrix.services."dns-dynamic-primary-reflector") secrets;
       in
       {
         # bind here is only authoritative, so not use it as system resolver
@@ -93,13 +94,15 @@ in
               ])
             ];
           };
-          apiKeyFile =
-            config.secrix.services."dns-dynamic-primary-reflector".secrets.hetznerApiKey.decrypted.path;
+          envVarFiles = {
+            HETZNER_API_KEY = secrets.hetznerApiKey.decrypted.path;
+          };
         };
-        # created at https://console.hetzner.com/projects/12914819/security/tokens
-        # wl-paste | secr encrypt dns.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/dns/hetznerApiKey.age
-        secrix.services."dns-dynamic-primary-reflector".secrets.hetznerApiKey.encrypted.file =
-          ./hetznerApiKey.age;
+        secrix.services."dns-dynamic-primary-reflector".secrets = {
+          # created at https://console.hetzner.com/projects/12914819/security/tokens
+          # wl-paste | secr encrypt dns.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/dns/hetznerApiKey.age
+          hetznerApiKey.encrypted.file = ./hetznerApiKey.age;
+        };
       }
     )
 

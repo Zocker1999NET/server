@@ -5,7 +5,10 @@
   ...
 }:
 let
-  inherit (builtins) toJSON;
+  inherit (builtins)
+    concatStringsSep
+    toJSON
+    ;
   inherit (lib) types;
   inherit (lib.modules) mkIf;
   inherit (lib.options)
@@ -13,9 +16,11 @@ let
     mkOption
     mkPackageOption
     ;
+  inherit (lib.attrsets) mapAttrsToList;
   inherit (lib.lists) singleton;
   inherit (lib.meta) getExe;
   inherit (lib.strings) escapeShellArg;
+  inherit (lib.trivial) flip;
 
   servName = "dns-dynamic-primary-reflector";
   cfg = config.services.${servName};
@@ -27,6 +32,10 @@ let
     '';
     text = toJSON cfg.settings;
   };
+
+  envArgs = flip mapAttrsToList cfg.envVarFiles (
+    name: file: ''DDPR:${escapeShellArg name}="$(<${escapeShellArg file})"''
+  );
 in
 {
 
@@ -90,9 +99,21 @@ in
       };
     };
 
-    apiKeyFile = mkOption {
-      description = "File containing the Hetzner DNS API token.";
-      type = types.path;
+    envVarFiles = mkOption {
+      description = ''
+        Configuration values injected via environment variables from files.
+
+        Each attribute name is a configuration path,
+        the same which are supported in {option}`services.${servName}.settings`,
+        with segments separated by `:` (without the `DDPR:` prefix),
+        and its value is a file whose tail-trimmed content
+        is assigned to that config path.
+      '';
+      type = with types; attrsOf path;
+      example = {
+        HETZNER_API_KEY = "/run/secrets/hetzner";
+        "LOGGING:NTFY:URL" = "/run/secrets/ntfy-url";
+      };
     };
 
     configurationFile = mkOption {
@@ -113,10 +134,9 @@ in
       wantedBy = [ "multi-user.target" ];
       startAt = "*:0/5";
       path = singleton pkgs.curl;
-      # env var names containing `:` are no valid shell identifiers
-      # hence the key is passed to the program by `env` directly
+      # var names containing `:` are no valid shell identifiers -> using `env`
       script = ''
-        exec env "DDPR:HETZNER_API_KEY=$(<${escapeShellArg cfg.apiKeyFile})" \
+        exec env ${concatStringsSep " " envArgs} \
           ${getExe cfg.package} \
           --config ${configFile} \
           --state-dir "$STATE_DIRECTORY"
