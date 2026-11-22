@@ -47,5 +47,9 @@ class Config:
     "DNS zone names to reflect the discovered public IPs on"
     ip_sources: list[list[IpSourceEntry]] = attrs.Factory(list)
     "layered public IP discovery sources, layers are consulted in order"
+    ip_consensus_minimum: int = 1
+    "number of uniform & successful answers required for consensus to be acceptable"
+    ip_consensus_max_uniform: int | None = 3
+    "accept one IP version’s consensus immediately once this many uniform answers arrived, None to always query all sources"
     logging: LoggingConfig = attrs.Factory(LoggingConfig)
     "logging configuration"

@@ -56,6 +56,17 @@ in
             description = "Hetzner DNS zone names whose primary nameservers shall be updated.";
             type = with types; listOf str;
           };
+          ip_consensus_max_uniform = mkOption {
+            description = "Accept one IP version's consensus immediately once this many uniform answers arrived, null to always query all sources.";
+            type = with types; nullOr int;
+            default = 3;
+            example = null;
+          };
+          ip_consensus_minimum = mkOption {
+            description = "Number of uniform & successful answers required for consensus to be acceptable.";
+            type = types.int;
+            default = 1;
+          };
           ip_sources = mkOption {
             description = ''
               Layered IP source definitions, queried for a unique consensus.

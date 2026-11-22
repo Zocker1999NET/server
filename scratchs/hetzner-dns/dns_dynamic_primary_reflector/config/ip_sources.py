@@ -44,8 +44,8 @@ def build_ip_sources(config: Config) -> SimpleSource[list[str]]:
         "builds a consensus source for one IP version from config"
         multi = MultiSource(
             sources=IPSourceIter(class_name, src_gen).gen_level_sources(src_cfg),
-            minimum=1,
-            max_uniform=3,
+            minimum=config.ip_consensus_minimum,
+            max_uniform=config.ip_consensus_max_uniform,
         )
         simple = SourceUnpacker(multi)
         not_none = NotNoneSource(simple)

@@ -63,6 +63,19 @@ def __structure_bool_strict(value: Any, _type: Any) -> bool:
         raise ValueError(f"{value!r} is not a bool") from exc
 
 
+def __structure_int_coerce(value: Any, _type: Any) -> int:
+    "structures an int, coercing the raw string values of env-injected config"
+    if isinstance(value, bool):
+        # bool is an int subclass, but never a config number
+        raise TypeError(f"{value!r} is not an int")
+    if isinstance(value, int):
+        return value
+    try:
+        return int(value)
+    except (TypeError, ValueError) as exc:
+        raise TypeError(f"{value!r} is not an int") from exc
+
+
 def __make_converter() -> Converter:
     "creates the converter structuring merged config values into their typed classes"
     converter = make_converter()
@@ -75,6 +88,7 @@ def __make_converter() -> Converter:
     )
     converter.register_structure_hook(IpSourceSpec, ip_source_spec_hook)
     converter.register_structure_hook(bool, __structure_bool_strict)
+    converter.register_structure_hook(int, __structure_int_coerce)
     converter.register_structure_hook(
         IpSourceEntry,
         __make_ip_source_entry_hook(ip_source_spec_hook),
