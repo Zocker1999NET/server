@@ -90,7 +90,8 @@ def __make_logging_hook(converter: Converter) -> Any:
         "structures null to the default logging config & dicts via the given converter"
         if value is None:
             return _type()
-        return converter.structure(value, _type)
+        # bypasses the LoggingConfig hook itself, avoiding recursion
+        return make_dict_structure_fn(LoggingConfig, converter)(value, _type)
 
     return structure_logging
 
