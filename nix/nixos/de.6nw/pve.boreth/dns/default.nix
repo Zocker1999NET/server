@@ -1,6 +1,7 @@
 { lib, self, ... }@flakeArg:
 let
   inherit (lib.lists) singleton;
+  inherit (lib.modules) mkForce;
 in
 {
   modules = [
@@ -21,6 +22,8 @@ in
             };
       in
       {
+        # bind here is only authoritative, so not use it as system resolver
+        networking.resolvconf.useLocalResolver = mkForce false;
         services.dns-dynamic-primary-reflector = {
           enable = true;
           settings = {
