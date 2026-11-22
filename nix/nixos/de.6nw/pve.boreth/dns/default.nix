@@ -58,6 +58,8 @@ in
             hetzner_domains = [
               "allglorytojesus.de"
             ];
+            ip_consensus_max_uniform = 3;
+            ip_consensus_minimum = 2;
             ip_sources = [
               # layers are attempted one by one, until required numbers are fulfilled
               # sources in each layer are queried in a randomized order
