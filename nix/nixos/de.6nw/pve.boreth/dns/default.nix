@@ -123,6 +123,8 @@ in
             allowedTCPPorts = singleton 53;
             allowedUDPPorts = singleton 53;
           };
+          # secondaries authorize AXFR/IFXR/NOTIFYs by source IP
+          tempAddresses = "disabled";
         };
         services.bind = {
           enable = true;
