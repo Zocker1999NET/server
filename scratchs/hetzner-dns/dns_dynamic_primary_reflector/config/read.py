@@ -35,6 +35,7 @@ from .types import (
     Config,
     IpSourceEntry,
     IpSourceSpec,
+    LoggingConfig,
 )
 
 _STRICT_BOOLS = {
@@ -78,7 +79,20 @@ def __make_converter() -> Converter:
         IpSourceEntry,
         __make_ip_source_entry_hook(ip_source_spec_hook),
     )
+    converter.register_structure_hook(LoggingConfig, __make_logging_hook(converter))
     return converter
+
+
+def __make_logging_hook(converter: Converter) -> Any:
+    "creates the logging hook, a JSON null meaning the default config"
+
+    def structure_logging(value: Any, _type: Any) -> Any:
+        "structures null to the default logging config & dicts via the given converter"
+        if value is None:
+            return _type()
+        return converter.structure(value, _type)
+
+    return structure_logging
 
 
 def __make_ip_source_entry_hook(
