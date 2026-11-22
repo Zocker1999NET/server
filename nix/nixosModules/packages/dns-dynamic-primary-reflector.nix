@@ -143,8 +143,6 @@ in
       '';
       serviceConfig = {
         Type = "oneshot";
-        # avoids firing at exact clock minutes, spreading load & fingerprinting
-        RandomizedDelaySec = "1min";
         StateDirectory = servName;
         # Security
         NoNewPrivileges = true;
@@ -175,7 +173,8 @@ in
         MemoryMax = "128M";
       };
     };
-
+    # avoids firing at exact clock minutes, spreading load & fingerprinting
+    systemd.timers.${servName}.timerConfig.RandomizedDelaySec = "1min";
   };
 
 }
