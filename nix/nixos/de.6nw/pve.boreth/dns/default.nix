@@ -1,7 +1,34 @@
 { lib, self, ... }@flakeArg:
 let
+  inherit (builtins)
+    attrNames
+    attrValues
+    concatLists
+    concatStringsSep
+    ;
   inherit (lib.lists) singleton;
   inherit (lib.modules) mkForce;
+
+  concatMapped =
+    sep: xs: f:
+    concatStringsSep sep (map f xs);
+
+  # addresses from https://docs.hetzner.com/networking/dns/overview#authoritative-name-servers
+  hetznerSecondaryServers = {
+    "ns1.first-ns.de." = [
+      "213.239.242.238"
+      "2a01:4f8:0:a101::a:1"
+    ];
+    "robotns2.second-ns.de." = [
+      "213.133.100.103"
+      "2a01:4f8:0:1::5ddc:2"
+    ];
+    "robotns3.second-ns.com." = [
+      "193.47.99.3"
+      "2001:67c:192c::add:a3"
+    ];
+  };
+  hetznerSecondaryServerIPs = concatLists (attrValues hetznerSecondaryServers);
 in
 {
   modules = [
@@ -126,33 +153,21 @@ in
                 $ORIGIN allglorytojesus.de.
                 $TTL 3600
                 @ IN SOA ns1.first-ns.de. hostmaster.allglorytojesus.de. 1000 24h 2h 6w 1h
-                @ IN NS ns1.first-ns.de.
-                @ IN NS robotns2.second-ns.de.
-                @ IN NS robotns3.second-ns.com.
+                ${concatMapped "\n" (attrNames hetznerSecondaryServers) (name: ''
+                  @ IN NS ${name}
+                '')}
               '';
-              # notify & allow transfers to the Hetzner secondary name servers
-              # addresses from https://docs.hetzner.com/networking/dns/overview#authoritative-name-servers
               extraConfig = ''
                 also-notify {
-                  213.239.242.238;
-                  2a01:4f8:0:a101::a:1;
-                  213.133.100.103;
-                  2a01:4f8:0:1::5ddc:2;
-                  193.47.99.3;
-                  2001:67c:192c::add:a3;
+                  ${concatMapped "\n" hetznerSecondaryServerIPs (ip: ''
+                    ${ip};
+                  '')}
                 };
               '';
             };
           };
           # transfer ACL of the dynamic zone (upstream attr, not part of zonesExt)
-          zones."allglorytojesus.de.".slaves = [
-            "213.239.242.238"
-            "2a01:4f8:0:a101::a:1"
-            "213.133.100.103"
-            "2a01:4f8:0:1::5ddc:2"
-            "193.47.99.3"
-            "2001:67c:192c::add:a3"
-          ];
+          zones."allglorytojesus.de.".slaves = hetznerSecondaryServerIPs;
         };
         secrix.services."bind".secrets = {
           # tsig-keygen -a hmac-sha512 router.boreth.pve.6nw.de. | secr encrypt dns.boreth.pve.6nw.de --system router.boreth.pve.6nw.de
