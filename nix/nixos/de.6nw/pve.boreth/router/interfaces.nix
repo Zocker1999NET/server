@@ -37,13 +37,13 @@ in
           staticIPv4 = "10.32.1.112";
           forwardedPorts = {
             dns-tcp = {
-              sources = singleton "network";
+              sources = singleton "all";
               protocol = "tcp";
               wanPort = 53;
               lanPort = 53;
             };
             dns-udp = {
-              sources = singleton "network";
+              sources = singleton "all";
               protocol = "udp";
               wanPort = 53;
               lanPort = 53;
