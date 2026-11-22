@@ -117,7 +117,42 @@ in
                 @ IN NS ns1.banananet.work.
               '';
             };
+            "allglorytojesus.de." = {
+              dynamic = true;
+              update-policy = [
+                ''grant "local-ddns" zonesub any''
+              ];
+              initialContent = ''
+                $ORIGIN allglorytojesus.de.
+                $TTL 3600
+                @ IN SOA ns1.first-ns.de. hostmaster.allglorytojesus.de. 1000 24h 2h 6w 1h
+                @ IN NS ns1.first-ns.de.
+                @ IN NS robotns2.second-ns.de.
+                @ IN NS robotns3.second-ns.com.
+              '';
+              # notify & allow transfers to the Hetzner secondary name servers
+              # addresses from https://docs.hetzner.com/networking/dns/overview#authoritative-name-servers
+              extraConfig = ''
+                also-notify {
+                  213.239.242.238;
+                  2a01:4f8:0:a101::a:1;
+                  213.133.100.103;
+                  2a01:4f8:0:1::5ddc:2;
+                  193.47.99.3;
+                  2001:67c:192c::add:a3;
+                };
+              '';
+            };
           };
+          # transfer ACL of the dynamic zone (upstream attr, not part of zonesExt)
+          zones."allglorytojesus.de.".slaves = [
+            "213.239.242.238"
+            "2a01:4f8:0:a101::a:1"
+            "213.133.100.103"
+            "2a01:4f8:0:1::5ddc:2"
+            "193.47.99.3"
+            "2001:67c:192c::add:a3"
+          ];
         };
         secrix.services."bind".secrets = {
           # tsig-keygen -a hmac-sha512 router.boreth.pve.6nw.de. | secr encrypt dns.boreth.pve.6nw.de --system router.boreth.pve.6nw.de
