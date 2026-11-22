@@ -96,12 +96,15 @@ in
           };
           envVarFiles = {
             HETZNER_API_KEY = secrets.hetznerApiKey.decrypted.path;
+            "LOGGING:NTFY:URL" = secrets.ntfyUrl.decrypted.path;
           };
         };
         secrix.services."dns-dynamic-primary-reflector".secrets = {
           # created at https://console.hetzner.com/projects/12914819/security/tokens
           # wl-paste | secr encrypt dns.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/dns/hetznerApiKey.age
           hetznerApiKey.encrypted.file = ./hetznerApiKey.age;
+          # echo "https://ntfy.banananet.work/$(pwgen -s 32)" | secr encrypt dns.boreth.pve.6nw.de nix/nixos/de.6nw/pve.boreth/dns/ntfyUrl.age
+          ntfyUrl.encrypted.file = ./ntfyUrl.age;
         };
       }
     )
