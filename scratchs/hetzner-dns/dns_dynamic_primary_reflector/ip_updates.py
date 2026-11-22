@@ -40,6 +40,8 @@ STATE_KEY_CURRENT_IPS = "current_ips"
 "state key prefix of per-action applied IP sets"
 STATE_KEY_DISCOVERED_IPS = "discovered_ips"
 "state key of the cached discovered IP set"
+STATE_FILE = "states.json"
+"name of the state file inside the state directory"
 
 
 def main() -> None:
@@ -50,7 +52,7 @@ def main() -> None:
     configure_logging(config.logging)
     logger.info("plug together pipeline from config")
     state_mgr = FileStateManager[str, list[str]](
-        paths=(Path(args.state_dir),),
+        paths=((Path(args.state_dir) / STATE_FILE),),
     )
     state_mgr.load_states()
 
