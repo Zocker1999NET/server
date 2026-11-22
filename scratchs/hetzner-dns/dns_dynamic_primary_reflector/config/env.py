@@ -58,8 +58,10 @@ def __insert(
 
 
 def __segment_key(segment: str) -> int | str:
-    "maps one path segment to its dict key, digits become list indices"
-    return int(segment) if segment.isdigit() else segment
+    "maps one path segment to its dict key, digits become list indices, others lowercase"
+    if segment.isdigit():
+        return int(segment)
+    return segment.lower()
 
 
 def __unexpand_int_dicts(node: Any) -> Any:
