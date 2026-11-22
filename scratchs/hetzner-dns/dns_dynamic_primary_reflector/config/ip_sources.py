@@ -98,8 +98,10 @@ class IPSourceIter:
         "constructs the source from its specification"
         if not (spec.ip_class is None or spec.ip_class == self.class_name):
             return None
-        ret_filter: Callable[[Any], Any] | None = None
+        src_kwargs: dict[str, Any] = {
+            "url": spec.url,
+        }
         if spec.json_attr is not None:
             json_attr = spec.json_attr
-            ret_filter = lambda data: json.loads(data)[json_attr]
-        return self.src_gen(url=spec.url, ret_filter=ret_filter)
+            src_kwargs["ret_filter"] = lambda data: json.loads(data)[json_attr]
+        return self.src_gen(**src_kwargs)
