@@ -121,6 +121,7 @@ in
           "tsig_router.boreth.pve.6nw.de.".encrypted.file = ./tsig_router.boreth.pve.6nw.de.age;
         };
         x-banananetwork = {
+          useable.enable = true;
           vmCommon.enable = true;
         };
       }
